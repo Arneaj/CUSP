@@ -73,12 +73,12 @@ xz_c = interest_points_w[ np.abs(interest_points_y - iy) < epsilon ]
 # V: None
 
 
-J_xy = axes[0].imshow(J_norm_xy_i, cmap="inferno", vmin=0, vmax=3e-9)
+J_xy = axes[0].imshow(J_norm_xy_i, cmap="inferno", vmin=0, vmax=3e-9, interpolation="none")
 plt.colorbar(J_xy, ax=axes[0])
 J_xy = axes[0].scatter( xy_points_y, xy_points_x, s=2, c=xy_c )
 axes[0].set_title(fr"$||J||$ in $({58},\hat x, \hat y)$ plane")
 
-J_xz = axes[1].imshow(J_norm_xz_i, cmap="inferno", vmin=0, vmax=3e-9)
+J_xz = axes[1].imshow(J_norm_xz_i, cmap="inferno", vmin=0, vmax=3e-9, interpolation="none")
 plt.colorbar(J_xz, ax=axes[1])
 J_xz = axes[1].scatter( xz_points_z, xz_points_x, s=2, c=xz_c )
 axes[1].set_title(fr"$||J||$ in $({58},\hat z, \hat x)$ plane")

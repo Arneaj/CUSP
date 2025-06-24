@@ -59,17 +59,20 @@ Mask = R <= predictedR
 index = 58
 
 
-J_xy = axes[0].imshow(J_norm[:,:,index], cmap="inferno", vmin=0, vmax=saturation)
+J_xy = axes[0].imshow(J_norm[::-1,:,index], cmap="inferno", vmin=0, vmax=saturation, interpolation="none")
 plt.colorbar(J_xy, ax=axes[0])
-J_xy = axes[0].imshow(np.ones_like(J_norm[:,:,index]), alpha=0.8*Mask[:,:,index], cmap="Paired")
+J_xy = axes[0].imshow(np.ones_like(J_norm[::-1,:,index]), alpha=0.8*Mask[::-1,:,index], cmap="Paired")
 axes[0].set_title(fr"$||J|| \in ({index},\hat x, \hat y)$")
 axes[0].set(ylabel=r"$x \in [-30; 128] R_E$", xlabel=r"$y \in [-58; 58] R_E$")
+axes[0].set_xlim(0, J_norm.shape[1]-1)
+axes[0].set_ylim(0, J_norm.shape[0]-1)
 
-J_xz = axes[1].imshow(J_norm[:,index,:], cmap="inferno", vmin=0, vmax=saturation)
+J_xz = axes[1].imshow(J_norm[::-1,index,:], cmap="inferno", vmin=0, vmax=saturation, interpolation="none")
 plt.colorbar(J_xz, ax=axes[1])
-J_xy = axes[1].imshow(np.ones_like(J_norm[:,index,:]), alpha=0.8*Mask[:,index,:], cmap="Paired")
+J_xy = axes[1].imshow(np.ones_like(J_norm[::-1,index,:]), alpha=0.8*Mask[::-1,index,:], cmap="Paired")
 axes[1].set_title(fr"$||J|| \in ({index},\hat x, \hat z)$")
-
+axes[1].set_xlim(0, J_norm.shape[2]-1)
+axes[1].set_ylim(0, J_norm.shape[0]-1)
 
 
 
