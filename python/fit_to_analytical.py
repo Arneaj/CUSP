@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.optimize import least_squares
 
-from gorgon import import_from, Me25
+from gorgon import import_from, Me25, Me25_cusps
 from earth_pos_detection import get_earth_pos
 
 
@@ -142,22 +142,22 @@ for i in range(5):
     for method in methods_to_try:
         initial_guess = np.random.uniform(0, 1, 11)
         #initial_guess *= np.array( [20, 0, 0, 0, 0, 2*np.pi, 10,  10, 2*np.pi,  10 ] )
-                    #              r_0, alpha_0, alpha_1, alpha_2, d_n,        l_n,  s_n, d_s,      l_s,     s_s     e
-        initial_guess *= np.array( [20,       1,       1,       1,  10,    np.pi/2,  0.9,  10,   np.pi/2,    0.9,  1.4 ] )
-        initial_guess += np.array( [ 0,       0,       0,       0,   0,          0, 0.01,   0,         0,   0.01, -0.7 ] )
+                    #              r_0, alpha_0, alpha_1, alpha_2, d_n,        l_n,  s_n, d_s,      l_s,     s_s     e  a_n  a_s
+        initial_guess *= np.array( [20,       1,       1,       1,  10,    np.pi/2,  0.9,  10,   np.pi/2,    0.9,  1.4,   2,   2 ] )
+        initial_guess += np.array( [ 0,       0,       0,       0,   0,          0, 0.01,   0,         0,   0.01, -0.7, 0.1, 0.1 ] )
 
         results.append(least_squares(
             residual_function,
             initial_guess,
-            args=(theta, phi, scaled_radii, Me25, weights),
+            args=(theta, phi, scaled_radii, Me25_cusps, weights),
             method=method,
             ftol=1e-8,      # Stricter tolerance
             xtol=1e-8,
             gtol=1e-8,
             max_nfev=10000,  # More function evaluations
-            #           r_0, alpha_0, alpha_1, alpha_2, d_n,      l_n,  s_n,    d_s,      l_s,   s_s    e
-            bounds=([     0,       0,       0,       0,   0,        0, 0.01,      0,        0, 0.01, -0.95], 
-                    [np.inf,       1,       1,       1,  15,  np.pi/2,    1,     15,  np.pi/2,    1,  0.95])
+            #           r_0, alpha_0, alpha_1, alpha_2, d_n,      l_n,  s_n,    d_s,      l_s,   s_s    e    a_n   a_s
+            bounds=([     0,       0,       0,       0,   0,        0, 0.01,      0,        0, 0.01, -0.95, 0.01, 0.01], 
+                    [np.inf,       1,       1,       1,  15,  np.pi/2,    1,     15,  np.pi/2,    1,  0.95,    3,    3])
         ))
 #        print(f"Method {method}: cost={results[-1].cost:.6f}, success={results[-1].success}")
         costs.append(results[-1].cost)

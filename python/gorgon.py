@@ -172,6 +172,41 @@ def Me25(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -> np
     ) * cos_phi*cos_phi
 
 
+def Me25_cusps(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -> np.ndarray | float:
+    """
+    Expects theta in [0;pi] and phi in [-pi;pi)
+    
+    Params are: [ r_0, alpha_0, alpha_1, alpha_2, d_n, l_n, s_n, d_s, l_s, s_s, e ]
+    """
+
+    cos_phi = np.cos(phi)
+    cos_theta = np.cos(theta)
+    
+    main_part = params[0] * ( 
+        (1+params[10])/(1+params[10]*cos_theta) 
+    ) * (
+        2 / (1+cos_theta)
+    ) ** (
+        params[1] + params[2]*cos_phi + params[3]*cos_phi*cos_phi
+    )
+        
+    is_north = np.abs(phi) <= 0.5 * np.pi
+    is_norths_day = theta <= params[5]
+    is_souths_day = theta <= params[8]
+
+    return main_part - (
+        is_north * params[4] * (
+            is_norths_day * ( 1 - np.abs(1-theta*theta/(params[5]*params[5]))**(params[6]*params[11]) ) +
+            (1-is_norths_day) * ( np.exp( (params[5] - theta)/params[6] ) )
+        ) + 
+        (1-is_north) * params[7] * (
+            is_souths_day * ( 1 - np.abs(1-theta*theta/(params[8]*params[8]))**(params[9]*params[12]) ) +
+            (1-is_souths_day) * ( np.exp( (params[8] - theta)/params[9] ) )
+        )
+    ) * cos_phi * cos_phi
+
+
+
 a = 1
 eps = 1e-18
 
@@ -185,26 +220,6 @@ def sign_approx( X ):
     return ( 1-ex ) / ( 1+ex )
 
 
-def Me25_approx(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -> np.ndarray | float:
-    """
-    Expects theta in [0;pi] and phi in [-pi;pi)
-    """
-
-    cos_phi = np.cos(phi)
-    cos_theta = np.cos(theta)
-
-    return params[0] * (
-        (1 + params[10]) / (1 + params[10]*cos_theta)
-    ) * (
-        2 / (1+cos_theta) )**( params[1] + params[2]*cos_phi + params[3]*cos_phi*cos_phi
-    ) - (
-        params[4] * np.exp( -np.abs(theta - params[5]) / params[6] ) * (sign_approx(cos_phi) + 1)/2 +
-        params[7] * np.exp( -np.abs(theta - params[8]) / params[9] ) * (sign_approx(-cos_phi) + 1)/2
-    ) * cos_phi*cos_phi
-
-
-
-
     
 def interpolate(P, Bi):
     xm = int(P[0]//1); ym = int(P[1]//1); zm = int(P[2]//1)
@@ -216,6 +231,7 @@ def interpolate(P, Bi):
     B0d = B1d[0]*(1-zd) + B1d[1]*zd
 
     return B0d
+
 
 
 
