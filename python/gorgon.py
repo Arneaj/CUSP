@@ -172,11 +172,17 @@ def Me25(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -> np
     ) * cos_phi*cos_phi
 
 
+
+def sigmoid( x: np.ndarray | float, v: float = 5 ):
+    return 1 / ( 1 + np.exp( -v*x ) )
+
+
+
 def Me25_cusps(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -> np.ndarray | float:
     """
     Expects theta in [0;pi] and phi in [-pi;pi)
     
-    Params are: [ r_0, alpha_0, alpha_1, alpha_2, d_n, l_n, s_n, d_s, l_s, s_s, e ]
+    Params are: [ r_0, alpha_0, alpha_1, alpha_2, d_n, l_n, s_n, d_s, l_s, s_s, e, a_n, a_s ]
     """
 
     cos_phi = np.cos(phi)
@@ -190,34 +196,25 @@ def Me25_cusps(params: list, theta: np.ndarray | float, phi: np.ndarray | float)
         params[1] + params[2]*cos_phi + params[3]*cos_phi*cos_phi
     )
         
-    is_north = np.abs(phi) <= 0.5 * np.pi
-    is_norths_day = theta <= params[5]
-    is_souths_day = theta <= params[8]
+    day_N = 1 - np.abs(1 - theta**2 / params[5]**2)**(params[6]*params[11])
+    night_N = np.exp( -np.abs( params[5] - theta ) / params[6] )
+    
+    day_S = 1 - np.abs(1 - theta**2 / params[8]**2)**(params[9]*params[12])
+    night_S = np.exp( -np.abs( params[8] - theta ) / params[9] )
 
-    return main_part - (
-        is_north * params[4] * (
-            is_norths_day * ( 1 - np.abs(1-theta*theta/(params[5]*params[5]))**(params[6]*params[11]) ) +
-            (1-is_norths_day) * ( np.exp( (params[5] - theta)/params[6] ) )
+    return main_part - ( 
+        params[4] * sigmoid(np.pi/2 + phi) * sigmoid(np.pi/2 - phi) * (
+            day_N * sigmoid(theta) * sigmoid(-theta-params[5]) +
+            night_N * sigmoid(theta-params[5])
         ) + 
-        (1-is_north) * params[7] * (
-            is_souths_day * ( 1 - np.abs(1-theta*theta/(params[8]*params[8]))**(params[9]*params[12]) ) +
-            (1-is_souths_day) * ( np.exp( (params[8] - theta)/params[9] ) )
+        params[7] * (sigmoid(-np.pi/2 + phi) + sigmoid(-np.pi/2 - phi)) * (
+            day_S * sigmoid(theta) * sigmoid(-theta-params[8]) +
+            night_S * sigmoid(theta-params[8])
         )
-    ) * cos_phi * cos_phi
+    )*cos_phi*cos_phi
 
 
 
-a = 1
-eps = 1e-18
-
-
-def abs_approx( X ):
-    return np.sqrt( X*X + eps )
-
-
-def sign_approx( X ):
-    ex = np.exp( -a*X )
-    return ( 1-ex ) / ( 1+ex )
 
 
     

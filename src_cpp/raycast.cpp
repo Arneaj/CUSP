@@ -22,7 +22,7 @@ void interest_points_helper(    float r_0, float alpha_0,
     {
         theta += dtheta;
 
-	if (std::abs(theta) < 0.1) continue;
+	    if (std::abs(theta) < 0.1) continue;
 
         float sin_theta = std::sin(theta);
         float cos_theta = std::cos(theta);

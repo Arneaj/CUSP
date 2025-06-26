@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from gorgon import Me25, import_from
+from gorgon import Me25, import_from, Me25_cusps
 
 import sys
 
@@ -45,7 +45,11 @@ R = np.sqrt( X*X + Y*Y + Z*Z )
 Theta = np.arccos( X / np.maximum(1, R) )
 Phi = np.arccos( Z / np.maximum(1, np.sqrt( Y*Y + Z*Z )) )
 Phi = Phi * (Y>0) - Phi*(Y<=0)
-predictedR = Me25( params, Theta, Phi )
+
+if params.size == 11: 
+    predictedR = Me25( params, Theta, Phi )
+else:
+    predictedR = Me25_cusps( params, Theta, Phi )
 
 Mask = R <= predictedR
 

@@ -1,0 +1,27 @@
+/rds/general/user/avr24/home/.profile: line 1: .bashrc: No such file or directory
+/rds/general/user/avr24/home/Thesis/python/gorgon.py:199: RuntimeWarning: overflow encountered in power
+  day_N = 1 - np.abs(1 - theta**2 / params[5]**2)**(params[6]*params[11])
+Method trf: cost=9.368903, success=True
+Method trf: cost=11.463514, success=True
+Method trf: cost=9.569321, success=True
+Method trf: cost=9.577858, success=True
+Method trf: cost=6.659060, success=True
+Method trf: cost=9.361377, success=True
+Method trf: cost=6.652580, success=True
+Method trf: cost=9.573915, success=True
+Method trf: cost=6.655356, success=True
+Method trf: cost=6.652141, success=True
+Method trf: cost=9.577257, success=True
+Method trf: cost=6.653905, success=True
+Method trf: cost=9.373339, success=True
+Method trf: cost=9.375293, success=True
+Method trf: cost=9.370637, success=True
+Method trf: cost=6.651838, success=True
+Method trf: cost=10.687626, success=True
+Method trf: cost=6.651246, success=True
+Method trf: cost=9.368865, success=True
+Method trf: cost=9.569340, success=True
+Lowest cost: 6.651 with parameters: [8.15364551e+00 5.77690457e-01 3.62329649e-05 3.49507276e-02
+ 8.78805039e-01 3.65117835e-01 9.27377399e-01 9.19261469e-01
+ 3.69181330e-01 6.28771610e-01 2.25089077e-01 4.26309743e+00
+ 6.28624490e+00]

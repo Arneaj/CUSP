@@ -4,7 +4,7 @@ import matplotlib.animation as anim
 import matplotlib.cm as cm
 import matplotlib as mpl
 
-from gorgon import import_from, Me25, spherical_to_cartesian, get_gradients, interpolate, signal
+from gorgon import import_from, Me25, spherical_to_cartesian, get_gradients, interpolate, signal, Me25_cusps
 from earth_pos_detection import get_earth_pos
 
 
@@ -50,7 +50,10 @@ def sign_approx( X ):
 
 def scatter_points():
     theta, phi = np.meshgrid( np.linspace( 0, np.pi*0.9, 100 ), np.linspace( -np.pi, np.pi, 100 ), indexing='ij' )
-    R = Me25( params, theta, phi )
+    if params.size == 11: 
+        R = Me25( params, theta, phi )
+    else:
+        R = Me25_cusps( params, theta, phi )
 
     X,Y,Z = spherical_to_cartesian( R, theta, phi, earth_pos )
     
@@ -97,7 +100,10 @@ def find_separator():
     nb_phi = 100
     
     theta, phi = np.meshgrid( np.linspace( 0, np.pi*0.9, nb_theta ), np.linspace( -np.pi, np.pi, nb_phi ), indexing='ij' )
-    R = Me25( params, theta, phi )
+    if params.size == 11: 
+        R = Me25( params, theta, phi )
+    else:
+        R = Me25_cusps( params, theta, phi )
     X,Y,Z = spherical_to_cartesian( R, theta, phi, earth_pos )
     
     B_mag = B[np.array(X, dtype=np.int16), np.array(Y, dtype=np.int16), np.array(Z, dtype=np.int16)]
@@ -162,7 +168,10 @@ def find_current_sheet():
     nb_phi = 100
     
     theta, phi = np.meshgrid( np.linspace( 0, np.pi*0.9, nb_theta ), np.linspace( -np.pi, np.pi, nb_phi ), indexing='ij' )
-    R = Me25( params, theta, phi )
+    if params.size == 11: 
+        R = Me25( params, theta, phi )
+    else:
+        R = Me25_cusps( params, theta, phi )
     X,Y,Z = spherical_to_cartesian( R, theta, phi, earth_pos )
     
     B_mag = B[np.array(X, dtype=np.int16), np.array(Y, dtype=np.int16), np.array(Z, dtype=np.int16)]
@@ -331,7 +340,11 @@ def get_animation():
     Theta = np.arccos( X / np.maximum(1, R) )
     Phi = np.arccos( Z / np.maximum(1, np.sqrt( Y*Y + Z*Z )) )
     Phi = Phi * (Y>0) - Phi*(Y<=0)
-    predictedR = Me25( params, Theta, Phi )
+    
+    if params.size == 11: 
+        predictedR = Me25( params, Theta, Phi )
+    else:
+        predictedR = Me25_cusps( params, Theta, Phi )
     
     Mask = R <= predictedR
     
