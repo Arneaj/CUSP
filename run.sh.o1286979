@@ -1,0 +1,8 @@
+/rds/general/user/avr24/home/.profile: line 1: .bashrc: No such file or directory
+
+Path to data: ../data/Run1_21000
+../tests_cpp/full_process_test.cpp: In function ‘int main(int, char**)’:
+../tests_cpp/full_process_test.cpp:44:95: error: ‘B’ was not declared in this scope
+   44 |     Shape new_shape_real(std::round(p_range.x), std::round(p_range.y), std::round(p_range.z), B.get_shape().i);
+      |                                                                                               ^
+make: *** [Makefile:35: full_process_test.o] Error 1
