@@ -1,18 +1,12 @@
 #!/bin/sh
-#PBS -l walltime=01:00:00
-#PBS -l select=1:ncpus=2:mem=8gb
+#PBS -l walltime=05:00:00
+#PBS -l select=1:ncpus=3:mem=8gb
 #PBS -j oe
 cd $PBS_O_WORKDIR
 
 module load miniforge/3 > /dev/null 2>&1
-
 module load tools/prod > /dev/null 2>&1
-# module load intel/2023a
-# module load Python/3.11.5-GCCcore-13.2.0
 module load SciPy-bundle/2023.07-gfbf-2023a > /dev/null 2>&1
-# source ~/venv/venv1/bin/activate
-# pip install -r requirements-linux.txt
-# pip install numpy --update
 
 command="ls data"
 

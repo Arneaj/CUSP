@@ -159,7 +159,7 @@ for i in range(20):
             bounds=([     0,       0,       0,       0,   0,     0.01, 0.01,      0,     0.01,  0.01, -0.95, 0.01, 0.01], 
                     [np.inf,       1,       1,       1,  15,  np.pi/2,    1,     15,  np.pi/2,     1,  0.95,   10,   10])
         ))
-        print(f"Method {method}: cost={results[-1].cost:.6f}, success={results[-1].success}")
+        # print(f"Method {method}: cost={results[-1].cost:.6f}, success={results[-1].success}")
         costs.append(results[-1].cost)
 
 

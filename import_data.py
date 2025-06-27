@@ -53,7 +53,7 @@ sim.import_space("/rds/general/user/avr24/projects/swimmr-sage/live/mheyns/bench
 
 B = sim.arr["Bvec_c"]
 J = sim.arr["jvec"]
-# V = sim.arr["vvec"]
+V = sim.arr["vvec"]
 
 X = sim.xc; Y = sim.yc; Z = sim.zc
 # dX = sim.dx; dY = sim.dy; dZ = sim.dz
@@ -95,13 +95,13 @@ with open("{}/B.txt".format(filepath), "w") as f:
     f.write( "{},{},{},{}\n".format(B.shape[0], B.shape[1], B.shape[2], B.shape[3]) )
 
     for ix in range(0, B.shape[0], STEP):
-        print( "B: {}%".format(round(100*ix/B.shape[0], 2)) )
+        # print( "B: {}%".format(round(100*ix/B.shape[0], 2)) )
         for iy in range(0, B.shape[1], STEP):
             for iz in range(0, B.shape[2], STEP):
                 for i in range(3):
                     f.write( str(B[ix,iy,iz,i]) )
                     f.write( "," )
-        delete_last_line()
+        # delete_last_line()
 
 print("finished writing B")
 
@@ -109,15 +109,30 @@ print("finished writing B")
 with open("{}/J.txt".format(filepath), "w") as f:
     f.write( "{},{},{},{}\n".format(J.shape[0], J.shape[1], J.shape[2], J.shape[3]) )
     for ix in range(0, J.shape[0], STEP):
-        print( "J: {}%".format(round(100*ix/J.shape[0], 2)) )
+        # print( "J: {}%".format(round(100*ix/J.shape[0], 2)) )
         for iy in range(0, J.shape[1], STEP):
             for iz in range(0, J.shape[2], STEP):
                 for i in range(3):
                     f.write( str(J[ix,iy,iz,i]) )
                     f.write( "," )
-        delete_last_line()
+        # delete_last_line()
 
 print("finished writing J")
+
+
+
+with open("{}/V.txt".format(filepath), "w") as f:
+    f.write( "{},{},{},{}\n".format(V.shape[0], V.shape[1], V.shape[2], V.shape[3]) )
+    for ix in range(0, V.shape[0], STEP):
+        # print( "V: {}%".format(round(100*ix/V.shape[0], 2)) )
+        for iy in range(0, V.shape[1], STEP):
+            for iz in range(0, V.shape[2], STEP):
+                for i in range(3):
+                    f.write( str(V[ix,iy,iz,i]) )
+                    f.write( "," )
+        # delete_last_line()
+
+print("finished writing V")
 print()
 
 

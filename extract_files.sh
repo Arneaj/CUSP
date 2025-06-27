@@ -1,33 +1,47 @@
 #!/bin/sh
-#PBS -l walltime=01:00:00
+#PBS -l walltime=02:00:00
 #PBS -l select=1:ncpus=2:mem=8gb
 #PBS -j oe
 cd $PBS_O_WORKDIR
 
-module load miniforge/3
+module load miniforge/3 > /dev/null 2>&1
+module load tools/prod > /dev/null 2>&1
+module load SciPy-bundle/2023.07-gfbf-2023a > /dev/null 2>&1
 
-module load tools/prod
-# module load intel/2023a
-# module load Python/3.11.5-GCCcore-13.2.0
-module load SciPy-bundle/2023.07-gfbf-2023a
-# source ~/venv/venv1/bin/activate
-# pip install -r requirements-linux.txt
-# pip install numpy --update
-# pip install matplotlib --update
 
+runs=(
+	"1"
+	"2"
+	"4"
+	"5"
+	"9"
+	"11"
+	"12"
+	"13"
+	"14"
+	"15"
+	"16"
+	"17"
+	"18"
+	"19"
+)
 
 
 timesteps=(
 	"28800"
-	"21000"
 	"28200"
 	"27600"
+	"27000"
+	"23100"
+	"22500"
+	"21900"
+	"21000"
 )
 
-for run_nb in $(seq 1 9); do
+for run_nb in "${runs[@]}"; do
 	for t in "${timesteps[@]}"; do
     		echo Run"$run_nb"_"$t"
-		mkdir data/Run"$run_nb"_"$t"
+		mkdir data/Run"$run_nb"_"$t" > /dev/null 2>&1
 		python import_data.py Run"$run_nb" "$t"
 		echo
 	done
