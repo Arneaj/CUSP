@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from gorgon import Me25, import_from, Me25_cusps
+from gorgon import Me25, import_from, Me25_cusps, Me25_leaky
 
 import sys
 
@@ -41,15 +41,25 @@ X = earth_pos[0] - X
 Y -= earth_pos[1]
 Z -= earth_pos[2]
 
+# R = np.sqrt( X*X + Y*Y + Z*Z )
+# Theta = np.arccos( X / np.maximum(1, R) )
+# Phi = np.arccos( Z / np.maximum(1, np.sqrt( Y*Y + Z*Z )) )
+# Phi = Phi * (Y>0) - Phi*(Y<=0)
+
+# TODO: THIS IS SPECIFICALLY FOR THE Me25_leaky FUNCTION
+Z_pos = Z>0; Z_neg = 1-Z_pos
+Y_pos = Y>0; Y_neg = 1-Y_pos
 R = np.sqrt( X*X + Y*Y + Z*Z )
-Theta = np.arccos( X / np.maximum(1, R) )
-Phi = np.arccos( Z / np.maximum(1, np.sqrt( Y*Y + Z*Z )) )
-Phi = Phi * (Y>0) - Phi*(Y<=0)
+Theta = np.arccos( X / np.maximum(0.01, R) )
+Theta = Theta*Z_pos - Theta*Z_neg
+Phi = np.arccos( Z / np.maximum(0.01, np.sqrt( Y*Y + Z*Z )) )
+Phi = Phi*Y_pos*Z_pos + (-Phi)*Y_neg*Z_pos + (np.pi-Phi)*Y_neg*Z_neg + (Phi-np.pi)*Y_pos*Z_neg
+
 
 if params.size == 11: 
     predictedR = Me25( params, Theta, Phi )
 else:
-    predictedR = Me25_cusps( params, Theta, Phi )
+    predictedR = Me25_leaky( params, Theta, Phi )
 
 Mask = R <= predictedR
 

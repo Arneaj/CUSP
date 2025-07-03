@@ -8,4 +8,4 @@ module load miniforge/3 > /dev/null 2>&1
 module load tools/prod > /dev/null 2>&1
 module load SciPy-bundle/2023.07-gfbf-2023a > /dev/null 2>&1
 
-python fit_to_analytical.py ../data/Run3_28800
+python fit_to_analytical.py ../data/Run1_28800
