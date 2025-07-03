@@ -15,6 +15,7 @@ B = import_from(f"{filepath}/B_processed_real.txt")
 B_norm = np.linalg.norm( B, axis=3 )
 
 J_norm = None
+V = None
 
 earth_pos = get_earth_pos( B_norm )
 print( "earth pos = ", earth_pos )
@@ -160,9 +161,14 @@ def find_separator():
 
 def find_current_sheet():
     global J_norm
+    global V
     
     if J_norm is None: 
         J_norm = import_from(f"{filepath}/J_norm_processed_real.txt")
+        
+    if V is None: 
+        V = import_from(f"{filepath}/V_processed_real.txt")
+    V_x = V[:,:,:,0]
     
     nb_theta = 200
     nb_phi = 100
@@ -230,7 +236,7 @@ def find_current_sheet():
     
     dJ_norm_dz /= np.max(dJ_norm_dz)
         
-    nb_iterations = 300
+    nb_iterations = 200
         
     for iteration in range(nb_iterations):
         for i in range(X_sep_neg.size):
@@ -273,29 +279,40 @@ def find_current_sheet():
     new_Y_current_sheet = new_Y_current_sheet.flatten()
     new_Z_current_sheet = new_Z_current_sheet.flatten()
     
-    J_sheet_norm = J_norm[np.array(new_X_current_sheet, dtype=np.int16), np.array(new_Y_current_sheet, dtype=np.int16), np.array(new_Z_current_sheet, dtype=np.int16)]
     
-    saturation = 5e-9
+    V_x_sheet = V_x[np.array(new_X_current_sheet, dtype=np.int16), np.array(new_Y_current_sheet, dtype=np.int16), np.array(new_Z_current_sheet, dtype=np.int16)]
     
-    J_sheet_norm = J_sheet_norm * (J_sheet_norm < saturation) + saturation * (J_sheet_norm >= saturation)
+    saturation = 0
+    
+    V_x_sheet = 0 * (V_x_sheet < saturation) + 1 * (V_x_sheet >= saturation)
+    
+    
+    # J_sheet_norm = J_norm[np.array(new_X_current_sheet, dtype=np.int16), np.array(new_Y_current_sheet, dtype=np.int16), np.array(new_Z_current_sheet, dtype=np.int16)]
+    
+    # saturation = 5e-9
+    
+    # J_sheet_norm = J_sheet_norm * (J_sheet_norm < saturation) + saturation * (J_sheet_norm >= saturation)
     
     
     
-    color = (J_sheet_norm - np.min(J_sheet_norm)) / (np.max(J_sheet_norm) - np.min(J_sheet_norm))
-    cmap = cm.get_cmap("inferno")
+    color = (V_x_sheet - np.min(V_x_sheet)) / (np.max(V_x_sheet) - np.min(V_x_sheet))
+    cmap = plt.get_cmap("inferno")
     color = cmap( color )
     
     ax.scatter( new_X_current_sheet, new_Y_current_sheet, new_Z_current_sheet, c=color, alpha=0.8 )
 
-    norm = mpl.colors.Normalize(vmin=0, vmax=saturation)#=np.max(J_sheet_norm))
-    fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap="inferno"),
-                 ax = ax, label=r"$||\mathbf{J}||$ [$T$]", shrink=0.5)
+    norm = mpl.colors.Normalize(vmax=saturation)#=np.max(J_sheet_norm))
+    # fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap="inferno"),
+    #              ax = ax, label=r"$||V_x||$ [$m/s$]", shrink=0.5)
 
-    plt.show()
+
+    ax.view_init(elev=90., azim=270.)
+    
+    plt.savefig("current_sheet_V.svg")
         
     
-    
-
+if __name__=="__main__":  
+    find_current_sheet()
 
 
 

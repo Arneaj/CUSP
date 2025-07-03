@@ -99,18 +99,18 @@ def gaussian_kernel_3d(size:int, std:float) -> np.ndarray:
 
 
 
-def get_gradients(vector: np.ndarray):
-    grad_vector_x = signal.convolve(vector, h2_3d('x'), mode='same')
-    grad_vector_x = signal.convolve(grad_vector_x, h1_3d('y'), mode='same')
-    grad_vector_x = signal.convolve(grad_vector_x, h1_3d('z'), mode='same')
+def get_gradients(vector: np.ndarray, mode="same"):
+    grad_vector_x = signal.convolve(vector, h2_3d('x'), mode=mode)
+    grad_vector_x = signal.convolve(grad_vector_x, h1_3d('y'), mode=mode)
+    grad_vector_x = signal.convolve(grad_vector_x, h1_3d('z'), mode=mode)
 
-    grad_vector_y = signal.convolve(vector, h1_3d('x'), mode='same')
-    grad_vector_y = signal.convolve(grad_vector_y, h2_3d('y'), mode='same')
-    grad_vector_y = signal.convolve(grad_vector_y, h1_3d('z'), mode='same')
+    grad_vector_y = signal.convolve(vector, h1_3d('x'), mode=mode)
+    grad_vector_y = signal.convolve(grad_vector_y, h2_3d('y'), mode=mode)
+    grad_vector_y = signal.convolve(grad_vector_y, h1_3d('z'), mode=mode)
 
-    grad_vector_z = signal.convolve(vector, h1_3d('x'), mode='same')
-    grad_vector_z = signal.convolve(grad_vector_z, h1_3d('y'), mode='same')
-    grad_vector_z = signal.convolve(grad_vector_z, h2_3d('z'), mode='same')
+    grad_vector_z = signal.convolve(vector, h1_3d('x'), mode=mode)
+    grad_vector_z = signal.convolve(grad_vector_z, h1_3d('y'), mode=mode)
+    grad_vector_z = signal.convolve(grad_vector_z, h2_3d('z'), mode=mode)
     
     return grad_vector_x, grad_vector_y, grad_vector_z
 
@@ -213,6 +213,38 @@ def Me25_cusps(params: list, theta: np.ndarray | float, phi: np.ndarray | float)
         )
     )*cos_phi*cos_phi
 
+
+
+def l_abs(X: np.ndarray | float) -> np.ndarray | float:
+    pos = (X >= 0)
+    return pos*X - (1-pos)*0.01*X
+
+
+def Me25_leaky(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -> np.ndarray | float:
+    """
+    Expects theta in [-pi;pi) and phi in [-pi/2;pi/2)
+    
+    Params are: [ r_0, alpha_0, alpha_1, alpha_2, d_n, l_n, s_n, d_s, l_s, s_s, e, a_n, a_s ]
+    """
+
+    cos_phi = np.cos(phi)
+    cos_theta = np.cos(theta)
+    
+    main_part = params[0] * ( 
+        (1+params[10])/(1+params[10]*cos_theta) 
+    ) * (
+        2 / (1+cos_theta)
+    ) ** (
+        params[1] + params[2]*cos_phi + params[3]*cos_phi*cos_phi
+    )
+    
+    leaky_n = l_abs(theta)
+    cusp_n = params[4] * np.exp( -np.abs( leaky_n**params[11] - params[5] * leaky_n**(params[11]-1) ) / params[6] )
+    
+    leaky_s = l_abs(theta)
+    cusp_s = params[7] * np.exp( -np.abs( leaky_s**params[12] - params[8] * leaky_s**(params[12]-1) ) / params[9] )
+    
+    return main_part - (cusp_n+cusp_s)*cos_phi*cos_phi
 
 
 

@@ -18,13 +18,13 @@ while read my_name; do
 
 	echo "Path to data: ${my_path}"
 
-	cd ./output_cpp
-	make full_process_test > /dev/null
-	./full_process_test $my_path
-	# cd ../python
-	# python fit_to_analytical.py $my_path
+	# cd ./output_cpp
+	# make full_process_test > /dev/null
+	# ./full_process_test $my_path
+	cd ../python
+	python fit_to_analytical.py $my_path
 	cd ..
-#	echo "Finished fitting the data point at ${my_path}"
+	echo "Finished fitting the data point at ${my_path}"
 	echo "Time taken: $((SECONDS-start_time)) seconds total."
 
 	echo

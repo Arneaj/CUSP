@@ -19,6 +19,10 @@ data_type = sys.argv[2]
 
 vec = import_from(f"{filepath}/{data_type}_processed_real.txt")
 
+kerning = 0
+
+vec = vec[kerning:-1-kerning, kerning:-1-kerning, kerning:-1-kerning]
+
 
 ####### FIRST ORDER CRITICAL POINTS
 
@@ -28,17 +32,18 @@ x_is_positive = vec[:,:,:,0] >= 0
 y_is_positive = vec[:,:,:,1] >= 0
 z_is_positive = vec[:,:,:,2] >= 0
 
-x_sign_change = signal.convolve(x_is_positive, np.ones((3,3,3)), "same")
+x_sign_change = signal.convolve(x_is_positive, np.ones((3,3,3)), "valid")
 x_sign_change = x_sign_change * (27 - x_sign_change)
 
-y_sign_change = signal.convolve(y_is_positive, np.ones((3,3,3)), "same")
+y_sign_change = signal.convolve(y_is_positive, np.ones((3,3,3)), "valid")
 y_sign_change = y_sign_change * (27 - y_sign_change)
 
-z_sign_change = signal.convolve(z_is_positive, np.ones((3,3,3)), "same")
+z_sign_change = signal.convolve(z_is_positive, np.ones((3,3,3)), "valid")
 z_sign_change = z_sign_change * (27 - z_sign_change)
 
 
 sign_change = x_sign_change * y_sign_change * z_sign_change
+sign_change = ( sign_change - np.min(sign_change) ) / ( np.max(sign_change) - np.min(sign_change) )
 
 fig, axes = plt.subplots(1, 2)
 fig.set_figwidth(10)
@@ -46,13 +51,13 @@ fig.set_figheight(4)
 
 axes[0].imshow( np.linalg.norm(vec, axis=3)[:,:,vec.shape[2]//2], cmap="inferno", vmin=0, vmax=1e-7, interpolation="none" )
 axes[0].imshow( np.ones_like(sign_change[:, :, vec.shape[2]//2]), 
-            alpha=(sign_change[:, :, vec.shape[2]//2] - np.min(sign_change))/(np.max(sign_change) - np.min(sign_change)), 
+            alpha=sign_change[:,:,sign_change.shape[2]//2], 
             cmap="Paired", interpolation="nearest" )
 axes[0].set_title("$(x,y)$")
 
 axes[1].imshow( np.linalg.norm(vec, axis=3)[:,vec.shape[1]//2,:], cmap="inferno", vmin=0, vmax=1e-7, interpolation="none" )
 axes[1].imshow( np.ones_like(sign_change[:, vec.shape[1]//2, :]), 
-            alpha=(sign_change[:, vec.shape[1]//2, :] - np.min(sign_change))/(np.max(sign_change) - np.min(sign_change)), 
+            alpha=sign_change[:,sign_change.shape[1]//2,:], 
             cmap="Paired", interpolation="nearest" )
 axes[1].set_title("$(x,z)$")
 
@@ -65,12 +70,14 @@ plt.close(fig)
 
 
 
-critical_points = np.nonzero( sign_change > 1e-1 )   
+critical_points = np.nonzero( sign_change > 0.01 )   
+
+print(critical_points[0].shape)
 
 
-dvecx_dx, dvecx_dy, dvecx_dz = get_gradients( vec[:,:,:,0] )
-dvecy_dx, dvecy_dy, dvecy_dz = get_gradients( vec[:,:,:,1] )
-dvecz_dx, dvecz_dy, dvecz_dz = get_gradients( vec[:,:,:,2] )
+dvecx_dx, dvecx_dy, dvecx_dz = get_gradients( vec[:,:,:,0], mode="valid" )
+dvecy_dx, dvecy_dy, dvecy_dz = get_gradients( vec[:,:,:,1], mode="valid" )
+dvecz_dx, dvecz_dy, dvecz_dz = get_gradients( vec[:,:,:,2], mode="valid" )
 
 
 jacobian = np.zeros( ( critical_points[0].size, 3, 3 ) )
@@ -134,18 +141,18 @@ ax.set_zlabel("$z$ [$R_E$]")
 def animate2(i):
     ax.clear()
     
-    for j in range(7):
+    ax.set_xlim( 0, vec.shape[0]-1 )
+    ax.set_ylim( 0, vec.shape[1]-1 )
+    ax.set_zlim( 0, vec.shape[2]-1 )
+    
+    for j in range(4, 8):
         p_x = critical_points_x[classification == j]
         p_y = critical_points_y[classification == j]
         p_z = critical_points_z[classification == j]
 
-        ax.view_init(elev=20., azim=i)
+        ax.view_init(elev=90., azim=i)
         
-        ax.scatter( p_x, p_y, p_z, color=(j/7, 1-j/7, 1-j/7), label=f"{classes[j%4]} {subclasses[j//4]}" )
-        
-    ax.set_xlim( 0, vec.shape[0]-1 )
-    ax.set_ylim( 0, vec.shape[1]-1 )
-    ax.set_zlim( 0, vec.shape[2]-1 )
+        ax.scatter( p_x, p_y, p_z, color=(1-j/7, j//4, j/7), label=f"{classes[j%4]} {subclasses[j//4]}" )
 
     ax.set_xlabel("$x$ [$R_E$]")
     ax.set_ylabel("$y$ [$R_E$]")
@@ -153,16 +160,8 @@ def animate2(i):
     
     fig.legend()
 
-ani = anim.FuncAnimation(fig, animate2, interval=150, frames=np.linspace(0, 360, 20))
+ani = anim.FuncAnimation(fig, animate2, interval=150, frames=np.linspace(270, 270, 1))
 ani.save(filename=f"skeleton_classification.gif", writer="pillow")
 
 
 plt.close(fig)
-
-
-
-
-
-
-
-
