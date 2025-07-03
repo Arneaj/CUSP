@@ -238,10 +238,10 @@ def Me25_leaky(params: list, theta: np.ndarray | float, phi: np.ndarray | float)
         params[1] + params[2]*cos_phi + params[3]*cos_phi*cos_phi
     )
     
-    leaky_n = l_abs(theta)
+    leaky_n = np.maximum( l_abs(theta), 0.01 )
     cusp_n = params[4] * np.exp( -np.abs( leaky_n**params[11] - params[5] * leaky_n**(params[11]-1) ) / params[6] )
     
-    leaky_s = l_abs(theta)
+    leaky_s = np.maximum( l_abs(-theta), 0.01 )
     cusp_s = params[7] * np.exp( -np.abs( leaky_s**params[12] - params[8] * leaky_s**(params[12]-1) ) / params[9] )
     
     return main_part - (cusp_n+cusp_s)*cos_phi*cos_phi
