@@ -30,7 +30,8 @@ void interest_points_helper(    float r_0, float alpha_0,
         if ( 1 + cos_theta < 1e-3 ) continue;
 
         float initial_r = get_r(r_0, alpha_0, 1 + cos_theta);
-	float final_r = get_r(12, 1, 1 + cos_theta);
+	    // float final_r = get_r(12, 1, 1 + cos_theta);
+        float final_r = get_r(20, 1, 1 + cos_theta);
 
         float phi = 0;
 

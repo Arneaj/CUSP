@@ -1,3 +1,6 @@
+interest_points_test: interest_points_test.o preprocessing.o raycast.o magnetopause.o streamlines.o points.o read_file.o matrix.o
+	g++ -pthread interest_points_test.o preprocessing.o raycast.o magnetopause.o streamlines.o points.o read_file.o matrix.o -o interest_points_test
+
 full_process_test: full_process_test.o preprocessing.o raycast.o magnetopause.o streamlines.o points.o read_file.o matrix.o
 	g++ -pthread full_process_test.o preprocessing.o raycast.o magnetopause.o streamlines.o points.o read_file.o matrix.o -o full_process_test
 

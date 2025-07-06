@@ -56,10 +56,7 @@ Phi = np.arccos( Z / np.maximum(0.01, np.sqrt( Y*Y + Z*Z )) )
 Phi = Phi*Y_pos*Z_pos + (-Phi)*Y_neg*Z_pos + (np.pi-Phi)*Y_neg*Z_neg + (Phi-np.pi)*Y_pos*Z_neg
 
 
-if params.size == 11: 
-    predictedR = Me25( params, Theta, Phi )
-else:
-    predictedR = Me25_leaky( params, Theta, Phi )
+predictedR = Me25_leaky( params, Theta, Phi )
 
 Mask = R <= predictedR
 
