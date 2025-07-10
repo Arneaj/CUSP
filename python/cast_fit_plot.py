@@ -8,7 +8,14 @@ from gorgon import import_from, Me25, spherical_to_cartesian, get_gradients, int
 from earth_pos_detection import get_earth_pos
 
 
-filepath = input("Enter the file path: ")
+import sys
+
+if len(sys.argv) < 2:
+    print("No Run path given!")
+    exit(1)
+
+
+filepath = sys.argv[1]
 
 
 B = import_from(f"{filepath}/B_processed_real.txt")

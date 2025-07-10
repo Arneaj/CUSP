@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from gorgon import filename, import_from
+from gorgon import import_from
 
 
 
@@ -12,7 +12,7 @@ def get_earth_pos( B_norm: np.ndarray ) -> tuple[float]:
 def main():
     """## Read file and extract values"""
 
-    B,V,T,rho = import_from(filename)
+    B,V,T,rho = import_from("../data/Run1_28800")
     
     B_norm = np.linalg.norm( B, axis=3 )
 

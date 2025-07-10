@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import signal
-from gorgon import filename, import_from
+from gorgon import import_from
 
 """# Functions
 
@@ -147,16 +147,16 @@ def find_streamline(Bx,By,Bz, x_i,y_i,z_i, step, max_length=1000):
     t = 0
     P = np.array([x_i, y_i, z_i])
     backward_points = []
-    m_Bx, m_By, m_Bz = -Bx,-By,-Bz
-    while t < max_length:
-        try:
-            P = norm_RK4(P, m_Bx,m_By,m_Bz, step)
-        except:
-            break
+    # m_Bx, m_By, m_Bz = -Bx,-By,-Bz
+    # while t < max_length:
+    #     try:
+    #         P = norm_RK4(P, m_Bx,m_By,m_Bz, step)
+    #     except:
+    #         break
 
-        backward_points.insert(0, P)
+    #     backward_points.insert(0, P)
 
-        t += 1
+    #     t += 1
 
     return np.array(backward_points + forward_points, dtype=np.int16)
 
@@ -210,7 +210,7 @@ def plot_smooth_streamlines_pos(axis, Bx,By,Bz, positions, step, nb_interpolatio
 def main():
     """## Read file and extract values"""
 
-    B,V,T,rho = import_from(filename)
+    B,V,T,rho = import_from("../data/Run1_28800")
 
     """## Variables"""
 
