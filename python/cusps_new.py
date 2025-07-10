@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from gorgon import Me25, import_from, Me25_cusps
+from gorgon import Me25, import_from, Me25_leaky
 
 import sys
 
@@ -21,7 +21,7 @@ alpha_2 = 0.1404
 e = 0
 
 d = 2
-l = 1
+l = 0.2
 s = 0.5
 
 phi = 0
@@ -49,18 +49,13 @@ ax.plot( Z, X, '-.', color=(0.2,0.2,0.2), label="Liu12 cusps model" )
 
 ##### NEW ONE
 
+theta = np.linspace(-np.pi*0.99, np.pi*0.99, 500)
 
-r1_bis = ( Me25_cusps( [r_0, alpha_0, alpha_1, alpha_2, d*1.5, l, s*1.5, d, l, s, e, 2, 2], theta, phi + 0 ) )
-r2_bis = ( Me25_cusps( [r_0, alpha_0, alpha_1, alpha_2, d*1.5, l, s*1.5, d, l, s, e, 2, 2], theta, phi + np.pi ) )
 
-X1_bis = r1_bis * np.cos(theta)
-Z1_bis = r1_bis * np.sin(theta)
+r1_bis = ( Me25_leaky( [r_0, alpha_0, alpha_1, alpha_2, d*1.5, l, s*1.5, d, l, s, e, 0.5, 0.5], theta, phi ) )
 
-X2_bis = r2_bis * np.cos(theta)
-Z2_bis = r2_bis * np.sin(theta)
-
-X_bis = np.concatenate( [X2_bis[::-1], X1_bis] )
-Z_bis = np.concatenate( [-Z2_bis[::-1], Z1_bis] )
+X_bis = r1_bis * np.cos(theta)
+Z_bis = r1_bis * np.sin(theta)
 
 ax.plot( Z_bis, X_bis, '-', color=(0.2,0.2,0.2), label="My cusps model" )
 
@@ -82,4 +77,4 @@ plt.xlabel( "$z$ [$R_E$]" )
 plt.ylabel( "$x$ [$R_E$]" )
 
 
-plt.savefig("cusps_new_l_equals_1aaa.svg")
+plt.savefig("../images/cusps_new_l02_a05.svg")
