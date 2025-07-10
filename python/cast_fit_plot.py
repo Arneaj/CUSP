@@ -306,7 +306,7 @@ def find_current_sheet():
 
     ax.view_init(elev=90., azim=270.)
     
-    plt.savefig("current_sheet_V.svg")
+    plt.savefig("../images/current_sheet_V.svg")
         
     
 if __name__=="__main__":  

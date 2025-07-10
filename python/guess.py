@@ -87,4 +87,4 @@ axes[1].set_ylim(0, J_norm.shape[0]-1)
 
 
 
-plt.savefig("guess.svg")
+plt.savefig("../images/guess.svg")

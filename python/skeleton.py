@@ -62,7 +62,7 @@ axes[1].imshow( np.ones_like(sign_change[:, vec.shape[1]//2, :]),
 axes[1].set_title("$(x,z)$")
 
 
-fig.savefig("skeleton_critical_points.svg")
+fig.savefig("../images/skeleton_critical_points.svg")
 plt.close(fig)
 
 ##### JACOBIAN
@@ -161,7 +161,7 @@ def animate2(i):
     fig.legend()
 
 ani = anim.FuncAnimation(fig, animate2, interval=150, frames=np.linspace(270, 270, 1))
-ani.save(filename=f"skeleton_classification.gif", writer="pillow")
+ani.save(filename=f"../images/skeleton_classification.gif", writer="pillow")
 
 
 plt.close(fig)

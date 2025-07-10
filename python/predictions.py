@@ -93,6 +93,6 @@ axes[1].set_xlim(0, J_norm.shape[2]-1)
 axes[1].set_ylim(0, J_norm.shape[0]-1)
 axes[1].set(ylabel=r"$x \in [-30; 128] R_E$", xlabel=r"$z \in [-58; 58] R_E$")
 
-plt.savefig("predictions.svg")
+plt.savefig("../images/predictions.svg")
 
 

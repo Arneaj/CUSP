@@ -89,7 +89,7 @@ def streamlines_casting():
     for streamline in streamlines:        
         ax.plot( streamline[:,0], streamline[:,1], streamline[:,2], color=(0.1,0.1,0.1,0.2) )
     
-    plt.savefig("streamlines_from_MP.svg")
+    plt.savefig("../images/streamlines_from_MP.svg")
 
 
 if __name__ == "__main__":
