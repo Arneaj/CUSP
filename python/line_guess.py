@@ -22,7 +22,7 @@ earth_pos = [30.75, 58, 58]
 fig, axes = plt.subplots(1, 2)
 
 fig.set_figwidth(10)
-fig.set_figheight(4)
+fig.set_figheight(5.5)
 
 ############### ME25
 
@@ -51,7 +51,7 @@ index = 58
 
 
 J_xy = axes[0].imshow(J_norm[::-1,:,index], cmap="inferno", vmin=0, vmax=saturation, interpolation="none")
-plt.colorbar(J_xy, ax=axes[0])
+plt.colorbar(J_xy, ax=axes[0], shrink=1)
 J_xy = axes[0].plot(Y2, J_norm.shape[0] - X2)
 axes[0].set_title(fr"$||J|| \in ({index},\hat x, \hat y)$")
 axes[0].set(ylabel=r"$x \in [-30; 128] R_E$", xlabel=r"$y \in [-58; 58] R_E$")
@@ -59,13 +59,20 @@ axes[0].set_xlim(0, J_norm.shape[1]-1)
 axes[0].set_ylim(0, J_norm.shape[0]-1)
 
 J_xz = axes[1].imshow(J_norm[::-1,index,:], cmap="inferno", vmin=0, vmax=saturation, interpolation="none")
-plt.colorbar(J_xz, ax=axes[1])
+plt.colorbar(J_xz, ax=axes[1], shrink=1)
 J_xy = axes[1].plot(Z1, J_norm.shape[0] - X1)
 axes[1].set_title(fr"$||J|| \in ({index},\hat x, \hat z)$")
 axes[1].set(ylabel=r"$x \in [-30; 128] R_E$", xlabel=r"$z \in [-58; 58] R_E$")
 axes[1].set_xlim(0, J_norm.shape[2]-1)
 axes[1].set_ylim(0, J_norm.shape[0]-1)
 
+
+name_of_datapoint = filepath.split("/")[-1]
+
+run_nb, timestep = name_of_datapoint.split("_")
+
+
+fig.suptitle(f"{run_nb} at timestep $t =$ {timestep}s")
 
 
 plt.savefig("../images/line_guess.svg")
