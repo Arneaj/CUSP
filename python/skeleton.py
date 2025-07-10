@@ -45,25 +45,6 @@ z_sign_change = z_sign_change * (27 - z_sign_change)
 sign_change = x_sign_change * y_sign_change * z_sign_change
 sign_change = ( sign_change - np.min(sign_change) ) / ( np.max(sign_change) - np.min(sign_change) )
 
-fig, axes = plt.subplots(1, 2)
-fig.set_figwidth(10)
-fig.set_figheight(4)
-
-axes[0].imshow( np.linalg.norm(vec, axis=3)[:,:,vec.shape[2]//2], cmap="inferno", vmin=0, vmax=1e-7, interpolation="none" )
-axes[0].imshow( np.ones_like(sign_change[:, :, vec.shape[2]//2]), 
-            alpha=sign_change[:,:,sign_change.shape[2]//2], 
-            cmap="Paired", interpolation="nearest" )
-axes[0].set_title("$(x,y)$")
-
-axes[1].imshow( np.linalg.norm(vec, axis=3)[:,vec.shape[1]//2,:], cmap="inferno", vmin=0, vmax=1e-7, interpolation="none" )
-axes[1].imshow( np.ones_like(sign_change[:, vec.shape[1]//2, :]), 
-            alpha=sign_change[:,sign_change.shape[1]//2,:], 
-            cmap="Paired", interpolation="nearest" )
-axes[1].set_title("$(x,z)$")
-
-
-fig.savefig("../images/skeleton_critical_points.svg")
-plt.close(fig)
 
 ##### JACOBIAN
 
@@ -138,30 +119,19 @@ ax.set_xlabel("$x$ [$R_E$]")
 ax.set_ylabel("$y$ [$R_E$]")
 ax.set_zlabel("$z$ [$R_E$]")
 
-def animate2(i):
-    ax.clear()
+ax.view_init(elev=0., azim=270)
+
     
-    ax.set_xlim( 0, vec.shape[0]-1 )
-    ax.set_ylim( 0, vec.shape[1]-1 )
-    ax.set_zlim( 0, vec.shape[2]-1 )
+for j in range(4, 8):
+    p_x = critical_points_x[classification == j]
+    p_y = critical_points_y[classification == j]
+    p_z = critical_points_z[classification == j]
     
-    for j in range(4, 8):
-        p_x = critical_points_x[classification == j]
-        p_y = critical_points_y[classification == j]
-        p_z = critical_points_z[classification == j]
+    ax.scatter( p_x, p_y, p_z, color=(1-j/7, j//4, j/7), label=f"{classes[j%4]} {subclasses[j//4]}" )
 
-        ax.view_init(elev=90., azim=i)
-        
-        ax.scatter( p_x, p_y, p_z, color=(1-j/7, j//4, j/7), label=f"{classes[j%4]} {subclasses[j//4]}" )
-
-    ax.set_xlabel("$x$ [$R_E$]")
-    ax.set_ylabel("$y$ [$R_E$]")
-    ax.set_zlabel("$z$ [$R_E$]")
     
-    fig.legend()
+fig.legend()
 
-ani = anim.FuncAnimation(fig, animate2, interval=150, frames=np.linspace(270, 270, 1))
-ani.save(filename=f"../images/skeleton_classification.gif", writer="pillow")
+plt.savefig("../images/skeleton_classification.png")
 
 
-plt.close(fig)

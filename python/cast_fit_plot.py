@@ -262,8 +262,6 @@ def find_current_sheet():
     ax.set_xlim(0, shape[0])
     ax.set_ylim(0, shape[1])
     ax.set_zlim(0, shape[2])
-    
-    ax.figure.subplots_adjust(0, 0, 1, 1)
 
     # dist = np.sqrt(
     #     (new_X_current_sheet - X_current_sheet)**2 + 
@@ -304,7 +302,7 @@ def find_current_sheet():
     #              ax = ax, label=r"$||V_x||$ [$m/s$]", shrink=0.5)
 
 
-    ax.view_init(elev=90., azim=270.)
+    ax.view_init(elev=0., azim=270.)
     
     plt.savefig("../images/current_sheet_V.svg")
         
