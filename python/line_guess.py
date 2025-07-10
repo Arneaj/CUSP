@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from gorgon import Me25, import_from, Me25_cusps, Me25_leaky
+from gorgon import import_from, Me25_leaky, spherical_to_cartesian
 
 import sys
 
@@ -17,7 +17,7 @@ saturation = 3e-9
 
 theta = np.linspace(0, np.pi*0.99, 100)
 
-earth_pos = [29.75, 58, 58]
+earth_pos = [30.75, 58, 58]
 
 fig, axes = plt.subplots(1, 2)
 
@@ -30,35 +30,15 @@ with open(f"{filepath}/params.txt", "r") as f:
     params = np.array( f.readline().split(","), dtype=np.float32 )
 
 
-X, Y, Z = np.meshgrid(
-    np.arange( J_norm.shape[0] ),
-    np.arange( J_norm.shape[1] ),
-    np.arange( J_norm.shape[2] ),
-    indexing='ij'
-)
-
-X = earth_pos[0] - X
-Y -= earth_pos[1]
-Z -= earth_pos[2]
-
-# R = np.sqrt( X*X + Y*Y + Z*Z )
-# Theta = np.arccos( X / np.maximum(1, R) )
-# Phi = np.arccos( Z / np.maximum(1, np.sqrt( Y*Y + Z*Z )) )
-# Phi = Phi * (Y>0) - Phi*(Y<=0)
-
 # TODO: THIS IS SPECIFICALLY FOR THE Me25_leaky FUNCTION
-Z_pos = Z>0; Z_neg = 1-Z_pos
-Y_pos = Y>0; Y_neg = 1-Y_pos
-R = np.sqrt( X*X + Y*Y + Z*Z )
-Theta = np.arccos( X / np.maximum(0.01, R) )
-Theta = Theta*Z_pos - Theta*Z_neg
-Phi = np.arccos( Z / np.maximum(0.01, np.sqrt( Y*Y + Z*Z )) )
-Phi = Phi*Y_pos*Z_pos + (-Phi)*Y_neg*Z_pos + (np.pi-Phi)*Y_neg*Z_neg + (Phi-np.pi)*Y_pos*Z_neg
+Theta = np.linspace(-np.pi*0.99, np.pi*0.99, 200)
+Phi = 0
+R = Me25_leaky( params, Theta, Phi )
+X1, _, Z1 = spherical_to_cartesian( R, Theta, Phi, earth_pos )
 
-
-predictedR = Me25_leaky( params, Theta, Phi )
-
-Mask = R <= predictedR
+Phi = np.pi/2
+R = Me25_leaky( params, Theta, Phi )
+X2, Y2, _ = spherical_to_cartesian( R, Theta, Phi, earth_pos )
 
 
 ### vmax
@@ -72,7 +52,7 @@ index = 58
 
 J_xy = axes[0].imshow(J_norm[::-1,:,index], cmap="inferno", vmin=0, vmax=saturation, interpolation="none")
 plt.colorbar(J_xy, ax=axes[0])
-J_xy = axes[0].imshow(np.ones_like(J_norm[::-1,:,index]), alpha=0.9*Mask[::-1,:,index], cmap="Paired", interpolation="nearest")
+J_xy = axes[0].plot(Y2, J_norm.shape[0] - X2)
 axes[0].set_title(fr"$||J|| \in ({index},\hat x, \hat y)$")
 axes[0].set(ylabel=r"$x \in [-30; 128] R_E$", xlabel=r"$y \in [-58; 58] R_E$")
 axes[0].set_xlim(0, J_norm.shape[1]-1)
@@ -80,7 +60,7 @@ axes[0].set_ylim(0, J_norm.shape[0]-1)
 
 J_xz = axes[1].imshow(J_norm[::-1,index,:], cmap="inferno", vmin=0, vmax=saturation, interpolation="none")
 plt.colorbar(J_xz, ax=axes[1])
-J_xy = axes[1].imshow(np.ones_like(J_norm[::-1,index,:]), alpha=0.9*Mask[::-1,index,:], cmap="Paired", interpolation="nearest")
+J_xy = axes[1].plot(Z1, J_norm.shape[0] - X1)
 axes[1].set_title(fr"$||J|| \in ({index},\hat x, \hat z)$")
 axes[1].set(ylabel=r"$x \in [-30; 128] R_E$", xlabel=r"$z \in [-58; 58] R_E$")
 axes[1].set_xlim(0, J_norm.shape[2]-1)
@@ -88,4 +68,4 @@ axes[1].set_ylim(0, J_norm.shape[0]-1)
 
 
 
-plt.savefig("../images/guess.svg")
+plt.savefig("../images/line_guess.svg")
