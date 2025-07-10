@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from gorgon import Me25, import_from
+from gorgon import Me25, import_from, Me25_leaky
 
 import sys
 
@@ -21,7 +21,7 @@ theta = np.linspace(0, np.pi*0.99, 100)
 fig, axes = plt.subplots( 1, 2 )
 
 
-earth_pos = [29.75, 58, 58]
+earth_pos = [30.75, 58, 58]
 
 ############## LIN10
 
@@ -52,38 +52,46 @@ X += J_norm.shape[0] - earth_pos[0]
 Z += earth_pos[2]
 
 
-axes[0].imshow( J_norm[::-1,58,:], cmap="inferno", vmin=0, vmax=saturation )
+axes[0].imshow( J_norm[::-1,58,:], cmap="inferno", vmin=0, vmax=saturation, interpolation="none" )
 axes[0].plot( Z, X )
-axes[0].set_title( r"Gorgon data VS Lin10 model" )
+axes[0].set_title( r"Gorgon data VS Liu12 model" )
 axes[0].set_xlim(0, J_norm.shape[2]-1)
 axes[0].set_ylim(0, J_norm.shape[0]-1)
 
 ############### ME25
 
+theta = np.linspace(-np.pi*0.99, np.pi*0.99, 200)
+
 with open(f"{filepath}/params.txt", "r") as f:
     params = np.array( f.readline().split(","), dtype=np.float32 )
 
-r1 = ( Me25( params, theta, 0 ) )
-r2 = ( Me25( params, theta, np.pi ) )
+r1 = ( Me25_leaky( params, theta, 0 ) )
+# r2 = ( Me25_leaky( params, theta, np.pi ) )
 
 X1 = r1 * np.cos(theta)
 Z1 = r1 * np.sin(theta)
 
-X2 = r1 * np.cos(theta)
-Z2 = r1 * np.sin(theta)
+# X2 = r1 * np.cos(theta)
+# Z2 = r1 * np.sin(theta)
 
-X = np.concatenate( [X2[::-1], X1] )
-Z = np.concatenate( [-Z2[::-1], Z1] )
+# X = np.concatenate( [X2[::-1], X1] )
+# Z = np.concatenate( [-Z2[::-1], Z1] )
+
+X = X1
+Z = Z1
 
 X += J_norm.shape[0] - earth_pos[0]
 Z += earth_pos[2]
 
 
-axes[1].imshow( J_norm[::-1,58,:], cmap="inferno", vmin=0, vmax=saturation )
+axes[1].imshow( J_norm[::-1,58,:], cmap="inferno", vmin=0, vmax=saturation, interpolation="none" )
 axes[1].plot( Z, X )
 axes[1].set_title( r"Gorgon data VS Me25 model" )
 axes[1].set_xlim(0, J_norm.shape[2]-1)
 axes[1].set_ylim(0, J_norm.shape[0]-1)
 
 
-plt.show()
+fig.suptitle(filepath)
+
+
+plt.savefig("../images/gorgon_vs_liu12.svg")
