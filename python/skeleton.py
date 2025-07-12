@@ -108,7 +108,7 @@ critical_points_y = critical_points[1]
 critical_points_z = critical_points[2]
 
 fig = plt.figure(); ax = fig.add_subplot(projection="3d")
-fig.set_figwidth(6)
+fig.set_figwidth(10)
 fig.set_figheight(6)
 
 ax.set_xlim( 0, vec.shape[0]-1 )
@@ -118,8 +118,6 @@ ax.set_zlim( 0, vec.shape[2]-1 )
 ax.set_xlabel("$x$ [$R_E$]")
 ax.set_ylabel("$y$ [$R_E$]")
 ax.set_zlabel("$z$ [$R_E$]")
-
-ax.view_init(elev=0., azim=270)
 
     
 for j in range(4, 8):
@@ -132,6 +130,11 @@ for j in range(4, 8):
     
 fig.legend()
 
-plt.savefig("../images/skeleton_classification.png")
+ax.view_init(elev=0, azim=0)
+plt.savefig("../images/skeleton_classification_front.png")
 
+ax.view_init(elev=0, azim=270)
+plt.savefig("../images/skeleton_classification_side.png")
 
+ax.view_init(elev=90, azim=270)
+plt.savefig("../images/skeleton_classification_top.png")

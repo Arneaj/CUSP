@@ -185,7 +185,7 @@ def Me25(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -> np
 
 
 
-def sigmoid( x: np.ndarray | float, v: float = 5 ):
+def sigmoid( x: np.ndarray | float, v: float = 30 ):
     return 1 / ( 1 + np.exp( -v*x ) )
 
 
@@ -277,6 +277,48 @@ def interpolate(P, Bi):
 
 
 
+
+def Me25_fix(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -> np.ndarray | float:
+    """
+    Expects theta in [0;pi] and phi in [-pi;pi)
+    
+    - params[0]: r_0
+    - params[1]: alpha_0 in [0, 1]
+    - params[2]: alpha_1
+    - params[3]: alpha_2
+    - params[4]: d_n in [0, +inf]
+    - params[5]: l_n in [0, pi]
+    - params[6]: s_n in [0, +inf]
+    - params[7]: d_s in [0, +inf]
+    - params[8]: l_s in [0, pi]
+    - params[9]: s_s in [0, +inf]
+    - params[10]: e in [-1, 1]
+    - params[11]: a_n in [0, 1]
+    - params[12]: a_s in [0, 1]
+    """
+    
+    near_zero = (np.abs(theta) < 1e-3)
+    
+    theta = theta*(1-near_zero) + 1e-3*near_zero
+
+    cos_phi = np.cos(phi)
+    cos_theta = np.cos(theta)
+    
+    main_part = params[0] * ( 
+        (1+params[10])/(1+params[10]*cos_theta) 
+    ) * (
+        2 / (1+cos_theta)
+    ) ** (
+        params[1] + params[2]*cos_phi + params[3]*cos_phi*cos_phi
+    )
+        
+    north = np.exp( -np.abs( theta**(params[11]) - params[5]*theta**(params[11]-1) ) / params[6] )
+    south = np.exp( -np.abs( theta**(params[12]) - params[8]*theta**(params[12]-1) ) / params[9] )
+
+    return main_part - ( 
+        params[4] * sigmoid(np.pi/2 + phi) * sigmoid(np.pi/2 - phi) * north + 
+        params[7] * (sigmoid(-np.pi/2 + phi) + sigmoid(-np.pi/2 - phi)) * south
+    )*cos_phi*cos_phi
 
 
 

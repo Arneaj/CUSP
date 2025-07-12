@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from gorgon import Me25, import_from, Me25_leaky
+from gorgon import Me25, import_from, Me25_fix, Me25_cusps
 
 import sys
 
@@ -36,14 +36,20 @@ d = 1.846
 l = 1.1574
 s = 0.3771
 
+with open(f"{filepath}/params.txt", "r") as f:
+    params = np.array( f.readline().split(","), dtype=np.float32 )
+
 r1 = ( Me25( [r_0, alpha_0, alpha_1, alpha_2, d, l, s, d, l, s, e], theta, 0 ) )
 r2 = ( Me25( [r_0, alpha_0, alpha_1, alpha_2, d, l, s, d, l, s, e], theta, np.pi ) )
+
+# r1 = Me25_fix( params, theta, 0 )
+# r2 = Me25_fix( params, theta, np.pi )
 
 X1 = r1 * np.cos(theta)
 Z1 = r1 * np.sin(theta)
 
-X2 = r1 * np.cos(theta)
-Z2 = r1 * np.sin(theta)
+X2 = r2 * np.cos(theta)
+Z2 = r2 * np.sin(theta)
 
 X = np.concatenate( [X2[::-1], X1] )
 Z = np.concatenate( [-Z2[::-1], Z1] )
@@ -60,25 +66,19 @@ axes[0].set_ylim(0, J_norm.shape[0]-1)
 
 ############### ME25
 
-theta = np.linspace(-np.pi*0.99, np.pi*0.99, 200)
+theta = np.linspace(0, np.pi*0.99, 200)
 
-with open(f"{filepath}/params.txt", "r") as f:
-    params = np.array( f.readline().split(","), dtype=np.float32 )
-
-r1 = ( Me25_leaky( params, theta, 0 ) )
-# r2 = ( Me25_leaky( params, theta, np.pi ) )
+r1 = Me25_fix( params, theta, 0 )
+r2 = Me25_fix( params, theta, np.pi )
 
 X1 = r1 * np.cos(theta)
 Z1 = r1 * np.sin(theta)
 
-# X2 = r1 * np.cos(theta)
-# Z2 = r1 * np.sin(theta)
+X2 = r2 * np.cos(theta)
+Z2 = r2 * np.sin(theta)
 
-# X = np.concatenate( [X2[::-1], X1] )
-# Z = np.concatenate( [-Z2[::-1], Z1] )
-
-X = X1
-Z = Z1
+X = np.concatenate( [X2[::-1], X1] )
+Z = np.concatenate( [-Z2[::-1], Z1] )
 
 X += J_norm.shape[0] - earth_pos[0]
 Z += earth_pos[2]

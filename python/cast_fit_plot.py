@@ -4,7 +4,7 @@ import matplotlib.animation as anim
 import matplotlib.cm as cm
 import matplotlib as mpl
 
-from gorgon import import_from, Me25, spherical_to_cartesian, get_gradients, interpolate, signal, Me25_leaky
+from gorgon import import_from, Me25, spherical_to_cartesian, get_gradients, interpolate, signal, Me25_fix, Me25_cusps
 from earth_pos_detection import get_earth_pos
 
 
@@ -58,7 +58,7 @@ def sign_approx( X ):
 
 def scatter_points():
     theta, phi = np.meshgrid( np.linspace( 0, np.pi*0.9, 100 ), np.linspace( -np.pi, np.pi, 100 ), indexing='ij' )
-    R = Me25_leaky( params, theta, phi )
+    R = Me25_fix( params, theta, phi )
 
     X,Y,Z = spherical_to_cartesian( R, theta, phi, earth_pos )
     
@@ -105,7 +105,7 @@ def find_separator():
     nb_phi = 100
     
     theta, phi = np.meshgrid( np.linspace( 0, np.pi*0.9, nb_theta ), np.linspace( -np.pi, np.pi, nb_phi ), indexing='ij' )
-    R = Me25_leaky( params, theta, phi )
+    R = Me25_fix( params, theta, phi )
     X,Y,Z = spherical_to_cartesian( R, theta, phi, earth_pos )
     
     B_mag = B[np.array(X, dtype=np.int16), np.array(Y, dtype=np.int16), np.array(Z, dtype=np.int16)]
@@ -175,7 +175,7 @@ def find_current_sheet():
     nb_phi = 100
     
     theta, phi = np.meshgrid( np.linspace( 0, np.pi*0.9, nb_theta ), np.linspace( -np.pi, np.pi, nb_phi ), indexing='ij' )
-    R = Me25_leaky( params, theta, phi )
+    R = Me25_cusps( params, theta, phi )
     X,Y,Z = spherical_to_cartesian( R, theta, phi, earth_pos )
     
     B_mag = B[np.array(X, dtype=np.int16), np.array(Y, dtype=np.int16), np.array(Z, dtype=np.int16)]
@@ -302,7 +302,7 @@ def find_current_sheet():
     #              ax = ax, label=r"$||V_x||$ [$m/s$]", shrink=0.5)
 
 
-    ax.view_init(elev=0., azim=270.)
+    ax.view_init(elev=90., azim=270.)
     
     plt.savefig("../images/current_sheet_V.svg")
         
@@ -354,7 +354,7 @@ def get_animation():
     Phi = np.arccos( Z / np.maximum(1, np.sqrt( Y*Y + Z*Z )) )
     Phi = Phi * (Y>0) - Phi*(Y<=0)
     
-    predictedR = Me25_leaky( params, Theta, Phi )
+    predictedR = Me25_fix( params, Theta, Phi )
     
     Mask = R <= predictedR
     

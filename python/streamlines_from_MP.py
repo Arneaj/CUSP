@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from gorgon import import_from, spherical_to_cartesian, Me25_leaky, delete_last_line
+from gorgon import import_from, spherical_to_cartesian, Me25_fix, delete_last_line
 from earth_pos_detection import get_earth_pos
 from streamlines_3d import find_streamline, smooth_interpolation
 
@@ -45,8 +45,8 @@ def streamlines_casting():
     nb_theta = 60
     nb_phi = 15
      
-    theta, phi = np.meshgrid( np.linspace( -np.pi*0.9, np.pi*0.9, nb_theta ), np.linspace( -np.pi*0.5, np.pi*0.5, nb_phi ), indexing='ij' )
-    R = Me25_leaky( params, theta, phi )
+    theta, phi = np.meshgrid( np.linspace( 0, np.pi*0.9, nb_theta ), np.linspace( -np.pi, np.pi, nb_phi ), indexing='ij' )
+    R = Me25_fix( params, theta, phi )
 
     X,Y,Z = spherical_to_cartesian( R, theta, phi, earth_pos )
     

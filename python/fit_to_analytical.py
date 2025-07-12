@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.optimize import least_squares
 
-from gorgon import import_from, Me25, Me25_cusps, Me25_leaky
+from gorgon import import_from, Me25, Me25_cusps, Me25_fix
 from earth_pos_detection import get_earth_pos
 
 
@@ -75,20 +75,20 @@ X = x_tilde * dx[0] / shape[0] + x_min[0]
 Y = y_tilde * dx[1] / shape[1] + x_min[1]
 Z = z_tilde * dx[2] / shape[2] + x_min[2]
 
-# interest_points_r = np.sqrt( X*X + Y*Y + Z*Z )
-# interest_points_theta = np.arccos( X / np.maximum(1, interest_points_r) )
-# interest_points_phi = np.arccos( Z / np.maximum(1, np.sqrt( Y*Y + Z*Z )) )
-# interest_points_phi = interest_points_phi * (Y>0) - interest_points_phi*(Y<=0)
-
-
-# TODO: THIS IS SPECIFICALLY FOR THE Me25_leaky FUNCTION
-Z_pos = Z>0; Z_neg = 1-Z_pos
-Y_pos = Y>0; Y_neg = 1-Y_pos
 interest_points_r = np.sqrt( X*X + Y*Y + Z*Z )
-interest_points_theta = np.arccos( X / np.maximum(0.01, interest_points_r) )
-interest_points_theta = interest_points_theta*Z_pos - interest_points_theta*Z_neg
-interest_points_phi = np.arccos( Z / np.maximum(0.01, np.sqrt( Y*Y + Z*Z )) )
-interest_points_phi = interest_points_phi*Y_pos*Z_pos + (-interest_points_phi)*Y_neg*Z_pos + (np.pi-interest_points_phi)*Y_neg*Z_neg + (interest_points_phi-np.pi)*Y_pos*Z_neg
+interest_points_theta = np.arccos( X / np.maximum(1, interest_points_r) )
+interest_points_phi = np.arccos( Z / np.maximum(1, np.sqrt( Y*Y + Z*Z )) )
+interest_points_phi = interest_points_phi * (Y>0) - interest_points_phi*(Y<=0)
+
+
+# # TODO: THIS IS SPECIFICALLY FOR THE Me25_fix FUNCTION
+# Z_pos = Z>0; Z_neg = 1-Z_pos
+# Y_pos = Y>0; Y_neg = 1-Y_pos
+# interest_points_r = np.sqrt( X*X + Y*Y + Z*Z )
+# interest_points_theta = np.arccos( X / np.maximum(0.01, interest_points_r) )
+# interest_points_theta = interest_points_theta*Z_pos - interest_points_theta*Z_neg
+# interest_points_phi = np.arccos( Z / np.maximum(0.01, np.sqrt( Y*Y + Z*Z )) )
+# interest_points_phi = interest_points_phi*Y_pos*Z_pos + (-interest_points_phi)*Y_neg*Z_pos + (np.pi-interest_points_phi)*Y_neg*Z_neg + (interest_points_phi-np.pi)*Y_pos*Z_neg
 
 
 
@@ -134,7 +134,7 @@ for i in range(20):
         results.append(least_squares(
             residual_function,
             initial_guess,
-            args=(theta, phi, scaled_radii, Me25_leaky, weights),
+            args=(theta, phi, scaled_radii, Me25_fix, weights),
             method=method,
             ftol=1e-6,      # Stricter tolerance
             xtol=1e-6,
@@ -142,7 +142,7 @@ for i in range(20):
             max_nfev=10000,  # More function evaluations
             #           r_0, alpha_0, alpha_1, alpha_2, d_n,      l_n,  s_n,    d_s,      l_s,   s_s,     e,  a_n,  a_s
             bounds=([     0,       0,       0,       0,   0,     0.01, 0.01,      0,     0.01,  0.01, -0.95, 0.01, 0.01], 
-                    [np.inf,       1,       1,       1,  15,  np.pi/2,    1,     15,  np.pi/2,     1,  0.95, 0.99, 0.99])
+                    [np.inf,       1,       1,       1,  15,  np.pi/2,    2,     15,  np.pi/2,     2,  0.95, 0.99, 0.99])
         ))
         # print(f"Method {method}: cost={results[-1].cost:.6f}, success={results[-1].success}")
         costs.append(results[-1].cost)
