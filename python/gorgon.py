@@ -185,7 +185,7 @@ def Me25(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -> np
 
 
 
-def sigmoid( x: np.ndarray | float, v: float = 30 ):
+def sigmoid( x: np.ndarray | float, v: float = 5 ):
     return 1 / ( 1 + np.exp( -v*x ) )
 
 
