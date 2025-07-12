@@ -21,7 +21,7 @@ alpha_2 = 0.1404
 e = 0
 
 d = 2
-l = 0.2
+l = 1
 s = 0.2
 
 phi = 0
@@ -81,9 +81,9 @@ ax.scatter( [0], [0], marker='x', color=(0.2,0.2,0.2), label="Earth" )
 
 plt.legend()
 
-plt.title( "Liu12 cusps model vs mine\n$\\dfrac{d_N}{d_S} = 1.5$, $\\ell_N = \\ell_S = 0.2$ and $\\dfrac{s_N}{s_S} = 1.5$\n" )
+plt.title( "Liu12 cusps model vs mine\n$\\dfrac{d_N}{d_S} = 1.5$, $\\ell_N = \\ell_S = 1$ and $\\dfrac{s_N}{s_S} = 1.5$\n" )
 plt.xlabel( "$z$ [$R_E$]" )
 plt.ylabel( "$x$ [$R_E$]" )
 
 
-plt.savefig("../images/cusps_new_l02_a05.svg")
+plt.savefig("../images/cusps_new_l1_a05.svg")

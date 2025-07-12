@@ -42,8 +42,6 @@ with open(f"{filepath}/params.txt", "r") as f:
 r1 = ( Me25( [r_0, alpha_0, alpha_1, alpha_2, d, l, s, d, l, s, e], theta, 0 ) )
 r2 = ( Me25( [r_0, alpha_0, alpha_1, alpha_2, d, l, s, d, l, s, e], theta, np.pi ) )
 
-# r1 = Me25_fix( params, theta, 0 )
-# r2 = Me25_fix( params, theta, np.pi )
 
 X1 = r1 * np.cos(theta)
 Z1 = r1 * np.sin(theta)

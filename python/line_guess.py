@@ -47,8 +47,8 @@ X21, Y21, _ = spherical_to_cartesian( R1, Theta, Phi, earth_pos )
 Phi = -np.pi/2
 R1 = Me25_fix( params, Theta, Phi )
 X22, Y22, _ = spherical_to_cartesian( R1, Theta, Phi, earth_pos )
-X1 = np.concatenate( [X22[::-1], X21] )
-Y1 = np.concatenate( [Y22[::-1], Y21] )
+X2 = np.concatenate( [X22[::-1], X21] )
+Y2 = np.concatenate( [Y22[::-1], Y21] )
 
 
 ### vmax
