@@ -9,3 +9,43 @@ Finished fitting the data point at ../data/Run1_21000
 Time taken: 112 seconds total.
 
 Path to data: ../data/Run1_21900
+Lowest cost: 21.532 with parameters: [ 7.92362449e+00  4.00828169e-01 -6.72469782e-04  4.49572230e-02
+  6.66963264e-01  1.34184015e+00  5.34120812e-01  4.23653041e+00
+  6.80561970e-01  1.00001293e-01  4.10340048e-01  1.02023208e-01
+  1.00004497e-01]
+Finished fitting the data point at ../data/Run1_21900
+Time taken: 97 seconds total.
+
+Path to data: ../data/Run12_21000
+Lowest cost: 16.623 with parameters: [ 8.10398618e+00  3.64669854e-01 -7.44153308e-03  1.15955071e-01
+  1.08749138e+00  1.25394178e+00  1.18036231e+00  2.70360030e+00
+  1.12949724e+00  4.58937446e-01  3.45368882e-01  1.00000075e-01
+  1.00000004e-01]
+Finished fitting the data point at ../data/Run12_21000
+Time taken: 98 seconds total.
+
+Path to data: ../data/Run12_21900
+Lowest cost: 10.404 with parameters: [ 7.96531592e+00  5.08955933e-01 -1.79441527e-03 -3.86523906e-03
+  2.30084089e+00  1.18582382e+00  1.97472146e-01  1.50126408e+00
+  1.14840278e+00  2.41434825e-01  2.72617923e-01  7.99980033e-01
+  7.99962443e-01]
+Finished fitting the data point at ../data/Run12_21900
+Time taken: 97 seconds total.
+
+Path to data: ../data/Run12_22500
+Lowest cost: 10.149 with parameters: [ 8.52464400e+00  5.09032998e-01 -2.10728754e-03  7.85286134e-03
+  4.69189847e+00  1.16261265e+00  1.55543222e-01  5.83528625e-01
+  1.24996593e+00  6.88989443e-01  2.20793816e-01  3.39496338e-01
+  3.36516594e-01]
+Finished fitting the data point at ../data/Run12_22500
+Time taken: 95 seconds total.
+
+Path to data: ../data/Run12_23100
+Lowest cost: 8.755 with parameters: [ 8.72542961e+00  5.06924816e-01 -3.41314923e-03  3.10471655e-02
+  3.87562554e+00  1.09970480e+00  3.43839478e-01  3.73853522e+00
+  1.02028974e+00  3.73534206e-01  1.74698005e-01  8.00000000e-01
+  7.99999977e-01]
+Finished fitting the data point at ../data/Run12_23100
+Time taken: 98 seconds total.
+
+Path to data: ../data/Run1_22500
