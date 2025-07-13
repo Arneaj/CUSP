@@ -41,8 +41,10 @@ int main(int argc, char* argv[])
     Point p_max( X[ X.get_shape().x-1 ], Y[ Y.get_shape().x-1 ], Z[ Z.get_shape().x-1 ] );
     Point p_range = p_max - p_min;
 
+    float hyper_sampling = 1.5;
+
     Shape new_shape_real(std::round(p_range.x), std::round(p_range.y), std::round(p_range.z), V.get_shape().i);
-    Shape new_shape_sim(V.get_shape().x*1.2, V.get_shape().y*1.2, V.get_shape().z*1.2, V.get_shape().i);
+    Shape new_shape_sim(V.get_shape().x*hyper_sampling, V.get_shape().y*hyper_sampling, V.get_shape().z*hyper_sampling, V.get_shape().i);
 
     Matrix B_processed_sim = orthonormalise(B, X, Y, Z, &new_shape_sim);
     Matrix J_processed_sim = orthonormalise(J, X, Y, Z, &new_shape_sim);
@@ -62,15 +64,15 @@ int main(int argc, char* argv[])
 
     Point earth_pos = find_earth_pos( B_processed_sim );
 
-    int nb_theta = 100;
-    int nb_phi = 50;
+    int nb_theta = 150;
+    int nb_phi = 75;
 
     std::array<float, 4>* interest_points = get_interest_points(
         J_norm_sim, earth_pos,
         nb_theta, nb_phi,
-        0.2, 0.1,
-        0.6, 0.7, 4,
-        1.15, 1.8, 20
+        0.25, 0.1,
+        0.6, 0.7, 2,
+        1.15, 1.8, 30
     );
 
 

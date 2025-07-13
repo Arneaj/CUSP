@@ -1,0 +1,11 @@
+/rds/general/user/avr24/home/.profile: line 1: .bashrc: No such file or directory
+
+Path to data: ../data/Run1_21000
+Lowest cost: 18.546 with parameters: [ 8.50111627e+00  5.19394760e-01  1.60705406e-03 -1.11363650e-02
+  3.66144899e+00  9.21768762e-01  1.00000001e-01  1.41078879e+00
+  8.33291807e-01  2.20208124e-01  2.51258647e-01  1.00000215e-01
+  3.49602918e-01]
+Finished fitting the data point at ../data/Run1_21000
+Time taken: 112 seconds total.
+
+Path to data: ../data/Run1_21900

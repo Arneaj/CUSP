@@ -19,8 +19,8 @@ while read my_name; do
 	echo "Path to data: ${my_path}"
 
 	cd ./output_cpp
-	# make full_process_test > /dev/null
-	# ./full_process_test $my_path
+	make full_process_test > /dev/null
+	./full_process_test $my_path
 	# make interest_points_test > /dev/null
 	# ./interest_points_test $my_path
 	cd ../python

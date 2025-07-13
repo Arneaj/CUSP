@@ -154,7 +154,8 @@ std::array<float, 4>* get_interest_points(  const Matrix& J_norm, Point earth_po
             float std_dev = get_std_dev( interest_radii_candidates[ itheta*nb_phi + iphi ] );
 
             // float weight = std::exp( -std_dev );  // TODO: change weights
-            float weight = 1.0f / (1.0f + std_dev);
+            // float weight = 1.0f / (1.0f + std_dev);
+            float weight = 5.0f / (5.0f + std_dev*std_dev);
             // if (std::abs(theta) < 0.5*PI) weight *= sin_theta;
 
             interest_points[ itheta*nb_phi + iphi ] = std::array<float, 4>{ theta, phi, interest_radius, weight }; 
