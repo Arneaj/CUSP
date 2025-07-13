@@ -816,3 +816,59 @@ Path to data: ../data/Run9_22500
 File reading done. Time taken: 12.0517s
 Interest point search done. Time taken: 4.8613s
 Interest point and file saving done. Time taken: 33.4004s
+Lowest cost: 4.599 with parameters: [ 1.00499288e+01  5.20087698e-01 -5.66385784e-04  8.36694468e-02
+  3.91409564e+00  1.22557016e+00  3.46007590e-01  3.69224934e+00
+  1.17542018e+00  3.50024980e-01  7.60782860e-02]
+Finished fitting the data point at ../data/Run9_22500
+Time taken: 73 seconds total.
+
+Path to data: ../data/Run9_23100
+File reading done. Time taken: 9.65667s
+Interest point search done. Time taken: 5.86089s
+Interest point and file saving done. Time taken: 36.5031s
+Lowest cost: 3.694 with parameters: [ 1.00989727e+01  4.64665723e-01 -7.05017829e-04  6.05803084e-02
+  4.00000000e+00  1.37645546e+00  7.22879017e-01  3.53786779e+00
+  1.37845180e+00  9.39979947e-01  1.74318115e-01]
+Finished fitting the data point at ../data/Run9_23100
+Time taken: 75 seconds total.
+
+Path to data: ../data/Run9_27000
+File reading done. Time taken: 12.0341s
+Interest point search done. Time taken: 4.55142s
+Interest point and file saving done. Time taken: 35.7149s
+Lowest cost: 12.387 with parameters: [7.82860530e+00 4.05031683e-01 8.74244715e-04 1.06171989e-01
+ 3.47741732e+00 5.73951829e-01 2.27977364e-01 3.42859720e+00
+ 5.71815017e-01 2.28686600e-01 4.20911349e-01]
+Finished fitting the data point at ../data/Run9_27000
+Time taken: 68 seconds total.
+
+Path to data: ../data/Run9_27600
+File reading done. Time taken: 10.4797s
+Interest point search done. Time taken: 4.69151s
+Interest point and file saving done. Time taken: 34.5877s
+Lowest cost: 12.604 with parameters: [7.86381718e+00 4.20564382e-01 1.94198977e-03 1.20111327e-01
+ 3.57635262e+00 5.67598636e-01 2.34273316e-01 3.49979545e+00
+ 5.65964820e-01 2.29414367e-01 3.94001567e-01]
+Finished fitting the data point at ../data/Run9_27600
+Time taken: 66 seconds total.
+
+Path to data: ../data/Run9_28200
+File reading done. Time taken: 10.5147s
+Interest point search done. Time taken: 4.50187s
+Interest point and file saving done. Time taken: 35.0801s
+Lowest cost: 14.250 with parameters: [7.95679868e+00 4.51721795e-01 4.38388672e-03 1.22826485e-01
+ 3.79860033e+00 5.60864210e-01 2.35844899e-01 3.68722278e+00
+ 5.62189731e-01 2.33707396e-01 3.48216077e-01]
+Finished fitting the data point at ../data/Run9_28200
+Time taken: 64 seconds total.
+
+Path to data: ../data/Run9_28800
+File reading done. Time taken: 9.39803s
+Interest point search done. Time taken: 4.07091s
+Interest point and file saving done. Time taken: 28.4141s
+Lowest cost: 16.276 with parameters: [8.10444139e+00 4.68393447e-01 5.92088913e-03 1.29390805e-01
+ 3.99609985e+00 5.56325970e-01 2.48412201e-01 3.78960104e+00
+ 4.93742714e-01 2.61051699e-01 3.10235005e-01]
+Finished fitting the data point at ../data/Run9_28800
+Time taken: 69 seconds total.
+

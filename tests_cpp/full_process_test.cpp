@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
     Matrix J_processed_real = orthonormalise(J, X, Y, Z, &new_shape_real);
     Matrix V_processed_real = orthonormalise(V, X, Y, Z, &new_shape_real);
     t1 = Time::now();
-//    std::cout << "Preprocessing files done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+    std::cout << "Preprocessing files done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
 
