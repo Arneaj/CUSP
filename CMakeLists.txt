@@ -21,20 +21,21 @@ set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response
 
 # Add all your source files here
 set(SOURCES
-    src_cpp/read_pvtr.cpp
     src_cpp/points.cpp
-    src_cpp/matrix.cpp        # Replace with your actual class file
-    # Add more .cpp files as needed
+    src_cpp/matrix.cpp
+    src_cpp/read_pvtr.cpp
+    src_cpp/read_pvtr_tests.cpp
 )
 
 # If you have headers in a separate directory, add them too
 set(HEADERS
     headers_cpp/points.h
-    headers_cpp/matrix.h          # Replace with your actual header file
-    # Add more .h files as needed
+    headers_cpp/matrix.h     
+    headers_cpp/read_pvtr.h
 )
 
-add_executable(read_pvtr src_cpp/read_pvtr.cpp
+add_executable(read_pvtr tests_cpp/read_pvtr_test.cpp
+    src_cpp/read_pvtr.cpp
     src_cpp/points.cpp
     src_cpp/matrix.cpp)
 
