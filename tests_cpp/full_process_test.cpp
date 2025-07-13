@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
     Matrix Y = read_file(filepath + std::string("/Y.txt"));
     Matrix Z = read_file(filepath + std::string("/Z.txt"));
     auto t1 = Time::now();
-//    std::cout << "File reading done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+    std::cout << "File reading done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
 
@@ -64,20 +64,20 @@ int main(int argc, char* argv[])
 
     Point earth_pos = find_earth_pos( B_processed_sim );
 
-    int nb_theta = 150;
-    int nb_phi = 75;
+    int nb_theta = 75;
+    int nb_phi = 50;
 
     std::array<float, 4>* interest_points = get_interest_points(
         J_norm_sim, earth_pos,
         nb_theta, nb_phi,
-        0.25, 0.1,
+        0.1, 0.1,
         0.6, 0.7, 2,
-        1.15, 1.8, 30
+        1.15, 1.8, 20
     );
 
 
     t1 = Time::now();
-//    std::cout << "Interest point search done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+   std::cout << "Interest point search done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
 
@@ -92,7 +92,7 @@ int main(int argc, char* argv[])
 
     save_interest_points( filepath + std::string("/interest_points_cpp.txt"), interest_points, nb_theta, nb_phi );
     t1 = Time::now();
-//    std::cout << "Interest point and file saving done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+    std::cout << "Interest point and file saving done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
     V.del(); J.del(); B.del();

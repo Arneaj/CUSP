@@ -125,24 +125,24 @@ costs = []
 
 for i in range(20):
     for method in methods_to_try:
-        initial_guess = np.random.uniform(0, 1, 13)
+        initial_guess = np.random.uniform(0, 1, 11)
         #initial_guess *= np.array( [20, 0, 0, 0, 0, 2*np.pi, 10,  10, 2*np.pi,  10 ] )
-                    #              r_0, alpha_0, alpha_1, alpha_2, d_n,        l_n,  s_n, d_s,      l_s,     s_s     e  a_n  a_s
-        initial_guess *= np.array( [15,       1,     1.5,     1.5,   3,    np.pi/3,  1.5,   3,   np.pi/3,    1.5,  1.4,  0.6,  0.6 ] )
-        initial_guess += np.array( [ 5,       0,   -0.75,   -0.75,   1,        0.5, 0.25,   1,       0.5,   0.25, -0.7, 0.15, 0.15 ] )
+                    #                r_0, alpha_0, alpha_1, alpha_2, d_n, l_n, s_n, d_s, l_s, s_s,     e,  a_n,  a_s
+        initial_guess *= np.array( [   3,     0.1,       1,       1,   2, 0.1, 0.5,   2, 0.1, 0.5,   0.3])#,  0.1,  0.1 ] )
+        initial_guess += np.array( [ 7.5,     0.5,    -0.5,    -0.5,   1, 0.5, 0.3,   1, 0.5, 0.3, -0.15])#, 0.45, 0.45 ] )
 
         results.append(least_squares(
             residual_function,
             initial_guess,
-            args=(theta, phi, scaled_radii, Me25_fix, weights),
+            args=(theta, phi, scaled_radii, Me25, weights),
             method=method,
             ftol=1e-6,      # Stricter tolerance
             xtol=1e-6,
             gtol=1e-6,
             max_nfev=10000,  # More function evaluations
-            #           r_0, alpha_0, alpha_1, alpha_2, d_n, l_n,  s_n, d_s, l_s, s_s,     e,  a_n,  a_s
-            bounds=([     0,       0,      -1,      -1,   0, 0.1,  0.1,   0, 0.1, 0.1, -0.95,  0.1,  0.1], 
-                    [    25,       1,       1,       1,   5,   2,    2,   5,   2,   2,  0.95,  0.8,  0.8])
+            #           r_0, alpha_0, alpha_1, alpha_2, d_n, l_n,  s_n, d_s, l_s, s_s,    e,  a_n,  a_s
+            bounds=([     5,     0.3,      -1,      -1,   0, 0.1,  0.1,   0, 0.1, 0.1, -0.5],#,  0.4,  0.4], 
+                    [    15,     0.8,       1,       1,   4,   2,    1,   4,   2,   1,  0.5])#,  0.6,  0.6])
         ))
         # print(f"Method {method}: cost={results[-1].cost:.6f}, success={results[-1].success}")
         costs.append(results[-1].cost)

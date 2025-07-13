@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from gorgon import import_from, Me25_fix, spherical_to_cartesian
+from gorgon import import_from, Me25_fix, spherical_to_cartesian, Me25
 
 import sys
 
@@ -32,20 +32,20 @@ with open(f"{filepath}/params.txt", "r") as f:
 
 Theta = np.linspace(0, np.pi*0.99, 200)
 Phi = 0
-R1 = Me25_fix( params, Theta, Phi )
+R1 = Me25( params, Theta, Phi )
 X11, _, Z11 = spherical_to_cartesian( R1, Theta, Phi, earth_pos )
 Phi = np.pi
-R1 = Me25_fix( params, Theta, Phi )
+R1 = Me25( params, Theta, Phi )
 X12, _, Z12 = spherical_to_cartesian( R1, Theta, Phi, earth_pos )
 X1 = np.concatenate( [X12[::-1], X11] )
 Z1 = np.concatenate( [Z12[::-1], Z11] )
 
 Theta = np.linspace(0, np.pi*0.99, 200)
 Phi = np.pi/2
-R1 = Me25_fix( params, Theta, Phi )
+R1 = Me25( params, Theta, Phi )
 X21, Y21, _ = spherical_to_cartesian( R1, Theta, Phi, earth_pos )
 Phi = -np.pi/2
-R1 = Me25_fix( params, Theta, Phi )
+R1 = Me25( params, Theta, Phi )
 X22, Y22, _ = spherical_to_cartesian( R1, Theta, Phi, earth_pos )
 X2 = np.concatenate( [X22[::-1], X21] )
 Y2 = np.concatenate( [Y22[::-1], Y21] )
