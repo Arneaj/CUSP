@@ -40,7 +40,7 @@ timesteps=(
 
 for run_nb in "${runs[@]}"; do
 	for t in "${timesteps[@]}"; do
-    		echo Run"$run_nb"_"$t"
+    	echo Run"$run_nb"_"$t"
 		mkdir data/Run"$run_nb"_"$t" > /dev/null 2>&1
 		python import_data.py Run"$run_nb" "$t"
 		echo

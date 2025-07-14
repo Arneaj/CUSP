@@ -41,8 +41,8 @@ Matrix read_pvtr(std::string filename)
     // Update dimensions array with actual number of components
     dimensions[3] = numComponents;
     
-    std::cout << "\nExtracting array: " << firstArray->GetName() << std::endl;
-    std::cout << "Total size: " << totalSize << std::endl;
+    // std::cout << "\nExtracting array: " << firstArray->GetName() << std::endl;
+    // std::cout << "Total size: " << totalSize << std::endl;
     
     // Allocate memory for the extracted data
     float* extractedData(new float[totalSize]);
