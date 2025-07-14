@@ -73,13 +73,13 @@ Matrix read_pvtr(std::string filename)
         }
     }
 
-    Shape sh( dimensions[0], dimensions[1], dimensions[2], dimensions[3] );
+    Shape sh( dimensions[0]-1, dimensions[1]-1, dimensions[2]-1, dimensions[3] );
 
     return Matrix( sh, extractedData );
 }
 
 
-std::array<Matrix, 3> get_coord(std::string filename)
+void get_coord(Matrix& X, Matrix& Y, Matrix& Z, std::string filename)
 {
     vtkSmartPointer<vtkXMLPRectilinearGridReader> reader = 
         vtkSmartPointer<vtkXMLPRectilinearGridReader>::New();
@@ -136,14 +136,12 @@ std::array<Matrix, 3> get_coord(std::string filename)
     float* yArray = extractCoordinates(yCoords);
     float* zArray = extractCoordinates(zCoords);
 
-    Shape sh_x( dims[0], 1, 1, 1 );
-    Shape sh_y( dims[1], 1, 1, 1 );
-    Shape sh_z( dims[2], 1, 1, 1 );
+    Shape sh_x( dims[0]-1, 1, 1, 1 );
+    Shape sh_y( dims[1]-1, 1, 1, 1 );
+    Shape sh_z( dims[2]-1, 1, 1, 1 );
 
-    return std::array<Matrix, 3>({
-        Matrix(sh_x, xArray),
-        Matrix(sh_y, yArray),
-        Matrix(sh_z, zArray)
-    });
+    X = Matrix(sh_x, xArray);
+    Y = Matrix(sh_y, yArray);
+    Z = Matrix(sh_z, zArray);
 }
 

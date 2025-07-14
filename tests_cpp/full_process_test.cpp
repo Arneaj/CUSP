@@ -1,5 +1,6 @@
 #include "../headers_cpp/raycast.h"
 #include "../headers_cpp/read_file.h"
+#include "../headers_cpp/read_pvtr.h"
 #include "../headers_cpp/magnetopause.h"
 #include "../headers_cpp/preprocessing.h"
 
@@ -20,17 +21,28 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-    std::string filepath(argv[1]);
+    if (argc < 3)
+    {
+        std::cout << "No timestep given!\n";
+        exit(1);
+    }
 
+    std::string filepath(argv[1]);
+    std::string timestep(argv[2]);
+
+
+    // "/rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run1/MS/x00_Bvec_c-21000.pvtr"
 
     auto t0 = Time::now();
-    Matrix J = read_file(filepath + std::string("/J.txt"));
-    Matrix B = read_file(filepath + std::string("/B.txt"));
-    Matrix V = read_file(filepath + std::string("/V.txt"));
+    Matrix J = read_pvtr(filepath + std::string("/MS/x00_jvec-") + timestep + std::string(".pvtr"));
+    Matrix B = read_pvtr(filepath + std::string("/MS/x00_Bvec_c-") + timestep + std::string(".pvtr"));
+    Matrix V = read_pvtr(filepath + std::string("/MS/x00_vvec-") + timestep + std::string(".pvtr"));
 
-    Matrix X = read_file(filepath + std::string("/X.txt"));
-    Matrix Y = read_file(filepath + std::string("/Y.txt"));
-    Matrix Z = read_file(filepath + std::string("/Z.txt"));
+    Matrix X;
+    Matrix Y;
+    Matrix Z;
+
+    get_coord(X, Y, Z, filepath + std::string("/MS/x00_Bvec_c-") + timestep + std::string(".pvtr"));
     auto t1 = Time::now();
     std::cout << "File reading done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 

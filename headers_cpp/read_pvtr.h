@@ -24,7 +24,7 @@
 
 Matrix read_pvtr(std::string filename);
 
-std::array<Matrix, 3> get_coord(std::string filename);
+void get_coord(Matrix& X, Matrix& Y, Matrix& Z, std::string filename);
 
 
 

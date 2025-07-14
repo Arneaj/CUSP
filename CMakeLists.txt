@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 
-project(read_pvtr)
+project(full_process)
 
 find_package(VTK COMPONENTS 
   CommonCore
@@ -13,7 +13,7 @@ find_package(VTK COMPONENTS
 )
 
 if (NOT VTK_FOUND)
-  message(FATAL_ERROR "read_pvtr: Unable to find the VTK build folder.")
+  message(FATAL_ERROR "full_process: Unable to find the VTK build folder.")
 endif()
 
 # Prevent a "command line is too long" failure in Windows.
@@ -24,36 +24,50 @@ set(SOURCES
     src_cpp/points.cpp
     src_cpp/matrix.cpp
     src_cpp/read_pvtr.cpp
-    src_cpp/read_pvtr_tests.cpp
+    src_cpp/read_file.cpp
+    src_cpp/raycast.cpp
+    src_cpp/streamlines.cpp
+    src_cpp/magnetopause.cpp
+    src_cpp/preprocessing.cpp
 )
 
 # If you have headers in a separate directory, add them too
 set(HEADERS
     headers_cpp/points.h
-    headers_cpp/matrix.h     
+    headers_cpp/matrix.h   
+    headers_cpp/raycast.h
+    headers_cpp/streamlines.h
+    headers_cpp/magnetopause.h
+    headers_cpp/preprocessing.h  
     headers_cpp/read_pvtr.h
+    headers_cpp/read_file.h
 )
 
-add_executable(read_pvtr tests_cpp/read_pvtr_test.cpp
-    src_cpp/read_pvtr.cpp
+add_executable(full_process tests_cpp/full_process_test.cpp
     src_cpp/points.cpp
-    src_cpp/matrix.cpp)
+    src_cpp/matrix.cpp
+    src_cpp/read_pvtr.cpp
+    src_cpp/read_file.cpp
+    src_cpp/raycast.cpp
+    src_cpp/streamlines.cpp
+    src_cpp/magnetopause.cpp
+    src_cpp/preprocessing.cpp)
 
 # Link VTK libraries
-target_link_libraries(read_pvtr PRIVATE ${VTK_LIBRARIES})
+target_link_libraries(full_process PRIVATE ${VTK_LIBRARIES})
 
 # Include VTK headers - this is crucial!
-target_include_directories(read_pvtr PRIVATE ${VTK_INCLUDE_DIRS})
+target_include_directories(full_process PRIVATE ${VTK_INCLUDE_DIRS})
 
 # Set VTK definitions
-target_compile_definitions(read_pvtr PRIVATE ${VTK_DEFINITIONS})
+target_compile_definitions(full_process PRIVATE ${VTK_DEFINITIONS})
 
 if (UNIX)
-  target_link_options(read_pvtr PUBLIC -pthread)
+  target_link_options(full_process PUBLIC -pthread)
 endif()
 
 # vtk_module_autoinit is needed
 vtk_module_autoinit(
-  TARGETS read_pvtr
+  TARGETS full_process
   MODULES ${VTK_LIBRARIES}
 )
