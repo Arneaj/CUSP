@@ -125,3 +125,14 @@ Run2_21900
 File reading done. Time taken: 0.888144s
 Preprocessing files done. Time taken: 11.4453s
 Interest point search done. Time taken: 14.7177s
+Interest point and file saving done. Time taken: 19.8948s
+Lowest cost: 12.227 with parameters: [ 9.50263076e+00  4.44529180e-01 -5.49482895e-03  8.16686152e-02
+  1.73302740e+00  8.85399849e-01  1.64336096e-01  1.54769463e+00
+  9.64815514e-01  1.39079296e-01  2.13181336e-01]
+Finished fitting the data point at Run2, timestep 21900
+Time taken: 53 seconds total.
+
+Run2_21000
+File reading done. Time taken: 0.914369s
+Preprocessing files done. Time taken: 9.04681s
+Interest point search done. Time taken: 13.6565s
