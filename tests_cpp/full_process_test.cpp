@@ -27,8 +27,15 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
+    if (argc < 4)
+    {
+        std::cout << "No save path given!\n";
+        exit(1);
+    }
+
     std::string filepath(argv[1]);
     std::string timestep(argv[2]);
+    std::string savepath(argv[3]);
 
 
     // "/rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run1/MS/x00_Bvec_c-21000.pvtr"
@@ -46,6 +53,9 @@ int main(int argc, char* argv[])
     auto t1 = Time::now();
     std::cout << "File reading done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
+    save_file( savepath + std::string("/X.txt"), X );
+    save_file( savepath + std::string("/Y.txt"), Y );
+    save_file( savepath + std::string("/Z.txt"), Z );
 
 
     t0 = Time::now();
@@ -89,20 +99,19 @@ int main(int argc, char* argv[])
 
 
     t1 = Time::now();
-   std::cout << "Interest point search done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
-
+    std::cout << "Interest point search done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
     t0 = Time::now();
-    save_file( filepath + std::string("/J_norm_processed_sim.txt"), J_norm_sim );
-    save_file( filepath + std::string("/B_processed_sim.txt"), B_processed_sim );
-    save_file( filepath + std::string("/V_processed_sim.txt"), V_processed_sim );
+    save_file( savepath + std::string("/J_norm_processed_sim.txt"), J_norm_sim );
+    save_file( savepath + std::string("/B_processed_sim.txt"), B_processed_sim );
+    save_file( savepath + std::string("/V_processed_sim.txt"), V_processed_sim );
 
-    save_file( filepath + std::string("/J_norm_processed_real.txt"), J_norm_real );
-    save_file( filepath + std::string("/B_processed_real.txt"), B_processed_real );
-    save_file( filepath + std::string("/V_processed_real.txt"), V_processed_real );
+    save_file( savepath + std::string("/J_norm_processed_real.txt"), J_norm_real );
+    save_file( savepath + std::string("/B_processed_real.txt"), B_processed_real );
+    save_file( savepath + std::string("/V_processed_real.txt"), V_processed_real );
 
-    save_interest_points( filepath + std::string("/interest_points_cpp.txt"), interest_points, nb_theta, nb_phi );
+    save_interest_points( savepath + std::string("/interest_points_cpp.txt"), interest_points, nb_theta, nb_phi );
     t1 = Time::now();
     std::cout << "Interest point and file saving done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 

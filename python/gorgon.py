@@ -31,17 +31,11 @@ def delete_last_line():
 
 
 def import_from(file: str, step: int = None):
-
-    if step is None:
-        step = 1
-
     with open(file) as f:
         lines = f.readlines()
         shape = np.array( lines[0].split(","), dtype=np.int16 )
 
-        vec = np.array( lines[1].split(",")[:-1], dtype=np.float32 ).reshape( shape )[::step,::step,::step]
-
-#    print("finished reading file \"", file, "\"")
+        vec = np.array( lines[1].split(",")[:-1], dtype=np.float32 ).reshape( shape )
 
     return vec
 

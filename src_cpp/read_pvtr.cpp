@@ -23,7 +23,6 @@ Matrix read_pvtr(std::string filename)
 
     // Get grid dimensions
     int* dims = grid->GetDimensions();
-    std::array<int, 4> dimensions = {dims[0], dims[1], dims[2], 1}; // 4th dimension for components
     
     // Get information about cell data arrays
     vtkCellData* cellData = grid->GetCellData();
@@ -37,9 +36,6 @@ Matrix read_pvtr(std::string filename)
     vtkIdType numTuples = firstArray->GetNumberOfTuples();
     int numComponents = firstArray->GetNumberOfComponents();
     vtkIdType totalSize = numTuples * numComponents;
-    
-    // Update dimensions array with actual number of components
-    dimensions[3] = numComponents;
     
     // std::cout << "\nExtracting array: " << firstArray->GetName() << std::endl;
     // std::cout << "Total size: " << totalSize << std::endl;
@@ -73,7 +69,32 @@ Matrix read_pvtr(std::string filename)
         }
     }
 
-    Shape sh( dimensions[0]-1, dimensions[1]-1, dimensions[2]-1, dimensions[3] );
+    int cellDimX = dims[0]-1; 
+    int cellDimY = dims[1]-1; 
+    int cellDimZ = dims[2]-1; 
+
+    auto reorderData = [&](float* data) -> float* {
+        vtkIdType totalSize = cellDimX * cellDimY * cellDimZ * numComponents;
+        float* reordered(new float[totalSize]);
+        
+        for (int ix = 0; ix < cellDimX; ix++) {
+            for (int iy = 0; iy < cellDimY; iy++) {
+                for (int iz = 0; iz < cellDimZ; iz++) {
+                    for (int i = 0; i < numComponents; i++) {
+                        int srcIndex = ((ix*cellDimY + iy)*cellDimZ + iz)*numComponents + i;
+                        int dstIndex = ((i*cellDimZ + iz)*cellDimY + iy)*cellDimX + ix;
+                        
+                        reordered[dstIndex] = data[srcIndex];
+                    }
+                }
+            }
+        }
+        
+        delete[] data;
+        return reordered;
+    };
+
+    Shape sh( cellDimX, cellDimY, cellDimZ, numComponents );
 
     return Matrix( sh, extractedData );
 }

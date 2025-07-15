@@ -54,7 +54,7 @@ for run_nb in "${runs[@]}"; do
 		mkdir data/Run"$run_nb"_"$t" > /dev/null 2>&1
 
 		cd build
-		./full_process /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run"$run_nb" "$t"
+		./full_process /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run"$run_nb" "$t" /rds/general/user/avr24/home/Thesis/data/Run"$run_nb"_"$t"
 
 		cd ../python
 		python fit_to_analytical.py ../data/Run"$run_nb"_"$t"
