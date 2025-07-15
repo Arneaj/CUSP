@@ -73,30 +73,28 @@ Matrix read_pvtr(std::string filename)
     int cellDimY = dims[1]-1; 
     int cellDimZ = dims[2]-1; 
 
-    auto reorderData = [&](float* data) -> float* {
-        vtkIdType totalSize = cellDimX * cellDimY * cellDimZ * numComponents;
-        float* reordered(new float[totalSize]);
-        
-        for (int ix = 0; ix < cellDimX; ix++) {
-            for (int iy = 0; iy < cellDimY; iy++) {
-                for (int iz = 0; iz < cellDimZ; iz++) {
-                    for (int i = 0; i < numComponents; i++) {
-                        int srcIndex = ((ix*cellDimY + iy)*cellDimZ + iz)*numComponents + i;
-                        int dstIndex = ((i*cellDimZ + iz)*cellDimY + iy)*cellDimX + ix;
-                        
-                        reordered[dstIndex] = data[srcIndex];
-                    }
+    float* finalData(new float[totalSize]);
+    
+    for (int ix = 0; ix < cellDimX; ix++) {
+        for (int iy = 0; iy < cellDimY; iy++) {
+            for (int iz = 0; iz < cellDimZ; iz++) {
+                for (int i = 0; i < numComponents; i++) {
+                    int srcIndex = ((iz*cellDimY + iy)*cellDimX + ix)*numComponents + i;
+                    int dstIndex = ((i*cellDimZ + iz)*cellDimY + iy)*cellDimX + ix;
+                    
+                    finalData[dstIndex] = extractedData[srcIndex];
                 }
             }
         }
-        
-        delete[] data;
-        return reordered;
-    };
+    }
+    
+    delete[] extractedData;
+
+    std::cout << "hello4" << std::endl;
 
     Shape sh( cellDimX, cellDimY, cellDimZ, numComponents );
 
-    return Matrix( sh, reorderData(extractedData) );
+    return Matrix( sh, finalData );
 }
 
 

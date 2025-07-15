@@ -25,6 +25,7 @@ float& Matrix::operator()(int ix, int iy, int iz, int i)
     if (i<0 || i>=shape.i) { throw exception_OOB("i out of range"); }
 
     return mat[ ix + iy*shape.x + iz*shape.x*shape.y + (i+i_offset)*shape.x*shape.y*shape.z ];
+    // return mat[ ix*shape.y*shape.z*shape.i + iy*shape.z*shape.i + iz*shape.i + (i+i_offset) ];
 }
 
 const float& Matrix::operator()(int ix, int iy, int iz, int i) const
@@ -35,6 +36,7 @@ const float& Matrix::operator()(int ix, int iy, int iz, int i) const
     if (i<0 || i>=shape.i) { throw exception_OOB("i out of range"); }
 
     return mat[ ix + iy*shape.x + iz*shape.x*shape.y + (i+i_offset)*shape.x*shape.y*shape.z ];
+    // return mat[ ix*shape.y*shape.z*shape.i + iy*shape.z*shape.i + iz*shape.i + (i+i_offset) ];
 }
 
 
