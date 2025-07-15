@@ -96,7 +96,7 @@ Matrix read_pvtr(std::string filename)
 
     Shape sh( cellDimX, cellDimY, cellDimZ, numComponents );
 
-    return Matrix( sh, extractedData );
+    return Matrix( sh, reorderData(extractedData) );
 }
 
 
