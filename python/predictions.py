@@ -27,7 +27,7 @@ filepath = sys.argv[1]
 J_norm = import_from(f"{filepath}/J_norm_processed_real.txt")
 
 # earth_pos = get_earth_pos( B_norm )
-earth_pos = [29.75, 58, 58]
+earth_pos = [30.75, 58, 58]
 
 interest_points_theta = []
 interest_points_phi = []

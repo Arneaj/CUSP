@@ -90,8 +90,6 @@ Matrix read_pvtr(std::string filename)
     
     delete[] extractedData;
 
-    std::cout << "hello4" << std::endl;
-
     Shape sh( cellDimX, cellDimY, cellDimZ, numComponents );
 
     return Matrix( sh, finalData );
@@ -147,8 +145,14 @@ void get_coord(Matrix& X, Matrix& Y, Matrix& Z, std::string filename)
                 coords[i] = static_cast<float>(coordArray->GetTuple1(i));
             }
         }
+
+        float* cell_coords(new float[numValues-1]);
+
+        for (int i=0; i<numValues-1; i++) cell_coords[i] = (coords[i]+coords[i+1])*0.5;
+
+        delete[] coords;
         
-        return coords;
+        return cell_coords;
     };
     
     float* xArray = extractCoordinates(xCoords);

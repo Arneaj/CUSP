@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
     Point p_max( X[ X.get_shape().x-1 ], Y[ Y.get_shape().x-1 ], Z[ Z.get_shape().x-1 ] );
     Point p_range = p_max - p_min;
 
-    float hyper_sampling = 1.5;
+    float hyper_sampling = 1.2;
 
     Shape new_shape_real(std::round(p_range.x), std::round(p_range.y), std::round(p_range.z), V.get_shape().i);
     Shape new_shape_sim(V.get_shape().x*hyper_sampling, V.get_shape().y*hyper_sampling, V.get_shape().z*hyper_sampling, V.get_shape().i);

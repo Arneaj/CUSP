@@ -1,0 +1,127 @@
+/rds/general/user/avr24/home/.profile: line 1: .bashrc: No such file or directory
+
+Run1_28800
+File reading done. Time taken: 0.81566s
+Preprocessing files done. Time taken: 9.82287s
+Interest point search done. Time taken: 13.3108s
+Interest point and file saving done. Time taken: 20.671s
+Lowest cost: 10.647 with parameters: [9.07773152e+00 4.85022102e-01 9.73594953e-04 7.15686825e-02
+ 3.45526191e+00 6.06356596e-01 1.66898943e-01 3.43641525e+00
+ 5.98646128e-01 1.70828159e-01 2.71774834e-01]
+Finished fitting the data point at Run1, timestep 28800
+Time taken: 69 seconds total.
+
+Run1_27000
+File reading done. Time taken: 0.811624s
+Preprocessing files done. Time taken: 13.2048s
+Interest point search done. Time taken: 12.8933s
+Interest point and file saving done. Time taken: 21.8475s
+Lowest cost: 10.573 with parameters: [ 8.80513438e+00  4.33273687e-01 -9.04378215e-04  5.63254609e-02
+  3.14948227e+00  6.00284090e-01  1.48276860e-01  3.24841611e+00
+  6.00272070e-01  1.48865732e-01  3.75803810e-01]
+Finished fitting the data point at Run1, timestep 27000
+Time taken: 56 seconds total.
+
+Run1_23100
+File reading done. Time taken: 0.960013s
+Preprocessing files done. Time taken: 13.1194s
+Interest point search done. Time taken: 13.7202s
+Interest point and file saving done. Time taken: 20.2069s
+Lowest cost: 10.878 with parameters: [ 1.06639362e+01  5.23522218e-01 -5.70984751e-03  6.93521985e-02
+  3.32272997e+00  9.47183369e-01  2.33434572e-01  2.95733797e+00
+  9.73899992e-01  2.62642705e-01  5.30679605e-02]
+Finished fitting the data point at Run1, timestep 23100
+Time taken: 54 seconds total.
+
+Run1_22500
+File reading done. Time taken: 0.880011s
+Preprocessing files done. Time taken: 18.7278s
+Interest point search done. Time taken: 12.4634s
+Interest point and file saving done. Time taken: 24.0817s
+Lowest cost: 11.265 with parameters: [ 1.05869914e+01  5.00966387e-01 -6.38430167e-03  8.13527270e-02
+  3.16467050e+00  9.65873652e-01  1.88511466e-01  2.96027371e+00
+  1.02636660e+00  1.88397652e-01  7.63781570e-02]
+Finished fitting the data point at Run1, timestep 22500
+Time taken: 63 seconds total.
+
+Run1_21900
+File reading done. Time taken: 1.19497s
+Preprocessing files done. Time taken: 12.1583s
+Interest point search done. Time taken: 12.5005s
+Interest point and file saving done. Time taken: 20.3871s
+Lowest cost: 12.227 with parameters: [ 9.50276711e+00  4.44540942e-01 -5.49477214e-03  8.16697212e-02
+  1.73212384e+00  8.85517191e-01  1.64406844e-01  1.55202990e+00
+  9.64759581e-01  1.38899902e-01  2.13156961e-01]
+Finished fitting the data point at Run1, timestep 21900
+Time taken: 52 seconds total.
+
+Run1_21000
+File reading done. Time taken: 0.755775s
+Preprocessing files done. Time taken: 13.614s
+Interest point search done. Time taken: 12.7585s
+Interest point and file saving done. Time taken: 19.8838s
+Lowest cost: 13.099 with parameters: [ 9.25341152e+00  4.31450234e-01 -5.48169914e-03  7.96087883e-02
+  1.36345221e+00  8.86492821e-01  1.38830457e-01  1.06056037e+00
+  9.06016119e-01  1.45846871e-01  2.49415935e-01]
+Finished fitting the data point at Run1, timestep 21000
+Time taken: 54 seconds total.
+
+Run1_20100
+File reading done. Time taken: 0.848433s
+Preprocessing files done. Time taken: 13.5255s
+Interest point search done. Time taken: 12.5127s
+Interest point and file saving done. Time taken: 17.6885s
+Lowest cost: 13.515 with parameters: [ 8.78236300e+00  4.02895871e-01 -4.63398085e-03  8.05505100e-02
+  2.23473637e+00  1.60957061e-01  1.00000800e-01  2.73190856e+00
+  1.34858557e-01  1.00000001e-01  3.19000329e-01]
+Finished fitting the data point at Run1, timestep 20100
+Time taken: 54 seconds total.
+
+Run2_28800
+File reading done. Time taken: 0.823338s
+Preprocessing files done. Time taken: 9.93705s
+Interest point search done. Time taken: 12.377s
+Interest point and file saving done. Time taken: 21.863s
+Lowest cost: 15.054 with parameters: [9.37998375e+00 4.59784916e-01 4.27477514e-03 1.01921628e-01
+ 3.99998460e+00 4.09377315e-01 2.13190116e-01 3.95375623e+00
+ 4.10277522e-01 2.14334019e-01 2.59421924e-01]
+Finished fitting the data point at Run2, timestep 28800
+Time taken: 53 seconds total.
+
+Run2_27000
+File reading done. Time taken: 0.933341s
+Preprocessing files done. Time taken: 11.4247s
+Interest point search done. Time taken: 13.8665s
+Interest point and file saving done. Time taken: 21.06s
+Lowest cost: 13.308 with parameters: [8.96224732e+00 4.34716801e-01 2.95847320e-03 1.09749970e-01
+ 3.70111803e+00 4.39557185e-01 1.87804430e-01 3.26984780e+00
+ 4.28393386e-01 1.95097839e-01 3.22174161e-01]
+Finished fitting the data point at Run2, timestep 27000
+Time taken: 54 seconds total.
+
+Run2_23100
+File reading done. Time taken: 0.930454s
+Preprocessing files done. Time taken: 10.281s
+Interest point search done. Time taken: 14.1557s
+Interest point and file saving done. Time taken: 20.2982s
+Lowest cost: 7.958 with parameters: [ 1.07912360e+01  5.19788633e-01 -7.73412307e-03  4.33701729e-02
+  2.87734019e+00  9.82504677e-01  4.01432219e-01  2.18396435e+00
+  1.06189149e+00  8.92456696e-01  7.79585330e-02]
+Finished fitting the data point at Run2, timestep 23100
+Time taken: 54 seconds total.
+
+Run2_22500
+File reading done. Time taken: 0.865138s
+Preprocessing files done. Time taken: 10.2363s
+Interest point search done. Time taken: 15.8426s
+Interest point and file saving done. Time taken: 23.0135s
+Lowest cost: 10.218 with parameters: [ 1.10036095e+01  5.14826661e-01 -6.60012234e-03  8.13498111e-02
+  3.43860019e+00  1.02523576e+00  2.01156735e-01  3.26595675e+00
+  1.04183018e+00  2.24784447e-01  3.60006860e-02]
+Finished fitting the data point at Run2, timestep 22500
+Time taken: 56 seconds total.
+
+Run2_21900
+File reading done. Time taken: 0.888144s
+Preprocessing files done. Time taken: 11.4453s
+Interest point search done. Time taken: 14.7177s

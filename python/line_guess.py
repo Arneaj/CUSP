@@ -17,7 +17,7 @@ saturation = 3e-9
 
 theta = np.linspace(0, np.pi*0.99, 100)
 
-earth_pos = [29.75, 58, 58]
+earth_pos = [30.75, 58, 58]
 
 fig, axes = plt.subplots(1, 2)
 
