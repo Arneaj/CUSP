@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 
 project(full_process)
 
+set(CMAKE_PREFIX_PATH "~/local" ${CMAKE_PREFIX_PATH})
+find_package(Ceres REQUIRED)
+
 find_package(VTK COMPONENTS 
   CommonCore
   CommonDataModel
@@ -53,14 +56,15 @@ add_executable(full_process tests_cpp/full_process_test.cpp
     src_cpp/magnetopause.cpp
     src_cpp/preprocessing.cpp)
 
+
 # Link VTK libraries
-target_link_libraries(full_process PRIVATE ${VTK_LIBRARIES})
+target_link_libraries(full_process PRIVATE ${VTK_LIBRARIES} ${CERES_LIBRARIES})
 
 # Include VTK headers - this is crucial!
-target_include_directories(full_process PRIVATE ${VTK_INCLUDE_DIRS})
+target_include_directories(full_process PRIVATE ${VTK_INCLUDE_DIRS} ${CERES_INCLUDE_DIRS})
 
 # Set VTK definitions
-target_compile_definitions(full_process PRIVATE ${VTK_DEFINITIONS})
+target_compile_definitions(full_process PRIVATE ${VTK_DEFINITIONS} ${CERES_DEFINITIONS})
 
 if (UNIX)
   target_link_options(full_process PUBLIC -pthread)

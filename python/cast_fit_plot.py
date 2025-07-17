@@ -174,8 +174,8 @@ def find_current_sheet():
     nb_theta = 200
     nb_phi = 100
     
-    theta, phi = np.meshgrid( np.linspace( 0, np.pi*0.9, nb_theta ), np.linspace( -np.pi, np.pi, nb_phi ), indexing='ij' )
-    R = Me25_cusps( params, theta, phi )
+    theta, phi = np.meshgrid( np.linspace( 0, np.pi*0.8, nb_theta ), np.linspace( -np.pi, np.pi, nb_phi ), indexing='ij' )
+    R = Me25( params, theta, phi )
     X,Y,Z = spherical_to_cartesian( R, theta, phi, earth_pos )
     
     B_mag = B[np.array(X, dtype=np.int16), np.array(Y, dtype=np.int16), np.array(Z, dtype=np.int16)]
