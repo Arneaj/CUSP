@@ -13,27 +13,27 @@ int main(int argc, char* argv[])
 
     std::string filepath(argv[1]);
 
-    std::vector<float> theta;
-    std::vector<float> phi;
-    std::vector<float> radius;
-    std::vector<float> weight;
+    std::vector<double> theta;
+    std::vector<double> phi;
+    std::vector<double> radius;
+    std::vector<double> weight;
 
     std::ifstream fs;
     fs.open(filepath);
     char* s = new char[64];
 
-    while (!fs.eof)
+    while ( !fs.eof() )
     {
-        fs.getline( s, 64, ',' );   theta = std::stof(s);
-        fs.getline( s, 64, ',' );   phi = std::stof(s);
-        fs.getline( s, 64, ',' );   radius = std::stof(s);
-        fs.getline( s, 64 );        weight = std::stof(s);
+        fs.getline( s, 64, ',' );   theta.push_back( std::stod(s) );
+        fs.getline( s, 64, ',' );   phi.push_back( std::stod(s) );
+        fs.getline( s, 64, ',' );   radius.push_back( std::stod(s) );
+        fs.getline( s, 64 );        weight.push_back( std::stod(s) );
     }
 
     fs.close();
     delete[] s;
 
-    float* parameters = new float[11];
+    double* parameters = new double[11];
     parameters[0] = 9;      // r_0
     parameters[1] = 0.5;    // alpha_0
     parameters[2] = 0;      // alpha_1
@@ -74,6 +74,8 @@ int main(int argc, char* argv[])
     for (int i=0; i<11; i++) std::cout << "param[" << i << "] = " << parameters[i] << '\n';
     std::cout << std::endl;
 
+
+    delete[] parameters;
 
     return 0;
 }

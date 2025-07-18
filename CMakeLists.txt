@@ -45,6 +45,7 @@ set(HEADERS
     headers_cpp/preprocessing.h  
     headers_cpp/read_pvtr.h
     headers_cpp/read_file.h
+    headers_cpp/fit_to_analytical.h
 )
 
 add_executable(full_process tests_cpp/full_process_test.cpp
@@ -76,3 +77,38 @@ vtk_module_autoinit(
   TARGETS full_process
   MODULES ${VTK_LIBRARIES}
 )
+
+
+
+
+add_executable(fit_to_analytical tests_cpp/fit_to_analytical_test.cpp
+    src_cpp/points.cpp
+    src_cpp/matrix.cpp
+    src_cpp/read_pvtr.cpp
+    src_cpp/read_file.cpp
+    src_cpp/raycast.cpp
+    src_cpp/streamlines.cpp
+    src_cpp/magnetopause.cpp
+    src_cpp/preprocessing.cpp
+    src_cpp/fit_to_analytical.cpp)
+
+
+# Link VTK libraries
+target_link_libraries(fit_to_analytical PRIVATE ${VTK_LIBRARIES} ${CERES_LIBRARIES})
+
+# Include VTK headers - this is crucial!
+target_include_directories(fit_to_analytical PRIVATE ${VTK_INCLUDE_DIRS} ${CERES_INCLUDE_DIRS})
+
+# Set VTK definitions
+target_compile_definitions(fit_to_analytical PRIVATE ${VTK_DEFINITIONS} ${CERES_DEFINITIONS})
+
+if (UNIX)
+  target_link_options(fit_to_analytical PUBLIC -pthread)
+endif()
+
+# vtk_module_autoinit is needed
+vtk_module_autoinit(
+  TARGETS fit_to_analytical
+  MODULES ${VTK_LIBRARIES}
+)
+
