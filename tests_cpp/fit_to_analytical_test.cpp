@@ -22,12 +22,19 @@ int main(int argc, char* argv[])
     fs.open(filepath);
     char* s = new char[64];
 
-    while ( !fs.eof() )
+    while ( !fs.fail() )
     {
-        fs.getline( s, 64, ',' );   theta.push_back( std::stod(s) );
-        fs.getline( s, 64, ',' );   phi.push_back( std::stod(s) );
-        fs.getline( s, 64, ',' );   radius.push_back( std::stod(s) );
-        fs.getline( s, 64 );        weight.push_back( std::stod(s) );
+        try
+        {
+            fs.getline( s, 64, ',' );   theta.push_back( std::stod(s) );
+            fs.getline( s, 64, ',' );   phi.push_back( std::stod(s) );
+            fs.getline( s, 64, ',' );   radius.push_back( std::stod(s) );
+            fs.getline( s, 64 );        weight.push_back( std::stod(s) );
+        }
+        catch(const std::exception& e)
+        {
+            break;
+        }
     }
 
     fs.close();
@@ -58,6 +65,14 @@ int main(int argc, char* argv[])
             new SphericalResidual(theta[i], phi[i], radius[i], weight[i])
         );
         problem.AddResidualBlock( cost_function, nullptr, parameters );
+    }
+
+    std::vector<double> lower_bounds = {5.0, 0.3, -1.0, -1.0, 0.0, 0.1, 0.1, 0.0, 0.1, 0.1, -0.5};
+    std::vector<double> upper_bounds = {15.0, 0.8, 1.0, 1.0, 4.0, 2, 1.0, 4.0, 2, 1.0, 0.5};
+
+    for (int i = 0; i < 11; i++) {
+        problem.SetParameterLowerBound(parameters, i, lower_bounds[i]);
+        problem.SetParameterUpperBound(parameters, i, upper_bounds[i]);
     }
 
     ceres::Solver::Options options;
