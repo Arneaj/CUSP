@@ -86,8 +86,8 @@ int main(int argc, char* argv[])
 
     Point earth_pos = find_earth_pos( B_processed_sim );
 
-    int nb_theta = 75;
-    int nb_phi = 50;
+    int nb_theta = 40;
+    int nb_phi = 90;
 
     std::array<float, 4>* interest_points = get_interest_points(
         J_norm_sim, earth_pos,

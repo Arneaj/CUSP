@@ -171,7 +171,9 @@ def Me25(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -> np
     return params[0] * (
         (1 + params[10]) / (1 + params[10]*cos_theta)
     ) * (
-        2 / (1+cos_theta) )**( params[1] + params[2]*cos_phi + params[3]*cos_phi*cos_phi
+        2 / (1+cos_theta) 
+    )**( 
+        params[1] + params[2]*cos_phi + params[3]*cos_phi*cos_phi
     ) - (
         params[4] * np.exp( -np.abs(theta - params[5]) / params[6] ) * (np.sign(cos_phi) + 1)/2 +
         params[7] * np.exp( -np.abs(theta - params[8]) / params[9] ) * (np.sign(-cos_phi) + 1)/2

@@ -32,7 +32,6 @@ set(SOURCES
     src_cpp/streamlines.cpp
     src_cpp/magnetopause.cpp
     src_cpp/preprocessing.cpp
-    src_cpp/fit_to_analytical.cpp
 )
 
 # If you have headers in a separate directory, add them too

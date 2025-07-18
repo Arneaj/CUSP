@@ -6,7 +6,7 @@ const float PI = 3.1415926535;
 
 float get_r(float r_0, float alpha_0, float one_plus_cos_theta)
 {
-    return r_0 * std::pow( 2/one_plus_cos_theta, alpha_0 );
+    return r_0 * std::pow( 2.0/one_plus_cos_theta, alpha_0 );
 }
 
 
@@ -16,7 +16,7 @@ void interest_points_helper(    float r_0, float alpha_0,
                                 int nb_theta, int nb_phi, 
                                 float dr, float dtheta, float dphi )
 {
-    float theta = -PI;
+    float theta = 0;
 
     for (int itheta=0; itheta<nb_theta; itheta++)
     {
@@ -33,7 +33,7 @@ void interest_points_helper(    float r_0, float alpha_0,
 	    // float final_r = get_r(12, 1, 1 + cos_theta);
         float final_r = get_r(20, 1, 1 + cos_theta);
 
-        float phi = 0;
+        float phi = -PI;
 
         for (int iphi=0; iphi<nb_phi; iphi++)
         {
@@ -119,8 +119,8 @@ std::array<float, 4>* get_interest_points(  const Matrix& J_norm, Point earth_po
     float dr_0_mult = (r_0_mult_max - r_0_mult_min) / nb_r_0;
     float dalpha_0 = (alpha_0_max - alpha_0_min) / nb_alpha_0;
 
-    float dtheta = 2*PI / nb_theta;
-    float dphi = PI / nb_phi;
+    float dtheta = PI / nb_theta;
+    float dphi = 2.0*PI / nb_phi;
 
     for (float r_0_mult=r_0_mult_min; r_0_mult<=r_0_mult_max; r_0_mult+=dr_0_mult) for (float alpha_0=alpha_0_min; alpha_0<=alpha_0_max; alpha_0+=dalpha_0)
         interest_points_helper( r_0_mult * r_inner, alpha_0,
@@ -174,13 +174,6 @@ void save_interest_points( std::string filename, const std::array<float, 4>* int
 {
     std::ofstream fs;
     fs.open(filename);
-
-    // for (const Point& p: interest_points)
-    // {
-    //     fs  << p.x << ','
-    //         << p.y << ','
-    //         << p.z << '\n';
-    // }
 
     for (int itheta=0; itheta<nb_theta; itheta++) for (int iphi=0; iphi<nb_phi; iphi++)
     {
