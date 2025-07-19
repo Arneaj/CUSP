@@ -1,6 +1,10 @@
 #include "../headers_cpp/fit_to_analytical.h"
 
 #include <fstream>
+#include <chrono>
+
+typedef std::chrono::high_resolution_clock Time;
+typedef std::chrono::duration<float> fsec;
 
 
 int main(int argc, char* argv[])
@@ -10,6 +14,8 @@ int main(int argc, char* argv[])
         std::cout << "No interest points path given!\n";
         exit(1);
     }
+
+    auto t0 = Time::now();
 
     std::string filepath(argv[1]);
 
@@ -52,7 +58,12 @@ int main(int argc, char* argv[])
         interest_points[i][3] = weight[i];
     }
 
+    auto t1 = Time::now();
+    std::cout << "Interest point reading done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+
     // TODO: in reality, I need to transform these interest points to the real coordinate system rather than sim, but this will be done in full_process
+
+    t0 = Time::now();
 
     double initial_params[11];
     initial_params[0] = 9;      // r_0
@@ -81,6 +92,9 @@ int main(int argc, char* argv[])
         lowerbound, upperbound, radii, 
         nb_runs
     );
+
+    t1 = Time::now();
+    std::cout << "Fitting with " << 11 << " initial parameters done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
     return 0;
