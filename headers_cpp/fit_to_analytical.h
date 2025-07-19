@@ -148,8 +148,9 @@ OptiResult fit_MP(
             problem.SetParameterUpperBound(params, i, upperbound[i]);
 
         ceres::Solver::Options options;
-        options.max_num_iterations = max_nb_iterations_per_run;
+        options.max_num_iterations = max_nb_iterations_per_run / 4;  // TODO: see if this is ok
         options.minimizer_progress_to_stdout = print_progress;
+        options.function_tolerance = 1e-4;
 
         options.trust_region_strategy_type = trust_region;
         options.linear_solver_type = linear_solver;
@@ -159,18 +160,25 @@ OptiResult fit_MP(
 
         if (print_progress) std::cout << summary.BriefReport() << "\n";
 
+        if (summary.final_cost < final_result.cost)
+        {
+            options.max_num_iterations = max_nb_iterations_per_run;
+            options.function_tolerance = 1e-8;
+            ceres::Solve(options, &problem, &summary);
+
+            if (summary.final_cost < final_result.cost)
+            {
+                for (int i=0; i<nb_params; i++) final_result.params[i] = params[i];
+                final_result.cost = summary.final_cost;
+            }
+        }
+
         if (print_results)
         {
             std::cout << "\nCurrent parameters with cost " << summary.final_cost << " :\n{ ";
             std::cout << params[0];
             for (int i=1; i<nb_params; i++) std::cout << ", " << params[i];
             std::cout << " }" << std::endl;
-        }
-
-        if (summary.final_cost < final_result.cost)
-        {
-            for (int i=0; i<nb_params; i++) final_result.params[i] = params[i];
-            final_result.cost = summary.final_cost;
         }
     }
 
