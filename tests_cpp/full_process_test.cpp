@@ -3,6 +3,7 @@
 #include "../headers_cpp/read_pvtr.h"
 #include "../headers_cpp/magnetopause.h"
 #include "../headers_cpp/preprocessing.h"
+#include "../headers_cpp/fit_to_analytical.h"
 
 #include <iostream>
 
@@ -97,16 +98,45 @@ int main(int argc, char* argv[])
         1.15, 1.8, 20
     );
 
-
     t1 = Time::now();
     std::cout << "Interest point search done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
     t0 = Time::now();
-    save_file( savepath + std::string("/J_norm_processed_sim.txt"), J_norm_sim );
-    save_file( savepath + std::string("/B_processed_sim.txt"), B_processed_sim );
-    save_file( savepath + std::string("/V_processed_sim.txt"), V_processed_sim );
 
+    double initial_params[11];
+    initial_params[0] = 9;      // r_0
+    initial_params[1] = 0.5;    // alpha_0
+    initial_params[2] = 0;      // alpha_1
+    initial_params[3] = 0;      // alpha_2
+    initial_params[4] = 2;      // d_n
+    initial_params[5] = 0.55;   // l_n
+    initial_params[6] = 0.55;   // s_n
+    initial_params[7] = 2;      // d_s
+    initial_params[8] = 0.55;   // l_s
+    initial_params[9] = 0.55;   // s_s
+    initial_params[10] = 0;     // e
+
+    double lowerbound[11] = {  5.0,    0.3,    -1.0,   -1.0,   0.0,    0.1,    0.1,    0.0,    0.1,    0.1,    -0.5};
+    double upperbound[11] = {  15.0,   0.8,    1.0,    1.0,    4.0,    2.0,    1.0,    4.0,    2.0,    1.0,    0.5};
+    double radii[11] =      {  3.0,    0.1,    0.5,    0.5,    1.0,    0.05,   0.25,   1.0,    0.05,   0.25,   0.15};
+
+
+    int nb_runs = 10;
+    int nb_interest_points = nb_theta * nb_phi;
+
+    OptiResult result = fit_MP<SphericalResidual, 11>( 
+        interest_points, nb_interest_points, 
+        initial_params, 
+        lowerbound, upperbound, radii, 
+        nb_runs
+    );
+
+    t1 = Time::now();
+    std::cout << "Fitting done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+
+
+    t0 = Time::now();
     save_file( savepath + std::string("/J_norm_processed_real.txt"), J_norm_real );
     save_file( savepath + std::string("/B_processed_real.txt"), B_processed_real );
     save_file( savepath + std::string("/V_processed_real.txt"), V_processed_real );
