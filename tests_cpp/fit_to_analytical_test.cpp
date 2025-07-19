@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
 
     int nb_interest_points = theta.size();
 
-    std::array<float, 4>* interest_points(new std::array<float, 4>[nb_interest_points]);
+    std::array<float, 4> interest_points[nb_interest_points];
 
     for (int i=0; i<nb_interest_points; i++)
     {
@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
         interest_points[i][3] = weight[i];
     }
 
-    double* initial_params = new double[11];
+    double initial_params[11];
     initial_params[0] = 9;      // r_0
     initial_params[1] = 0.5;    // alpha_0
     initial_params[2] = 0;      // alpha_1
@@ -65,24 +65,21 @@ int main(int argc, char* argv[])
     initial_params[9] = 0.55;   // s_s
     initial_params[10] = 0;     // e
 
-    double* lowerbound = {  5.0,    0.3,    -1.0,   -1.0,   0.0,    0.1,    0.1,    0.0,    0.1,    0.1,    -0.5};
-    double* upperbound = {  15.0,   0.8,    1.0,    1.0,    4.0,    2.0,    1.0,    4.0,    2.0,    1.0,    0.5};
-    double* radii =      {  3.0,    0.1,    0.5,    0.5,    1.0,    0.05,   0.25,   1.0,    0.05,   0.25,   0.15};
+    double lowerbound[11] = {  5.0,    0.3,    -1.0,   -1.0,   0.0,    0.1,    0.1,    0.0,    0.1,    0.1,    -0.5};
+    double upperbound[11] = {  15.0,   0.8,    1.0,    1.0,    4.0,    2.0,    1.0,    4.0,    2.0,    1.0,    0.5};
+    double radii[11] =      {  3.0,    0.1,    0.5,    0.5,    1.0,    0.05,   0.25,   1.0,    0.05,   0.25,   0.15};
 
 
     int nb_runs = 10;
 
 
-    OptiResult result = fit_MP( &Rolland25, 
+    OptiResult result = fit_MP<SphericalResidual, 11>( 
         interest_points, nb_interest_points, 
         initial_params, 
         lowerbound, upperbound, radii, 
         nb_runs
-    )
+    );
 
-
-    delete[] interest_points;
-    delete[] initial_params;
 
     return 0;
 }

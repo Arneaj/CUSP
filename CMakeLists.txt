@@ -56,7 +56,8 @@ add_executable(full_process tests_cpp/full_process_test.cpp
     src_cpp/raycast.cpp
     src_cpp/streamlines.cpp
     src_cpp/magnetopause.cpp
-    src_cpp/preprocessing.cpp)
+    src_cpp/preprocessing.cpp
+    src_cpp/fit_to_analytical.cpp)
 
 
 # Link VTK libraries

@@ -71,27 +71,6 @@ public:
 };
 
 
-template <typename T>
-class MPResidual
-{
-private:
-    const double m_theta, m_phi, m_weight, m_observed_radius;
-    T (*m_func)(const T* const, T, T);
-
-public:
-    MPResidual(T (*func)(const T* const, T, T), double theta, double phi, double observed_radius, double weight) 
-        : m_func(func), m_theta(theta), m_phi(phi), m_observed_radius(observed_radius), m_weight(weight) {;}
-
-
-    bool operator()(const T* const params, T* residual) const 
-    {
-        T predicted_radius = m_func(params, T(m_theta), T(m_phi));
-        residual[0] = (m_observed_radius - predicted_radius)*m_weight;
-        return true;
-    }
-};
-
-
 
 struct OptiResult
 {
@@ -105,9 +84,8 @@ struct OptiResult
 
 
 /// @brief 
-/// @tparam T 
+/// @tparam Residual 
 /// @tparam nb_params 
-/// @param func 
 /// @param interest_points containing in order (theta, phi, radius, weight)
 /// @param nb_interest_points 
 /// @param params 
@@ -121,19 +99,91 @@ struct OptiResult
 /// @param print_progress 
 /// @param print_results 
 /// @return 
-template <typename T, int nb_params>
+template <typename Residual, int nb_params>
 OptiResult fit_MP( 
-    T (*func)(const T* const, T, T),
     std::array<float, 4>* interest_points,
     int nb_interest_points,
-    double* initial_params, 
+    const double* initial_params, 
     double* lowerbound=nullptr, double* upperbound=nullptr,
     double* radii_of_variation=nullptr, int nb_runs=1,
     int max_nb_iterations_per_run=50,
     ceres::TrustRegionStrategyType trust_region=ceres::LEVENBERG_MARQUARDT,
     ceres::LinearSolverType linear_solver=ceres::DENSE_QR,
     bool print_progress=false, bool print_results=true
-);
+)
+{
+    if (print_results)
+    {
+        std::cout << "\nInitial parameters:\n{ ";
+        std::cout << initial_params[0];
+        for (int i=1; i<nb_params; i++) std::cout << ", " << initial_params[i];
+        std::cout << " }" << std::endl;
+    }
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> dist(-1.0, 1.0);
+
+    OptiResult final_result(nb_params);
+
+    for (int run=0; run<nb_runs; run++)
+    {
+        double params[nb_params];
+        for (int i=0; i<nb_params; i++) params[i] = initial_params[i] + dist(gen) * radii_of_variation[i];
+
+        ceres::Problem problem;
+
+        for (int i=0; i<nb_interest_points; i++) 
+        {
+            ceres::CostFunction* cost_function = new ceres::AutoDiffCostFunction<Residual, 1, nb_params>(
+                new Residual(interest_points[i][0], interest_points[i][1], interest_points[i][2], interest_points[i][3])
+            );
+            problem.AddResidualBlock( cost_function, nullptr, params );
+        }
+
+        if (lowerbound) for (int i=0; i<nb_params; i++)
+            problem.SetParameterLowerBound(params, i, lowerbound[i]);
+
+        if (upperbound) for (int i=0; i<nb_params; i++)
+            problem.SetParameterUpperBound(params, i, upperbound[i]);
+
+        ceres::Solver::Options options;
+        options.max_num_iterations = max_nb_iterations_per_run;
+        options.minimizer_progress_to_stdout = print_progress;
+
+        options.trust_region_strategy_type = trust_region;
+        options.linear_solver_type = linear_solver;
+
+        ceres::Solver::Summary summary;
+        ceres::Solve(options, &problem, &summary);
+
+        if (print_progress) std::cout << summary.BriefReport() << "\n";
+
+        if (print_results)
+        {
+            std::cout << "\nCurrent parameters with cost " << summary.final_cost << " :\n{ ";
+            std::cout << params[0];
+            for (int i=1; i<nb_params; i++) std::cout << ", " << params[i];
+            std::cout << " }" << std::endl;
+        }
+
+        if (summary.final_cost < final_result.cost)
+        {
+            for (int i=0; i<nb_params; i++) final_result.params[i] = params[i];
+            final_result.cost = summary.final_cost;
+        }
+    }
+
+    if (print_results)
+    {
+        std::cout << "\nFinal parameters with cost " << final_result.cost << " :\n{ ";
+        std::cout << final_result.params[0];
+        for (int i=1; i<nb_params; i++) std::cout << ", " << final_result.params[i];
+        std::cout << " }" << std::endl;
+    }
+
+    return final_result;
+}
 
 
 
