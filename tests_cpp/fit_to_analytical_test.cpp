@@ -52,6 +52,8 @@ int main(int argc, char* argv[])
         interest_points[i][3] = weight[i];
     }
 
+    // TODO: in reality, I need to transform these interest points to the real coordinate system rather than sim, but this will be done in full_process
+
     double initial_params[11];
     initial_params[0] = 9;      // r_0
     initial_params[1] = 0.5;    // alpha_0
