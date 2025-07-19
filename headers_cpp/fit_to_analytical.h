@@ -2,6 +2,7 @@
 #define FIT_TO_ANALYTICAL_H
 
 #include <array>
+#include <random>
 
 #include "matrix.h"
 #include "points.h"
@@ -68,6 +69,71 @@ public:
         return true;
     }
 };
+
+
+template <typename T>
+class MPResidual
+{
+private:
+    const double m_theta, m_phi, m_weight, m_observed_radius;
+    T (*m_func)(const T* const, T, T);
+
+public:
+    MPResidual(T (*func)(const T* const, T, T), double theta, double phi, double observed_radius, double weight) 
+        : m_func(func), m_theta(theta), m_phi(phi), m_observed_radius(observed_radius), m_weight(weight) {;}
+
+
+    bool operator()(const T* const params, T* residual) const 
+    {
+        T predicted_radius = m_func(params, T(m_theta), T(m_phi));
+        residual[0] = (m_observed_radius - predicted_radius)*m_weight;
+        return true;
+    }
+};
+
+
+
+struct OptiResult
+{
+    std::vector<double> params;
+    double cost;
+
+    OptiResult(): cost(MAXFLOAT) {;}
+    OptiResult(int nb_params): params(nb_params), cost(MAXFLOAT) {;}
+};
+
+
+
+/// @brief 
+/// @tparam T 
+/// @tparam nb_params 
+/// @param func 
+/// @param interest_points containing in order (theta, phi, radius, weight)
+/// @param nb_interest_points 
+/// @param params 
+/// @param lowerbound lowerbound of each parameter
+/// @param upperbound upperbound of each parameter
+/// @param radii_of_variation how much each parameter should vary in positive and negative directions
+/// @param nb_runs number of different initial conditions tried
+/// @param max_nb_iterations_per_run 
+/// @param trust_region
+/// @param linear_solver 
+/// @param print_progress 
+/// @param print_results 
+/// @return 
+template <typename T, int nb_params>
+OptiResult fit_MP( 
+    T (*func)(const T* const, T, T),
+    std::array<float, 4>* interest_points,
+    int nb_interest_points,
+    double* initial_params, 
+    double* lowerbound=nullptr, double* upperbound=nullptr,
+    double* radii_of_variation=nullptr, int nb_runs=1,
+    int max_nb_iterations_per_run=50,
+    ceres::TrustRegionStrategyType trust_region=ceres::LEVENBERG_MARQUARDT,
+    ceres::LinearSolverType linear_solver=ceres::DENSE_QR,
+    bool print_progress=false, bool print_results=true
+);
 
 
 
