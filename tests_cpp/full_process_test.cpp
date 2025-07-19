@@ -76,15 +76,16 @@ int main(int argc, char* argv[])
     Matrix B_processed_real = orthonormalise(B, X, Y, Z, &new_shape_real);
     Matrix J_processed_real = orthonormalise(J, X, Y, Z, &new_shape_real);
     Matrix V_processed_real = orthonormalise(V, X, Y, Z, &new_shape_real);
+
+    Matrix J_norm_sim = J_processed_sim.norm();
+    Matrix J_norm_real = J_processed_real.norm();
+    
     t1 = Time::now();
     std::cout << "Preprocessing files done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
 
     t0 = Time::now();
-    Matrix J_norm_sim = J_processed_sim.norm();
-    Matrix J_norm_real = J_processed_real.norm();
-
     Point earth_pos = find_earth_pos( B_processed_sim );
 
     int nb_theta = 40;
