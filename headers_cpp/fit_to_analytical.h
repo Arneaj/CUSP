@@ -8,6 +8,7 @@
 #include "streamlines.h"
 
 
+
 #include <Eigen/Dense>
 #include <ceres/ceres.h>
 
@@ -20,8 +21,8 @@ template <typename T>
 T is_pos( T v ) { return T( v>=T(0) ); }
 
 
-template <typename T>
-T abs_approx( T v ) { return v*(v>=T(0)) - v*(v<T(0)); }
+// template <typename T>
+// T abs_approx( T v ) { return v*(v>=T(0)) - v*(v<T(0)); }
 
 
 /// @brief analytical approximation of the Magnetopause topology
@@ -56,8 +57,8 @@ private:
     const double m_theta, m_phi, m_weight, m_observed_radius;
 
 public:
-    SphericalResidual(double theta, double phi, double weight, double observed_radius) 
-        : m_theta(theta), m_phi(phi), m_weight(weight), m_observed_radius(observed_radius) {;}
+    SphericalResidual(double theta, double phi, double observed_radius, double weight) 
+        : m_theta(theta), m_phi(phi), m_observed_radius(observed_radius), m_weight(weight) {;}
 
     template <typename T>
     bool operator()(const T* const params, T* residual) const 

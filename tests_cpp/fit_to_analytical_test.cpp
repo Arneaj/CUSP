@@ -76,9 +76,22 @@ int main(int argc, char* argv[])
     }
 
     ceres::Solver::Options options;
-    options.max_num_iterations = 100;
-    options.linear_solver_type = ceres::DENSE_QR;
+    options.max_num_iterations = 50;
+    // options.linear_solver_type = ceres::DENSE_QR;
     options.minimizer_progress_to_stdout = true;
+
+    // Try different solver strategies
+    options.trust_region_strategy_type = ceres::LEVENBERG_MARQUARDT;
+    options.linear_solver_type = ceres::DENSE_QR;
+    
+    // // More aggressive convergence criteria
+    // options.function_tolerance = 1e-12;
+    // options.gradient_tolerance = 1e-12;
+    // options.parameter_tolerance = 1e-12;
+    
+    // Allow more iterations for line search
+    options.max_line_search_step_contraction = 1e-3;
+    options.min_line_search_step_size = 1e-9;
 
     ceres::Solver::Summary summary;
     ceres::Solve(options, &problem, &summary);

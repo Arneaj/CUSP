@@ -13,16 +13,27 @@ fig.set_figwidth(8)
 fig.set_figheight(6)
 
 
-r_0 = 10.4882
+# r_0 = 10.4882
 
-alpha_0 = 0.5776
-alpha_1 = 0
-alpha_2 = 0.1404
-e = 0
+# alpha_0 = 0.5776
+# alpha_1 = 0
+# alpha_2 = 0.1404
+# e = 0
 
-d = 2
-l = 1
-s = 0.2
+# d = 2
+# l = 1
+# s = 0.2
+
+r_0 = 5
+alpha_0 = 0.3
+alpha_1 = 0.01
+alpha_2 = -0.276
+
+d = 4
+l = 0.13
+s = 1
+
+e = -0.5
 
 phi = 0
 Styles = ['-', '--', '-.']
@@ -86,4 +97,4 @@ plt.xlabel( "$z$ [$R_E$]" )
 plt.ylabel( "$x$ [$R_E$]" )
 
 
-plt.savefig("../images/cusps_new_l1_a05.svg")
+plt.savefig("../images/cusps_new_weird.svg")
