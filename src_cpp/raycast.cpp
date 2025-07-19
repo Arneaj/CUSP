@@ -131,12 +131,12 @@ std::array<float, 4>* get_interest_points(  const Matrix& J_norm, Point earth_po
 
 
     std::array<float, 4>* interest_points = new std::array<float, 4>[ nb_theta*nb_phi ];
-    float theta = -PI;
+    float theta = 0;
 
     for (int itheta=0; itheta<nb_theta; itheta++)
     {
         theta += dtheta;
-        float phi = 0;
+        float phi = -PI;
 
 //        float sin_theta = std::abs( std::sin(theta) );
 
