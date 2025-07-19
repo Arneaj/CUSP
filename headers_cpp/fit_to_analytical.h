@@ -4,6 +4,9 @@
 #include <array>
 #include <random>
 
+#include <thread>
+#include <future>
+
 #include "matrix.h"
 #include "points.h"
 #include "streamlines.h"
@@ -101,10 +104,9 @@ struct OptiResult
 /// @return 
 template <typename Residual, int nb_params>
 OptiResult fit_with_params( 
-    const OptiResult& best_result,
     std::array<float, 4>* interest_points,
     int nb_interest_points,
-    const double* params, 
+    double* params, 
     double* lowerbound=nullptr, double* upperbound=nullptr,
     int max_nb_iterations_per_run=50,
     ceres::TrustRegionStrategyType trust_region=ceres::LEVENBERG_MARQUARDT,
@@ -156,7 +158,7 @@ OptiResult fit_with_params(
 
     OptiResult result(nb_params);
     result.cost = summary.final_cost;
-    for (int i=0; i<nb_params; i++) result.params[i] = params[i]
+    for (int i=0; i<nb_params; i++) result.params[i] = params[i];
 
     return result;
 }
@@ -210,15 +212,15 @@ OptiResult fit_MP(
 
     OptiResult final_result(nb_params);
 
-    std::vector<std::future<OptimizationResult>> futures;
-    const int num_threads = std::thread::hardware_concurrency();
+    std::vector<std::future<OptiResult>> futures;
+    const int nb_threads = std::thread::hardware_concurrency();
 
     for (int run=0; run<nb_runs; run++)
     {
-        double params[nb_params];
+        double* params = new double[nb_params];
         for (int i=0; i<nb_params; i++) params[i] = initial_params[i] + dist(gen) * radii_of_variation[i];
 
-        if (futures.size() >= num_threads) 
+        if (futures.size() >= nb_threads) 
         {
             // Wait for one to complete
             futures.front().wait();
@@ -226,7 +228,7 @@ OptiResult fit_MP(
         }
         
         futures.push_back(std::async(std::launch::async, [=]() {
-            return fit_with_params<Residual, nb_params>( final_result, 
+            return fit_with_params<Residual, nb_params>(  
                 interest_points, nb_interest_points, 
                 params, lowerbound, upperbound,
                 max_nb_iterations_per_run,
@@ -234,17 +236,19 @@ OptiResult fit_MP(
                 print_progress
             );
         }));
+
+        delete[] params;
     }
 
     for (auto& future : futures) 
     {
-        OptimizationResult result = future.get();
+        OptiResult result = future.get();
 
         if (print_results)
         {
-            std::cout << "\nCurrent parameters with cost " << summary.final_cost << " :\n{ ";
-            std::cout << params[0];
-            for (int i=1; i<nb_params; i++) std::cout << ", " << params[i];
+            std::cout << "\nCurrent parameters with cost " << result.cost << " :\n{ ";
+            std::cout << result.params[0];
+            for (int i=1; i<nb_params; i++) std::cout << ", " << result.params[i];
             std::cout << " }" << std::endl;
         }
 

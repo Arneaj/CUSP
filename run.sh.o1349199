@@ -1,0 +1,47 @@
+/rds/general/user/avr24/home/.profile: line 1: .bashrc: No such file or directory
+
+Run12_23100
+File reading done. Time taken: 1.07023s
+Preprocessing files done. Time taken: 17.2177s
+Interest point search done. Time taken: 15.2317s
+
+Initial parameters:
+{ 9, 0.5, 0, 0, 2, 0.55, 0.55, 2, 0.55, 0.55, 0 }
+
+Current parameters with cost 5862.43 :
+{ 11.2338, 0.502868, 0.000555934, 0.0171782, 1.92651, 1.32637, 0.464266, 0, 0.108434, 0.1, 0.059778 }
+
+Current parameters with cost 5862.43 :
+{ 11.2338, 0.502868, 0.000555934, 0.0171782, 1.92651, 1.32637, 0.464266, 0, 0.108434, 0.1, 0.059778 }
+
+Current parameters with cost 5862.43 :
+{ 11.2338, 0.502868, 0.000555934, 0.0171782, 1.92651, 1.32637, 0.464266, 0, 0.108434, 0.1, 0.059778 }
+
+Current parameters with cost 5862.43 :
+{ 11.2338, 0.502868, 0.000555934, 0.0171782, 1.92651, 1.32637, 0.464266, 0, 0.108434, 0.1, 0.059778 }
+
+Current parameters with cost 5862.43 :
+{ 11.2338, 0.502868, 0.000555934, 0.0171782, 1.92651, 1.32637, 0.464266, 0, 0.108434, 0.1, 0.059778 }
+
+Current parameters with cost 5862.43 :
+{ 11.2338, 0.502868, 0.000555934, 0.0171782, 1.92651, 1.32637, 0.464266, 0, 0.108434, 0.1, 0.059778 }
+
+Current parameters with cost 5862.43 :
+{ 11.2338, 0.502868, 0.000555934, 0.0171782, 1.92651, 1.32637, 0.464266, 0, 0.108434, 0.1, 0.059778 }
+
+Current parameters with cost 5862.43 :
+{ 11.2338, 0.502868, 0.000555934, 0.0171782, 1.92651, 1.32637, 0.464266, 0, 0.108434, 0.1, 0.059778 }
+
+Current parameters with cost 5862.43 :
+{ 11.2338, 0.502868, 0.000555934, 0.0171782, 1.92651, 1.32637, 0.464266, 0, 0.108434, 0.1, 0.059778 }
+
+Current parameters with cost 5862.43 :
+{ 11.2338, 0.502868, 0.000555934, 0.0171782, 1.92651, 1.32637, 0.464266, 0, 0.108434, 0.1, 0.059778 }
+
+--> Final parameters with cost 5862.43 :
+{ 11.2338, 0.502868, 0.000555934, 0.0171782, 1.92651, 1.32637, 0.464266, 0, 0.108434, 0.1, 0.059778 }
+Fitting done. Time taken: 25.7513s
+Interest point and file saving done. Time taken: 16.7356s
+Finished fitting the data point at Run12, timestep 23100
+Time taken: 79 seconds total.
+
