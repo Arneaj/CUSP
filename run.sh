@@ -20,31 +20,31 @@ module load googletest
 echo
 
 runs=(
-	"1"
-	"2"
-	"4"
-	"5"
-	"9"
-	"11"
+	# "1"
+	# "2"
+	# "4"
+	# "5"
+	# "9"
+	# "11"
 	"12"
-	"13"
-	"14"
-	"15"
-	"16"
-	"17"
-	"18"
-	"19"
+	# "13"
+	# "14"
+	# "15"
+	# "16"
+	# "17"
+	# "18"
+	# "19"
 )
 
 
 timesteps=(
-	"28800"
-	"27000"
+	# "28800"
+	# "27000"
 	"23100"
-	"22500"
-	"21900"
-	"21000"
-	"20100"
+	# "22500"
+	# "21900"
+	# "21000"
+	# "20100"
 )
 
 cd build
@@ -63,8 +63,8 @@ for run_nb in "${runs[@]}"; do
 		cd build
 		./full_process /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run"$run_nb" "$t" /rds/general/user/avr24/home/Thesis/data/Run"$run_nb"_"$t"
 
-		cd ../python
-		python fit_to_analytical.py ../data/Run"$run_nb"_"$t"
+		# cd ../python
+		# python fit_to_analytical.py ../data/Run"$run_nb"_"$t"
 
 		cd ..
 		echo "Finished fitting the data point at Run$((run_nb)), timestep $((t))"

@@ -210,18 +210,35 @@ OptiResult fit_MP(
 
     OptiResult final_result(nb_params);
 
+    std::vector<std::future<OptimizationResult>> futures;
+    const int num_threads = std::thread::hardware_concurrency();
+
     for (int run=0; run<nb_runs; run++)
     {
         double params[nb_params];
         for (int i=0; i<nb_params; i++) params[i] = initial_params[i] + dist(gen) * radii_of_variation[i];
 
-        OptiResult result = fit_with_params<Residual, nb_params>( final_result, 
-            interest_points, nb_interest_points, 
-            params, lowerbound, upperbound,
-            max_nb_iterations_per_run,
-            trust_region, linear_solver,
-            print_progress
-        );
+        if (futures.size() >= num_threads) 
+        {
+            // Wait for one to complete
+            futures.front().wait();
+            futures.erase(futures.begin());
+        }
+        
+        futures.push_back(std::async(std::launch::async, [=]() {
+            return fit_with_params<Residual, nb_params>( final_result, 
+                interest_points, nb_interest_points, 
+                params, lowerbound, upperbound,
+                max_nb_iterations_per_run,
+                trust_region, linear_solver,
+                print_progress
+            );
+        }));
+    }
+
+    for (auto& future : futures) 
+    {
+        OptimizationResult result = future.get();
 
         if (print_results)
         {
@@ -230,11 +247,13 @@ OptiResult fit_MP(
             for (int i=1; i<nb_params; i++) std::cout << ", " << params[i];
             std::cout << " }" << std::endl;
         }
+
+        if (result.cost < final_result.cost) final_result = result;
     }
 
     if (print_results)
     {
-        std::cout << "\nFinal parameters with cost " << final_result.cost << " :\n{ ";
+        std::cout << "\n--> Final parameters with cost " << final_result.cost << " :\n{ ";
         std::cout << final_result.params[0];
         for (int i=1; i<nb_params; i++) std::cout << ", " << final_result.params[i];
         std::cout << " }" << std::endl;
