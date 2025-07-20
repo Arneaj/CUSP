@@ -105,6 +105,12 @@ int main(int argc, char* argv[])
 
     t0 = Time::now();
 
+    t1 = Time::now();
+    std::cout << "Interest point processing done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+
+
+    t0 = Time::now();
+
     double initial_params[11];
     initial_params[0] = 10;      // r_0
     initial_params[1] = 0.5;    // alpha_0
@@ -125,8 +131,9 @@ int main(int argc, char* argv[])
 
     int nb_runs = 100;
     int nb_interest_points = nb_theta * nb_phi;
+    const int nb_params = 11;
 
-    OptiResult result = fit_MP<SphericalResidual, 11>( 
+    OptiResult result = fit_MP<SphericalResidual, nb_params>( 
         interest_points, nb_interest_points, 
         initial_params, 
         lowerbound, upperbound, radii, 
@@ -143,8 +150,10 @@ int main(int argc, char* argv[])
     save_file( savepath + std::string("/V_processed_real.txt"), V_processed_real );
 
     save_interest_points( savepath + std::string("/interest_points_cpp.txt"), interest_points, nb_theta, nb_phi );
+
+    save_parameters( savepath + std::string("/params_cpp.txt"), result.params );
     t1 = Time::now();
-    std::cout << "Interest point and file saving done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+    std::cout << "Interest points, parameters and file saving done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
     V.del(); J.del(); B.del();

@@ -4,7 +4,7 @@
 const float PI = 3.1415926535;
 
 
-float get_r(float r_0, float alpha_0, float one_plus_cos_theta)
+float Shue97(float r_0, float alpha_0, float one_plus_cos_theta)
 {
     return r_0 * std::pow( 2.0/one_plus_cos_theta, alpha_0 );
 }
@@ -29,9 +29,9 @@ void interest_points_helper(    float r_0, float alpha_0,
 
         if ( 1 + cos_theta < 1e-3 ) continue;
 
-        float initial_r = get_r(r_0, alpha_0, 1 + cos_theta);
-	    // float final_r = get_r(12, 1, 1 + cos_theta);
-        float final_r = get_r(20, 1, 1 + cos_theta);
+        float initial_r = Shue97(r_0, alpha_0, 1 + cos_theta);
+	    // float final_r = Shue97(12, 1, 1 + cos_theta);
+        float final_r = Shue97(20, 1, 1 + cos_theta);
 
         float phi = -PI;
 
@@ -98,6 +98,23 @@ float get_std_dev( std::vector<float>& vec )
 
 
 
+
+
+
+/// @brief 
+/// @param J_norm 
+/// @param earth_pos 
+/// @param nb_theta 
+/// @param nb_phi 
+/// @param dx 
+/// @param dr 
+/// @param alpha_0_min 
+/// @param alpha_0_max 
+/// @param nb_alpha_0 
+/// @param r_0_mult_min 
+/// @param r_0_mult_max 
+/// @param nb_r_0 
+/// @return 
 std::array<float, 4>* get_interest_points(  const Matrix& J_norm, Point earth_pos, 
                                             int nb_theta, int nb_phi, 
                                             float dx, float dr,
@@ -166,6 +183,11 @@ std::array<float, 4>* get_interest_points(  const Matrix& J_norm, Point earth_po
 
     return interest_points;
 }
+
+
+
+
+
 
 
 

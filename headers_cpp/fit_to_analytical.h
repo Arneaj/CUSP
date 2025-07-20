@@ -7,6 +7,8 @@
 #include <thread>
 #include <future>
 
+#include <fstream>
+
 #include "matrix.h"
 #include "points.h"
 #include "streamlines.h"
@@ -271,6 +273,9 @@ OptiResult fit_MP(
 
 
 
+
+
+void save_parameters( std::string filename, const std::vector<double>& params );
 
 
 
