@@ -32,6 +32,12 @@ void remove_outliers( std::vector<std::vector<Point>>& streamlines, Shape shape 
 Point find_earth_pos( const Matrix& B ) { return B.index_max(); }
 
 
+Point find_real_earth_pos( const Matrix& X, const Matrix& Y, const Matrix& Z ) { return Point(-X[0], -Y[0], -Z[0]); }
+
+Point find_sim_earth_pos( Point real_earth_pos, Shape real_shape, Shape sim_shape ) 
+{ 
+    return real_earth_pos * sim_shape.xyz() / real_shape.xyz(); 
+}
 
 
 

@@ -62,6 +62,15 @@ Point Point::operator/=(float v)
     return *this;
 }
 
+Point Point::operator*=(float v)
+{
+    x *= v;
+    y *= v;
+    z *= v;
+
+    return *this;
+}
+
 
 
 Point Point::operator*(float v)
@@ -72,6 +81,25 @@ Point Point::operator*(float v)
         z * v
     );
 }
+
+Point Point::operator*(Point p)
+{
+    return Point(
+        x * p.x,
+        y * p.y,
+        z * p.z
+    );
+}
+
+Point Point::operator/(Point p)
+{
+    return Point(
+        x / p.x,
+        y / p.y,
+        z / p.z
+    );
+}
+
 
 Point operator*(float v, Point p)
 {

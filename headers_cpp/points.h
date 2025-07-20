@@ -26,6 +26,11 @@ public:
     Point operator/(float v);
     Point operator/=(float v);
 
+    Point operator*=(float v);
+
+    Point operator*(Point p);
+    Point operator/(Point p);
+
     Point operator*(float v);
     friend Point operator*(float v, Point p);
 

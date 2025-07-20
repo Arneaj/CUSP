@@ -32,6 +32,8 @@ public:
 
     Shape(std::vector<int> sh) : Shape(sh[0],sh[1],sh[2],sh[3]) {;}
 
+    Point xyz() { return Point(x, y, z); }
+
     friend std::ostream& operator<<(std::ostream& os, Shape sh);
 };
 

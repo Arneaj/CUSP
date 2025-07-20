@@ -116,11 +116,11 @@ float get_std_dev( std::vector<float>& vec )
 /// @param r_0_mult_max 
 /// @param nb_r_0 
 /// @return 
-InterestPoint* get_interest_points(  const Matrix& J_norm, Point earth_pos, 
-                                            int nb_theta, int nb_phi, 
-                                            float dx, float dr,
-                                            float alpha_0_min, float alpha_0_max, float nb_alpha_0,
-                                            float r_0_mult_min, float r_0_mult_max, float nb_r_0 )
+InterestPoint* get_interest_points( const Matrix& J_norm, Point earth_pos, 
+                                    int nb_theta, int nb_phi, 
+                                    float dx, float dr,
+                                    float alpha_0_min, float alpha_0_max, float nb_alpha_0,
+                                    float r_0_mult_min, float r_0_mult_max, float nb_r_0 )
 {
     std::vector<float>* interest_radii_candidates = new std::vector<float>[ nb_theta*nb_phi ];
 
@@ -187,6 +187,47 @@ InterestPoint* get_interest_points(  const Matrix& J_norm, Point earth_pos,
 
 
 
+
+
+
+
+void process_interest_points(   InterestPoint* interest_points, 
+                                int nb_theta, int nb_phi, 
+                                const Shape& shape_sim, const Shape& shape_real,
+                                const Point& earth_pos_sim, const Point& earth_pos_real )
+{
+    std::cout << shape_sim << std::endl;
+    std::cout << shape_real << std::endl;
+    std::cout << earth_pos_sim << std::endl;
+    std::cout << earth_pos_real << std::endl;
+
+    for (int itheta=0; itheta<nb_theta; itheta++) for (int iphi=0; iphi<nb_phi; iphi++)
+    {
+        Point point;
+
+        float sin_theta = std::sin(interest_points[itheta*nb_phi + iphi].theta);
+
+        point.x = std::cos(interest_points[itheta*nb_phi + iphi].theta);
+        point.y = sin_theta * std::sin(interest_points[itheta*nb_phi + iphi].phi);
+        point.z = sin_theta * std::cos(interest_points[itheta*nb_phi + iphi].phi);
+
+        point *= interest_points[itheta*nb_phi + iphi].radius;
+        point += earth_pos_sim;
+
+        point.x *= float(shape_real.x) / float(shape_sim.x);
+        point.y *= float(shape_real.y) / float(shape_sim.y);
+        point.z *= float(shape_real.z) / float(shape_sim.z);
+
+        point -= earth_pos_real;
+
+        std::cout << point << std::endl;
+
+        interest_points[itheta*nb_phi + iphi].radius = point.norm();
+        interest_points[itheta*nb_phi + iphi].theta = std::acos( point.x / std::max(0.1f, interest_points[itheta*nb_phi + iphi].radius) );
+        interest_points[itheta*nb_phi + iphi].phi = std::acos( point.z / std::max(0.1f, std::sqrt( point.y*point.y + point.z*point.z )) );
+        interest_points[itheta*nb_phi + iphi].phi *= (point.y>0) - (point.y<=0);
+    }
+}
 
 
 

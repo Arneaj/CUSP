@@ -69,6 +69,9 @@ int main(int argc, char* argv[])
     Shape new_shape_real(std::round(p_range.x), std::round(p_range.y), std::round(p_range.z), V.get_shape().i);
     Shape new_shape_sim(V.get_shape().x*hyper_sampling, V.get_shape().y*hyper_sampling, V.get_shape().z*hyper_sampling, V.get_shape().i);
 
+    Point earth_pos_real = find_real_earth_pos( X, Y, Z );
+    Point earth_pos_sim = find_sim_earth_pos( earth_pos_real, new_shape_real, new_shape_sim );
+
     Matrix B_processed_sim = orthonormalise(B, X, Y, Z, &new_shape_sim);
     Matrix J_processed_sim = orthonormalise(J, X, Y, Z, &new_shape_sim);
     Matrix V_processed_sim = orthonormalise(V, X, Y, Z, &new_shape_sim);
@@ -86,13 +89,11 @@ int main(int argc, char* argv[])
 
 
     t0 = Time::now();
-    Point earth_pos = find_earth_pos( B_processed_sim );
-
     int nb_theta = 40;
     int nb_phi = 90;
 
     InterestPoint* interest_points = get_interest_points(
-        J_norm_sim, earth_pos,
+        J_norm_sim, earth_pos_sim,
         nb_theta, nb_phi,
         0.1, 0.1,
         0.6, 0.7, 2,
@@ -104,7 +105,7 @@ int main(int argc, char* argv[])
 
 
     t0 = Time::now();
-
+    process_interest_points( interest_points, nb_theta, nb_phi, new_shape_sim, new_shape_real, earth_pos_sim, earth_pos_real );
     t1 = Time::now();
     std::cout << "Interest point processing done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
@@ -112,7 +113,7 @@ int main(int argc, char* argv[])
     t0 = Time::now();
 
     double initial_params[11];
-    initial_params[0] = 10;      // r_0
+    initial_params[0] = 10;     // r_0
     initial_params[1] = 0.5;    // alpha_0
     initial_params[2] = 0;      // alpha_1
     initial_params[3] = 0;      // alpha_2

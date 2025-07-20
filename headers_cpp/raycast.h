@@ -43,4 +43,13 @@ InterestPoint* get_interest_points(  const Matrix& J_norm, Point earth_pos,
 void save_interest_points( std::string filename, const InterestPoint* interest_points, int nb_theta, int nb_phi );
 
 
+
+void process_interest_points(   InterestPoint* interest_points, 
+                                int nb_theta, int nb_phi, 
+                                const Shape& shape_sim, const Shape& shape_real,
+                                const Point& earth_pos_sim, const Point& earth_pos_real );
+
+
+
+
 #endif
