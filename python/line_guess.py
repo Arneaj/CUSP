@@ -17,7 +17,8 @@ saturation = 3e-9
 
 theta = np.linspace(0, np.pi*0.99, 100)
 
-earth_pos = [29.75, 58, 58]
+# earth_pos = [29.75, 58, 58]
+earth_pos = [30.75, 58, 58]
 
 fig, axes = plt.subplots(1, 2)
 
@@ -26,7 +27,7 @@ fig.set_figheight(5.5)
 
 ############### ME25
 
-with open(f"{filepath}/params.txt", "r") as f:
+with open(f"{filepath}/params_cpp.txt", "r") as f:
     params = np.array( f.readline().split(","), dtype=np.float32 )
 
 

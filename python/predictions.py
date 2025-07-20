@@ -27,7 +27,8 @@ filepath = sys.argv[1]
 J_norm = import_from(f"{filepath}/J_norm_processed_real.txt")
 
 # earth_pos = get_earth_pos( B_norm )
-earth_pos = [29.75, 58, 58]
+# earth_pos = [29.75, 58, 58]
+earth_pos = [30.75, 58, 58]
 
 interest_points_theta = []
 interest_points_phi = []
@@ -54,32 +55,36 @@ nb_phi = 0
 
 
 
-B = import_from(f"{filepath}/B_processed_sim.txt")
-B_norm = np.linalg.norm(B, axis=3)
+# B = import_from(f"{filepath}/B_processed_sim.txt")
+# B_norm = np.linalg.norm(B, axis=3)
 
-X = import_from(f"{filepath}/X.txt")
-Y = import_from(f"{filepath}/Y.txt")
-Z = import_from(f"{filepath}/Z.txt")
+# X = import_from(f"{filepath}/X.txt")
+# Y = import_from(f"{filepath}/Y.txt")
+# Z = import_from(f"{filepath}/Z.txt")
 
-shape = B_norm.shape
-earth_pos_tilde = get_earth_pos(B_norm)
+# shape = B_norm.shape
+# earth_pos_tilde = get_earth_pos(B_norm)
 
-x_min = np.array([np.min(X), np.min(Y), np.min(Z)])
-x_max = np.array([np.max(X), np.max(Y), np.max(Z)])
-dx = x_max - x_min
+# x_min = np.array([np.min(X), np.min(Y), np.min(Z)])
+# x_max = np.array([np.max(X), np.max(Y), np.max(Z)])
+# dx = x_max - x_min
 
 
-x_tilde = earth_pos_tilde[0] + interest_points_r * np.cos(interest_points_theta)
-y_tilde = earth_pos_tilde[1] + interest_points_r * np.sin(interest_points_theta) * np.sin(interest_points_phi)
-z_tilde = earth_pos_tilde[2] + interest_points_r * np.sin(interest_points_theta) * np.cos(interest_points_phi)
+# x_tilde = earth_pos_tilde[0] + interest_points_r * np.cos(interest_points_theta)
+# y_tilde = earth_pos_tilde[1] + interest_points_r * np.sin(interest_points_theta) * np.sin(interest_points_phi)
+# z_tilde = earth_pos_tilde[2] + interest_points_r * np.sin(interest_points_theta) * np.cos(interest_points_phi)
 
-X = x_tilde * dx[0] / shape[0] + x_min[0]
-Y = y_tilde * dx[1] / shape[1] + x_min[1]
-Z = z_tilde * dx[2] / shape[2] + x_min[2]
+# X = x_tilde * dx[0] / shape[0] + x_min[0]
+# Y = y_tilde * dx[1] / shape[1] + x_min[1]
+# Z = z_tilde * dx[2] / shape[2] + x_min[2]
 
-X += J_norm.shape[0] - earth_pos[0]
-Y += J_norm.shape[1] - earth_pos[1]
-Z += J_norm.shape[2] - earth_pos[2]
+# X += J_norm.shape[0] - earth_pos[0]
+# Y += J_norm.shape[1] - earth_pos[1]
+# Z += J_norm.shape[2] - earth_pos[2]
+
+X = J_norm.shape[0] - earth_pos[0] + interest_points_r * np.cos(interest_points_theta)
+Y = earth_pos[1] + interest_points_r * np.sin(interest_points_theta) * np.sin(interest_points_phi)
+Z = earth_pos[2] + interest_points_r * np.sin(interest_points_theta) * np.cos(interest_points_phi)
 
 # length = J_norm.shape[1]
 

@@ -196,10 +196,10 @@ void process_interest_points(   InterestPoint* interest_points,
                                 const Shape& shape_sim, const Shape& shape_real,
                                 const Point& earth_pos_sim, const Point& earth_pos_real )
 {
-    std::cout << shape_sim << std::endl;
-    std::cout << shape_real << std::endl;
-    std::cout << earth_pos_sim << std::endl;
-    std::cout << earth_pos_real << std::endl;
+    // std::cout << shape_sim << std::endl;
+    // std::cout << shape_real << std::endl;
+    // std::cout << earth_pos_sim << std::endl;
+    // std::cout << earth_pos_real << std::endl;
 
     for (int itheta=0; itheta<nb_theta; itheta++) for (int iphi=0; iphi<nb_phi; iphi++)
     {
@@ -218,9 +218,9 @@ void process_interest_points(   InterestPoint* interest_points,
         point.y *= float(shape_real.y) / float(shape_sim.y);
         point.z *= float(shape_real.z) / float(shape_sim.z);
 
-        point -= earth_pos_real;
+        // std::cout << point << std::endl;
 
-        std::cout << point << std::endl;
+        point -= earth_pos_real;
 
         interest_points[itheta*nb_phi + iphi].radius = point.norm();
         interest_points[itheta*nb_phi + iphi].theta = std::acos( point.x / std::max(0.1f, interest_points[itheta*nb_phi + iphi].radius) );
