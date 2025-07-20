@@ -198,9 +198,9 @@ OptiResult fit_MP(
     bool print_progress=false, bool print_results=true
 )
 {
-    if (print_results)
+    if (print_progress)
     {
-        std::cout << "\nInitial parameters:\n{ ";
+        std::cout << "Initial parameters:\n{ ";
         std::cout << initial_params[0];
         for (int i=1; i<nb_params; i++) std::cout << ", " << initial_params[i];
         std::cout << " }" << std::endl;
@@ -245,7 +245,7 @@ OptiResult fit_MP(
     {
         OptiResult result = future.get();
 
-        if (print_results)
+        if (print_progress)
         {
             std::cout << "\nCurrent parameters with cost " << result.cost << " :\n{ ";
             std::cout << result.params[0];
@@ -258,7 +258,7 @@ OptiResult fit_MP(
 
     if (print_results)
     {
-        std::cout << "\n--> Final parameters with cost " << final_result.cost << " :\n{ ";
+        std::cout << "Final parameters with average cost " << final_result.cost / nb_interest_points << " :\n{ ";
         std::cout << final_result.params[0];
         for (int i=1; i<nb_params; i++) std::cout << ", " << final_result.params[i];
         std::cout << " }" << std::endl;

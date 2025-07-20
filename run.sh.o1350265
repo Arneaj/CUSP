@@ -1,0 +1,13 @@
+/rds/general/user/avr24/home/.profile: line 1: .bashrc: No such file or directory
+
+Run12_23100
+File reading done. Time taken: 0.853699s
+Preprocessing files done. Time taken: 12.8798s
+Interest point search done. Time taken: 13.3731s
+Final parameters with average cost 1.49846 :
+{ 11.6553, 0.49191, 0.000172147, 0.0193605, 3.21667, 1.7617, 0.649648, 3.39278, 1.85106, 0.682504, 0.0655887 }
+Fitting done. Time taken: 23.2673s
+Interest point and file saving done. Time taken: 13.6866s
+Finished fitting the data point at Run12, timestep 23100
+Time taken: 64 seconds total.
+
