@@ -214,11 +214,14 @@ OptiResult fit_MP(
 
     std::vector<std::future<OptiResult>> futures;
     const int nb_threads = std::thread::hardware_concurrency();
+    // std::cout << "number of threads: " << nb_threads << std::endl;
+
+    std::vector<double*> params_list(nb_runs);
 
     for (int run=0; run<nb_runs; run++)
     {
-        double* params = new double[nb_params];
-        for (int i=0; i<nb_params; i++) params[i] = initial_params[i] + dist(gen) * radii_of_variation[i];
+        params_list[run] = new double[nb_params];
+        for (int i=0; i<nb_params; i++) params_list[run][i] = initial_params[i] + dist(gen) * radii_of_variation[i];
 
         if (futures.size() >= nb_threads) 
         {
@@ -230,14 +233,12 @@ OptiResult fit_MP(
         futures.push_back(std::async(std::launch::async, [=]() {
             return fit_with_params<Residual, nb_params>(  
                 interest_points, nb_interest_points, 
-                params, lowerbound, upperbound,
+                params_list[run], lowerbound, upperbound,
                 max_nb_iterations_per_run,
                 trust_region, linear_solver,
                 print_progress
             );
         }));
-
-        delete[] params;
     }
 
     for (auto& future : futures) 
@@ -262,6 +263,8 @@ OptiResult fit_MP(
         for (int i=1; i<nb_params; i++) std::cout << ", " << final_result.params[i];
         std::cout << " }" << std::endl;
     }
+
+    for (double* params: params_list) delete[] params;
 
     return final_result;
 }

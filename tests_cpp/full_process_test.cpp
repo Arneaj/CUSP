@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
     t0 = Time::now();
 
     double initial_params[11];
-    initial_params[0] = 9;      // r_0
+    initial_params[0] = 10;      // r_0
     initial_params[1] = 0.5;    // alpha_0
     initial_params[2] = 0;      // alpha_1
     initial_params[3] = 0;      // alpha_2
@@ -123,7 +123,7 @@ int main(int argc, char* argv[])
     double radii[11] =      {  3.0,    0.1,    0.5,    0.5,    1.0,    0.05,   0.25,   1.0,    0.05,   0.25,   0.15};
 
 
-    int nb_runs = 10;
+    int nb_runs = 20;
     int nb_interest_points = nb_theta * nb_phi;
 
     OptiResult result = fit_MP<SphericalResidual, 11>( 
