@@ -90,7 +90,7 @@ Z = earth_pos[2] + interest_points_r * np.sin(interest_points_theta) * np.cos(in
 
 fig, axes = plt.subplots(1, 2)
 fig.set_figwidth(10)
-fig.set_figheight(4)
+fig.set_figheight(5.5)
 
 iy = 58
 
@@ -133,6 +133,16 @@ axes[0].set(ylabel=r"$x \in [-30; 128] R_E$", xlabel=r"$y \in [-58; 58] R_E$")
 axes[1].set_xlim(0, J_norm.shape[2]-1)
 axes[1].set_ylim(0, J_norm.shape[0]-1)
 axes[1].set(ylabel=r"$x \in [-30; 128] R_E$", xlabel=r"$z \in [-58; 58] R_E$")
+
+
+name_of_datapoint = filepath.split("/")[-1]
+
+run_nb, timestep = name_of_datapoint.split("_")
+
+
+fig.suptitle(f"{run_nb} at timestep $t =$ {timestep}s")
+
+
 
 plt.savefig("../images/predictions.svg")
 
