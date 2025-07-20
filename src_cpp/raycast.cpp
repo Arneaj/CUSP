@@ -4,6 +4,7 @@
 const float PI = 3.1415926535;
 
 
+
 float Shue97(float r_0, float alpha_0, float one_plus_cos_theta)
 {
     return r_0 * std::pow( 2.0/one_plus_cos_theta, alpha_0 );
@@ -115,7 +116,7 @@ float get_std_dev( std::vector<float>& vec )
 /// @param r_0_mult_max 
 /// @param nb_r_0 
 /// @return 
-std::array<float, 4>* get_interest_points(  const Matrix& J_norm, Point earth_pos, 
+InterestPoint* get_interest_points(  const Matrix& J_norm, Point earth_pos, 
                                             int nb_theta, int nb_phi, 
                                             float dx, float dr,
                                             float alpha_0_min, float alpha_0_max, float nb_alpha_0,
@@ -147,7 +148,7 @@ std::array<float, 4>* get_interest_points(  const Matrix& J_norm, Point earth_po
                                 dr, dtheta, dphi );
 
 
-    std::array<float, 4>* interest_points = new std::array<float, 4>[ nb_theta*nb_phi ];
+    InterestPoint* interest_points = new InterestPoint[ nb_theta*nb_phi ];
     float theta = 0;
 
     for (int itheta=0; itheta<nb_theta; itheta++)
@@ -163,7 +164,7 @@ std::array<float, 4>* get_interest_points(  const Matrix& J_norm, Point earth_po
 
             if ( interest_radii_candidates[ itheta*nb_phi + iphi ].size() == 0 ) 
             {
-                interest_points[ itheta*nb_phi + iphi ] = std::array<float, 4>{ theta, phi, 0, 0 };
+                interest_points[ itheta*nb_phi + iphi ] = InterestPoint( theta, phi );
                 continue;
             }
 
@@ -175,7 +176,7 @@ std::array<float, 4>* get_interest_points(  const Matrix& J_norm, Point earth_po
             float weight = 5.0f / (5.0f + std_dev*std_dev);
             // if (std::abs(theta) < 0.5*PI) weight *= sin_theta;
 
-            interest_points[ itheta*nb_phi + iphi ] = std::array<float, 4>{ theta, phi, interest_radius, weight }; 
+            interest_points[ itheta*nb_phi + iphi ] = InterestPoint( theta, phi, interest_radius, weight ); 
         }
     }
 
@@ -192,17 +193,17 @@ std::array<float, 4>* get_interest_points(  const Matrix& J_norm, Point earth_po
 
 
 
-void save_interest_points( std::string filename, const std::array<float, 4>* interest_points, int nb_theta, int nb_phi )
+void save_interest_points( std::string filename, const InterestPoint* interest_points, int nb_theta, int nb_phi )
 {
     std::ofstream fs;
     fs.open(filename);
 
     for (int itheta=0; itheta<nb_theta; itheta++) for (int iphi=0; iphi<nb_phi; iphi++)
     {
-        fs  << interest_points[ itheta*nb_phi + iphi ][0] << ','
-            << interest_points[ itheta*nb_phi + iphi ][1] << ','
-            << interest_points[ itheta*nb_phi + iphi ][2] << ','
-            << interest_points[ itheta*nb_phi + iphi ][3] << '\n';
+        fs  << interest_points[ itheta*nb_phi + iphi ].theta << ','
+            << interest_points[ itheta*nb_phi + iphi ].phi << ','
+            << interest_points[ itheta*nb_phi + iphi ].radius << ','
+            << interest_points[ itheta*nb_phi + iphi ].weight << '\n';
     }
 
     fs.close();

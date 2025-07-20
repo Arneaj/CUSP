@@ -11,7 +11,27 @@
 #include "points.h"
 #include "streamlines.h"
 
-std::array<float, 4>* get_interest_points(  const Matrix& J_norm, Point earth_pos, 
+
+
+class InterestPoint
+{
+public:
+    float theta, phi, radius, weight;
+
+    InterestPoint()
+        : theta(0.0), phi(0.0), radius(0.0), weight(0.0) {;}
+
+    InterestPoint(float _theta, float _phi)
+        : theta(_theta), phi(_phi), radius(0.0), weight(0.0) {;}
+
+    InterestPoint(float _theta, float _phi, float _radius, float _weight)
+        : theta(_theta), phi(_phi), radius(_radius), weight(_weight) {;}
+};
+
+
+
+
+InterestPoint* get_interest_points(  const Matrix& J_norm, Point earth_pos, 
                                             int nb_theta, int nb_phi, 
                                             float dx, float dr,
                                             float alpha_0_max, float alpha_0_min, float nb_alpha_0,
@@ -20,7 +40,7 @@ std::array<float, 4>* get_interest_points(  const Matrix& J_norm, Point earth_po
 
 
 
-void save_interest_points( std::string filename, const std::array<float, 4>* interest_points, int nb_theta, int nb_phi );
+void save_interest_points( std::string filename, const InterestPoint* interest_points, int nb_theta, int nb_phi );
 
 
 #endif

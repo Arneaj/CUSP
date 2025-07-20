@@ -48,14 +48,14 @@ int main(int argc, char* argv[])
 
     int nb_interest_points = theta.size();
 
-    std::array<float, 4> interest_points[nb_interest_points];
+    InterestPoint interest_points[nb_interest_points];
 
     for (int i=0; i<nb_interest_points; i++)
     {
-        interest_points[i][0] = theta[i];
-        interest_points[i][1] = phi[i];
-        interest_points[i][2] = radius[i];
-        interest_points[i][3] = weight[i];
+        interest_points[i].theta = theta[i];
+        interest_points[i].phi = phi[i];
+        interest_points[i].radius = radius[i];
+        interest_points[i].weight = weight[i];
     }
 
     auto t1 = Time::now();

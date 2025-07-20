@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
     int nb_theta = 40;
     int nb_phi = 90;
 
-    std::array<float, 4>* interest_points = get_interest_points(
+    InterestPoint* interest_points = get_interest_points(
         J_norm_sim, earth_pos,
         nb_theta, nb_phi,
         0.1, 0.1,

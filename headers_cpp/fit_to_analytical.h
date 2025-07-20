@@ -12,6 +12,7 @@
 #include "matrix.h"
 #include "points.h"
 #include "streamlines.h"
+#include "raycast.h"
 
 
 
@@ -63,6 +64,9 @@ private:
     const double m_theta, m_phi, m_weight, m_observed_radius;
 
 public:
+    SphericalResidual(const InterestPoint& interest_point) 
+        : m_theta(interest_point.theta), m_phi(interest_point.phi), m_observed_radius(interest_point.radius), m_weight(interest_point.weight) {;}
+
     SphericalResidual(double theta, double phi, double observed_radius, double weight) 
         : m_theta(theta), m_phi(phi), m_observed_radius(observed_radius), m_weight(weight) {;}
 
@@ -106,7 +110,7 @@ struct OptiResult
 /// @return 
 template <typename Residual, int nb_params>
 OptiResult fit_with_params( 
-    std::array<float, 4>* interest_points,
+    InterestPoint* interest_points,
     int nb_interest_points,
     double* params, 
     double* lowerbound=nullptr, double* upperbound=nullptr,
@@ -121,7 +125,7 @@ OptiResult fit_with_params(
     for (int i=0; i<nb_interest_points; i++) 
     {
         ceres::CostFunction* cost_function = new ceres::AutoDiffCostFunction<Residual, 1, nb_params>(
-            new Residual(interest_points[i][0], interest_points[i][1], interest_points[i][2], interest_points[i][3])
+            new Residual(interest_points[i])
         );
         problem.AddResidualBlock( cost_function, nullptr, params );
     }
@@ -174,7 +178,7 @@ OptiResult fit_with_params(
 /// @brief 
 /// @tparam Residual 
 /// @tparam nb_params 
-/// @param interest_points containing in order (theta, phi, radius, weight)
+/// @param interest_points containing (theta, phi, radius, weight)
 /// @param nb_interest_points 
 /// @param params 
 /// @param lowerbound lowerbound of each parameter
@@ -189,7 +193,7 @@ OptiResult fit_with_params(
 /// @return 
 template <typename Residual, int nb_params>
 OptiResult fit_MP( 
-    std::array<float, 4>* interest_points,
+    InterestPoint* interest_points,
     int nb_interest_points,
     const double* initial_params, 
     double* lowerbound=nullptr, double* upperbound=nullptr,
