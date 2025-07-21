@@ -220,7 +220,7 @@ OptiResult fit_MP(
 
     std::vector<std::future<OptiResult>> futures;
     const int nb_threads = std::thread::hardware_concurrency();
-    // std::cout << "number of threads: " << nb_threads << std::endl;
+    std::cout << "number of threads: " << nb_threads << std::endl;
 
     std::vector<double*> params_list(nb_runs);
 
@@ -232,8 +232,21 @@ OptiResult fit_MP(
         if (futures.size() >= nb_threads) 
         {
             // Wait for one to complete
-            futures.front().wait();
+            OptiResult result = futures.front().get();
+
+            if (print_progress)
+            {
+                std::cout << "\nCurrent parameters with cost " << result.cost << " :\n{ ";
+                std::cout << result.params[0];
+                for (int i=1; i<nb_params; i++) std::cout << ", " << result.params[i];
+                std::cout << " }" << std::endl;
+            }
+
+            if (result.cost < final_result.cost) final_result = result;
+            
             futures.erase(futures.begin());
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
         
         futures.push_back(std::async(std::launch::async, [=]() {
@@ -271,6 +284,7 @@ OptiResult fit_MP(
     }
 
     for (double* params: params_list) delete[] params;
+    futures.clear();
 
     return final_result;
 }

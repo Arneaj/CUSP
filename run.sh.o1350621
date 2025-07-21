@@ -1,0 +1,90 @@
+/rds/general/user/avr24/home/.profile: line 1: .bashrc: No such file or directory
+
+Run1_28800
+File reading done. Time taken: 1.00519s
+Preprocessing files done. Time taken: 11.8838s
+Interest point search done. Time taken: 11.4048s
+Interest point processing done. Time taken: 0.000472542s
+Final parameters with average cost 3.45929 :
+{ 8.49454, 0.352815, 0.000783975, 0.0338779, 3.14649, 0.633308, 0.158768, 3.16582, 0.628246, 0.162151, 0.5 }
+Fitting done. Time taken: 33.4672s
+Interest points, parameters and file saving done. Time taken: 8.88169s
+Finished fitting the data point at Run1, timestep 28800
+Time taken: 67 seconds total.
+
+Run1_27000
+File reading done. Time taken: 0.925094s
+Preprocessing files done. Time taken: 14.9008s
+Interest point search done. Time taken: 11.0626s
+Interest point processing done. Time taken: 0.000471752s
+Final parameters with average cost 2.98686 :
+{ 8.72101, 0.357659, 0.000581309, 0.0131477, 3.45299, 0.629763, 0.195329, 3.53105, 0.624701, 0.197944, 0.5 }
+Fitting done. Time taken: 35.9457s
+Interest points, parameters and file saving done. Time taken: 8.48986s
+Finished fitting the data point at Run1, timestep 27000
+Time taken: 72 seconds total.
+
+Run1_23100
+File reading done. Time taken: 0.868497s
+Preprocessing files done. Time taken: 17.5959s
+Interest point search done. Time taken: 11.9056s
+Interest point processing done. Time taken: 0.000488423s
+Final parameters with average cost 1.17937 :
+{ 9.94005, 0.44176, 0.000320979, 0.0287267, 2.75722, 1.08593, 0.276625, 2.51237, 1.10275, 0.311981, 0.226195 }
+Fitting done. Time taken: 25.6828s
+Interest points, parameters and file saving done. Time taken: 9.23709s
+Finished fitting the data point at Run1, timestep 23100
+Time taken: 65 seconds total.
+
+Run1_22500
+File reading done. Time taken: 0.84456s
+Preprocessing files done. Time taken: 9.94768s
+Interest point search done. Time taken: 11.643s
+Interest point processing done. Time taken: 0.000517904s
+Final parameters with average cost 1.32079 :
+{ 9.89497, 0.413686, 0.000961471, 0.0511022, 2.6326, 1.09351, 0.227831, 2.57217, 1.09879, 0.229903, 0.247277 }
+Fitting done. Time taken: 27.255s
+Interest points, parameters and file saving done. Time taken: 9.77175s
+Finished fitting the data point at Run1, timestep 22500
+Time taken: 60 seconds total.
+
+Run1_21900
+File reading done. Time taken: 0.868104s
+Preprocessing files done. Time taken: 16.5869s
+Interest point search done. Time taken: 11.4248s
+Interest point processing done. Time taken: 0.000464452s
+Final parameters with average cost 1.39882 :
+{ 9.1307, 0.405369, 0.000241984, 0.0461055, 1.6206, 0.969959, 0.161165, 1.54163, 1.02237, 0.145332, 0.313273 }
+Fitting done. Time taken: 23.693s
+Interest points, parameters and file saving done. Time taken: 8.75468s
+Finished fitting the data point at Run1, timestep 21900
+Time taken: 61 seconds total.
+
+Run1_21000
+File reading done. Time taken: 0.79064s
+Preprocessing files done. Time taken: 9.52455s
+Interest point search done. Time taken: 11.3359s
+Interest point processing done. Time taken: 0.000496693s
+Final parameters with average cost 1.68441 :
+{ 8.94831, 0.417489, -0.000928073, 0.0323611, 1.38455, 0.966113, 0.127288, 1.28747, 0.979071, 0.122428, 0.326012 }
+Fitting done. Time taken: 26.5502s
+Interest points, parameters and file saving done. Time taken: 9.83158s
+Finished fitting the data point at Run1, timestep 21000
+Time taken: 59 seconds total.
+
+Run1_20100
+File reading done. Time taken: 0.863197s
+Preprocessing files done. Time taken: 11.6116s
+Interest point search done. Time taken: 12.1258s
+Interest point processing done. Time taken: 0.000482843s
+Final parameters with average cost 1.61313 :
+{ 8.46346, 0.416725, -0.000547655, 0.0187558, 3.66262, 0.159829, 0.1, 3.49343, 0.161214, 0.1, 0.378437 }
+Fitting done. Time taken: 29.9973s
+Interest points, parameters and file saving done. Time taken: 9.05431s
+Finished fitting the data point at Run1, timestep 20100
+Time taken: 64 seconds total.
+
+Run2_28800
+File reading done. Time taken: 0.850249s
+Preprocessing files done. Time taken: 9.48507s
+=>> PBS: job killed: ncpus 27.26 exceeded limit 3 (sum)

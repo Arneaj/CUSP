@@ -1,8 +1,11 @@
 #!/bin/sh
 #PBS -l walltime=05:00:00
-#PBS -l select=1:ncpus=3:mem=8gb
+#PBS -l select=1:ncpus=8:mem=8gb
 #PBS -j oe
+#PBS -N mp_topology
 cd $PBS_O_WORKDIR
+
+echo $PBS_NCPUS
 
 module load miniforge/3 > /dev/null 2>&1
 module load tools/prod > /dev/null 2>&1
@@ -13,38 +16,38 @@ module load VTK > /dev/null 2>&1
 
 # dependency of the Ceres least squares solver
 module load Eigen > /dev/null 2>&1    	
-module load Abseil						
-module load googletest					
+module load Abseil > /dev/null 2>&1   				
+module load googletest > /dev/null 2>&1   	
 
 
 echo
 
 runs=(
-	# "1"
-	# "2"
-	# "4"
-	# "5"
-	# "9"
-	# "11"
+	"1"
+	"2"
+	"4"
+	"5"
+	"9"
+	"11"
 	"12"
-	# "13"
-	# "14"
-	# "15"
-	# "16"
-	# "17"
-	# "18"
-	# "19"
+	"13"
+	"14"
+	"15"
+	"16"
+	"17"
+	"18"
+	"19"
 )
 
 
 timesteps=(
-	# "28800"
-	# "27000"
+	"28800"
+	"27000"
 	"23100"
-	# "22500"
-	# "21900"
-	# "21000"
-	# "20100"
+	"22500"
+	"21900"
+	"21000"
+	"20100"
 )
 
 cd build

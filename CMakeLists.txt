@@ -20,6 +20,9 @@ if (NOT VTK_FOUND)
   message(FATAL_ERROR "full_process: Unable to find the VTK build folder.")
 endif()
 
+
+set(CMAKE_CXX_FLAGS "-O3 -Wall -Wextra")   # is this a good idea
+
 # Prevent a "command line is too long" failure in Windows.
 set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response files.")
 
