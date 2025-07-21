@@ -9,7 +9,7 @@ void save_parameters( std::string filename, const std::vector<double>& params )
     fs.open(filename);
 
     fs << params[0];
-    for (int i=1; i<params.size(); i++) fs << ',' << params[i];
+    for (unsigned int i=1; i<params.size(); i++) fs << ',' << params[i];
     fs << std::endl;
 
     fs.close();

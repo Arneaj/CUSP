@@ -61,7 +61,7 @@ T Rolland25( const T* const params, T theta, T phi )
 class SphericalResidual 
 {
 private:
-    const double m_theta, m_phi, m_weight, m_observed_radius;
+    const double m_theta, m_phi, m_observed_radius, m_weight;
 
 public:
     SphericalResidual(const InterestPoint& interest_point) 
@@ -219,8 +219,7 @@ OptiResult fit_MP(
     OptiResult final_result(nb_params);
 
     std::vector<std::future<OptiResult>> futures;
-    const int nb_threads = std::thread::hardware_concurrency();
-    std::cout << "number of threads: " << nb_threads << std::endl;
+    const unsigned int nb_threads = std::thread::hardware_concurrency();
 
     std::vector<double*> params_list(nb_runs);
 

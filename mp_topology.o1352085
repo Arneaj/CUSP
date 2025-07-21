@@ -1,0 +1,1387 @@
+/rds/general/user/avr24/home/.profile: line 1: .bashrc: No such file or directory
+
+
+In file included from /rds/general/user/avr24/home/Thesis/tests_cpp/fit_to_analytical_test.cpp:1:
+/rds/general/user/avr24/home/Thesis/tests_cpp/../headers_cpp/fit_to_analytical.h: In constructor ‘SphericalResidual::SphericalResidual(const InterestPoint&)’:
+/rds/general/user/avr24/home/Thesis/tests_cpp/../headers_cpp/fit_to_analytical.h:64:44: warning: ‘SphericalResidual::m_observed_radius’ will be initialized after [-Wreorder]
+   64 |     const double m_theta, m_phi, m_weight, m_observed_radius;
+      |                                            ^~~~~~~~~~~~~~~~~
+/rds/general/user/avr24/home/Thesis/tests_cpp/../headers_cpp/fit_to_analytical.h:64:34: warning:   ‘const double SphericalResidual::m_weight’ [-Wreorder]
+   64 |     const double m_theta, m_phi, m_weight, m_observed_radius;
+      |                                  ^~~~~~~~
+/rds/general/user/avr24/home/Thesis/tests_cpp/../headers_cpp/fit_to_analytical.h:67:5: warning:   when initialized here [-Wreorder]
+   67 |     SphericalResidual(const InterestPoint& interest_point)
+      |     ^~~~~~~~~~~~~~~~~
+/rds/general/user/avr24/home/Thesis/tests_cpp/../headers_cpp/fit_to_analytical.h: In constructor ‘SphericalResidual::SphericalResidual(double, double, double, double)’:
+/rds/general/user/avr24/home/Thesis/tests_cpp/../headers_cpp/fit_to_analytical.h:64:44: warning: ‘SphericalResidual::m_observed_radius’ will be initialized after [-Wreorder]
+   64 |     const double m_theta, m_phi, m_weight, m_observed_radius;
+      |                                            ^~~~~~~~~~~~~~~~~
+/rds/general/user/avr24/home/Thesis/tests_cpp/../headers_cpp/fit_to_analytical.h:64:34: warning:   ‘const double SphericalResidual::m_weight’ [-Wreorder]
+   64 |     const double m_theta, m_phi, m_weight, m_observed_radius;
+      |                                  ^~~~~~~~
+/rds/general/user/avr24/home/Thesis/tests_cpp/../headers_cpp/fit_to_analytical.h:70:5: warning:   when initialized here [-Wreorder]
+   70 |     SphericalResidual(double theta, double phi, double observed_radius, double weight)
+      |     ^~~~~~~~~~~~~~~~~
+/rds/general/user/avr24/home/Thesis/tests_cpp/../headers_cpp/fit_to_analytical.h: In instantiation of ‘OptiResult fit_MP(InterestPoint*, int, const double*, double*, double*, double*, int, int, ceres::TrustRegionStrategyType, ceres::LinearSolverType, bool, bool) [with Residual = SphericalResidual; int nb_params = 11]’:
+/rds/general/user/avr24/home/Thesis/tests_cpp/fit_to_analytical_test.cpp:89:54:   required from here
+/rds/general/user/avr24/home/Thesis/tests_cpp/../headers_cpp/fit_to_analytical.h:232:28: warning: comparison of integer expressions of different signedness: ‘std::vector<std::future<OptiResult> >::size_type’ {aka ‘long unsigned int’} and ‘const int’ [-Wsign-compare]
+  232 |         if (futures.size() >= nb_threads)
+      |             ~~~~~~~~~~~~~~~^~~~~~~~~~~~~
+/rds/general/user/avr24/home/Thesis/src_cpp/magnetopause.cpp: In function ‘void get_close_streamlines__mutithreaded_helper(const Matrix&, const Point*, float, float, float, int, float, float, int, int, std::vector<std::vector<Point> >&)’:
+/rds/general/user/avr24/home/Thesis/src_cpp/magnetopause.cpp:47:46: warning: unused parameter ‘theta_end’ [-Wunused-parameter]
+   47 |     int max_length, float theta_start, float theta_end,
+      |                                        ~~~~~~^~~~~~~~~
+In file included from /rds/general/user/avr24/home/Thesis/src_cpp/fit_to_analytical.cpp:1:
+/rds/general/user/avr24/home/Thesis/src_cpp/../headers_cpp/fit_to_analytical.h: In constructor ‘SphericalResidual::SphericalResidual(const InterestPoint&)’:
+/rds/general/user/avr24/home/Thesis/src_cpp/../headers_cpp/fit_to_analytical.h:64:44: warning: ‘SphericalResidual::m_observed_radius’ will be initialized after [-Wreorder]
+   64 |     const double m_theta, m_phi, m_weight, m_observed_radius;
+      |                                            ^~~~~~~~~~~~~~~~~
+/rds/general/user/avr24/home/Thesis/src_cpp/../headers_cpp/fit_to_analytical.h:64:34: warning:   ‘const double SphericalResidual::m_weight’ [-Wreorder]
+   64 |     const double m_theta, m_phi, m_weight, m_observed_radius;
+      |                                  ^~~~~~~~
+/rds/general/user/avr24/home/Thesis/src_cpp/../headers_cpp/fit_to_analytical.h:67:5: warning:   when initialized here [-Wreorder]
+   67 |     SphericalResidual(const InterestPoint& interest_point)
+      |     ^~~~~~~~~~~~~~~~~
+/rds/general/user/avr24/home/Thesis/src_cpp/../headers_cpp/fit_to_analytical.h: In constructor ‘SphericalResidual::SphericalResidual(double, double, double, double)’:
+/rds/general/user/avr24/home/Thesis/src_cpp/../headers_cpp/fit_to_analytical.h:64:44: warning: ‘SphericalResidual::m_observed_radius’ will be initialized after [-Wreorder]
+   64 |     const double m_theta, m_phi, m_weight, m_observed_radius;
+      |                                            ^~~~~~~~~~~~~~~~~
+/rds/general/user/avr24/home/Thesis/src_cpp/../headers_cpp/fit_to_analytical.h:64:34: warning:   ‘const double SphericalResidual::m_weight’ [-Wreorder]
+   64 |     const double m_theta, m_phi, m_weight, m_observed_radius;
+      |                                  ^~~~~~~~
+/rds/general/user/avr24/home/Thesis/src_cpp/../headers_cpp/fit_to_analytical.h:70:5: warning:   when initialized here [-Wreorder]
+   70 |     SphericalResidual(double theta, double phi, double observed_radius, double weight)
+      |     ^~~~~~~~~~~~~~~~~
+/rds/general/user/avr24/home/Thesis/src_cpp/fit_to_analytical.cpp: In function ‘void save_parameters(std::string, const std::vector<double>&)’:
+/rds/general/user/avr24/home/Thesis/src_cpp/fit_to_analytical.cpp:12:20: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<double>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+   12 |     for (int i=1; i<params.size(); i++) fs << ',' << params[i];
+      |                   ~^~~~~~~~~~~~~~
+In file included from /rds/general/user/avr24/home/Thesis/tests_cpp/full_process_test.cpp:6:
+/rds/general/user/avr24/home/Thesis/tests_cpp/../headers_cpp/fit_to_analytical.h: In constructor ‘SphericalResidual::SphericalResidual(const InterestPoint&)’:
+/rds/general/user/avr24/home/Thesis/tests_cpp/../headers_cpp/fit_to_analytical.h:64:44: warning: ‘SphericalResidual::m_observed_radius’ will be initialized after [-Wreorder]
+   64 |     const double m_theta, m_phi, m_weight, m_observed_radius;
+      |                                            ^~~~~~~~~~~~~~~~~
+/rds/general/user/avr24/home/Thesis/tests_cpp/../headers_cpp/fit_to_analytical.h:64:34: warning:   ‘const double SphericalResidual::m_weight’ [-Wreorder]
+   64 |     const double m_theta, m_phi, m_weight, m_observed_radius;
+      |                                  ^~~~~~~~
+/rds/general/user/avr24/home/Thesis/tests_cpp/../headers_cpp/fit_to_analytical.h:67:5: warning:   when initialized here [-Wreorder]
+   67 |     SphericalResidual(const InterestPoint& interest_point)
+      |     ^~~~~~~~~~~~~~~~~
+/rds/general/user/avr24/home/Thesis/tests_cpp/../headers_cpp/fit_to_analytical.h: In constructor ‘SphericalResidual::SphericalResidual(double, double, double, double)’:
+/rds/general/user/avr24/home/Thesis/tests_cpp/../headers_cpp/fit_to_analytical.h:64:44: warning: ‘SphericalResidual::m_observed_radius’ will be initialized after [-Wreorder]
+   64 |     const double m_theta, m_phi, m_weight, m_observed_radius;
+      |                                            ^~~~~~~~~~~~~~~~~
+/rds/general/user/avr24/home/Thesis/tests_cpp/../headers_cpp/fit_to_analytical.h:64:34: warning:   ‘const double SphericalResidual::m_weight’ [-Wreorder]
+   64 |     const double m_theta, m_phi, m_weight, m_observed_radius;
+      |                                  ^~~~~~~~
+/rds/general/user/avr24/home/Thesis/tests_cpp/../headers_cpp/fit_to_analytical.h:70:5: warning:   when initialized here [-Wreorder]
+   70 |     SphericalResidual(double theta, double phi, double observed_radius, double weight)
+      |     ^~~~~~~~~~~~~~~~~
+/rds/general/user/avr24/home/Thesis/tests_cpp/../headers_cpp/fit_to_analytical.h: In instantiation of ‘OptiResult fit_MP(InterestPoint*, int, const double*, double*, double*, double*, int, int, ceres::TrustRegionStrategyType, ceres::LinearSolverType, bool, bool) [with Residual = SphericalResidual; int nb_params = 11]’:
+/rds/general/user/avr24/home/Thesis/tests_cpp/full_process_test.cpp:137:61:   required from here
+/rds/general/user/avr24/home/Thesis/tests_cpp/../headers_cpp/fit_to_analytical.h:232:28: warning: comparison of integer expressions of different signedness: ‘std::vector<std::future<OptiResult> >::size_type’ {aka ‘long unsigned int’} and ‘const int’ [-Wsign-compare]
+  232 |         if (futures.size() >= nb_threads)
+      |             ~~~~~~~~~~~~~~~^~~~~~~~~~~~~
+/rds/general/user/avr24/home/Thesis/src_cpp/magnetopause.cpp: In function ‘void get_close_streamlines__mutithreaded_helper(const Matrix&, const Point*, float, float, float, int, float, float, int, int, std::vector<std::vector<Point> >&)’:
+/rds/general/user/avr24/home/Thesis/src_cpp/magnetopause.cpp:47:46: warning: unused parameter ‘theta_end’ [-Wunused-parameter]
+   47 |     int max_length, float theta_start, float theta_end,
+      |                                        ~~~~~~^~~~~~~~~
+In file included from /rds/general/user/avr24/home/Thesis/src_cpp/fit_to_analytical.cpp:1:
+/rds/general/user/avr24/home/Thesis/src_cpp/../headers_cpp/fit_to_analytical.h: In constructor ‘SphericalResidual::SphericalResidual(const InterestPoint&)’:
+/rds/general/user/avr24/home/Thesis/src_cpp/../headers_cpp/fit_to_analytical.h:64:44: warning: ‘SphericalResidual::m_observed_radius’ will be initialized after [-Wreorder]
+   64 |     const double m_theta, m_phi, m_weight, m_observed_radius;
+      |                                            ^~~~~~~~~~~~~~~~~
+/rds/general/user/avr24/home/Thesis/src_cpp/../headers_cpp/fit_to_analytical.h:64:34: warning:   ‘const double SphericalResidual::m_weight’ [-Wreorder]
+   64 |     const double m_theta, m_phi, m_weight, m_observed_radius;
+      |                                  ^~~~~~~~
+/rds/general/user/avr24/home/Thesis/src_cpp/../headers_cpp/fit_to_analytical.h:67:5: warning:   when initialized here [-Wreorder]
+   67 |     SphericalResidual(const InterestPoint& interest_point)
+      |     ^~~~~~~~~~~~~~~~~
+/rds/general/user/avr24/home/Thesis/src_cpp/../headers_cpp/fit_to_analytical.h: In constructor ‘SphericalResidual::SphericalResidual(double, double, double, double)’:
+/rds/general/user/avr24/home/Thesis/src_cpp/../headers_cpp/fit_to_analytical.h:64:44: warning: ‘SphericalResidual::m_observed_radius’ will be initialized after [-Wreorder]
+   64 |     const double m_theta, m_phi, m_weight, m_observed_radius;
+      |                                            ^~~~~~~~~~~~~~~~~
+/rds/general/user/avr24/home/Thesis/src_cpp/../headers_cpp/fit_to_analytical.h:64:34: warning:   ‘const double SphericalResidual::m_weight’ [-Wreorder]
+   64 |     const double m_theta, m_phi, m_weight, m_observed_radius;
+      |                                  ^~~~~~~~
+/rds/general/user/avr24/home/Thesis/src_cpp/../headers_cpp/fit_to_analytical.h:70:5: warning:   when initialized here [-Wreorder]
+   70 |     SphericalResidual(double theta, double phi, double observed_radius, double weight)
+      |     ^~~~~~~~~~~~~~~~~
+/rds/general/user/avr24/home/Thesis/src_cpp/fit_to_analytical.cpp: In function ‘void save_parameters(std::string, const std::vector<double>&)’:
+/rds/general/user/avr24/home/Thesis/src_cpp/fit_to_analytical.cpp:12:20: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<double>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+   12 |     for (int i=1; i<params.size(); i++) fs << ',' << params[i];
+      |                   ~^~~~~~~~~~~~~~
+Run1_28800
+File reading done. Time taken: 1.60894s
+Preprocessing files done. Time taken: 4.49837s
+Interest point search done. Time taken: 6.86692s
+Interest point processing done. Time taken: 0.000414064s
+number of threads: 256
+Final parameters with average cost 3.45928 :
+{ 8.49343, 0.352918, 0.000781271, 0.0337744, 3.14305, 0.633285, 0.158694, 3.16161, 0.628197, 0.162115, 0.5 }
+Fitting done. Time taken: 1.30594s
+Interest points, parameters and file saving done. Time taken: 15.2147s
+Finished fitting the data point at Run1, timestep 28800
+Time taken: 30 seconds total.
+
+Run1_27000
+File reading done. Time taken: 1.55015s
+Preprocessing files done. Time taken: 4.49136s
+Interest point search done. Time taken: 6.66379s
+Interest point processing done. Time taken: 0.000417544s
+number of threads: 256
+Final parameters with average cost 2.98691 :
+{ 8.73007, 0.357115, 0.000584985, 0.0135331, 3.46667, 0.629727, 0.196841, 3.54351, 0.624676, 0.199565, 0.5 }
+Fitting done. Time taken: 1.30827s
+Interest points, parameters and file saving done. Time taken: 16.3141s
+Finished fitting the data point at Run1, timestep 27000
+Time taken: 30 seconds total.
+
+Run1_23100
+File reading done. Time taken: 2.47347s
+Preprocessing files done. Time taken: 4.95729s
+Interest point search done. Time taken: 6.92003s
+Interest point processing done. Time taken: 0.000424974s
+number of threads: 256
+Final parameters with average cost 1.17937 :
+{ 9.94017, 0.44176, 0.00032077, 0.0287271, 2.7577, 1.08595, 0.276584, 2.51158, 1.10274, 0.312254, 0.226188 }
+Fitting done. Time taken: 0.994124s
+Interest points, parameters and file saving done. Time taken: 14.5015s
+Finished fitting the data point at Run1, timestep 23100
+Time taken: 31 seconds total.
+
+Run1_22500
+File reading done. Time taken: 1.87933s
+Preprocessing files done. Time taken: 5.33708s
+Interest point search done. Time taken: 6.82819s
+Interest point processing done. Time taken: 0.000408123s
+number of threads: 256
+Final parameters with average cost 1.32079 :
+{ 9.89493, 0.413686, 0.000961477, 0.0511021, 2.63267, 1.09352, 0.227808, 2.57229, 1.09878, 0.229871, 0.247279 }
+Fitting done. Time taken: 0.849749s
+Interest points, parameters and file saving done. Time taken: 15.6747s
+Finished fitting the data point at Run1, timestep 22500
+Time taken: 30 seconds total.
+
+Run1_21900
+File reading done. Time taken: 1.78455s
+Preprocessing files done. Time taken: 4.64955s
+Interest point search done. Time taken: 6.72246s
+Interest point processing done. Time taken: 0.000419833s
+number of threads: 256
+Final parameters with average cost 1.39882 :
+{ 9.13071, 0.40537, 0.000241991, 0.0461055, 1.62058, 0.969958, 0.161182, 1.54169, 1.02237, 0.145328, 0.313271 }
+Fitting done. Time taken: 1.05591s
+Interest points, parameters and file saving done. Time taken: 15.9426s
+Finished fitting the data point at Run1, timestep 21900
+Time taken: 31 seconds total.
+
+Run1_21000
+File reading done. Time taken: 1.42399s
+Preprocessing files done. Time taken: 5.30853s
+Interest point search done. Time taken: 6.75319s
+Interest point processing done. Time taken: 0.000407243s
+number of threads: 256
+Final parameters with average cost 1.68441 :
+{ 8.9483, 0.417488, -0.000928066, 0.0323612, 1.38398, 0.966119, 0.127379, 1.28761, 0.979068, 0.122402, 0.326014 }
+Fitting done. Time taken: 1.06179s
+Interest points, parameters and file saving done. Time taken: 15.7606s
+Finished fitting the data point at Run1, timestep 21000
+Time taken: 30 seconds total.
+
+Run1_20100
+File reading done. Time taken: 1.25822s
+Preprocessing files done. Time taken: 4.61687s
+Interest point search done. Time taken: 6.75028s
+Interest point processing done. Time taken: 0.000410463s
+number of threads: 256
+Final parameters with average cost 1.61302 :
+{ 8.46311, 0.416715, -0.000547468, 0.0187563, 3.42156, 0.157676, 0.1, 3.54152, 0.158259, 0.1, 0.378471 }
+Fitting done. Time taken: 1.02181s
+Interest points, parameters and file saving done. Time taken: 15.4371s
+Finished fitting the data point at Run1, timestep 20100
+Time taken: 29 seconds total.
+
+Run2_28800
+File reading done. Time taken: 2.07032s
+Preprocessing files done. Time taken: 4.63181s
+Interest point search done. Time taken: 6.79211s
+Interest point processing done. Time taken: 0.000417743s
+number of threads: 256
+Final parameters with average cost 5.49864 :
+{ 8.55244, 0.344108, -0.00157536, 0.0530866, 3.2919, 0.368997, 0.206224, 3.18156, 0.364892, 0.212769, 0.5 }
+Fitting done. Time taken: 1.35049s
+Interest points, parameters and file saving done. Time taken: 15.3606s
+Finished fitting the data point at Run2, timestep 28800
+Time taken: 31 seconds total.
+
+Run2_27000
+File reading done. Time taken: 1.19353s
+Preprocessing files done. Time taken: 5.03978s
+Interest point search done. Time taken: 6.74009s
+Interest point processing done. Time taken: 0.000423623s
+number of threads: 256
+Final parameters with average cost 5.55519 :
+{ 8.57463, 0.347992, 0.00153523, 0.052396, 3.81597, 0.467226, 0.195926, 3.27181, 0.450958, 0.21129, 0.5 }
+Fitting done. Time taken: 1.09845s
+Interest points, parameters and file saving done. Time taken: 16.021s
+Finished fitting the data point at Run2, timestep 27000
+Time taken: 30 seconds total.
+
+Run2_23100
+File reading done. Time taken: 1.37232s
+Preprocessing files done. Time taken: 4.93975s
+Interest point search done. Time taken: 6.79541s
+Interest point processing done. Time taken: 0.000412463s
+number of threads: 256
+Final parameters with average cost 0.931544 :
+{ 9.9252, 0.412109, -0.000139733, 0.0262372, 2.86538, 1.96232, 1, 3.16972, 2, 1, 0.296419 }
+Fitting done. Time taken: 1.24761s
+Interest points, parameters and file saving done. Time taken: 15.8004s
+Finished fitting the data point at Run2, timestep 23100
+Time taken: 31 seconds total.
+
+Run2_22500
+File reading done. Time taken: 1.29856s
+Preprocessing files done. Time taken: 5.10332s
+Interest point search done. Time taken: 6.7903s
+Interest point processing done. Time taken: 0.000427724s
+number of threads: 256
+Final parameters with average cost 1.23919 :
+{ 10.3127, 0.419306, 0.000910851, 0.0514123, 3.1207, 1.1158, 0.289303, 2.88752, 1.16763, 0.325187, 0.214948 }
+Fitting done. Time taken: 0.896284s
+Interest points, parameters and file saving done. Time taken: 15.5806s
+Finished fitting the data point at Run2, timestep 22500
+Time taken: 30 seconds total.
+
+Run2_21900
+File reading done. Time taken: 2.48423s
+Preprocessing files done. Time taken: 4.77457s
+Interest point search done. Time taken: 6.87993s
+Interest point processing done. Time taken: 0.000417053s
+number of threads: 256
+Final parameters with average cost 1.39882 :
+{ 9.13072, 0.40537, 0.000241991, 0.0461055, 1.62062, 0.96996, 0.16117, 1.54172, 1.02237, 0.145324, 0.313271 }
+Fitting done. Time taken: 1.17089s
+Interest points, parameters and file saving done. Time taken: 15.6891s
+Finished fitting the data point at Run2, timestep 21900
+Time taken: 31 seconds total.
+
+Run2_21000
+File reading done. Time taken: 1.21533s
+Preprocessing files done. Time taken: 4.4126s
+Interest point search done. Time taken: 6.73241s
+Interest point processing done. Time taken: 0.000407583s
+number of threads: 256
+Final parameters with average cost 1.68441 :
+{ 8.94831, 0.417489, -0.00092807, 0.0323611, 1.38426, 0.966116, 0.127331, 1.28747, 0.979068, 0.122412, 0.326012 }
+Fitting done. Time taken: 1.01323s
+Interest points, parameters and file saving done. Time taken: 16.6622s
+Finished fitting the data point at Run2, timestep 21000
+Time taken: 30 seconds total.
+
+Run2_20100
+File reading done. Time taken: 1.23877s
+Preprocessing files done. Time taken: 5.10843s
+Interest point search done. Time taken: 6.83154s
+Interest point processing done. Time taken: 0.000419403s
+number of threads: 256
+Final parameters with average cost 1.61331 :
+{ 8.4639, 0.416377, -0.000548333, 0.0187537, 3.64944, 0.161247, 0.1, 3.67988, 0.160654, 0.1, 0.379033 }
+Fitting done. Time taken: 1.322s
+Interest points, parameters and file saving done. Time taken: 17.4391s
+Finished fitting the data point at Run2, timestep 20100
+Time taken: 32 seconds total.
+
+Run4_28800
+File reading done. Time taken: 1.8555s
+Preprocessing files done. Time taken: 5.15764s
+Interest point search done. Time taken: 6.98308s
+Interest point processing done. Time taken: 0.000425603s
+number of threads: 256
+Final parameters with average cost 5.73787 :
+{ 8.57397, 0.330847, 0.00531036, 0.071346, 3.41627, 0.444398, 0.196961, 3.12694, 0.442014, 0.1994, 0.5 }
+Fitting done. Time taken: 1.40728s
+Interest points, parameters and file saving done. Time taken: 15.908s
+Finished fitting the data point at Run4, timestep 28800
+Time taken: 32 seconds total.
+
+Run4_27000
+File reading done. Time taken: 2.0117s
+Preprocessing files done. Time taken: 4.55352s
+Interest point search done. Time taken: 6.97309s
+Interest point processing done. Time taken: 0.000454524s
+number of threads: 256
+Final parameters with average cost 4.1556 :
+{ 8.63442, 0.347702, 0.00115148, 0.0386738, 3.8869, 0.470877, 0.205332, 3.5904, 0.464421, 0.213686, 0.5 }
+Fitting done. Time taken: 1.71121s
+Interest points, parameters and file saving done. Time taken: 14.4204s
+Finished fitting the data point at Run4, timestep 27000
+Time taken: 29 seconds total.
+
+Run4_23100
+File reading done. Time taken: 2.48698s
+Preprocessing files done. Time taken: 4.20698s
+Interest point search done. Time taken: 4.34726s
+Interest point processing done. Time taken: 0.000348101s
+number of threads: 256
+Final parameters with average cost 1.01747 :
+{ 11.5661, 0.460204, -0.000383596, 0.00332001, 3.94949, 1.59332, 1, 4, 1.81503, 1, 0.139349 }
+Fitting done. Time taken: 1.68225s
+Interest points, parameters and file saving done. Time taken: 13.9814s
+Finished fitting the data point at Run4, timestep 23100
+Time taken: 27 seconds total.
+
+Run4_22500
+File reading done. Time taken: 1.53296s
+Preprocessing files done. Time taken: 5.36321s
+Interest point search done. Time taken: 6.97556s
+Interest point processing done. Time taken: 0.000437784s
+number of threads: 256
+Final parameters with average cost 1.47808 :
+{ 12.0449, 0.475703, -0.00015834, 0.0365954, 4, 1.16364, 0.338941, 3.68266, 1.16158, 0.409185, 0.0131818 }
+Fitting done. Time taken: 1.19586s
+Interest points, parameters and file saving done. Time taken: 13.6713s
+Finished fitting the data point at Run4, timestep 22500
+Time taken: 29 seconds total.
+
+Run4_21900
+File reading done. Time taken: 1.83794s
+Preprocessing files done. Time taken: 5.43273s
+Interest point search done. Time taken: 6.99307s
+Interest point processing done. Time taken: 0.000488675s
+number of threads: 256
+Final parameters with average cost 1.2541 :
+{ 9.4276, 0.448988, -0.000991573, 0.0363359, 2.48426, 0.148743, 0.1, 1.73987, 0.155069, 0.1, 0.198701 }
+Fitting done. Time taken: 1.3092s
+Interest points, parameters and file saving done. Time taken: 13.4442s
+Finished fitting the data point at Run4, timestep 21900
+Time taken: 29 seconds total.
+
+Run4_21000
+File reading done. Time taken: 1.54462s
+Preprocessing files done. Time taken: 5.95753s
+Interest point search done. Time taken: 6.9879s
+Interest point processing done. Time taken: 0.000409123s
+number of threads: 256
+Final parameters with average cost 1.18421 :
+{ 9.65535, 0.454912, 0.0011479, 0.036692, 1.06259, 1.03954, 0.201151, 1.07713, 1.03505, 0.156885, 0.177413 }
+Fitting done. Time taken: 1.31844s
+Interest points, parameters and file saving done. Time taken: 18.9659s
+Finished fitting the data point at Run4, timestep 21000
+Time taken: 36 seconds total.
+
+Run4_20100
+File reading done. Time taken: 2.07595s
+Preprocessing files done. Time taken: 4.63053s
+Interest point search done. Time taken: 6.81903s
+Interest point processing done. Time taken: 0.000419133s
+number of threads: 256
+Final parameters with average cost 0.95678 :
+{ 9.78437, 0.465879, -0.000818267, 0.0341544, 1.31095, 1.03214, 0.199365, 1.2126, 1.03409, 0.203598, 0.16102 }
+Fitting done. Time taken: 1.33903s
+Interest points, parameters and file saving done. Time taken: 16.3948s
+Finished fitting the data point at Run4, timestep 20100
+Time taken: 31 seconds total.
+
+Run5_28800
+File reading done. Time taken: 1.87591s
+Preprocessing files done. Time taken: 5.68893s
+Interest point search done. Time taken: 7.1626s
+Interest point processing done. Time taken: 0.000469385s
+number of threads: 256
+Final parameters with average cost 2.4367 :
+{ 8.1314, 0.362014, 0.000473432, 0.0279485, 2.98477, 0.544045, 0.154485, 2.97013, 0.538584, 0.154254, 0.5 }
+Fitting done. Time taken: 1.43284s
+Interest points, parameters and file saving done. Time taken: 16.4542s
+Finished fitting the data point at Run5, timestep 28800
+Time taken: 33 seconds total.
+
+Run5_27000
+File reading done. Time taken: 1.72761s
+Preprocessing files done. Time taken: 5.03839s
+Interest point search done. Time taken: 6.89906s
+Interest point processing done. Time taken: 0.000411433s
+number of threads: 256
+Final parameters with average cost 2.43421 :
+{ 8.33541, 0.356543, 0.000434304, 0.0255052, 3.41545, 0.534468, 0.189187, 3.45334, 0.539471, 0.187171, 0.5 }
+Fitting done. Time taken: 1.30205s
+Interest points, parameters and file saving done. Time taken: 8.98407s
+Finished fitting the data point at Run5, timestep 27000
+Time taken: 24 seconds total.
+
+Run5_23100
+File reading done. Time taken: 1.2117s
+Preprocessing files done. Time taken: 7.10199s
+Interest point search done. Time taken: 7.29766s
+Interest point processing done. Time taken: 0.000465034s
+number of threads: 256
+Final parameters with average cost 0.780602 :
+{ 8.94026, 0.413894, 9.20389e-05, 0.0316633, 2.83423, 0.816197, 0.19231, 2.63715, 0.86759, 0.188249, 0.324973 }
+Fitting done. Time taken: 1.12902s
+Interest points, parameters and file saving done. Time taken: 17.2975s
+Finished fitting the data point at Run5, timestep 23100
+Time taken: 34 seconds total.
+
+Run5_22500
+File reading done. Time taken: 1.6557s
+Preprocessing files done. Time taken: 4.5571s
+Interest point search done. Time taken: 6.8467s
+Interest point processing done. Time taken: 0.000474125s
+number of threads: 256
+Final parameters with average cost 0.862324 :
+{ 9.29879, 0.444083, 0.000651782, 0.0217217, 2.59826, 1.0356, 0.192906, 2.5165, 1.03766, 0.197071, 0.26205 }
+Fitting done. Time taken: 1.10857s
+Interest points, parameters and file saving done. Time taken: 16.5109s
+Finished fitting the data point at Run5, timestep 22500
+Time taken: 31 seconds total.
+
+Run5_21900
+File reading done. Time taken: 1.92221s
+Preprocessing files done. Time taken: 6.49762s
+Interest point search done. Time taken: 7.24199s
+Interest point processing done. Time taken: 0.000421133s
+number of threads: 256
+Final parameters with average cost 0.936282 :
+{ 8.50727, 0.429857, 0.000427096, 0.0196683, 1.53197, 0.639366, 0.194176, 2.22254, 0.531347, 0.1, 0.336287 }
+Fitting done. Time taken: 1.28254s
+Interest points, parameters and file saving done. Time taken: 16.4289s
+Finished fitting the data point at Run5, timestep 21900
+Time taken: 34 seconds total.
+
+Run5_21000
+File reading done. Time taken: 1.79983s
+Preprocessing files done. Time taken: 4.68008s
+Interest point search done. Time taken: 6.52858s
+Interest point processing done. Time taken: 0.000420573s
+number of threads: 256
+Final parameters with average cost 1.02973 :
+{ 8.42844, 0.426001, 0.000157949, 0.0233373, 1.18265, 0.89247, 0.147811, 2.34084, 0.551819, 0.1, 0.343095 }
+Fitting done. Time taken: 1.13596s
+Interest points, parameters and file saving done. Time taken: 16.9075s
+Finished fitting the data point at Run5, timestep 21000
+Time taken: 31 seconds total.
+
+Run5_20100
+File reading done. Time taken: 2.70316s
+Preprocessing files done. Time taken: 8.52333s
+Interest point search done. Time taken: 7.22307s
+Interest point processing done. Time taken: 0.000429274s
+number of threads: 256
+Final parameters with average cost 0.973843 :
+{ 8.38244, 0.41551, 0.000701855, 0.0353064, 1.14876, 0.500838, 0.21433, 2.12546, 0.527215, 0.122728, 0.34812 }
+Fitting done. Time taken: 1.29845s
+Interest points, parameters and file saving done. Time taken: 15.2884s
+Finished fitting the data point at Run5, timestep 20100
+Time taken: 35 seconds total.
+
+Run9_28800
+File reading done. Time taken: 1.71742s
+Preprocessing files done. Time taken: 5.49123s
+Interest point search done. Time taken: 6.93175s
+Interest point processing done. Time taken: 0.000418273s
+number of threads: 256
+Final parameters with average cost 6.70569 :
+{ 8.58758, 0.347319, 0.00215497, 0.0539548, 3.9054, 0.534142, 0.179988, 3.60662, 0.522305, 0.188207, 0.5 }
+Fitting done. Time taken: 1.29359s
+Interest points, parameters and file saving done. Time taken: 16.9066s
+Finished fitting the data point at Run9, timestep 28800
+Time taken: 33 seconds total.
+
+Run9_27000
+File reading done. Time taken: 1.14866s
+Preprocessing files done. Time taken: 5.75266s
+Interest point search done. Time taken: 7.06716s
+Interest point processing done. Time taken: 0.000445554s
+number of threads: 256
+Final parameters with average cost 4.73593 :
+{ 8.59561, 0.348818, -0.000260957, 0.0305556, 3.27544, 0.546596, 0.191719, 3.29126, 0.544045, 0.193594, 0.5 }
+Fitting done. Time taken: 1.64361s
+Interest points, parameters and file saving done. Time taken: 16.0022s
+Finished fitting the data point at Run9, timestep 27000
+Time taken: 32 seconds total.
+
+Run9_23100
+File reading done. Time taken: 1.55065s
+Preprocessing files done. Time taken: 5.36052s
+Interest point search done. Time taken: 7.05545s
+Interest point processing done. Time taken: 0.000430843s
+number of threads: 256
+Final parameters with average cost 1.45107 :
+{ 10.5088, 0.427078, -0.00095234, 0.0300035, 3.15332, 1.35066, 0.662154, 3.12303, 1.54636, 0.77079, 0.234851 }
+Fitting done. Time taken: 1.35121s
+Interest points, parameters and file saving done. Time taken: 17.1182s
+Finished fitting the data point at Run9, timestep 23100
+Time taken: 32 seconds total.
+
+Run9_22500
+File reading done. Time taken: 1.43647s
+Preprocessing files done. Time taken: 5.40245s
+Interest point search done. Time taken: 6.92522s
+Interest point processing done. Time taken: 0.000421773s
+number of threads: 256
+Final parameters with average cost 1.59602 :
+{ 9.88209, 0.439604, -0.000798885, 0.0277613, 2.60955, 1.09569, 0.217301, 2.61917, 1.0982, 0.224851, 0.242432 }
+Fitting done. Time taken: 1.12192s
+Interest points, parameters and file saving done. Time taken: 13.6976s
+Finished fitting the data point at Run9, timestep 22500
+Time taken: 29 seconds total.
+
+Run9_21900
+File reading done. Time taken: 1.29916s
+Preprocessing files done. Time taken: 5.63053s
+Interest point search done. Time taken: 4.82614s
+Interest point processing done. Time taken: 0.000352701s
+number of threads: 256
+Final parameters with average cost 1.57512 :
+{ 9.07218, 0.431291, -0.000297287, 0.0212155, 1.55744, 0.973307, 0.151606, 1.53019, 1.02032, 0.135529, 0.314509 }
+Fitting done. Time taken: 1.12414s
+Interest points, parameters and file saving done. Time taken: 17.6559s
+Finished fitting the data point at Run9, timestep 21900
+Time taken: 31 seconds total.
+
+Run9_21000
+File reading done. Time taken: 1.49972s
+Preprocessing files done. Time taken: 7.95181s
+Interest point search done. Time taken: 6.86249s
+Interest point processing done. Time taken: 0.000423903s
+number of threads: 256
+Final parameters with average cost 1.59824 :
+{ 8.82546, 0.42905, -0.000495661, 0.0137219, 1.28253, 0.967257, 0.1, 1.16245, 0.974825, 0.1, 0.34602 }
+Fitting done. Time taken: 1.02365s
+Interest points, parameters and file saving done. Time taken: 13.361s
+Finished fitting the data point at Run9, timestep 21000
+Time taken: 31 seconds total.
+
+Run9_20100
+File reading done. Time taken: 1.51492s
+Preprocessing files done. Time taken: 4.87133s
+Interest point search done. Time taken: 6.98856s
+Interest point processing done. Time taken: 0.000434153s
+number of threads: 256
+Final parameters with average cost 1.64784 :
+{ 8.33226, 0.407087, -5.28329e-05, 0.0129077, 0.828444, 0.102871, 0.1, 0, 0.802061, 0.1, 0.41721 }
+Fitting done. Time taken: 1.32058s
+Interest points, parameters and file saving done. Time taken: 13.4153s
+Finished fitting the data point at Run9, timestep 20100
+Time taken: 28 seconds total.
+
+Run11_28800
+File reading done. Time taken: 2.0562s
+Preprocessing files done. Time taken: 5.21869s
+Interest point search done. Time taken: 7.03255s
+Interest point processing done. Time taken: 0.000423473s
+number of threads: 256
+Final parameters with average cost 15.7353 :
+{ 10.4133, 0.303684, -0.00297075, 0.0576426, 4, 0.352135, 0.279983, 4, 0.340248, 0.283354, 0.5 }
+Fitting done. Time taken: 1.59851s
+Interest points, parameters and file saving done. Time taken: 11.7893s
+Finished fitting the data point at Run11, timestep 28800
+Time taken: 28 seconds total.
+
+Run11_27000
+File reading done. Time taken: 1.42956s
+Preprocessing files done. Time taken: 4.03894s
+Interest point search done. Time taken: 4.44263s
+Interest point processing done. Time taken: 0.000347651s
+number of threads: 256
+Final parameters with average cost 13.3529 :
+{ 10.184, 0.300177, -0.00145598, 0.0681604, 4, 0.395079, 0.256211, 4, 0.365819, 0.258393, 0.5 }
+Fitting done. Time taken: 1.66246s
+Interest points, parameters and file saving done. Time taken: 11.5367s
+Finished fitting the data point at Run11, timestep 27000
+Time taken: 23 seconds total.
+
+Run11_23100
+File reading done. Time taken: 1.73781s
+Preprocessing files done. Time taken: 4.49879s
+Interest point search done. Time taken: 6.82444s
+Interest point processing done. Time taken: 0.000460395s
+number of threads: 256
+Final parameters with average cost 1.93966 :
+{ 11.3939, 0.36965, 0.000213087, 0.0394832, 4, 1.92258, 1, 4, 1.92501, 1, 0.299288 }
+Fitting done. Time taken: 1.60952s
+Interest points, parameters and file saving done. Time taken: 14.2861s
+Finished fitting the data point at Run11, timestep 23100
+Time taken: 29 seconds total.
+
+Run11_22500
+File reading done. Time taken: 1.32661s
+Preprocessing files done. Time taken: 4.87904s
+Interest point search done. Time taken: 7.04732s
+Interest point processing done. Time taken: 0.000415422s
+number of threads: 256
+Final parameters with average cost 3.32115 :
+{ 11.3177, 0.380111, 0.0022339, 0.0664774, 2.58942, 1.36166, 0.415169, 2.5248, 1.42698, 0.50533, 0.241458 }
+Fitting done. Time taken: 1.56895s
+Interest points, parameters and file saving done. Time taken: 16.3644s
+Finished fitting the data point at Run11, timestep 22500
+Time taken: 32 seconds total.
+
+Run11_21900
+File reading done. Time taken: 2.43469s
+Preprocessing files done. Time taken: 6.5189s
+Interest point search done. Time taken: 7.00345s
+Interest point processing done. Time taken: 0.000423514s
+number of threads: 256
+Final parameters with average cost 3.76656 :
+{ 9.06013, 0.342728, 0.00210196, 0.0557453, 2.08441, 0.550622, 0.1, 1.73285, 0.533058, 0.1, 0.437683 }
+Fitting done. Time taken: 1.46483s
+Interest points, parameters and file saving done. Time taken: 13.4098s
+Finished fitting the data point at Run11, timestep 21900
+Time taken: 31 seconds total.
+
+Run11_21000
+File reading done. Time taken: 2.01251s
+Preprocessing files done. Time taken: 5.37067s
+Interest point search done. Time taken: 6.99294s
+Interest point processing done. Time taken: 0.000418063s
+number of threads: 256
+Final parameters with average cost 3.97312 :
+{ 8.94891, 0.364229, 0.00197798, 0.0315425, 1.52114, 0.538447, 0.1, 1.13127, 0.49112, 0.1, 0.44312 }
+Fitting done. Time taken: 1.41963s
+Interest points, parameters and file saving done. Time taken: 11.5165s
+Finished fitting the data point at Run11, timestep 21000
+Time taken: 27 seconds total.
+
+Run11_20100
+File reading done. Time taken: 1.85467s
+Preprocessing files done. Time taken: 5.18088s
+Interest point search done. Time taken: 6.78898s
+Interest point processing done. Time taken: 0.000432324s
+number of threads: 256
+Final parameters with average cost 4.58144 :
+{ 8.77581, 0.361918, -0.00108721, 0.0155893, 0, 0.604476, 0.1, 0, 0.36304, 0.201193, 0.478334 }
+Fitting done. Time taken: 1.16217s
+Interest points, parameters and file saving done. Time taken: 19.7269s
+Finished fitting the data point at Run11, timestep 20100
+Time taken: 35 seconds total.
+
+Run12_28800
+File reading done. Time taken: 3.06222s
+Preprocessing files done. Time taken: 8.25415s
+Interest point search done. Time taken: 7.4133s
+Interest point processing done. Time taken: 0.000443004s
+number of threads: 256
+Final parameters with average cost 3.39976 :
+{ 7.85307, 0.369345, -0.000657839, 0.029416, 2.69483, 0.44163, 0.174581, 2.45138, 0.372269, 0.184569, 0.5 }
+Fitting done. Time taken: 1.47763s
+Interest points, parameters and file saving done. Time taken: 14.8209s
+Finished fitting the data point at Run12, timestep 28800
+Time taken: 35 seconds total.
+
+Run12_27000
+File reading done. Time taken: 2.30505s
+Preprocessing files done. Time taken: 5.17392s
+Interest point search done. Time taken: 6.96324s
+Interest point processing done. Time taken: 0.000402113s
+number of threads: 256
+Final parameters with average cost 3.39926 :
+{ 7.83468, 0.369287, 0.00108362, 0.0359626, 2.86671, 0.466406, 0.180718, 2.46041, 0.456348, 0.183094, 0.5 }
+Fitting done. Time taken: 1.54608s
+Interest points, parameters and file saving done. Time taken: 21.8048s
+Finished fitting the data point at Run12, timestep 27000
+Time taken: 38 seconds total.
+
+Run12_23100
+File reading done. Time taken: 2.16258s
+Preprocessing files done. Time taken: 7.74687s
+Interest point search done. Time taken: 7.265s
+Interest point processing done. Time taken: 0.000459254s
+number of threads: 256
+Final parameters with average cost 0.522988 :
+{ 9.22175, 0.463902, 0.000374889, 0.015824, 2.49741, 1.01465, 0.404099, 2.25582, 1.03438, 0.467748, 0.233536 }
+Fitting done. Time taken: 1.20627s
+Interest points, parameters and file saving done. Time taken: 9.92504s
+Finished fitting the data point at Run12, timestep 23100
+Time taken: 29 seconds total.
+
+Run12_22500
+File reading done. Time taken: 1.78799s
+Preprocessing files done. Time taken: 6.07664s
+Interest point search done. Time taken: 6.92026s
+Interest point processing done. Time taken: 0.000426023s
+number of threads: 256
+Final parameters with average cost 0.766474 :
+{ 9.50678, 0.460822, 0.000684698, 0.0261779, 3.01634, 1.09307, 0.2531, 2.9631, 1.09866, 0.256349, 0.208033 }
+Fitting done. Time taken: 1.29964s
+Interest points, parameters and file saving done. Time taken: 19.4055s
+Finished fitting the data point at Run12, timestep 22500
+Time taken: 35 seconds total.
+
+Run12_21900
+File reading done. Time taken: 2.1s
+Preprocessing files done. Time taken: 4.91481s
+Interest point search done. Time taken: 6.80423s
+Interest point processing done. Time taken: 0.000408323s
+number of threads: 256
+Final parameters with average cost 0.868115 :
+{ 8.89034, 0.440689, 0.000956761, 0.0372142, 2.34717, 0.967422, 0.206874, 2.26672, 0.973901, 0.207668, 0.264362 }
+Fitting done. Time taken: 1.38923s
+Interest points, parameters and file saving done. Time taken: 16.5032s
+Finished fitting the data point at Run12, timestep 21900
+Time taken: 32 seconds total.
+
+Run12_21000
+File reading done. Time taken: 2.31885s
+Preprocessing files done. Time taken: 4.81032s
+Interest point search done. Time taken: 6.86819s
+Interest point processing done. Time taken: 0.000500195s
+number of threads: 256
+Final parameters with average cost 0.848606 :
+{ 8.92164, 0.447207, 0.000504882, 0.0367242, 2.42128, 0.965385, 0.198096, 2.34523, 0.970919, 0.197638, 0.253142 }
+Fitting done. Time taken: 1.16056s
+Interest points, parameters and file saving done. Time taken: 22.2916s
+Finished fitting the data point at Run12, timestep 21000
+Time taken: 39 seconds total.
+
+Run12_20100
+File reading done. Time taken: 2.73035s
+Preprocessing files done. Time taken: 4.69006s
+Interest point search done. Time taken: 6.88338s
+Interest point processing done. Time taken: 0.000438514s
+number of threads: 256
+Final parameters with average cost 0.812898 :
+{ 8.77999, 0.459881, 0.000777782, 0.0208082, 2.20486, 0.957465, 0.181149, 2.1638, 0.962278, 0.169172, 0.264868 }
+Fitting done. Time taken: 1.2434s
+Interest points, parameters and file saving done. Time taken: 25.152s
+Finished fitting the data point at Run12, timestep 20100
+Time taken: 41 seconds total.
+
+Run13_28800
+File reading done. Time taken: 6.59763s
+Preprocessing files done. Time taken: 3.94945s
+Interest point search done. Time taken: 6.7723s
+Interest point processing done. Time taken: 0.000418183s
+number of threads: 256
+Final parameters with average cost 11.9956 :
+{ 9.86046, 0.308447, -0.00197893, 0.0757187, 4, 0.301712, 0.245085, 4, 0.311816, 0.242946, 0.5 }
+Fitting done. Time taken: 1.24448s
+Interest points, parameters and file saving done. Time taken: 14.6911s
+Finished fitting the data point at Run13, timestep 28800
+Time taken: 33 seconds total.
+
+Run13_27000
+File reading done. Time taken: 1.18832s
+Preprocessing files done. Time taken: 6.15494s
+Interest point search done. Time taken: 7.03923s
+Interest point processing done. Time taken: 0.000452084s
+number of threads: 256
+Final parameters with average cost 12.1056 :
+{ 10.1297, 0.310123, 0.000964652, 0.060938, 4, 0.307223, 0.286302, 4, 0.318025, 0.288088, 0.5 }
+Fitting done. Time taken: 1.67751s
+Interest points, parameters and file saving done. Time taken: 17.2431s
+Finished fitting the data point at Run13, timestep 27000
+Time taken: 34 seconds total.
+
+Run13_23100
+File reading done. Time taken: 2.44776s
+Preprocessing files done. Time taken: 6.26403s
+Interest point search done. Time taken: 7.08701s
+Interest point processing done. Time taken: 0.000443284s
+number of threads: 256
+Final parameters with average cost 4.10189 :
+{ 10.5207, 0.371994, 6.71914e-05, 0.0282862, 3.77221, 0.726624, 0.163916, 3.73255, 0.729321, 0.162499, 0.344555 }
+Fitting done. Time taken: 1.01133s
+Interest points, parameters and file saving done. Time taken: 22.6723s
+Finished fitting the data point at Run13, timestep 23100
+Time taken: 39 seconds total.
+
+Run13_22500
+File reading done. Time taken: 1.59317s
+Preprocessing files done. Time taken: 5.34004s
+Interest point search done. Time taken: 7.02347s
+Interest point processing done. Time taken: 0.000425503s
+number of threads: 256
+Final parameters with average cost 1.88802 :
+{ 11.138, 0.403657, -0.00141533, 0.0359451, 2.70275, 1.35255, 0.425255, 2.81752, 1.59638, 0.52436, 0.245501 }
+Fitting done. Time taken: 1.05043s
+Interest points, parameters and file saving done. Time taken: 22.2579s
+Finished fitting the data point at Run13, timestep 22500
+Time taken: 38 seconds total.
+
+Run13_21900
+File reading done. Time taken: 1.86832s
+Preprocessing files done. Time taken: 5.42802s
+Interest point search done. Time taken: 7.09915s
+Interest point processing done. Time taken: 0.000427054s
+number of threads: 256
+Final parameters with average cost 2.28444 :
+{ 9.03342, 0.352041, -0.000223428, 0.0436442, 2.60116, 0.541451, 0.1, 2.57977, 0.38153, 0.135845, 0.427401 }
+Fitting done. Time taken: 1.56419s
+Interest points, parameters and file saving done. Time taken: 20.3579s
+Finished fitting the data point at Run13, timestep 21900
+Time taken: 36 seconds total.
+
+Run13_21000
+File reading done. Time taken: 2.37355s
+Preprocessing files done. Time taken: 5.17238s
+Interest point search done. Time taken: 7.12452s
+Interest point processing done. Time taken: 0.000409652s
+number of threads: 256
+Final parameters with average cost 2.26103 :
+{ 9.08856, 0.32881, 0.000247827, 0.0651952, 3.0867, 0.556451, 0.1, 2.67456, 0.562881, 0.1, 0.432546 }
+Fitting done. Time taken: 1.38317s
+Interest points, parameters and file saving done. Time taken: 19.7089s
+Finished fitting the data point at Run13, timestep 21000
+Time taken: 36 seconds total.
+
+Run13_20100
+File reading done. Time taken: 1.68009s
+Preprocessing files done. Time taken: 6.60909s
+Interest point search done. Time taken: 7.05366s
+Interest point processing done. Time taken: 0.000432084s
+number of threads: 256
+Final parameters with average cost 2.43923 :
+{ 9.02953, 0.344425, 0.000182267, 0.0551388, 2.95215, 0.556116, 0.1, 2.62957, 0.56082, 0.1, 0.428666 }
+Fitting done. Time taken: 1.75816s
+Interest points, parameters and file saving done. Time taken: 13.112s
+Finished fitting the data point at Run13, timestep 20100
+Time taken: 31 seconds total.
+
+Run14_28800
+File reading done. Time taken: 2.02248s
+Preprocessing files done. Time taken: 4.5906s
+Interest point search done. Time taken: 4.38237s
+Interest point processing done. Time taken: 0.000350081s
+number of threads: 256
+Final parameters with average cost 1.4087 :
+{ 8.17373, 0.406595, -0.000643674, 0.0155117, 4, 0.265822, 0.26435, 4, 0.281684, 0.2726, 0.4183 }
+Fitting done. Time taken: 1.31416s
+Interest points, parameters and file saving done. Time taken: 12.6679s
+Finished fitting the data point at Run14, timestep 28800
+Time taken: 25 seconds total.
+
+Run14_27000
+File reading done. Time taken: 1.9811s
+Preprocessing files done. Time taken: 5.08646s
+Interest point search done. Time taken: 6.17777s
+Interest point processing done. Time taken: 0.000385241s
+number of threads: 256
+Final parameters with average cost 1.16816 :
+{ 8.26363, 0.433789, -0.000416533, 0.0177177, 4, 0.373834, 0.251775, 4, 0.370726, 0.256428, 0.355467 }
+Fitting done. Time taken: 1.99982s
+Interest points, parameters and file saving done. Time taken: 15.2903s
+Finished fitting the data point at Run14, timestep 27000
+Time taken: 31 seconds total.
+
+Run14_23100
+File reading done. Time taken: 1.49481s
+Preprocessing files done. Time taken: 5.71682s
+Interest point search done. Time taken: 6.79298s
+Interest point processing done. Time taken: 0.000430753s
+number of threads: 256
+Final parameters with average cost 0.776602 :
+{ 7.83378, 0.411702, 0.00050325, 0.0232703, 2.24024, 0.715945, 0.166322, 2.264, 0.711129, 0.166737, 0.399281 }
+Fitting done. Time taken: 0.975644s
+Interest points, parameters and file saving done. Time taken: 13.2535s
+Finished fitting the data point at Run14, timestep 23100
+Time taken: 28 seconds total.
+
+Run14_22500
+File reading done. Time taken: 1.50652s
+Preprocessing files done. Time taken: 5.58972s
+Interest point search done. Time taken: 7.14573s
+Interest point processing done. Time taken: 0.000433834s
+number of threads: 256
+Final parameters with average cost 0.691008 :
+{ 8.49799, 0.437235, 0.000576503, 0.033325, 2.32815, 1.03097, 0.224366, 2.1952, 1.04079, 0.222469, 0.294256 }
+Fitting done. Time taken: 1.57061s
+Interest points, parameters and file saving done. Time taken: 16.1838s
+Finished fitting the data point at Run14, timestep 22500
+Time taken: 32 seconds total.
+
+Run14_21900
+File reading done. Time taken: 1.55389s
+Preprocessing files done. Time taken: 5.1655s
+Interest point search done. Time taken: 7.11423s
+Interest point processing done. Time taken: 0.000459694s
+number of threads: 256
+Final parameters with average cost 0.595423 :
+{ 8.20457, 0.42647, 0.000419322, 0.0308573, 1.95961, 0.95728, 0.196578, 1.93759, 0.961981, 0.176038, 0.335519 }
+Fitting done. Time taken: 1.39517s
+Interest points, parameters and file saving done. Time taken: 16.0137s
+Finished fitting the data point at Run14, timestep 21900
+Time taken: 32 seconds total.
+
+Run14_21000
+File reading done. Time taken: 1.83555s
+Preprocessing files done. Time taken: 4.4834s
+Interest point search done. Time taken: 7.03939s
+Interest point processing done. Time taken: 0.000429103s
+number of threads: 256
+Final parameters with average cost 0.705764 :
+{ 8.24928, 0.444952, 0.000313695, 0.020835, 1.96919, 0.953636, 0.192514, 1.95391, 0.958551, 0.17358, 0.313176 }
+Fitting done. Time taken: 1.41653s
+Interest points, parameters and file saving done. Time taken: 15.1275s
+Finished fitting the data point at Run14, timestep 21000
+Time taken: 30 seconds total.
+
+Run14_20100
+File reading done. Time taken: 1.48705s
+Preprocessing files done. Time taken: 6.08282s
+Interest point search done. Time taken: 7.10193s
+Interest point processing done. Time taken: 0.000419183s
+number of threads: 256
+Final parameters with average cost 0.595463 :
+{ 8.33541, 0.455389, 0.000271811, 0.0201744, 2.03085, 0.951383, 0.194827, 1.9983, 0.953925, 0.184796, 0.289803 }
+Fitting done. Time taken: 1.47395s
+Interest points, parameters and file saving done. Time taken: 17.039s
+Finished fitting the data point at Run14, timestep 20100
+Time taken: 33 seconds total.
+
+Run15_28800
+File reading done. Time taken: 1.35862s
+Preprocessing files done. Time taken: 4.04808s
+Interest point search done. Time taken: 4.27182s
+Interest point processing done. Time taken: 0.000353421s
+number of threads: 256
+Final parameters with average cost 29.108 :
+{ 9.66106, 0.318808, -0.00514983, 0.0187989, 4, 0.320567, 0.282017, 4, 0.340509, 0.281818, 0.5 }
+Fitting done. Time taken: 1.67284s
+Interest points, parameters and file saving done. Time taken: 15.1488s
+Finished fitting the data point at Run15, timestep 28800
+Time taken: 27 seconds total.
+
+Run15_27000
+File reading done. Time taken: 1.2836s
+Preprocessing files done. Time taken: 4.85488s
+Interest point search done. Time taken: 5.87631s
+Interest point processing done. Time taken: 0.000360612s
+number of threads: 256
+Final parameters with average cost 29.9475 :
+{ 9.6179, 0.318634, -0.001569, 0.0267582, 4, 0.331682, 0.283761, 4, 0.33965, 0.284001, 0.5 }
+Fitting done. Time taken: 1.55884s
+Interest points, parameters and file saving done. Time taken: 16.1352s
+Finished fitting the data point at Run15, timestep 27000
+Time taken: 30 seconds total.
+
+Run15_23100
+File reading done. Time taken: 1.73739s
+Preprocessing files done. Time taken: 5.71019s
+Interest point search done. Time taken: 6.8521s
+Interest point processing done. Time taken: 0.000427133s
+number of threads: 256
+Final parameters with average cost 9.46638 :
+{ 10.199, 0.41089, 1.10014e-05, 0.0239034, 3.8658, 0.541369, 0.206299, 3.80878, 0.540057, 0.207784, 0.292321 }
+Fitting done. Time taken: 1.38966s
+Interest points, parameters and file saving done. Time taken: 16.9981s
+Finished fitting the data point at Run15, timestep 23100
+Time taken: 33 seconds total.
+
+Run15_22500
+File reading done. Time taken: 1.75303s
+Preprocessing files done. Time taken: 8.7088s
+Interest point search done. Time taken: 5.56826s
+Interest point processing done. Time taken: 0.00034236s
+number of threads: 256
+Final parameters with average cost 1.8412 :
+{ 10.0303, 0.388149, 4.92396e-05, 0.0475435, 3.02446, 1.59475, 0.623185, 3.25637, 1.70977, 0.609356, 0.312139 }
+Fitting done. Time taken: 1.27562s
+Interest points, parameters and file saving done. Time taken: 14.63s
+Finished fitting the data point at Run15, timestep 22500
+Time taken: 32 seconds total.
+
+Run15_21900
+File reading done. Time taken: 1.98963s
+Preprocessing files done. Time taken: 5.80376s
+Interest point search done. Time taken: 7.28053s
+Interest point processing done. Time taken: 0.000445824s
+number of threads: 256
+Final parameters with average cost 1.98746 :
+{ 8.71679, 0.375287, -0.000187633, 0.0435341, 1.86008, 0.652258, 0.1, 2.141, 0.619429, 0.1, 0.404185 }
+Fitting done. Time taken: 1.90709s
+Interest points, parameters and file saving done. Time taken: 16.2713s
+Finished fitting the data point at Run15, timestep 21900
+Time taken: 33 seconds total.
+
+Run15_21000
+File reading done. Time taken: 1.13568s
+Preprocessing files done. Time taken: 5.57989s
+Interest point search done. Time taken: 7.05909s
+Interest point processing done. Time taken: 0.000420083s
+number of threads: 256
+Final parameters with average cost 2.00014 :
+{ 8.74614, 0.392276, -0.000206111, 0.0354178, 1.91356, 0.634062, 0.1, 2.29693, 0.622427, 0.1, 0.386684 }
+Fitting done. Time taken: 1.47876s
+Interest points, parameters and file saving done. Time taken: 17.3187s
+Finished fitting the data point at Run15, timestep 21000
+Time taken: 33 seconds total.
+
+Run15_20100
+File reading done. Time taken: 1.31624s
+Preprocessing files done. Time taken: 5.87975s
+Interest point search done. Time taken: 6.47043s
+Interest point processing done. Time taken: 0.00033771s
+number of threads: 256
+Final parameters with average cost 2.4609 :
+{ 8.47468, 0.39503, -0.000419806, 0.023618, 0.810531, 0.653786, 0.1, 1.1932, 0.598508, 0.1, 0.41858 }
+Fitting done. Time taken: 1.72105s
+Interest points, parameters and file saving done. Time taken: 15.7387s
+Finished fitting the data point at Run15, timestep 20100
+Time taken: 31 seconds total.
+
+Run16_28800
+File reading done. Time taken: 2.60755s
+Preprocessing files done. Time taken: 5.51519s
+Interest point search done. Time taken: 6.12931s
+Interest point processing done. Time taken: 0.000404053s
+number of threads: 256
+Final parameters with average cost 30.676 :
+{ 9.39665, 0.341804, -0.00194442, -0.00545935, 4, 0.326955, 0.286376, 4, 0.345979, 0.279958, 0.5 }
+Fitting done. Time taken: 1.6148s
+Interest points, parameters and file saving done. Time taken: 16.7532s
+Finished fitting the data point at Run16, timestep 28800
+Time taken: 34 seconds total.
+
+Run16_27000
+File reading done. Time taken: 3.72359s
+Preprocessing files done. Time taken: 7.53771s
+Interest point search done. Time taken: 7.18571s
+Interest point processing done. Time taken: 0.000414733s
+number of threads: 256
+Final parameters with average cost 31.1557 :
+{ 9.38685, 0.338886, 0.000498931, 0.00283935, 4, 0.356025, 0.298215, 4, 0.36772, 0.295147, 0.5 }
+Fitting done. Time taken: 1.7974s
+Interest points, parameters and file saving done. Time taken: 16.1897s
+Finished fitting the data point at Run16, timestep 27000
+Time taken: 37 seconds total.
+
+Run16_23100
+File reading done. Time taken: 1.39886s
+Preprocessing files done. Time taken: 5.15668s
+Interest point search done. Time taken: 6.30605s
+Interest point processing done. Time taken: 0.00033073s
+number of threads: 256
+Final parameters with average cost 10.9192 :
+{ 10.1766, 0.425446, 0.000442011, 0.0137182, 3.84264, 0.542816, 0.229758, 3.80039, 0.544274, 0.230885, 0.27956 }
+Fitting done. Time taken: 1.45346s
+Interest points, parameters and file saving done. Time taken: 14.3767s
+Finished fitting the data point at Run16, timestep 23100
+Time taken: 30 seconds total.
+
+Run16_22500
+File reading done. Time taken: 2.38831s
+Preprocessing files done. Time taken: 5.41761s
+Interest point search done. Time taken: 6.49767s
+Interest point processing done. Time taken: 0.000425524s
+number of threads: 256
+Final parameters with average cost 1.80946 :
+{ 9.91888, 0.386505, 3.31924e-05, 0.047432, 3.07772, 1.60067, 0.624885, 3.37407, 1.72992, 0.615848, 0.320997 }
+Fitting done. Time taken: 1.07515s
+Interest points, parameters and file saving done. Time taken: 16.6974s
+Finished fitting the data point at Run16, timestep 22500
+Time taken: 33 seconds total.
+
+Run16_21900
+File reading done. Time taken: 2.23968s
+Preprocessing files done. Time taken: 4.77593s
+Interest point search done. Time taken: 6.82592s
+Interest point processing done. Time taken: 0.000428183s
+number of threads: 256
+Final parameters with average cost 1.98755 :
+{ 8.7192, 0.375547, -0.000187309, 0.0433907, 2.09282, 0.651024, 0.1, 2.17558, 0.620003, 0.1, 0.403799 }
+Fitting done. Time taken: 1.54001s
+Interest points, parameters and file saving done. Time taken: 16.7636s
+Finished fitting the data point at Run16, timestep 21900
+Time taken: 32 seconds total.
+
+Run16_21000
+File reading done. Time taken: 1.29956s
+Preprocessing files done. Time taken: 5.29456s
+Interest point search done. Time taken: 7.021s
+Interest point processing done. Time taken: 0.000432833s
+number of threads: 256
+Final parameters with average cost 2.00004 :
+{ 8.754, 0.392652, -0.000205893, 0.0354314, 1.93864, 0.634209, 0.1, 2.31222, 0.622423, 0.1, 0.385574 }
+Fitting done. Time taken: 1.52347s
+Interest points, parameters and file saving done. Time taken: 15.927s
+Finished fitting the data point at Run16, timestep 21000
+Time taken: 32 seconds total.
+
+Run16_20100
+File reading done. Time taken: 2.16201s
+Preprocessing files done. Time taken: 4.58602s
+Interest point search done. Time taken: 6.67922s
+Interest point processing done. Time taken: 0.000400572s
+number of threads: 256
+Final parameters with average cost 2.46108 :
+{ 8.46371, 0.394424, -0.000416305, 0.0235823, 0.773956, 0.654145, 0.1, 1.17644, 0.596269, 0.1, 0.420266 }
+Fitting done. Time taken: 1.61214s
+Interest points, parameters and file saving done. Time taken: 12.4309s
+Finished fitting the data point at Run16, timestep 20100
+Time taken: 27 seconds total.
+
+Run17_28800
+File reading done. Time taken: 1.97672s
+Preprocessing files done. Time taken: 5.97431s
+Interest point search done. Time taken: 7.1989s
+Interest point processing done. Time taken: 0.000452074s
+number of threads: 256
+Final parameters with average cost 20.4317 :
+{ 8.4862, 0.389734, -0.00574418, -0.0559832, 3.419, 0.484007, 0.232519, 2.50749, 2, 0.93723, 0.5 }
+Fitting done. Time taken: 1.76236s
+Interest points, parameters and file saving done. Time taken: 15.2082s
+Finished fitting the data point at Run17, timestep 28800
+Time taken: 33 seconds total.
+
+Run17_27000
+File reading done. Time taken: 1.51793s
+Preprocessing files done. Time taken: 4.72215s
+Interest point search done. Time taken: 4.62192s
+Interest point processing done. Time taken: 0.000349122s
+number of threads: 256
+Final parameters with average cost 22.5619 :
+{ 8.83849, 0.379938, -0.00336726, -0.0507147, 2.90689, 2, 1, 3.29523, 2, 1, 0.5 }
+Fitting done. Time taken: 1.56145s
+Interest points, parameters and file saving done. Time taken: 22.2604s
+Finished fitting the data point at Run17, timestep 27000
+Time taken: 35 seconds total.
+
+Run17_23100
+File reading done. Time taken: 4.03433s
+Preprocessing files done. Time taken: 6.14361s
+Interest point search done. Time taken: 6.94753s
+Interest point processing done. Time taken: 0.00032991s
+number of threads: 256
+Final parameters with average cost 13.3146 :
+{ 9.97533, 0.466418, -0.000341951, -0.0100834, 4, 0.642125, 0.29482, 4, 0.642755, 0.298859, 0.239258 }
+Fitting done. Time taken: 1.55511s
+Interest points, parameters and file saving done. Time taken: 13.1873s
+Finished fitting the data point at Run17, timestep 23100
+Time taken: 32 seconds total.
+
+Run17_22500
+File reading done. Time taken: 2.65601s
+Preprocessing files done. Time taken: 5.38757s
+Interest point search done. Time taken: 7.04371s
+Interest point processing done. Time taken: 0.000409543s
+number of threads: 256
+Final parameters with average cost 1.80822 :
+{ 9.43476, 0.375698, 8.26514e-05, 0.0482395, 3.34241, 1.77897, 0.672879, 3.75279, 1.83973, 0.625083, 0.364308 }
+Fitting done. Time taken: 1.14098s
+Interest points, parameters and file saving done. Time taken: 13.0602s
+Finished fitting the data point at Run17, timestep 22500
+Time taken: 29 seconds total.
+
+Run17_21900
+File reading done. Time taken: 1.40947s
+Preprocessing files done. Time taken: 4.22467s
+Interest point search done. Time taken: 4.65112s
+Interest point processing done. Time taken: 0.000386083s
+number of threads: 256
+Final parameters with average cost 1.98748 :
+{ 8.7193, 0.375346, -0.000187123, 0.0435401, 1.93135, 0.655497, 0.1, 2.19135, 0.62019, 0.1, 0.40394 }
+Fitting done. Time taken: 1.68896s
+Interest points, parameters and file saving done. Time taken: 15.8393s
+Finished fitting the data point at Run17, timestep 21900
+Time taken: 28 seconds total.
+
+Run17_21000
+File reading done. Time taken: 1.44531s
+Preprocessing files done. Time taken: 6.10117s
+Interest point search done. Time taken: 6.84022s
+Interest point processing done. Time taken: 0.000687441s
+number of threads: 256
+Final parameters with average cost 2.00018 :
+{ 8.73911, 0.39241, -0.000206605, 0.0352996, 1.74821, 0.629563, 0.1, 2.2293, 0.620698, 0.1, 0.386993 }
+Fitting done. Time taken: 1.60977s
+Interest points, parameters and file saving done. Time taken: 17.6431s
+Finished fitting the data point at Run17, timestep 21000
+Time taken: 35 seconds total.
+
+Run17_20100
+File reading done. Time taken: 1.66298s
+Preprocessing files done. Time taken: 4.50988s
+Interest point search done. Time taken: 5.27553s
+Interest point processing done. Time taken: 0.000347861s
+number of threads: 256
+Final parameters with average cost 2.46097 :
+{ 8.47966, 0.395191, -0.000420929, 0.0236435, 0.850198, 0.652962, 0.1, 1.46648, 0.618363, 0.1, 0.417998 }
+Fitting done. Time taken: 1.19085s
+Interest points, parameters and file saving done. Time taken: 12.9693s
+Finished fitting the data point at Run17, timestep 20100
+Time taken: 25 seconds total.
+
+Run18_28800
+File reading done. Time taken: 1.98049s
+Preprocessing files done. Time taken: 6.09203s
+Interest point search done. Time taken: 7.13162s
+Interest point processing done. Time taken: 0.000443674s
+number of threads: 256
+Final parameters with average cost 1.19236 :
+{ 7.71285, 0.42091, -0.000722736, 0.0142302, 4, 0.266412, 0.242423, 4, 0.265307, 0.243632, 0.418564 }
+Fitting done. Time taken: 1.54702s
+Interest points, parameters and file saving done. Time taken: 17.7548s
+Finished fitting the data point at Run18, timestep 28800
+Time taken: 36 seconds total.
+
+Run18_27000
+File reading done. Time taken: 2.04679s
+Preprocessing files done. Time taken: 4.32515s
+Interest point search done. Time taken: 4.92389s
+Interest point processing done. Time taken: 0.000380143s
+number of threads: 256
+Final parameters with average cost 1.47106 :
+{ 7.36293, 0.403907, -0.000935524, 0.0161629, 3.47699, 0.266159, 0.21863, 3.56492, 0.344237, 0.199207, 0.470069 }
+Fitting done. Time taken: 0.772204s
+Interest points, parameters and file saving done. Time taken: 16.1011s
+Finished fitting the data point at Run18, timestep 27000
+Time taken: 28 seconds total.
+
+Run18_23100
+File reading done. Time taken: 1.53907s
+Preprocessing files done. Time taken: 5.37226s
+Interest point search done. Time taken: 7.39377s
+Interest point processing done. Time taken: 0.000477675s
+number of threads: 256
+Final parameters with average cost 0.957758 :
+{ 7.45274, 0.407086, 0.00113393, 0.033622, 3.01769, 0.562814, 0.200709, 2.93497, 0.559673, 0.195518, 0.411638 }
+Fitting done. Time taken: 1.12595s
+Interest points, parameters and file saving done. Time taken: 16.5652s
+Finished fitting the data point at Run18, timestep 23100
+Time taken: 34 seconds total.
+
+Run18_22500
+File reading done. Time taken: 1.80318s
+Preprocessing files done. Time taken: 4.14828s
+Interest point search done. Time taken: 5.20034s
+Interest point processing done. Time taken: 0.000367802s
+number of threads: 256
+Final parameters with average cost 0.589813 :
+{ 7.64776, 0.425882, 5.32197e-05, 0.0399079, 1.80512, 0.943234, 0.183359, 1.74482, 0.944724, 0.177449, 0.349681 }
+Fitting done. Time taken: 0.96166s
+Interest points, parameters and file saving done. Time taken: 15.2107s
+Finished fitting the data point at Run18, timestep 22500
+Time taken: 32 seconds total.
+
+Run18_21900
+File reading done. Time taken: 1.69321s
+Preprocessing files done. Time taken: 9.85869s
+Interest point search done. Time taken: 8.0249s
+Interest point processing done. Time taken: 0.000466015s
+number of threads: 256
+Final parameters with average cost 0.629059 :
+{ 7.60911, 0.423242, 0.000783002, 0.026928, 1.80079, 0.890973, 0.190372, 1.66606, 0.899056, 0.177175, 0.373528 }
+Fitting done. Time taken: 1.90169s
+Interest points, parameters and file saving done. Time taken: 14.1707s
+Finished fitting the data point at Run18, timestep 21900
+Time taken: 36 seconds total.
+
+Run18_21000
+File reading done. Time taken: 1.79316s
+Preprocessing files done. Time taken: 4.86888s
+Interest point search done. Time taken: 7.65737s
+Interest point processing done. Time taken: 0.000441414s
+number of threads: 256
+Final parameters with average cost 0.656921 :
+{ 7.65167, 0.408004, 0.00130781, 0.0359756, 1.85387, 0.88997, 0.198291, 1.6988, 0.899499, 0.179174, 0.380435 }
+Fitting done. Time taken: 1.46212s
+Interest points, parameters and file saving done. Time taken: 14.3465s
+Finished fitting the data point at Run18, timestep 21000
+Time taken: 31 seconds total.
+
+Run18_20100
+File reading done. Time taken: 1.87483s
+Preprocessing files done. Time taken: 7.91664s
+Interest point search done. Time taken: 7.76407s
+Interest point processing done. Time taken: 0.000469525s
+number of threads: 256
+Final parameters with average cost 0.711015 :
+{ 7.83947, 0.428204, 0.000639679, 0.0283439, 2.0724, 0.892931, 0.204469, 1.98208, 0.896896, 0.193106, 0.340614 }
+Fitting done. Time taken: 1.78983s
+Interest points, parameters and file saving done. Time taken: 19.0979s
+Finished fitting the data point at Run18, timestep 20100
+Time taken: 39 seconds total.
+
+Run19_28800
+File reading done. Time taken: 2.5841s
+Preprocessing files done. Time taken: 5.60184s
+Interest point search done. Time taken: 7.244s
+Interest point processing done. Time taken: 0.000428513s
+number of threads: 256
+Final parameters with average cost 0.986284 :
+{ 7.42035, 0.437871, 1.37646e-05, 0.0112572, 4, 0.274356, 0.258886, 4, 0.276378, 0.256781, 0.405202 }
+Fitting done. Time taken: 1.63535s
+Interest points, parameters and file saving done. Time taken: 18.3383s
+Finished fitting the data point at Run19, timestep 28800
+Time taken: 36 seconds total.
+
+Run19_27000
+File reading done. Time taken: 1.83828s
+Preprocessing files done. Time taken: 4.79856s
+Interest point search done. Time taken: 7.73649s
+Interest point processing done. Time taken: 0.000479795s
+number of threads: 256
+Final parameters with average cost 1.02594 :
+{ 7.3942, 0.443383, -6.74587e-05, 0.0132341, 4, 0.273462, 0.253748, 4, 0.271531, 0.251399, 0.392753 }
+Fitting done. Time taken: 2.07244s
+Interest points, parameters and file saving done. Time taken: 15.8375s
+Finished fitting the data point at Run19, timestep 27000
+Time taken: 33 seconds total.
+
+Run19_23100
+File reading done. Time taken: 2.65023s
+Preprocessing files done. Time taken: 8.22023s
+Interest point search done. Time taken: 4.72104s
+Interest point processing done. Time taken: 0.000392452s
+number of threads: 256
+Final parameters with average cost 0.792547 :
+{ 7.24884, 0.441364, 0.000140491, 0.0257828, 3.00994, 0.446939, 0.251792, 3.1062, 0.460664, 0.246595, 0.381705 }
+Fitting done. Time taken: 1.06639s
+Interest points, parameters and file saving done. Time taken: 18.4895s
+Finished fitting the data point at Run19, timestep 23100
+Time taken: 36 seconds total.
+
+Run19_22500
+File reading done. Time taken: 2.57989s
+Preprocessing files done. Time taken: 8.8641s
+Interest point search done. Time taken: 7.2805s
+Interest point processing done. Time taken: 0.000422813s
+number of threads: 256
+Final parameters with average cost 0.517658 :
+{ 7.1525, 0.453939, 0.000181746, 0.0323999, 2.19874, 0.643087, 0.229837, 2.19839, 0.640925, 0.226658, 0.348307 }
+Fitting done. Time taken: 1.59947s
+Interest points, parameters and file saving done. Time taken: 17.3452s
+Finished fitting the data point at Run19, timestep 22500
+Time taken: 38 seconds total.
+
+Run19_21900
+File reading done. Time taken: 2.37319s
+Preprocessing files done. Time taken: 9.58695s
+Interest point search done. Time taken: 7.29945s
+Interest point processing done. Time taken: 0.000437633s
+number of threads: 256
+Final parameters with average cost 0.377361 :
+{ 7.06207, 0.427605, 0.00066556, 0.0387049, 1.64867, 0.817038, 0.18287, 1.54801, 0.820303, 0.178978, 0.393515 }
+Fitting done. Time taken: 1.72712s
+Interest points, parameters and file saving done. Time taken: 15.5363s
+Finished fitting the data point at Run19, timestep 21900
+Time taken: 37 seconds total.
+
+Run19_21000
+File reading done. Time taken: 2.59537s
+Preprocessing files done. Time taken: 6.56847s
+Interest point search done. Time taken: 6.56522s
+Interest point processing done. Time taken: 0.000464234s
+number of threads: 256
+Final parameters with average cost 0.539893 :
+{ 7.05844, 0.420966, 0.000978796, 0.0322713, 1.59262, 0.822848, 0.172163, 1.49431, 0.822978, 0.169018, 0.410319 }
+Fitting done. Time taken: 1.76558s
+Interest points, parameters and file saving done. Time taken: 17.5351s
+Finished fitting the data point at Run19, timestep 21000
+Time taken: 36 seconds total.
+
+Run19_20100
+File reading done. Time taken: 3.44814s
+Preprocessing files done. Time taken: 10.9016s
+Interest point search done. Time taken: 6.74593s
+Interest point processing done. Time taken: 0.000415073s
+number of threads: 256
+Final parameters with average cost 0.464008 :
+{ 7.1091, 0.398661, 0.00116473, 0.0386428, 1.59152, 0.869522, 0.166919, 1.49121, 0.871238, 0.16395, 0.426823 }
+Fitting done. Time taken: 1.76223s
+Interest points, parameters and file saving done. Time taken: 17.5639s
+Finished fitting the data point at Run19, timestep 20100
+Time taken: 41 seconds total.
+

@@ -1,11 +1,11 @@
 #!/bin/sh
 #PBS -l walltime=05:00:00
-#PBS -l select=1:ncpus=8:mem=8gb
+#PBS -l select=1:ncpus=16:mem=32gb:ompthreads=16
 #PBS -j oe
 #PBS -N mp_topology
 cd $PBS_O_WORKDIR
 
-echo $PBS_NCPUS
+# echo $OMP_NUM_THREADS
 
 module load miniforge/3 > /dev/null 2>&1
 module load tools/prod > /dev/null 2>&1
