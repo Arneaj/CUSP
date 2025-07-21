@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
     double radii[11] =      {  3.0,    0.1,    0.5,    0.5,    1.0,    0.05,   0.25,   1.0,    0.05,   0.25,   0.15};
 
 
-    int nb_runs = 100;
+    int nb_runs = 50;
     int nb_interest_points = nb_theta * nb_phi;
     const int nb_params = 11;
 
