@@ -100,3 +100,34 @@ void save_file( std::string filename, const Matrix& mat )
 
 
 
+
+struct DataHeader {
+    uint32_t magic_number = 0x12345678;  // File validity check
+    uint32_t type_size;                  // sizeof(float) or sizeof(double)
+    uint32_t x_dim;
+    uint32_t y_dim;
+    uint32_t z_dim;
+    uint32_t i_dim;
+    uint32_t reserved[4] = {0};          // Future extensibility
+
+    DataHeader( uint32_t _type_size, uint32_t _x_dim, uint32_t _y_dim, uint32_t _z_dim, uint32_t _i_dim )
+        : type_size(_type_size), x_dim(_x_dim), y_dim(_y_dim), z_dim(_z_dim), i_dim(_i_dim) {;}
+
+    DataHeader( uint32_t _type_size, const Shape& shape )
+        : type_size(_type_size), x_dim(shape.x), y_dim(shape.y), z_dim(shape.z), i_dim(shape.i) {;}
+};
+
+template <typename T>
+void save_file_bin( std::string filename, const Matrix& mat )
+{
+    std::ofstream fs;
+    fs.open(filename);
+
+    DataHeader header(sizeof(T), mat.get_shape());
+
+    fs.write(reinterpret_cast<const char*>(&header), sizeof(header));
+    fs.write(reinterpret_cast<const char*>(mat), mat.get_shape().x*mat.get_shape().y*mat.get_shape().z*mat.get_shape().i * sizeof(T));
+
+    fs.close();
+}
+

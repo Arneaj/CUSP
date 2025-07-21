@@ -8,5 +8,8 @@ Matrix read_file( std::string filename, int step=1 );
 
 void save_file( std::string filename, const Matrix& mat );
 
+template <typename T>
+void save_file_bin( std::string filename, const Matrix& mat );
+
 
 #endif
