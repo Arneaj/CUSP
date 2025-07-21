@@ -108,7 +108,7 @@ struct DataHeader {
     uint32_t y_dim;
     uint32_t z_dim;
     uint32_t i_dim;
-    uint32_t reserved[4] = {0};          // Future extensibility
+    uint32_t separator[4] = {0};
 
     DataHeader( uint32_t _type_size, uint32_t _x_dim, uint32_t _y_dim, uint32_t _z_dim, uint32_t _i_dim )
         : type_size(_type_size), x_dim(_x_dim), y_dim(_y_dim), z_dim(_z_dim), i_dim(_i_dim) {;}

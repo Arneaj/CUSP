@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as anim
 
-from gorgon import import_from, spherical_to_cartesian
+from gorgon import import_from, spherical_to_cartesian, import_from_bin
 from earth_pos_detection import get_earth_pos
 
 
@@ -24,7 +24,9 @@ filepath = sys.argv[1]
 # B = import_from(f"{filepath}/B_processed_real.txt")
 # B_norm = np.linalg.norm( B, axis=3 )
 
-J_norm = import_from(f"{filepath}/J_norm_processed_real.txt")
+# J_norm = import_from(f"{filepath}/J_norm_processed_real.txt")
+J_norm = import_from_bin(f"{filepath}/J_norm_processed_real.bin")
+
 
 # earth_pos = get_earth_pos( B_norm )
 # earth_pos = [29.75, 58, 58]

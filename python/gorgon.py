@@ -11,6 +11,8 @@ from scipy import signal
 
 import numpy as np
 
+import struct
+
 
 
 mu_0 = 1.256637e-6
@@ -38,6 +40,22 @@ def import_from(file: str, step: int = None):
         vec = np.array( lines[1].split(",")[:-1], dtype=np.float32 ).reshape( shape )
 
     return vec
+
+
+def import_from_bin(file: str):
+    with open(file, 'rb') as f:
+        magic, type_size, x_dim, y_dim, z_dim, i_dim = struct.unpack('IIIIII', f.read(24))
+        
+        if magic != 0x12345678:
+            print(f"{file} is corrupted!")
+            exit(1)
+        
+        f.seek(16)
+        
+        dtype = np.float32 if type_size == 4 else np.float64
+        data = np.frombuffer(f.read(), dtype=dtype).reshape((x_dim, y_dim, z_dim, i_dim))
+
+    return data
 
 
 def grad_mag_angle(vector: np.ndarray):
