@@ -28,7 +28,7 @@ set(CMAKE_CXX_FLAGS "-O3 -Wall -Wextra")   # is this a good idea
 # Prevent a "command line is too long" failure in Windows.
 set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response files.")
 
-# Add all your source files here
+
 set(SOURCES
     src_cpp/points.cpp
     src_cpp/matrix.cpp
@@ -41,7 +41,6 @@ set(SOURCES
     src_cpp/fit_to_analytical.cpp
 )
 
-# If you have headers in a separate directory, add them too
 set(HEADERS
     headers_cpp/points.h
     headers_cpp/matrix.h   
@@ -53,6 +52,10 @@ set(HEADERS
     headers_cpp/read_file.h
     headers_cpp/fit_to_analytical.h
 )
+
+
+# ********************************* full_process: from read to fit
+
 
 add_executable(full_process tests_cpp/full_process_test.cpp
     src_cpp/points.cpp
@@ -86,6 +89,35 @@ vtk_module_autoinit(
 )
 
 
+# ************************************ read_pvtr: test of the reading of the file
+
+
+add_executable(read_pvtr tests_cpp/read_pvtr_test.cpp
+    src_cpp/read_pvtr.cpp
+    src_cpp/points.cpp
+    src_cpp/matrix.cpp)
+
+# Link VTK libraries
+target_link_libraries(read_pvtr PRIVATE ${VTK_LIBRARIES})
+
+# Include VTK headers - this is crucial!
+target_include_directories(read_pvtr PRIVATE ${VTK_INCLUDE_DIRS})
+
+# Set VTK definitions
+target_compile_definitions(read_pvtr PRIVATE ${VTK_DEFINITIONS})
+
+if (UNIX)
+  target_link_options(read_pvtr PUBLIC -pthread)
+endif()
+
+# vtk_module_autoinit is needed
+vtk_module_autoinit(
+  TARGETS read_pvtr
+  MODULES ${VTK_LIBRARIES}
+)
+
+
+# *************************************** fit_to_analytical: test of the fitting to the interest points
 
 
 add_executable(fit_to_analytical tests_cpp/fit_to_analytical_test.cpp
