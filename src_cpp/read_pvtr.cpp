@@ -75,6 +75,7 @@ Matrix read_pvtr(std::string filename)
 
     float* finalData(new float[totalSize]);
     
+    #pragma omp parallel for
     for (int ix = 0; ix < cellDimX; ix++) {
         for (int iy = 0; iy < cellDimY; iy++) {
             for (int iz = 0; iz < cellDimZ; iz++) {
