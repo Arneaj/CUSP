@@ -151,9 +151,13 @@ int main(int argc, char* argv[])
 
 
     t0 = Time::now();
-    save_file( savepath + std::string("/J_norm_processed_real.txt"), J_norm_real );
-    save_file( savepath + std::string("/B_processed_real.txt"), B_processed_real );
-    save_file( savepath + std::string("/V_processed_real.txt"), V_processed_real );
+    // save_file( savepath + std::string("/J_norm_processed_real.txt"), J_norm_real );
+    // save_file( savepath + std::string("/B_processed_real.txt"), B_processed_real );
+    // save_file( savepath + std::string("/V_processed_real.txt"), V_processed_real );
+
+    save_file_bin( savepath + std::string("/J_norm_processed_real.bin"), J_norm_real );
+    save_file_bin( savepath + std::string("/B_processed_real.bin"), B_processed_real );
+    save_file_bin( savepath + std::string("/V_processed_real.bin"), V_processed_real );
 
     save_interest_points( savepath + std::string("/interest_points_cpp.txt"), interest_points, nb_theta, nb_phi );
 

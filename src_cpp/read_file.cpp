@@ -117,17 +117,19 @@ struct DataHeader {
         : type_size(_type_size), x_dim(shape.x), y_dim(shape.y), z_dim(shape.z), i_dim(shape.i) {;}
 };
 
-template <typename T>
+
+
 void save_file_bin( std::string filename, const Matrix& mat )
 {
     std::ofstream fs;
     fs.open(filename);
 
-    DataHeader header(sizeof(T), mat.get_shape());
+    DataHeader header(sizeof(float), mat.get_shape());
 
     fs.write(reinterpret_cast<const char*>(&header), sizeof(header));
-    fs.write(reinterpret_cast<const char*>(mat), mat.get_shape().x*mat.get_shape().y*mat.get_shape().z*mat.get_shape().i * sizeof(T));
+    fs.write(reinterpret_cast<const char*>(&mat), mat.get_shape().x*mat.get_shape().y*mat.get_shape().z*mat.get_shape().i * sizeof(float));
 
     fs.close();
 }
+
 
