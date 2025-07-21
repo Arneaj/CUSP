@@ -51,12 +51,12 @@ int main(int argc, char* argv[])
     Matrix Z;
 
     get_coord(X, Y, Z, filepath + std::string("/MS/x00_Bvec_c-") + timestep + std::string(".pvtr"));
-    auto t1 = Time::now();
-    std::cout << "File reading done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
     save_file( savepath + std::string("/X.txt"), X );
     save_file( savepath + std::string("/Y.txt"), Y );
     save_file( savepath + std::string("/Z.txt"), Z );
+    auto t1 = Time::now();
+    std::cout << "File reading done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
     t0 = Time::now();
@@ -100,15 +100,9 @@ int main(int argc, char* argv[])
         1.15, 1.8, 20
     );
 
-    t1 = Time::now();
-    std::cout << "Interest point search done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
-
-
-    t0 = Time::now();
     process_interest_points( interest_points, nb_theta, nb_phi, new_shape_sim, new_shape_real, earth_pos_sim, earth_pos_real );
     t1 = Time::now();
-    std::cout << "Interest point processing done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
-
+    std::cout << "Interest point search done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
     t0 = Time::now();
 
@@ -143,6 +137,17 @@ int main(int argc, char* argv[])
 
     t1 = Time::now();
     std::cout << "Fitting done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+
+
+
+
+    t0 = Time::now();
+    float avg_std_dev;
+    float avg_J_norm_grad;
+    t1 = Time::now();
+    std::cout << "Analysis done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+
+
 
 
     t0 = Time::now();

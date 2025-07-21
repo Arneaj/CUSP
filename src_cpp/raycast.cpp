@@ -1,5 +1,6 @@
 #include "../headers_cpp/raycast.h"
 
+#include <omp.h>
 
 const float PI = 3.1415926535;
 
@@ -19,9 +20,10 @@ void interest_points_helper(    float r_0, float alpha_0,
 {
     float theta = 0;
 
+    #pragma omp parallel for
     for (int itheta=0; itheta<nb_theta; itheta++)
     {
-        theta += dtheta;
+        theta = (itheta+1)*dtheta;
 
 	    if (std::abs(theta) < 0.05) continue;
 
