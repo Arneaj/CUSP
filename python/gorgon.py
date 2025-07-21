@@ -50,16 +50,7 @@ def import_from_bin(file: str):
             print(f"{file} is corrupted!")
             exit(1)
         
-        print(f"Expected data size: {x_dim * y_dim * z_dim * i_dim}")
-        print(f"File position after header read: {f.tell()}")
-        
-        f.seek(16)
-        remaining_bytes = len(f.read())
-        f.seek(40)  # Reset position
-        
-        print(f"Remaining bytes in file: {remaining_bytes}")
-        print(f"Bytes per element: {type_size}")
-        print(f"Elements that can be read: {remaining_bytes // type_size}")
+        f.seek(40) 
         
         dtype = np.float32 if type_size == 4 else np.float64
         data = np.frombuffer(f.read(), dtype=dtype).reshape((x_dim, y_dim, z_dim, i_dim), order='F')
