@@ -98,7 +98,7 @@ vtk_module_autoinit(
 #     src_cpp/matrix.cpp)
 
 # # Link VTK libraries
-# target_link_libraries(read_pvtr PRIVATE ${VTK_LIBRARIES})
+# target_link_libraries(read_pvtr PRIVATE ${VTK_LIBRARIES} OpenMP::OpenMP_CXX)
 
 # # Include VTK headers - this is crucial!
 # target_include_directories(read_pvtr PRIVATE ${VTK_INCLUDE_DIRS})
@@ -132,7 +132,7 @@ add_executable(fit_to_analytical tests_cpp/fit_to_analytical_test.cpp
 
 
 # Link VTK libraries
-target_link_libraries(fit_to_analytical PRIVATE ${VTK_LIBRARIES} ${CERES_LIBRARIES})
+target_link_libraries(fit_to_analytical PRIVATE ${VTK_LIBRARIES} ${CERES_LIBRARIES} OpenMP::OpenMP_CXX)
 
 # Include VTK headers - this is crucial!
 target_include_directories(fit_to_analytical PRIVATE ${VTK_INCLUDE_DIRS} ${CERES_INCLUDE_DIRS})

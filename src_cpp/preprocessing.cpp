@@ -25,7 +25,7 @@ Matrix orthonormalise( const Matrix& mat, Matrix& X, Matrix& Y, Matrix& Z, const
     std::vector<float> dY(shape.y);
     std::vector<float> dZ(shape.z);
 
-
+    #pragma omp parallel for
     for (int sx=0; sx<shape.x; sx++) for (int i=0; i<X.get_shape().x-1; i++)
     {
         if ( sx < X[i] ) continue;
@@ -33,6 +33,7 @@ Matrix orthonormalise( const Matrix& mat, Matrix& X, Matrix& Y, Matrix& Z, const
         dX[sx] = ( sx - X[i]) / (X[i+1] - X[i]);
     }
 
+    #pragma omp parallel for
     for (int sy=0; sy<shape.y; sy++) for (int i=0; i<Y.get_shape().x-1; i++)
     {
         if ( sy < Y[i] ) continue;
@@ -40,6 +41,7 @@ Matrix orthonormalise( const Matrix& mat, Matrix& X, Matrix& Y, Matrix& Z, const
         dY[sy] = ( sy - Y[i]) / (Y[i+1] - Y[i]);
     }
 
+    #pragma omp parallel for
     for (int sz=0; sz<shape.z; sz++) for (int i=0; i<Z.get_shape().x-1; i++)
     {
         if ( sz < Z[i] ) continue;
@@ -47,7 +49,7 @@ Matrix orthonormalise( const Matrix& mat, Matrix& X, Matrix& Y, Matrix& Z, const
         dZ[sz] = ( sz - Z[i]) / (Z[i+1] - Z[i]);
     }
 
-
+    #pragma omp parallel for
     for (int sx=0; sx<shape.x; sx++) for (int sy=0; sy<shape.y; sy++)
         for (int sz=0; sz<shape.z; sz++) for (int i=0; i<shape.i; i++)
         {
