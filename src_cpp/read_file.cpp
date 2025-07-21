@@ -119,15 +119,15 @@ struct DataHeader {
 
 
 
-void save_file_bin( std::string filename, const Matrix& mat )
+void save_file_bin( std::string filename, Matrix& mat )
 {
     std::ofstream fs;
-    fs.open(filename);
+    fs.open(filename, std::ios::binary);
 
     DataHeader header(sizeof(float), mat.get_shape());
 
     fs.write(reinterpret_cast<const char*>(&header), sizeof(header));
-    fs.write(reinterpret_cast<const char*>(&mat), mat.get_shape().x*mat.get_shape().y*mat.get_shape().z*mat.get_shape().i * sizeof(float));
+    fs.write(reinterpret_cast<const char*>(mat.get_array()), mat.get_shape().x*mat.get_shape().y*mat.get_shape().z*mat.get_shape().i * sizeof(float));
 
     fs.close();
 }

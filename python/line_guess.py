@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from gorgon import import_from, Me25_fix, spherical_to_cartesian, Me25
+from gorgon import import_from_bin, Me25_fix, spherical_to_cartesian, Me25
 
 import sys
 
@@ -11,7 +11,7 @@ if len(sys.argv) < 2:
 
 filepath = sys.argv[1]
 
-J_norm = import_from(f"{filepath}/J_norm_processed_real.txt")
+J_norm = import_from_bin(f"{filepath}/J_norm_processed_real.bin")
 saturation = 3e-9
 
 

@@ -54,6 +54,7 @@ public:
     void del() { delete[] mat; }
 
     Shape get_shape() { return shape; }
+    float* get_array() { return mat; }
     Shape get_shape() const { return shape; }
 
     void flatten();
