@@ -48,7 +48,7 @@ private:
     int i_offset;
 
 public:
-    Matrix(): shape(), mat(new float[ shape.x * shape.y * shape.z * shape.i]), i_offset(0) {;}
+    Matrix(): shape(), mat(nullptr), i_offset(0) {;}
     Matrix(Shape sh): shape(sh), mat(new float[ shape.x * shape.y * shape.z * shape.i]), i_offset(0) {;}
     Matrix(Shape sh, float* m): shape(sh), mat(m), i_offset(0) {;}
     Matrix(Shape sh, float* m, int _i_offset): shape(sh), mat(m), i_offset(_i_offset) {;}

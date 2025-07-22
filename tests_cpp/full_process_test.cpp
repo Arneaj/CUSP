@@ -34,32 +34,62 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
+    bool save_J(false);
+    bool save_B(false);
+    bool save_V(false);
+
+    bool save_J_norm(false);
+    bool save_B_norm(false);
+    bool save_V_norm(false);
+
+    bool save_X(false);
+    bool save_Y(false);
+    bool save_Z(false);
+
+    bool save_ip(true);
+    bool save_params(true);
+
     std::string filepath(argv[1]);
-    std::string timestep(argv[2]);
+    std::string timestep(argv[2]);                  // TODO: could add support for multiple timesteps at a time?
     std::string savepath(argv[3]);
+
+    std::string J_format("x00_jvec-");
+    std::string B_format("x00_Bvec_c-");
+    std::string V_format("x00_vvec-");              // TODO: not sure how best to do this
+
+    std::string file_format("pvtr");                // TODO: would be interesting to suppose mutiple file formats (pvti, ...)
+
+    std::string analytical_models("Rolland25");     // TODO: would be interesting to add support for multiple models, maybe multiple at once?
+
+
 
 
     // "/rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run1/MS/x00_Bvec_c-21000.pvtr"
 
+    // *********************************************************************************************
     auto t0 = Time::now();
-    Matrix J = read_pvtr(filepath + std::string("/MS/x00_jvec-") + timestep + std::string(".pvtr"));
-    Matrix B = read_pvtr(filepath + std::string("/MS/x00_Bvec_c-") + timestep + std::string(".pvtr"));
-    Matrix V = read_pvtr(filepath + std::string("/MS/x00_vvec-") + timestep + std::string(".pvtr"));
+
+    Matrix J = read_pvtr(filepath + std::string("/") + J_format + timestep + std::string(".") + file_format);
+    Matrix B = read_pvtr(filepath + std::string("/") + B_format + timestep + std::string(".") + file_format);
+    Matrix V = read_pvtr(filepath + std::string("/") + V_format + timestep + std::string(".") + file_format);
 
     Matrix X;
     Matrix Y;
     Matrix Z;
 
-    get_coord(X, Y, Z, filepath + std::string("/MS/x00_Bvec_c-") + timestep + std::string(".pvtr"));
+    get_coord(X, Y, Z, filepath + std::string("/") + B_format + timestep + std::string(".") + file_format);
 
     save_file( savepath + std::string("/X.txt"), X );
     save_file( savepath + std::string("/Y.txt"), Y );
     save_file( savepath + std::string("/Z.txt"), Z );
+
     auto t1 = Time::now();
     std::cout << "File reading done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
+    // *********************************************************************************************
     t0 = Time::now();
+
     Point p_min( X[0], Y[0], Z[0] );
     Point p_max( X[ X.get_shape().x-1 ], Y[ Y.get_shape().x-1 ], Z[ Z.get_shape().x-1 ] );
     Point p_range = p_max - p_min;
@@ -87,8 +117,9 @@ int main(int argc, char* argv[])
     std::cout << "Preprocessing files done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
-
+    // *********************************************************************************************
     t0 = Time::now();
+
     int nb_theta = 40;
     int nb_phi = 90;
 
@@ -104,27 +135,19 @@ int main(int argc, char* argv[])
     );
 
     process_interest_points( interest_points, nb_theta, nb_phi, new_shape_sim, new_shape_real, earth_pos_sim, earth_pos_real );
+
     t1 = Time::now();
     std::cout << "Interest point search done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
+
+    // *********************************************************************************************
     t0 = Time::now();
 
-    double initial_params[11];
-    initial_params[0] = 10;     // r_0
-    initial_params[1] = 0.5;    // alpha_0
-    initial_params[2] = 0;      // alpha_1
-    initial_params[3] = 0;      // alpha_2
-    initial_params[4] = 2;      // d_n
-    initial_params[5] = 0.55;   // l_n
-    initial_params[6] = 0.55;   // s_n
-    initial_params[7] = 2;      // d_s
-    initial_params[8] = 0.55;   // l_s
-    initial_params[9] = 0.55;   // s_s
-    initial_params[10] = 0;     // e
-
-    double lowerbound[11] = {  5.0,    0.3,    -1.0,   -1.0,   0.0,    0.1,    0.1,    0.0,    0.1,    0.1,    -0.5};
-    double upperbound[11] = {  15.0,   0.8,    1.0,    1.0,    4.0,    2.0,    1.0,    4.0,    2.0,    1.0,    0.5};
-    double radii[11] =      {  3.0,    0.1,    0.5,    0.5,    1.0,    0.05,   0.25,   1.0,    0.05,   0.25,   0.15};
+    //                              r_0,    a_0,    a_1,    a_2,    d_n,    l_n,    s_n,    d_s,    l_s,    s_s,    e    
+    double initial_params[11] = {   10.0,   0.5,    0.0,    0.0,    2.0,    0.55,   0.55,   2.0,    0.55,   0.55,   0.0     };
+    double lowerbound[11] =     {   5.0,    0.3,    -1.0,   -1.0,   0.0,    0.1,    0.1,    0.0,    0.1,    0.1,    -0.5    };
+    double upperbound[11] =     {   15.0,   0.8,    1.0,    1.0,    4.0,    2.0,    1.0,    4.0,    2.0,    1.0,    0.5     };
+    double radii[11] =          {   3.0,    0.1,    0.5,    0.5,    1.0,    0.05,   0.25,   1.0,    0.05,   0.25,   0.15    };
 
 
     int nb_runs = 50;
@@ -135,7 +158,7 @@ int main(int argc, char* argv[])
         interest_points, nb_interest_points, 
         initial_params, 
         lowerbound, upperbound, radii, 
-        nb_runs
+        nb_runs, print_results=false
     );
 
     t1 = Time::now();
@@ -143,18 +166,20 @@ int main(int argc, char* argv[])
 
 
 
-
+    // *********************************************************************************************
     t0 = Time::now();
+
     std::cout << "Average standard deviation of the interest points is " << avg_std_dev << std::endl;
-    // // use avg_std_dev
     // float avg_J_norm_grad;
+
     t1 = Time::now();
     std::cout << "Analysis done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
 
-
+    // *********************************************************************************************
     t0 = Time::now();
+
     save_file_bin( savepath + std::string("/J_norm_processed_real.bin"), J_norm_real );
     save_file_bin( savepath + std::string("/B_processed_real.bin"), B_processed_real );
     save_file_bin( savepath + std::string("/V_processed_real.bin"), V_processed_real );
@@ -162,10 +187,12 @@ int main(int argc, char* argv[])
     save_interest_points( savepath + std::string("/interest_points_cpp.txt"), interest_points, nb_theta, nb_phi );
 
     save_parameters( savepath + std::string("/params_cpp.txt"), result.params );
+
     t1 = Time::now();
     std::cout << "Interest points, parameters and file saving done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
+    // *********************************************************************************************
     V.del(); J.del(); B.del();
     X.del(); Y.del(); Z.del();
     V_processed_sim.del(); B_processed_sim.del(); J_processed_sim.del(); J_norm_sim.del();
