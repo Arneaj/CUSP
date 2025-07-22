@@ -44,7 +44,7 @@ Point find_sim_earth_pos( Point real_earth_pos, Shape real_shape, Shape sim_shap
 void get_close_streamlines__mutithreaded_helper(  
     const Matrix& B, const Point* earth_pos, 
     float r_step, float angle_step, float streamline_step, 
-    int max_length, float theta_start, float theta_end,
+    int max_length, float theta_start, 
     int start_index, int end_index,  
     std::vector<std::vector<Point>>& streamlines    )
 {
@@ -100,7 +100,7 @@ std::vector<std::vector<Point>> get_close_streamlines( const Matrix& B, const Po
             &get_close_streamlines__mutithreaded_helper, 
             std::ref(B), std::ref(earth_pos),
             r_step, angle_step, streamline_step,
-            max_length, theta_start, theta_end,
+            max_length, theta_start,
             start_index, end_index,
             std::ref(streamlines)
         );

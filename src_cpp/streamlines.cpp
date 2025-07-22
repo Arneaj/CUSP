@@ -9,84 +9,58 @@
 
 
 
-float interpolate(Point P, const Matrix& B, int i)
-{
-    int xm = (int) (P.x);
-    int ym = (int) (P.y);
-    int zm = (int) (P.z);
+// float interpolate(Point P, const Matrix& B, int i)
+// {
+//     int xm = (int) (P.x);
+//     int ym = (int) (P.y);
+//     int zm = (int) (P.z);
 
-    float xd = P.x - xm;
-    float yd = P.y - ym;
-    float zd = P.z - zm;
+//     float xd = P.x - xm;
+//     float yd = P.y - ym;
+//     float zd = P.z - zm;
 
-    return  ( B(xm,ym,zm,i)*(1-xd) + B(xm+1,ym,zm,i)*xd )*(1-yd)*(1-zd)
-        +   ( B(xm,ym+1,zm,i)*(1-xd) + B(xm+1,ym+1,zm,i)*xd )*yd*(1-zd)
-        +   ( B(xm,ym,zm+1,i)*(1-xd) + B(xm+1,ym,zm+1,i)*xd )*(1-yd)*zd
-        +   ( B(xm,ym+1,zm+1,i)*(1-xd) + B(xm+1,ym+1,zm+1,i)*xd )*yd*zd;
-}
+//     return  ( B(xm,ym,zm,i)*(1-xd) + B(xm+1,ym,zm,i)*xd )*(1-yd)*(1-zd)
+//         +   ( B(xm,ym+1,zm,i)*(1-xd) + B(xm+1,ym+1,zm,i)*xd )*yd*(1-zd)
+//         +   ( B(xm,ym,zm+1,i)*(1-xd) + B(xm+1,ym,zm+1,i)*xd )*(1-yd)*zd
+//         +   ( B(xm,ym+1,zm+1,i)*(1-xd) + B(xm+1,ym+1,zm+1,i)*xd )*yd*zd;
+// }
 
 Point norm_RK4(Point P_init, const Matrix& B, float step, float sign)
 {
     Point P = P_init;
 
-    if (P.x>=B.get_shape().x || P.x<0) throw std::exception();
-    if (P.y>=B.get_shape().y || P.y<0) throw std::exception();
-    if (P.z>=B.get_shape().z || P.z<0) throw std::exception();
+    if ( B.is_point_OOB(P) ) throw std::exception();
     
-    Point k1(
-        interpolate(P, B, 0),
-        interpolate(P, B, 1),
-        interpolate(P, B, 2)
-    );
+    Point k1 = B(P);
     float k1_norm = k1.norm();
     k1 /= k1_norm * sign;
 
     P = P_init + 0.5*step*k1;
 
-    if (P.x>=B.get_shape().x || P.x<0) throw std::exception();
-    if (P.y>=B.get_shape().y || P.y<0) throw std::exception();
-    if (P.z>=B.get_shape().z || P.z<0) throw std::exception();
+    if ( B.is_point_OOB(P) ) throw std::exception();
 
-    Point k2(
-        interpolate(P, B, 0),
-        interpolate(P, B, 1),
-        interpolate(P, B, 2)
-    );
+    Point k2 = B(P);
     k2 /= k1_norm * sign;
 
     P = P_init + 0.5*step*k2;
 
-    if (P.x>=B.get_shape().x || P.x<0) throw std::exception();
-    if (P.y>=B.get_shape().y || P.y<0) throw std::exception();
-    if (P.z>=B.get_shape().z || P.z<0) throw std::exception();
+    if ( B.is_point_OOB(P) ) throw std::exception();
 
-    Point k3(
-        interpolate(P, B, 0),
-        interpolate(P, B, 1),
-        interpolate(P, B, 2)
-    );
+    Point k3 = B(P);
     k3 /= k1_norm * sign;
 
     P = P_init + step*k3;
 
-    if (P.x>=B.get_shape().x || P.x<0) throw std::exception();
-    if (P.y>=B.get_shape().y || P.y<0) throw std::exception();
-    if (P.z>=B.get_shape().z || P.z<0) throw std::exception();
+    if ( B.is_point_OOB(P) ) throw std::exception();
 
-    Point k4(
-        interpolate(P, B, 0),
-        interpolate(P, B, 1),
-        interpolate(P, B, 2)
-    );
+    Point k4 = B(P);
     k4 /= k1_norm * sign;
 
     Point final_step = step*(k1+2*k2+2*k3+k4)/6;
 
     P = P_init + final_step / final_step.norm();
 
-    if (P.x>=B.get_shape().x || P.x<0) throw std::exception();
-    if (P.y>=B.get_shape().y || P.y<0) throw std::exception();
-    if (P.z>=B.get_shape().z || P.z<0) throw std::exception();
+    if ( B.is_point_OOB(P) ) throw std::exception();
 
     return P;
 }

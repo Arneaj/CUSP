@@ -38,6 +38,8 @@ public:
 };
 
 
+/// @brief  A 3D voxel grid of any size with any number of components per voxel. 
+///         Fortran-style indexing if manually indexing through array Matrix::mat.
 class Matrix
 {
 private:
@@ -70,8 +72,16 @@ public:
 
     Matrix norm() const;
 
+    bool is_point_OOB(Point p) const;
+
+    Point local_grad_of_norm(Point p);
+
+
     float& operator()(int ix, int iy, int iz, int i);
     const float& operator()(int ix, int iy, int iz, int i) const;
+
+    float operator()(Point p, int i) const;
+    Point operator()(Point p) const;
 
     Matrix operator()(int i);
 

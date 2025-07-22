@@ -16,6 +16,48 @@ void Matrix::flatten()
 }
 
 
+bool Matrix::is_point_OOB(Point p) const
+{
+    return  p.x>=shape.x || p.x<0 ||
+            p.y>=shape.y || p.y<0 ||
+            p.y>=shape.y || p.y<0 ;
+}
+
+
+float Matrix::operator()(Point p, int i) const
+{
+    if ( is_point_OOB(p) ) throw exception_OOB("Point is out of bounds!");
+
+    int xm = (int) (p.x);
+    int ym = (int) (p.y);
+    int zm = (int) (p.z);
+
+    float xd = p.x - xm;
+    float yd = p.y - ym;
+    float zd = p.z - zm;
+
+    return  ( (*this)(xm,ym,zm,i)*(1-xd) + (*this)(xm+1,ym,zm,i)*xd )*(1-yd)*(1-zd)
+        +   ( (*this)(xm,ym+1,zm,i)*(1-xd) + (*this)(xm+1,ym+1,zm,i)*xd )*yd*(1-zd)
+        +   ( (*this)(xm,ym,zm+1,i)*(1-xd) + (*this)(xm+1,ym,zm+1,i)*xd )*(1-yd)*zd
+        +   ( (*this)(xm,ym+1,zm+1,i)*(1-xd) + (*this)(xm+1,ym+1,zm+1,i)*xd )*yd*zd;
+}
+
+
+Point Matrix::operator()(Point p) const
+{
+    return { (*this)(p,0), (*this)(p,1), (*this)(p,2) };
+}
+
+
+
+
+Point Matrix::local_grad_of_norm(Point p)
+{
+
+}
+
+
+
 
 float& Matrix::operator()(int ix, int iy, int iz, int i)
 {

@@ -145,8 +145,9 @@ int main(int argc, char* argv[])
 
 
     t0 = Time::now();
-    // use avg_std_dev
-    float avg_J_norm_grad;
+    std::cout << "Average standard deviation of the interest points is " << avg_std_dev << std::endl;
+    // // use avg_std_dev
+    // float avg_J_norm_grad;
     t1 = Time::now();
     std::cout << "Analysis done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 

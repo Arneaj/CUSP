@@ -5,7 +5,7 @@
 #include "points.h"
 
 
-float interpolate(Point P, const Matrix& B, int i);
+// float interpolate(Point P, const Matrix& B, int i);
 
 Point norm_RK4(Point P_init, const Matrix& B, float step, float sign=1.0f);
 
