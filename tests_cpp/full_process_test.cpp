@@ -92,12 +92,15 @@ int main(int argc, char* argv[])
     int nb_theta = 40;
     int nb_phi = 90;
 
+    float avg_std_dev;
+
     InterestPoint* interest_points = get_interest_points(
         J_norm_sim, earth_pos_sim,
         nb_theta, nb_phi,
         0.1, 0.1,
         0.6, 0.7, 2,
-        1.15, 1.8, 20
+        1.15, 1.8, 20,
+        &avg_std_dev
     );
 
     process_interest_points( interest_points, nb_theta, nb_phi, new_shape_sim, new_shape_real, earth_pos_sim, earth_pos_real );
@@ -142,7 +145,7 @@ int main(int argc, char* argv[])
 
 
     t0 = Time::now();
-    float avg_std_dev;
+    // use avg_std_dev
     float avg_J_norm_grad;
     t1 = Time::now();
     std::cout << "Analysis done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
@@ -151,10 +154,6 @@ int main(int argc, char* argv[])
 
 
     t0 = Time::now();
-    // save_file( savepath + std::string("/J_norm_processed_real.txt"), J_norm_real );
-    // save_file( savepath + std::string("/B_processed_real.txt"), B_processed_real );
-    // save_file( savepath + std::string("/V_processed_real.txt"), V_processed_real );
-
     save_file_bin( savepath + std::string("/J_norm_processed_real.bin"), J_norm_real );
     save_file_bin( savepath + std::string("/B_processed_real.bin"), B_processed_real );
     save_file_bin( savepath + std::string("/V_processed_real.bin"), V_processed_real );

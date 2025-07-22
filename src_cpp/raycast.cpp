@@ -122,11 +122,14 @@ InterestPoint* get_interest_points( const Matrix& J_norm, Point earth_pos,
                                     int nb_theta, int nb_phi, 
                                     float dx, float dr,
                                     float alpha_0_min, float alpha_0_max, float nb_alpha_0,
-                                    float r_0_mult_min, float r_0_mult_max, float nb_r_0 )
+                                    float r_0_mult_min, float r_0_mult_max, float nb_r_0,
+                                    float* avg_std_dev )
 {
     std::vector<float>* interest_radii_candidates = new std::vector<float>[ nb_theta*nb_phi ];
 
     float x = earth_pos.x;
+
+    if (avg_std_dev) *avg_std_dev = 0;
     
 
     while ( x>0 and x<J_norm.get_shape().x )
@@ -173,6 +176,8 @@ InterestPoint* get_interest_points( const Matrix& J_norm, Point earth_pos,
             float interest_radius = get_median( interest_radii_candidates[ itheta*nb_phi + iphi ] );
             float std_dev = get_std_dev( interest_radii_candidates[ itheta*nb_phi + iphi ] );
 
+            if (avg_std_dev) *avg_std_dev += std_dev;
+
             // float weight = std::exp( -std_dev );  // TODO: change weights
             // float weight = 1.0f / (1.0f + std_dev);
             float weight = 5.0f / (5.0f + std_dev*std_dev);
@@ -181,6 +186,8 @@ InterestPoint* get_interest_points( const Matrix& J_norm, Point earth_pos,
             interest_points[ itheta*nb_phi + iphi ] = InterestPoint( theta, phi, interest_radius, weight ); 
         }
     }
+
+    if (avg_std_dev) *avg_std_dev /= nb_theta*nb_phi;
 
     delete[] interest_radii_candidates;
 

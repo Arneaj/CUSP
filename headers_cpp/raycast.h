@@ -35,7 +35,8 @@ InterestPoint* get_interest_points(  const Matrix& J_norm, Point earth_pos,
                                             int nb_theta, int nb_phi, 
                                             float dx, float dr,
                                             float alpha_0_max, float alpha_0_min, float nb_alpha_0,
-                                            float r_0_max, float r_0_min, float nb_r_0 );
+                                            float r_0_max, float r_0_min, float nb_r_0,
+                                            float* avg_std_dev=nullptr );
 
 
 
