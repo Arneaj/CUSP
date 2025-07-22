@@ -201,7 +201,7 @@ OptiResult fit_MP(
     int max_nb_iterations_per_run=50,
     ceres::TrustRegionStrategyType trust_region=ceres::LEVENBERG_MARQUARDT,
     ceres::LinearSolverType linear_solver=ceres::DENSE_QR,
-    bool print_progress=false, bool print_results=true
+    bool print_progress=false, bool print_results=false
 )
 {
     if (print_progress)

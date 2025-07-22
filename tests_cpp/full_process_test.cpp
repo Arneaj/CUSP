@@ -38,16 +38,18 @@ int main(int argc, char* argv[])
     bool save_B(false);
     bool save_V(false);
 
-    bool save_J_norm(false);
+    bool save_J_norm(true);
     bool save_B_norm(false);
     bool save_V_norm(false);
 
-    bool save_X(false);
-    bool save_Y(false);
-    bool save_Z(false);
+    bool save_X(true);
+    bool save_Y(true);
+    bool save_Z(true);
 
     bool save_ip(true);
     bool save_params(true);
+
+    bool logging(true);
 
     std::string filepath(argv[1]);
     std::string timestep(argv[2]);                  // TODO: could add support for multiple timesteps at a time?
@@ -57,7 +59,7 @@ int main(int argc, char* argv[])
     std::string B_format("x00_Bvec_c-");
     std::string V_format("x00_vvec-");              // TODO: not sure how best to do this
 
-    std::string file_format("pvtr");                // TODO: would be interesting to suppose mutiple file formats (pvti, ...)
+    std::string file_format("pvtr");                // TODO: would be interesting to support mutiple file formats (pvti, ...)
 
     std::string analytical_models("Rolland25");     // TODO: would be interesting to add support for multiple models, maybe multiple at once?
 
@@ -158,7 +160,7 @@ int main(int argc, char* argv[])
         interest_points, nb_interest_points, 
         initial_params, 
         lowerbound, upperbound, radii, 
-        nb_runs, print_results=false
+        nb_runs
     );
 
     t1 = Time::now();
@@ -170,6 +172,13 @@ int main(int argc, char* argv[])
     t0 = Time::now();
 
     std::cout << "Average standard deviation of the interest points is " << avg_std_dev << std::endl;
+
+    std::cout << "Average cost of best fit to the analytical function is " << result.cost / nb_interest_points << std::endl;
+    std::cout << "Final parameters are { ";
+    std::cout << result.params[0];
+    for (int i=1; i<nb_params; i++) std::cout << ", " << result.params[i];
+    std::cout << " }" << std::endl;
+
     // float avg_J_norm_grad;
 
     t1 = Time::now();
