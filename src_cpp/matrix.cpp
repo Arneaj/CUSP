@@ -51,10 +51,7 @@ Point Matrix::operator()(Point p) const
 
 
 
-Point Matrix::local_grad_of_norm(Point p)
-{
 
-}
 
 
 

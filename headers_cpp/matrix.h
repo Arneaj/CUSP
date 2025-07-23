@@ -74,8 +74,6 @@ public:
 
     bool is_point_OOB(Point p) const;
 
-    Point local_grad_of_norm(Point p);
-
 
     float& operator()(int ix, int iy, int iz, int i);
     const float& operator()(int ix, int iy, int iz, int i) const;

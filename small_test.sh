@@ -23,11 +23,15 @@ module load googletest > /dev/null 2>&1
 echo
 
 cd build
+cmake .. > /dev/null
+make > /dev/null
+
 ./full_process 	-i /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run12/MS \
 				-t 23100 \
 				--save_J_norm false \
 				-X false -Y false -Z false \
 				--save_ip false --save_params false
+
 
 
 
