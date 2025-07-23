@@ -45,7 +45,7 @@ float Matrix::operator()(Point p, int i) const
 
 Point Matrix::operator()(Point p) const
 {
-    return { (*this)(p,0), (*this)(p,1), (*this)(p,2) };
+    return Point( (*this)(p,0), (*this)(p,1), (*this)(p,2) );
 }
 
 
