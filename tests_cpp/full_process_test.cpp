@@ -16,31 +16,33 @@ typedef std::chrono::duration<float> fsec;
 
 int main(int argc, char* argv[])
 {
-    if (argc < 2)
-    {
-        std::cout << "No Run path given!\n";
-        exit(1);
-    }
+    // if (argc < 2)
+    // {
+    //     std::cout << "No Run path given!\n";
+    //     exit(1);
+    // }
 
-    if (argc < 3)
-    {
-        std::cout << "No timestep given!\n";
-        exit(1);
-    }
+    // if (argc < 3)
+    // {
+    //     std::cout << "No timestep given!\n";
+    //     exit(1);
+    // }
 
-    if (argc < 4)
-    {
-        std::cout << "No save path given!\n";
-        exit(1);
-    }
+    // if (argc < 4)
+    // {
+    //     std::cout << "No save path given!\n";
+    //     exit(1);
+    // }
+
+    // std::string filepath(argv[1]);
+    // std::string timestep(argv[2]);
+    // std::string savepath(argv[3]);
 
     bool save_J(false);
     bool save_B(false);
     bool save_V(false);
 
     bool save_J_norm(true);
-    bool save_B_norm(false);
-    bool save_V_norm(false);
 
     bool save_X(true);
     bool save_Y(true);
@@ -51,9 +53,9 @@ int main(int argc, char* argv[])
 
     bool logging(true);
 
-    std::string filepath(argv[1]);
-    std::string timestep(argv[2]);                  // TODO: could add support for multiple timesteps at a time?
-    std::string savepath(argv[3]);
+    std::string filepath(".");
+    std::string timestep("");                       // TODO: could add support for multiple timesteps at a time?
+    std::string savepath(".");
 
     std::string J_format("x00_jvec-");
     std::string B_format("x00_Bvec_c-");
@@ -61,9 +63,104 @@ int main(int argc, char* argv[])
 
     std::string file_format("pvtr");                // TODO: would be interesting to support mutiple file formats (pvti, ...)
 
-    std::string analytical_models("Rolland25");     // TODO: would be interesting to add support for multiple models, maybe multiple at once?
+    std::string analytical_model("Rolland25");      // TODO: would be interesting to add support for multiple models, maybe multiple at once?
 
 
+    for (int i=1; i<argc; i+=2)
+    {
+        if (i+1>=argc || argv[i+1][0]=='-') { std::cout << "ERROR: no parameter provided for flag: " << argv[i] << std::endl; exit(1); }
+
+        if( std::string(argv[i]) == "--input_dir" || std::string(argv[i]) == "-i" ) filepath = argv[i+1];
+        else if( std::string(argv[i]) == "--output_dir" || std::string(argv[i]) == "-o" ) savepath = argv[i+1];
+        else if( std::string(argv[i]) == "--output_dir" || std::string(argv[i]) == "-o" ) savepath = argv[i+1];
+
+        else if( std::string(argv[i]) == "--timestep" || std::string(argv[i]) == "-t" ) timestep = argv[i+1];
+
+        // else if( std::string(argv[i]) == "--file_format" ) file_format = argv[i+1];              // TODO: can't do that yet
+
+        else if( std::string(argv[i]) == "--J_format" ) J_format = argv[i+1];
+        else if( std::string(argv[i]) == "--B_format" ) B_format = argv[i+1];
+        else if( std::string(argv[i]) == "--V_format" ) V_format = argv[i+1];
+
+        // else if( std::string(argv[i]) == "--analytical_model" ) analytical_model = argv[i+1];    // TODO: can't do that yet
+
+        else if( std::string(argv[i]) == "--save_J" || std::string(argv[i]) == "-J" )
+        {
+            if (std::string(argv[i+1]) == "true") save_J = true;
+            else if (std::string(argv[i+1]) == "false") save_J = false;
+            else { std::cout << "ERROR: unknown parameter for flag --save_J\n"; exit(1); }
+            break;
+        }
+        else if( std::string(argv[i]) == "--save_B" || std::string(argv[i]) == "-B" )
+        {
+            if (std::string(argv[i+1]) == "true") save_B = true;
+            else if (std::string(argv[i+1]) == "false") save_B = false;
+            else { std::cout << "ERROR: unknown parameter for flag --save_B\n"; exit(1); }
+            break;
+        }
+        else if( std::string(argv[i]) == "--save_V" || std::string(argv[i]) == "-V" )
+        {
+            if (std::string(argv[i+1]) == "true") save_V = true;
+            else if (std::string(argv[i+1]) == "false") save_V = false;
+            else { std::cout << "ERROR: unknown parameter for flag --save_V\n"; exit(1); }
+            break;
+        } 
+        
+        else if( std::string(argv[i]) == "--save_J_norm" || std::string(argv[i]) == "-J" )
+        {
+            if (std::string(argv[i+1]) == "true") save_J_norm = true;
+            else if (std::string(argv[i+1]) == "false") save_J_norm = false;
+            else { std::cout << "ERROR: unknown parameter for flag --save_J_norm\n"; exit(1); }
+            break;
+        }
+
+        else if( std::string(argv[i]) == "--save_X" || std::string(argv[i]) == "-X" )
+        {
+            if (std::string(argv[i+1]) == "true") save_X = true;
+            else if (std::string(argv[i+1]) == "false") save_X = false;
+            else { std::cout << "ERROR: unknown parameter for flag --save_X\n"; exit(1); }
+            break;
+        }
+        else if( std::string(argv[i]) == "--save_Y" || std::string(argv[i]) == "-Y" )
+        {
+            if (std::string(argv[i+1]) == "true") save_Y = true;
+            else if (std::string(argv[i+1]) == "false") save_Y = false;
+            else { std::cout << "ERROR: unknown parameter for flag --save_Y\n"; exit(1); }
+            break;
+        }
+        else if( std::string(argv[i]) == "--save_Z" || std::string(argv[i]) == "-Z" )
+        {
+            if (std::string(argv[i+1]) == "true") save_Z = true;
+            else if (std::string(argv[i+1]) == "false") save_Z = false;
+            else { std::cout << "ERROR: unknown parameter for flag --save_Z\n"; exit(1); }
+            break;
+        }
+
+        else if( std::string(argv[i]) == "--save_interest_points" )
+        {
+            if (std::string(argv[i+1]) == "true") save_ip = true;
+            else if (std::string(argv[i+1]) == "false") save_ip = false;
+            else { std::cout << "ERROR: unknown parameter for flag --save_interest_points\n"; exit(1); }
+            break;
+        }
+        else if( std::string(argv[i]) == "--save_params" )
+        {
+            if (std::string(argv[i+1]) == "true") save_params = true;
+            else if (std::string(argv[i+1]) == "false") save_params = false;
+            else { std::cout << "ERROR: unknown parameter for flag --save_params\n"; exit(1); }
+            break;
+        }
+
+        else if( std::string(argv[i]) == "--logging" )
+        {
+            if (std::string(argv[i+1]) == "true") logging = true;
+            else if (std::string(argv[i+1]) == "false") logging = false;
+            else { std::cout << "ERROR: unknown parameter for flag --logging\n"; exit(1); }
+            break;
+        }
+
+        else { std::cout << "ERROR: unknown command line argument: " << argv[i] << std::endl; exit(1); }
+    }
 
 
     // "/rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run1/MS/x00_Bvec_c-21000.pvtr"
@@ -81,12 +178,12 @@ int main(int argc, char* argv[])
 
     get_coord(X, Y, Z, filepath + std::string("/") + B_format + timestep + std::string(".") + file_format);
 
-    save_file( savepath + std::string("/X.txt"), X );
-    save_file( savepath + std::string("/Y.txt"), Y );
-    save_file( savepath + std::string("/Z.txt"), Z );
+    if (save_X) save_file( savepath + std::string("/X.txt"), X );
+    if (save_Y) save_file( savepath + std::string("/Y.txt"), Y );
+    if (save_Z) save_file( savepath + std::string("/Z.txt"), Z );
 
     auto t1 = Time::now();
-    std::cout << "File reading done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+    if (logging) std::cout << "File reading done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
     // *********************************************************************************************
@@ -116,7 +213,7 @@ int main(int argc, char* argv[])
     Matrix J_norm_real = J_processed_real.norm();
     
     t1 = Time::now();
-    std::cout << "Preprocessing files done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+    if (logging) std::cout << "Preprocessing files done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
     // *********************************************************************************************
@@ -139,7 +236,7 @@ int main(int argc, char* argv[])
     process_interest_points( interest_points, nb_theta, nb_phi, new_shape_sim, new_shape_real, earth_pos_sim, earth_pos_real );
 
     t1 = Time::now();
-    std::cout << "Interest point search done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+    if (logging) std::cout << "Interest point search done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
     // *********************************************************************************************
@@ -164,41 +261,46 @@ int main(int argc, char* argv[])
     );
 
     t1 = Time::now();
-    std::cout << "Fitting done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+    if (logging) std::cout << "Fitting done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
 
     // *********************************************************************************************
     t0 = Time::now();
 
-    std::cout << "Average standard deviation of the interest points is " << avg_std_dev << std::endl;
+    if (logging)
+    {
+        std::cout << "Average standard deviation of the interest points is " << avg_std_dev << std::endl;
 
-    std::cout << "Average cost of best fit to the analytical function is " << result.cost / nb_interest_points << std::endl;
-    std::cout << "Final parameters are { ";
-    std::cout << result.params[0];
-    for (int i=1; i<nb_params; i++) std::cout << ", " << result.params[i];
-    std::cout << " }" << std::endl;
+        std::cout << "Average cost of best fit to the analytical function is " << result.cost / nb_interest_points << std::endl;
+        std::cout << "Final parameters are { ";
+        std::cout << result.params[0];
+        for (int i=1; i<nb_params; i++) std::cout << ", " << result.params[i];
+        std::cout << " }" << std::endl;
+    }
 
     // float avg_J_norm_grad;
 
     t1 = Time::now();
-    std::cout << "Analysis done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+    if (logging) std::cout << "Analysis done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
 
     // *********************************************************************************************
     t0 = Time::now();
 
-    save_file_bin( savepath + std::string("/J_norm_processed_real.bin"), J_norm_real );
-    save_file_bin( savepath + std::string("/B_processed_real.bin"), B_processed_real );
-    save_file_bin( savepath + std::string("/V_processed_real.bin"), V_processed_real );
+    if (save_J) save_file_bin( savepath + std::string("/J_processed_real.bin"), J_processed_real );
+    if (save_B) save_file_bin( savepath + std::string("/B_processed_real.bin"), B_processed_real );
+    if (save_V) save_file_bin( savepath + std::string("/V_processed_real.bin"), V_processed_real );
 
-    save_interest_points( savepath + std::string("/interest_points_cpp.txt"), interest_points, nb_theta, nb_phi );
+    if (save_J_norm) save_file_bin( savepath + std::string("/J_norm_processed_real.bin"), J_norm_real );
 
-    save_parameters( savepath + std::string("/params_cpp.txt"), result.params );
+    if (save_ip) save_interest_points( savepath + std::string("/interest_points_cpp.txt"), interest_points, nb_theta, nb_phi );
+
+    if (save_params) save_parameters( savepath + std::string("/params_cpp.txt"), result.params );
 
     t1 = Time::now();
-    std::cout << "Interest points, parameters and file saving done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+    if (logging) std::cout << "Interest points, parameters and file saving done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
     // *********************************************************************************************
