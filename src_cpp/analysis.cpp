@@ -67,14 +67,14 @@ float get_avg_grad_of_func( double (*fn)(const double* const, double, double), c
 
             Point grad_J = local_grad_of_normed_matrix(J_norm, p, DerivativeAccuracy::high, dx, dy, dz);
             
-            std::cout << "grad norm: " << grad_J.norm() << std::endl;
+            // std::cout << "grad norm: " << grad_J.norm() << std::endl;
             total_grad_norm += grad_J.norm();
             valid_points++;
         }
     }
 
-    std::cout << "total grad norm: " << total_grad_norm << std::endl;
-    std::cout << "avg grad norm: " << total_grad_norm / valid_points << std::endl;
+    // std::cout << "total grad norm: " << total_grad_norm << std::endl;
+    // std::cout << "avg grad norm: " << total_grad_norm / valid_points << std::endl;
     return total_grad_norm / valid_points;
 }
 
