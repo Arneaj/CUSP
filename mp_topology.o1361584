@@ -1,0 +1,94 @@
+/rds/general/user/avr24/home/.profile: line 1: .bashrc: No such file or directory
+Finished loading modules.
+
+Finished building program.
+Run1_28800
+File reading done. Time taken: 0.902749s
+Preprocessing files done. Time taken: 0.538139s
+terminate called recursively
+terminate called recursively
+/var/spool/PBS/mom_priv/jobs/1361584.pbs.SC: line 64: 3123454 Aborted                 ./full_process --input_dir /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run"$run_nb"/MS --timestep "$t" --output_dir /rds/general/user/avr24/home/Thesis/data/Run"$run_nb"_"$t"
+Finished fitting the data point at Run1, timestep 28800
+Time taken: 9 seconds total.
+
+Run1_27000
+File reading done. Time taken: 0.939933s
+Preprocessing files done. Time taken: 0.479524s
+terminate called recursively
+terminate called recursively
+/var/spool/PBS/mom_priv/jobs/1361584.pbs.SC: line 64: 3123740 Aborted                 ./full_process --input_dir /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run"$run_nb"/MS --timestep "$t" --output_dir /rds/general/user/avr24/home/Thesis/data/Run"$run_nb"_"$t"
+Finished fitting the data point at Run1, timestep 27000
+Time taken: 4 seconds total.
+
+Run1_23100
+File reading done. Time taken: 0.872478s
+Preprocessing files done. Time taken: 0.495737s
+terminate called recursively
+terminate called recursively
+/var/spool/PBS/mom_priv/jobs/1361584.pbs.SC: line 64: 3123774 Aborted                 ./full_process --input_dir /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run"$run_nb"/MS --timestep "$t" --output_dir /rds/general/user/avr24/home/Thesis/data/Run"$run_nb"_"$t"
+Finished fitting the data point at Run1, timestep 23100
+Time taken: 5 seconds total.
+
+Run1_22500
+File reading done. Time taken: 1.23833s
+Preprocessing files done. Time taken: 0.39496s
+terminate called recursively
+terminate called after throwing an instance of '/var/spool/PBS/mom_priv/jobs/1361584.pbs.SC: line 64: 3123798 Aborted                 ./full_process --input_dir /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run"$run_nb"/MS --timestep "$t" --output_dir /rds/general/user/avr24/home/Thesis/data/Run"$run_nb"_"$t"
+Finished fitting the data point at Run1, timestep 22500
+Time taken: 4 seconds total.
+
+Run1_21900
+File reading done. Time taken: 0.796322s
+Preprocessing files done. Time taken: 0.397586s
+terminate called recursively
+terminate called recursively
+/var/spool/PBS/mom_priv/jobs/1361584.pbs.SC: line 64: 3123815 Aborted                 ./full_process --input_dir /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run"$run_nb"/MS --timestep "$t" --output_dir /rds/general/user/avr24/home/Thesis/data/Run"$run_nb"_"$t"
+Finished fitting the data point at Run1, timestep 21900
+Time taken: 4 seconds total.
+
+Run1_21000
+File reading done. Time taken: 0.906712s
+Preprocessing files done. Time taken: 0.475307s
+terminate called recursively
+terminate called recursively
+/var/spool/PBS/mom_priv/jobs/1361584.pbs.SC: line 64: 3123854 Aborted                 ./full_process --input_dir /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run"$run_nb"/MS --timestep "$t" --output_dir /rds/general/user/avr24/home/Thesis/data/Run"$run_nb"_"$t"
+Finished fitting the data point at Run1, timestep 21000
+Time taken: 5 seconds total.
+
+Run1_20100
+File reading done. Time taken: 0.988789s
+Preprocessing files done. Time taken: 0.538941s
+terminate called recursively
+terminate called recursively
+/var/spool/PBS/mom_priv/jobs/1361584.pbs.SC: line 64: 3123960 Aborted                 ./full_process --input_dir /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run"$run_nb"/MS --timestep "$t" --output_dir /rds/general/user/avr24/home/Thesis/data/Run"$run_nb"_"$t"
+Finished fitting the data point at Run1, timestep 20100
+Time taken: 4 seconds total.
+
+Run2_28800
+File reading done. Time taken: 0.804437s
+Preprocessing files done. Time taken: 0.448985s
+terminate called recursively
+terminate called recursively
+/var/spool/PBS/mom_priv/jobs/1361584.pbs.SC: line 64: 3123983 Aborted                 ./full_process --input_dir /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run"$run_nb"/MS --timestep "$t" --output_dir /rds/general/user/avr24/home/Thesis/data/Run"$run_nb"_"$t"
+Finished fitting the data point at Run2, timestep 28800
+Time taken: 5 seconds total.
+
+Run2_27000
+File reading done. Time taken: 0.956655s
+Preprocessing files done. Time taken: 0.488393s
+terminate called recursively
+terminate called recursively
+/var/spool/PBS/mom_priv/jobs/1361584.pbs.SC: line 64: 3124032 Aborted                 ./full_process --input_dir /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run"$run_nb"/MS --timestep "$t" --output_dir /rds/general/user/avr24/home/Thesis/data/Run"$run_nb"_"$t"
+Finished fitting the data point at Run2, timestep 27000
+Time taken: 4 seconds total.
+
+Run2_23100
+File reading done. Time taken: 0.795463s
+Preprocessing files done. Time taken: 0.477273s
+terminate called recursively
+terminate called recursively
+/var/spool/PBS/mom_priv/jobs/1361584.pbs.SC: line 64: 3124050 Aborted                 ./full_process --input_dir /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run"$run_nb"/MS --timestep "$t" --output_dir /rds/general/user/avr24/home/Thesis/data/Run"$run_nb"_"$t"
+Finished fitting the data point at Run2, timestep 23100
+Time taken: 4 seconds total.
+
+Run2_22500

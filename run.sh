@@ -51,13 +51,13 @@ timesteps=(
 	"20100"
 )
 
-cd build
-cmake .. > /dev/null
-make > /dev/null
-cd ..
+# cd build
+# cmake .. > /dev/null
+# make > /dev/null
+# cd ..
 
 
-echo Finished building program.
+# echo Finished building program.
 
 
 for run_nb in "${runs[@]}"; do
