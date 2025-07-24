@@ -19,6 +19,7 @@ module load Eigen > /dev/null 2>&1
 module load Abseil > /dev/null 2>&1   				
 module load googletest > /dev/null 2>&1   	
 
+echo Finished loading modules.
 
 echo
 
@@ -54,6 +55,9 @@ cd build
 cmake .. > /dev/null
 make > /dev/null
 cd ..
+
+
+echo Finished building program.
 
 
 for run_nb in "${runs[@]}"; do

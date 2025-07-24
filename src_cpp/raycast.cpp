@@ -54,10 +54,7 @@ void interest_points_helper(    float r_0, float alpha_0,
 
             Point p = r * proj + earth_pos;
 
-            while ( r <= final_r &&
-		            p.x >= 0 && p.x < J_norm.get_shape().x-1 &&
-                    p.y >= 0 && p.y < J_norm.get_shape().y-1 &&
-                    p.z >= 0 && p.z < J_norm.get_shape().z-1 )
+            while ( r <= final_r && !J_norm.is_point_OOB(p) )
             {
                 float value = J_norm(p, 0); // interpolate( p, J_norm, 0 );
 

@@ -1,6 +1,8 @@
 #include "../headers_cpp/analysis.h"
 
 
+const float PI = 3.141592653589793238462643383279502884f;
+
 
 Point local_grad_of_normed_matrix(const Matrix& M_norm, const Point& p, DerivativeAccuracy accuracy, float dx, float dy, float dz)
 {
@@ -27,9 +29,9 @@ Point local_grad_of_normed_matrix(const Matrix& M_norm, const Point& p, Derivati
 }
 
 
-float get_avg_grad_of_func( double (*fn)(const double* const, double, double), const double* const params, 
+float get_avg_grad_of_func( double (*fn)(const double* const, double, double), const std::vector<double>& params, 
                             const Matrix& J_norm,
-                            int nb_params, int nb_theta, int nb_phi,
+                            int nb_theta, int nb_phi,
                             const Point& earth_pos,
                             float dx, float dy, float dz  )
 {
@@ -38,6 +40,10 @@ float get_avg_grad_of_func( double (*fn)(const double* const, double, double), c
     float dtheta = PI / nb_theta;
     float dphi = 2.0f*PI / nb_phi;
 
+    Point dp = Point(dx, dy, dz);
+
+    int valid_points = 0;
+
     for (float theta=0.0f; theta<PI; theta+=dtheta)
     {
         float cos_theta = std::cos(theta);
@@ -45,7 +51,7 @@ float get_avg_grad_of_func( double (*fn)(const double* const, double, double), c
 
         for (float phi=-PI; phi<PI; phi+=dphi)
         {
-            float radius = fn(params, theta, phi);
+            float radius = fn(params.begin().base(), theta, phi);
 
             Point proj = Point(
                 -cos_theta,
@@ -55,13 +61,21 @@ float get_avg_grad_of_func( double (*fn)(const double* const, double, double), c
 
             Point p = radius * proj + earth_pos;
 
+
+            if ( J_norm.is_point_OOB(p + 2.0f*dp) ) continue;
+            if ( J_norm.is_point_OOB(p - 2.0f*dp) ) continue;
+
             Point grad_J = local_grad_of_normed_matrix(J_norm, p, DerivativeAccuracy::high, dx, dy, dz);
             
+            std::cout << "grad norm: " << grad_J.norm();
             total_grad_norm += grad_J.norm();
+            valid_points++;
         }
     }
 
-    return total_grad_norm / (nb_phi*nb_theta);
+    std::cout << "total grad norm: " << total_grad_norm;
+    std::cout << "avg grad norm: " << total_grad_norm / valid_points;
+    return total_grad_norm / valid_points;
 }
 
 

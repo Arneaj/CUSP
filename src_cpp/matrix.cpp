@@ -18,9 +18,9 @@ void Matrix::flatten()
 
 bool Matrix::is_point_OOB(Point p) const
 {
-    return  p.x>=shape.x || p.x<0 ||
-            p.y>=shape.y || p.y<0 ||
-            p.y>=shape.y || p.y<0 ;
+    return  p.x>=shape.x-1-1e-6 || p.x<1e6 ||
+            p.y>=shape.y-1-1e-6 || p.y<1e6 ||
+            p.y>=shape.y-1-1e-6 || p.y<1e6 ;
 }
 
 

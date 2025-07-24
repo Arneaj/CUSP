@@ -39,6 +39,7 @@ set(SOURCES
     src_cpp/magnetopause.cpp
     src_cpp/preprocessing.cpp
     src_cpp/fit_to_analytical.cpp
+    src_cpp/analysis.cpp
 )
 
 set(HEADERS
@@ -51,6 +52,7 @@ set(HEADERS
     headers_cpp/read_pvtr.h
     headers_cpp/read_file.h
     headers_cpp/fit_to_analytical.h
+    headers_cpp/analysis.h
 )
 
 
@@ -66,7 +68,8 @@ add_executable(full_process tests_cpp/full_process_test.cpp
     src_cpp/streamlines.cpp
     src_cpp/magnetopause.cpp
     src_cpp/preprocessing.cpp
-    src_cpp/fit_to_analytical.cpp)
+    src_cpp/fit_to_analytical.cpp
+    src_cpp/analysis.cpp)
 
 
 # Link VTK libraries

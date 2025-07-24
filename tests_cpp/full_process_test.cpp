@@ -4,6 +4,7 @@
 #include "../headers_cpp/magnetopause.h"
 #include "../headers_cpp/preprocessing.h"
 #include "../headers_cpp/fit_to_analytical.h"
+#include "../headers_cpp/analysis.h"
 
 #include <iostream>
 
@@ -268,6 +269,8 @@ int main(int argc, char* argv[])
     // *********************************************************************************************
     t0 = Time::now();
 
+    float avg_J_norm_grad = get_avg_grad_of_func( Rolland25, result.params, J_norm_real, nb_theta, nb_phi, earth_pos_real );
+
     if (logging)
     {
         std::cout << "Average standard deviation of the interest points is " << avg_std_dev << std::endl;
@@ -277,9 +280,10 @@ int main(int argc, char* argv[])
         std::cout << result.params[0];
         for (int i=1; i<nb_params; i++) std::cout << ", " << result.params[i];
         std::cout << " }" << std::endl;
+
+        std::cout << "Average ||grad(||J||)|| is " << avg_J_norm_grad << std::endl;
     }
 
-    // float avg_J_norm_grad;
 
     t1 = Time::now();
     if (logging) std::cout << "Analysis done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
