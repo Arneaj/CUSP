@@ -25,7 +25,9 @@ filepath = sys.argv[1]
 # B_norm = np.linalg.norm( B, axis=3 )
 
 # J_norm = import_from(f"{filepath}/J_norm_processed_real.txt")
-J_norm = import_from_bin(f"{filepath}/J_norm_processed_real.bin")
+J_norm = import_from_bin(f"{filepath}/J_processed_real.bin")
+
+J_norm = np.linalg.norm( J_norm, axis=3 )
 
 
 # earth_pos = get_earth_pos( B_norm )

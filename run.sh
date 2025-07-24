@@ -72,8 +72,8 @@ for run_nb in "${runs[@]}"; do
 						-t "$t" \
 						-o /rds/general/user/avr24/home/Thesis/data/Run"$run_nb"_"$t" \
 						--timing false \
-						-J true \
-						-B true
+						--save_J true \
+						--save_B true
 
 		# cd ../python
 		# python fit_to_analytical.py ../data/Run"$run_nb"_"$t"

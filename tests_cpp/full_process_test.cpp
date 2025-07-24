@@ -109,7 +109,7 @@ int main(int argc, char* argv[])
             break;
         } 
         
-        else if( std::string(argv[i]) == "--save_J_norm" || std::string(argv[i]) == "-J" )
+        else if( std::string(argv[i]) == "--save_J_norm" )
         {
             if (std::string(argv[i+1]) == "true") save_J_norm = true;
             else if (std::string(argv[i+1]) == "false") save_J_norm = false;
