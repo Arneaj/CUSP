@@ -20,13 +20,13 @@ bool Matrix::is_point_OOB(Point p) const
 {
     return  p.x>=shape.x-1 || p.x<0 ||
             p.y>=shape.y-1 || p.y<0 ||
-            p.y>=shape.y-1 || p.y<0 ;
+            p.z>=shape.z-1 || p.z<0 ;
 }
 
 
 float Matrix::operator()(Point p, int i) const
 {
-    if ( is_point_OOB(p) ) throw exception_OOB("Point is out of bounds!");
+    // if ( is_point_OOB(p) ) throw exception_OOB("Point is out of bounds!");
 
     int xm = (int) (p.x);
     int ym = (int) (p.y);
