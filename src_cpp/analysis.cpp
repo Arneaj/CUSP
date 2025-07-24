@@ -2,7 +2,7 @@
 
 
 
-Point local_grad_of_normed_matrix(Matrix M_norm, Point p, DerivativeAccuracy accuracy, float dx, float dy, float dz)
+Point local_grad_of_normed_matrix(const Matrix& M_norm, const Point& p, DerivativeAccuracy accuracy, float dx, float dy, float dz)
 {
     if (M_norm.get_shape().i > 1) { std::cout << "ERROR: please provide a matrix of component dim shape.i = 1\n"; exit(1); }
 
@@ -27,6 +27,12 @@ Point local_grad_of_normed_matrix(Matrix M_norm, Point p, DerivativeAccuracy acc
 }
 
 
+float get_avg_grad_of_func( double (*fn)(const double* const, double, double), float* params, 
+                            const Matrix& J_norm,
+                            int nb_params, int nb_theta, int nb_phi )
+{
+
+}
 
 
 

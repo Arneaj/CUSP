@@ -4,7 +4,7 @@
 
 
 
-Point Point::operator+(const Point p)
+Point Point::operator+(const Point& p)
 {
     return Point(
         x + p.x,
@@ -13,7 +13,16 @@ Point Point::operator+(const Point p)
     );  
 }
 
-Point Point::operator+=(Point p)
+Point Point::operator+(const Point& p) const
+{
+    return Point(
+        x + p.x,
+        y + p.y,
+        z + p.z
+    );  
+}
+
+Point Point::operator+=(const Point& p)
 {
     x += p.x;
     y += p.y;
@@ -24,7 +33,7 @@ Point Point::operator+=(Point p)
 
 
 
-Point Point::operator-(Point p)
+Point Point::operator-(const Point& p)
 {
     return Point(
         x - p.x,
@@ -33,7 +42,7 @@ Point Point::operator-(Point p)
     );
 }
 
-Point Point::operator-=(Point p)
+Point Point::operator-=(const Point& p)
 {
     x -= p.x;
     y -= p.y;
@@ -82,7 +91,7 @@ Point Point::operator*(float v)
     );
 }
 
-Point Point::operator*(Point p)
+Point Point::operator*(const Point& p)
 {
     return Point(
         x * p.x,
@@ -91,7 +100,7 @@ Point Point::operator*(Point p)
     );
 }
 
-Point Point::operator/(Point p)
+Point Point::operator/(const Point& p)
 {
     return Point(
         x / p.x,
@@ -101,7 +110,7 @@ Point Point::operator/(Point p)
 }
 
 
-Point operator*(float v, Point p)
+Point operator*(float v, const Point& p)
 {
     return Point(
         p.x * v,
