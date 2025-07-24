@@ -92,21 +92,18 @@ int main(int argc, char* argv[])
             if (std::string(argv[i+1]) == "true") save_J = true;
             else if (std::string(argv[i+1]) == "false") save_J = false;
             else { std::cout << "ERROR: unknown parameter for flag --save_J\n"; exit(1); }
-            break;
         }
         else if( std::string(argv[i]) == "--save_B" || std::string(argv[i]) == "-B" )
         {
             if (std::string(argv[i+1]) == "true") save_B = true;
             else if (std::string(argv[i+1]) == "false") save_B = false;
             else { std::cout << "ERROR: unknown parameter for flag --save_B\n"; exit(1); }
-            break;
         }
         else if( std::string(argv[i]) == "--save_V" || std::string(argv[i]) == "-V" )
         {
             if (std::string(argv[i+1]) == "true") save_V = true;
             else if (std::string(argv[i+1]) == "false") save_V = false;
             else { std::cout << "ERROR: unknown parameter for flag --save_V\n"; exit(1); }
-            break;
         } 
         
         else if( std::string(argv[i]) == "--save_J_norm" )
@@ -114,7 +111,6 @@ int main(int argc, char* argv[])
             if (std::string(argv[i+1]) == "true") save_J_norm = true;
             else if (std::string(argv[i+1]) == "false") save_J_norm = false;
             else { std::cout << "ERROR: unknown parameter for flag --save_J_norm\n"; exit(1); }
-            break;
         }
 
         else if( std::string(argv[i]) == "--save_X" || std::string(argv[i]) == "-X" )
@@ -122,21 +118,18 @@ int main(int argc, char* argv[])
             if (std::string(argv[i+1]) == "true") save_X = true;
             else if (std::string(argv[i+1]) == "false") save_X = false;
             else { std::cout << "ERROR: unknown parameter for flag --save_X\n"; exit(1); }
-            break;
         }
         else if( std::string(argv[i]) == "--save_Y" || std::string(argv[i]) == "-Y" )
         {
             if (std::string(argv[i+1]) == "true") save_Y = true;
             else if (std::string(argv[i+1]) == "false") save_Y = false;
             else { std::cout << "ERROR: unknown parameter for flag --save_Y\n"; exit(1); }
-            break;
         }
         else if( std::string(argv[i]) == "--save_Z" || std::string(argv[i]) == "-Z" )
         {
             if (std::string(argv[i+1]) == "true") save_Z = true;
             else if (std::string(argv[i+1]) == "false") save_Z = false;
             else { std::cout << "ERROR: unknown parameter for flag --save_Z\n"; exit(1); }
-            break;
         }
 
         else if( std::string(argv[i]) == "--save_interest_points" )
@@ -144,14 +137,12 @@ int main(int argc, char* argv[])
             if (std::string(argv[i+1]) == "true") save_ip = true;
             else if (std::string(argv[i+1]) == "false") save_ip = false;
             else { std::cout << "ERROR: unknown parameter for flag --save_interest_points\n"; exit(1); }
-            break;
         }
         else if( std::string(argv[i]) == "--save_params" )
         {
             if (std::string(argv[i+1]) == "true") save_params = true;
             else if (std::string(argv[i+1]) == "false") save_params = false;
             else { std::cout << "ERROR: unknown parameter for flag --save_params\n"; exit(1); }
-            break;
         }
 
         else if( std::string(argv[i]) == "--logging" )
@@ -159,23 +150,18 @@ int main(int argc, char* argv[])
             if (std::string(argv[i+1]) == "true") logging = true;
             else if (std::string(argv[i+1]) == "false") logging = false;
             else { std::cout << "ERROR: unknown parameter for flag --logging\n"; exit(1); }
-            break;
-        }
-
+        }s
         else if( std::string(argv[i]) == "--timing" )
         {
             if (std::string(argv[i+1]) == "true") timing = true;
             else if (std::string(argv[i+1]) == "false") timing = false;
             else { std::cout << "ERROR: unknown parameter for flag --timing\n"; exit(1); }
-            break;
         }
-
         else if( std::string(argv[i]) == "--warnings" )
         {
             if (std::string(argv[i+1]) == "true") warnings = true;
             else if (std::string(argv[i+1]) == "false") warnings = false;
             else { std::cout << "ERROR: unknown parameter for flag --warnings\n"; exit(1); }
-            break;
         }
 
         else { std::cout << "ERROR: unknown command line argument: " << argv[i] << std::endl; exit(1); }
