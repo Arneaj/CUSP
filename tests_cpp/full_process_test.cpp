@@ -65,6 +65,7 @@ int main(int argc, char* argv[])
     std::string V_format("x00_vvec-");              // TODO: not sure how best to do this
 
     std::string file_format("pvtr");                // TODO: would be interesting to support mutiple file formats (pvti, ...)
+    std::string file_save_format("bin");
 
     std::string analytical_model("Rolland25");      // TODO: would be interesting to add support for multiple models, maybe multiple at once?
 
@@ -80,6 +81,7 @@ int main(int argc, char* argv[])
         else if( std::string(argv[i]) == "--timestep" || std::string(argv[i]) == "-t" ) timestep = argv[i+1];
 
         // else if( std::string(argv[i]) == "--file_format" ) file_format = argv[i+1];              // TODO: can't do that yet
+        // else if( std::string(argv[i]) == "--file_save_format" ) file_save_format = argv[i+1];    // TODO: can't do that yet
 
         else if( std::string(argv[i]) == "--J_format" ) J_format = argv[i+1];
         else if( std::string(argv[i]) == "--B_format" ) B_format = argv[i+1];
@@ -297,15 +299,15 @@ int main(int argc, char* argv[])
     // *********************************************************************************************
     t0 = Time::now();
 
-    if (save_J) save_file_bin( savepath + std::string("/J_processed_real.bin"), J_processed_real );
-    if (save_B) save_file_bin( savepath + std::string("/B_processed_real.bin"), B_processed_real );
-    if (save_V) save_file_bin( savepath + std::string("/V_processed_real.bin"), V_processed_real );
+    if (save_J) save_file_bin( savepath + std::string("/J_processed_real.") + file_save_format, J_processed_real );
+    if (save_B) save_file_bin( savepath + std::string("/B_processed_real.") + file_save_format, B_processed_real );
+    if (save_V) save_file_bin( savepath + std::string("/V_processed_real.") + file_save_format, V_processed_real );
 
-    if (save_J_norm) save_file_bin( savepath + std::string("/J_norm_processed_real.bin"), J_norm_real );
+    if (save_J_norm) save_file_bin( savepath + std::string("/J_norm_processed_real.") + file_save_format, J_norm_real );
 
-    if (save_ip) save_interest_points( savepath + std::string("/interest_points_cpp.txt"), interest_points, nb_theta, nb_phi );
+    if (save_ip) save_interest_points( savepath + std::string("/interest_points_cpp.csv"), interest_points, nb_theta, nb_phi );
 
-    if (save_params) save_parameters( savepath + std::string("/params_cpp.txt"), result.params );
+    if (save_params) save_parameters( savepath + std::string("/params_cpp.csv"), result.params );
 
     t1 = Time::now();
     if (timing) std::cout << "Interest points, parameters and file saving done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;

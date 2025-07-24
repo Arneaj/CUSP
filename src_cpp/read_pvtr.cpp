@@ -15,11 +15,7 @@ Matrix read_pvtr(std::string filename)
     // Get the output
     vtkRectilinearGrid* grid = reader->GetOutput();
 
-    if (!grid) 
-    {
-        std::cerr << "Error: Could not read file " << filename << std::endl;
-        exit(1);
-    }
+    if (!grid) { std::cerr << "ERROR: could not read file " << filename << std::endl; exit(1); }
 
     // Get grid dimensions
     int* dims = grid->GetDimensions();
@@ -28,7 +24,7 @@ Matrix read_pvtr(std::string filename)
     vtkCellData* cellData = grid->GetCellData();
     int numCellArrays = cellData->GetNumberOfArrays();
 
-    if (numCellArrays <= 0) exit(1);
+    if (numCellArrays <= 0) { std::cout << "ERROR: no cell arrays available\n"; exit(1); }
 
     vtkDataArray* firstArray = cellData->GetArray(0);
     
@@ -108,11 +104,7 @@ void get_coord(Matrix& X, Matrix& Y, Matrix& Z, std::string filename)
     // Get the output
     vtkRectilinearGrid* grid = reader->GetOutput();
     
-    if (!grid) 
-    {
-        std::cerr << "Error: Could not read file " << filename << std::endl;
-        exit(1);
-    }
+    if (!grid) { std::cerr << "ERROR: could not read file " << filename << std::endl; exit(1); }
     
     // Get grid dimensions
     int* dims = grid->GetDimensions();
