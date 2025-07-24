@@ -1,0 +1,592 @@
+/rds/general/user/avr24/home/.profile: line 1: .bashrc: No such file or directory
+Finished loading modules.
+
+Run1_28800
+File reading done. Time taken: 0.129299s
+Preprocessing files done. Time taken: 1.29864s
+Interest point search done. Time taken: 1.11128s
+Fitting done. Time taken: 0.663792s
+Average standard deviation of the interest points is 0.651566
+Average cost of best fit to the analytical function is 3.43268
+Final parameters are { 8.50002, 0.352284, 0.000212853, 0.0337702, 3.11826, 0.632893, 0.160855, 3.16981, 0.628164, 0.163122, 0.5 }
+Average ||grad(||J||)|| is 1.8301e-09
+Analysis done. Time taken: 0.00446717s
+Interest points, parameters and file saving done. Time taken: 0.0198943s
+Finished fitting the data point at Run1, timestep 28800
+Time taken: 4 seconds total.
+
+Run1_27000
+File reading done. Time taken: 0.130007s
+Preprocessing files done. Time taken: 1.10976s
+Interest point search done. Time taken: 0.968331s
+Fitting done. Time taken: 0.65201s
+Average standard deviation of the interest points is 0.58923
+Average cost of best fit to the analytical function is 2.92462
+Final parameters are { 8.7358, 0.356675, 0.000387803, 0.0136, 3.47646, 0.629674, 0.197577, 3.55233, 0.624664, 0.200557, 0.5 }
+Average ||grad(||J||)|| is 1.66981e-09
+Analysis done. Time taken: 0.00320855s
+Interest points, parameters and file saving done. Time taken: 0.030728s
+Finished fitting the data point at Run1, timestep 27000
+Time taken: 3 seconds total.
+
+Run1_23100
+File reading done. Time taken: 0.135797s
+Preprocessing files done. Time taken: 0.877188s
+Interest point search done. Time taken: 0.726856s
+Fitting done. Time taken: 0.727358s
+Average standard deviation of the interest points is 1.18024
+Average cost of best fit to the analytical function is 1.19565
+Final parameters are { 9.93898, 0.44128, 0.000369884, 0.0291574, 2.75549, 1.08615, 0.277251, 2.51016, 1.10297, 0.312489, 0.22656 }
+Average ||grad(||J||)|| is -nan
+Analysis done. Time taken: 0.00435084s
+Interest points, parameters and file saving done. Time taken: 0.0210121s
+Finished fitting the data point at Run1, timestep 23100
+Time taken: 2 seconds total.
+
+Run1_22500
+File reading done. Time taken: 0.139949s
+Preprocessing files done. Time taken: 1.04115s
+Interest point search done. Time taken: 0.827838s
+Fitting done. Time taken: 0.478519s
+Average standard deviation of the interest points is 1.1694
+Average cost of best fit to the analytical function is 1.33312
+Final parameters are { 9.89485, 0.413824, 0.00084303, 0.0511184, 2.63219, 1.09337, 0.227433, 2.57058, 1.09891, 0.230285, 0.247096 }
+Average ||grad(||J||)|| is 7.04877e-10
+Analysis done. Time taken: 0.00432377s
+Interest points, parameters and file saving done. Time taken: 0.0222389s
+Finished fitting the data point at Run1, timestep 22500
+Time taken: 3 seconds total.
+
+Run1_21900
+File reading done. Time taken: 0.134541s
+Preprocessing files done. Time taken: 0.765288s
+Interest point search done. Time taken: 0.784853s
+Fitting done. Time taken: 0.532316s
+Average standard deviation of the interest points is 1.19428
+Average cost of best fit to the analytical function is 1.38073
+Final parameters are { 9.13593, 0.40553, 0.000209338, 0.0460336, 1.62823, 0.969885, 0.161853, 1.54787, 1.02233, 0.146325, 0.312579 }
+Average ||grad(||J||)|| is -nan
+Analysis done. Time taken: 0.00408801s
+Interest points, parameters and file saving done. Time taken: 0.0193142s
+Finished fitting the data point at Run1, timestep 21900
+Time taken: 2 seconds total.
+
+Run1_21000
+File reading done. Time taken: 0.127702s
+Preprocessing files done. Time taken: 0.873154s
+Interest point search done. Time taken: 0.711387s
+Fitting done. Time taken: 0.470947s
+Average standard deviation of the interest points is 1.23646
+Average cost of best fit to the analytical function is 1.68786
+Final parameters are { 8.95705, 0.417855, -0.000912454, 0.0324597, 1.39553, 0.965975, 0.12887, 1.29952, 0.978973, 0.123878, 0.324598 }
+Average ||grad(||J||)|| is 6.41911e-10
+Analysis done. Time taken: 0.00506005s
+Interest points, parameters and file saving done. Time taken: 0.0264361s
+Finished fitting the data point at Run1, timestep 21000
+Time taken: 2 seconds total.
+
+Run1_20100
+File reading done. Time taken: 0.127874s
+Preprocessing files done. Time taken: 0.871349s
+Interest point search done. Time taken: 0.882983s
+Fitting done. Time taken: 0.577721s
+Average standard deviation of the interest points is 1.15795
+Average cost of best fit to the analytical function is 1.61082
+Final parameters are { 8.46754, 0.417085, -0.000460643, 0.0188404, 3.2673, 0.152542, 0.1, 3.43356, 0.152701, 0.1, 0.377267 }
+Average ||grad(||J||)|| is 3.68027e+13
+Analysis done. Time taken: 0.00455336s
+Interest points, parameters and file saving done. Time taken: 0.018806s
+Finished fitting the data point at Run1, timestep 20100
+Time taken: 3 seconds total.
+
+Run2_28800
+File reading done. Time taken: 0.127264s
+Preprocessing files done. Time taken: 1.22314s
+Interest point search done. Time taken: 1.06106s
+Fitting done. Time taken: 0.643641s
+Average standard deviation of the interest points is 0.694527
+Average cost of best fit to the analytical function is 5.46148
+Final parameters are { 8.53752, 0.344458, -0.00181709, 0.0530849, 3.2629, 0.368941, 0.204406, 3.15325, 0.36482, 0.210909, 0.5 }
+Average ||grad(||J||)|| is 1.22951e-09
+Analysis done. Time taken: 0.00327068s
+Interest points, parameters and file saving done. Time taken: 0.0180738s
+Finished fitting the data point at Run2, timestep 28800
+Time taken: 3 seconds total.
+
+Run2_27000
+File reading done. Time taken: 0.128088s
+Preprocessing files done. Time taken: 0.950063s
+Interest point search done. Time taken: 0.976788s
+Fitting done. Time taken: 0.625569s
+Average standard deviation of the interest points is 0.476531
+Average cost of best fit to the analytical function is 5.56021
+Final parameters are { 8.57371, 0.348031, 0.00143905, 0.0523293, 3.81182, 0.467211, 0.195895, 3.27522, 0.451015, 0.210896, 0.5 }
+Average ||grad(||J||)|| is 2.1978e+13
+Analysis done. Time taken: 0.00459585s
+Interest points, parameters and file saving done. Time taken: 0.0223908s
+Finished fitting the data point at Run2, timestep 27000
+Time taken: 3 seconds total.
+
+Run2_23100
+File reading done. Time taken: 0.126361s
+Preprocessing files done. Time taken: 0.815311s
+Interest point search done. Time taken: 0.804241s
+Fitting done. Time taken: 0.715419s
+Average standard deviation of the interest points is 1.24742
+Average cost of best fit to the analytical function is 0.911273
+Final parameters are { 9.93581, 0.412773, -0.000251405, 0.0263001, 2.82724, 1.95283, 1, 3.1412, 2, 1, 0.294067 }
+Average ||grad(||J||)|| is 8.48364
+Analysis done. Time taken: 0.00468902s
+Interest points, parameters and file saving done. Time taken: 0.0193739s
+Finished fitting the data point at Run2, timestep 23100
+Time taken: 3 seconds total.
+
+Run2_22500
+File reading done. Time taken: 0.121765s
+Preprocessing files done. Time taken: 0.823532s
+Interest point search done. Time taken: 0.750354s
+Fitting done. Time taken: 0.466949s
+Average standard deviation of the interest points is 1.1556
+Average cost of best fit to the analytical function is 1.25463
+Final parameters are { 10.3108, 0.419409, 0.000888779, 0.0514288, 3.11796, 1.11582, 0.289158, 2.88333, 1.16782, 0.325626, 0.215011 }
+Average ||grad(||J||)|| is 1.10511e-09
+Analysis done. Time taken: 0.00435333s
+Interest points, parameters and file saving done. Time taken: 0.0178035s
+Finished fitting the data point at Run2, timestep 22500
+Time taken: 2 seconds total.
+
+Run2_21900
+File reading done. Time taken: 0.114776s
+Preprocessing files done. Time taken: 0.413051s
+Interest point search done. Time taken: 0.512201s
+Fitting done. Time taken: 0.410998s
+Average standard deviation of the interest points is 1.19429
+Average cost of best fit to the analytical function is 1.38072
+Final parameters are { 9.13592, 0.405531, 0.000209301, 0.0460334, 1.6281, 0.969891, 0.16188, 1.54786, 1.02233, 0.146321, 0.312578 }
+Average ||grad(||J||)|| is 6.38925e-10
+Analysis done. Time taken: 0.00347483s
+Interest points, parameters and file saving done. Time taken: 0.0175285s
+Finished fitting the data point at Run2, timestep 21900
+Time taken: 2 seconds total.
+
+Run2_21000
+File reading done. Time taken: 0.116777s
+Preprocessing files done. Time taken: 0.44269s
+Interest point search done. Time taken: 0.933262s
+Fitting done. Time taken: 0.502406s
+Average standard deviation of the interest points is 1.23646
+Average cost of best fit to the analytical function is 1.68786
+Final parameters are { 8.95704, 0.417855, -0.000912457, 0.0324597, 1.39557, 0.965975, 0.128862, 1.29943, 0.978975, 0.123892, 0.324598 }
+Average ||grad(||J||)|| is 1.09156e+09
+Analysis done. Time taken: 0.0031114s
+Interest points, parameters and file saving done. Time taken: 0.018778s
+Finished fitting the data point at Run2, timestep 21000
+Time taken: 2 seconds total.
+
+Run2_20100
+File reading done. Time taken: 0.123268s
+Preprocessing files done. Time taken: 0.720237s
+Interest point search done. Time taken: 0.693117s
+Fitting done. Time taken: 0.586072s
+Average standard deviation of the interest points is 1.15795
+Average cost of best fit to the analytical function is 1.61069
+Final parameters are { 8.47048, 0.417044, -0.000461427, 0.0188112, 3.46916, 0.158219, 0.1, 3.58421, 0.158812, 0.1, 0.377231 }
+Average ||grad(||J||)|| is 6.80191e-10
+Analysis done. Time taken: 0.00566473s
+Interest points, parameters and file saving done. Time taken: 0.0216401s
+Finished fitting the data point at Run2, timestep 20100
+Time taken: 2 seconds total.
+
+Run4_28800
+File reading done. Time taken: 0.119852s
+Preprocessing files done. Time taken: 0.734523s
+Interest point search done. Time taken: 0.569321s
+Fitting done. Time taken: 0.727407s
+Average standard deviation of the interest points is 0.772357
+Average cost of best fit to the analytical function is 5.7297
+Final parameters are { 8.57603, 0.330633, 0.00529354, 0.07152, 3.41956, 0.444398, 0.19723, 3.13041, 0.442016, 0.199682, 0.5 }
+Average ||grad(||J||)|| is 1.3913e-09
+Analysis done. Time taken: 0.00459557s
+Interest points, parameters and file saving done. Time taken: 0.0177809s
+Finished fitting the data point at Run4, timestep 28800
+Time taken: 2 seconds total.
+
+Run4_27000
+File reading done. Time taken: 0.123397s
+Preprocessing files done. Time taken: 0.743671s
+Interest point search done. Time taken: 0.685515s
+Fitting done. Time taken: 0.697567s
+Average standard deviation of the interest points is 0.522834
+Average cost of best fit to the analytical function is 4.11771
+Final parameters are { 8.63383, 0.347927, 0.0011064, 0.0382798, 3.88372, 0.470893, 0.205275, 3.58671, 0.464469, 0.21367, 0.5 }
+Average ||grad(||J||)|| is 0.00689689
+Analysis done. Time taken: 0.0034019s
+Interest points, parameters and file saving done. Time taken: 0.0207085s
+Finished fitting the data point at Run4, timestep 27000
+Time taken: 3 seconds total.
+
+Run4_23100
+File reading done. Time taken: 0.664957s
+Preprocessing files done. Time taken: 0.715681s
+Interest point search done. Time taken: 0.61456s
+Fitting done. Time taken: 0.693372s
+Average standard deviation of the interest points is 2.18994
+Average cost of best fit to the analytical function is 1.02421
+Final parameters are { 11.5876, 0.455697, 0.000160981, 0.00353523, 4, 1.72127, 1, 4, 1.82582, 1, 0.147819 }
+Average ||grad(||J||)|| is 1.54328e-09
+Analysis done. Time taken: 0.00430371s
+Interest points, parameters and file saving done. Time taken: 0.0209981s
+Finished fitting the data point at Run4, timestep 23100
+Time taken: 2 seconds total.
+
+Run4_22500
+File reading done. Time taken: 0.629131s
+Preprocessing files done. Time taken: 0.753282s
+Interest point search done. Time taken: 0.55274s
+Fitting done. Time taken: 0.659269s
+Average standard deviation of the interest points is 1.69287
+Average cost of best fit to the analytical function is 1.47543
+Final parameters are { 12.047, 0.475726, -0.000183307, 0.0367371, 4, 1.16342, 0.338732, 3.68528, 1.16125, 0.408403, 0.0128176 }
+Average ||grad(||J||)|| is 2.62305e-07
+Analysis done. Time taken: 0.00307207s
+Interest points, parameters and file saving done. Time taken: 0.0187438s
+Finished fitting the data point at Run4, timestep 22500
+Time taken: 3 seconds total.
+
+Run4_21900
+File reading done. Time taken: 1.54181s
+Preprocessing files done. Time taken: 0.705142s
+Interest point search done. Time taken: 0.555524s
+Fitting done. Time taken: 0.60917s
+Average standard deviation of the interest points is 1.75271
+Average cost of best fit to the analytical function is 1.25415
+Final parameters are { 9.4288, 0.44922, -0.00101527, 0.0362839, 2.487, 0.148762, 0.1, 1.74255, 0.155091, 0.1, 0.198334 }
+Average ||grad(||J||)|| is 7.60592e-10
+Analysis done. Time taken: 0.00310842s
+Interest points, parameters and file saving done. Time taken: 0.0214445s
+Finished fitting the data point at Run4, timestep 21900
+Time taken: 4 seconds total.
+
+Run4_21000
+File reading done. Time taken: 0.667939s
+Preprocessing files done. Time taken: 0.763551s
+Interest point search done. Time taken: 0.615856s
+Fitting done. Time taken: 0.529045s
+Average standard deviation of the interest points is 1.70938
+Average cost of best fit to the analytical function is 1.18224
+Final parameters are { 9.65426, 0.455083, 0.0012372, 0.0365496, 1.06234, 1.03966, 0.20058, 1.07575, 1.03487, 0.156327, 0.177437 }
+Average ||grad(||J||)|| is -nan
+Analysis done. Time taken: 0.00516392s
+Interest points, parameters and file saving done. Time taken: 0.0225949s
+Finished fitting the data point at Run4, timestep 21000
+Time taken: 2 seconds total.
+
+Run4_20100
+File reading done. Time taken: 0.655927s
+Preprocessing files done. Time taken: 0.77037s
+Interest point search done. Time taken: 0.812609s
+Fitting done. Time taken: 0.493816s
+Average standard deviation of the interest points is 1.6589
+Average cost of best fit to the analytical function is 0.922099
+Final parameters are { 9.77419, 0.467411, -0.000230312, 0.0332532, 1.29646, 1.03263, 0.198316, 1.20649, 1.03308, 0.196217, 0.161075 }
+Average ||grad(||J||)|| is 7.23084e-10
+Analysis done. Time taken: 0.00437114s
+Interest points, parameters and file saving done. Time taken: 0.0236285s
+Finished fitting the data point at Run4, timestep 20100
+Time taken: 3 seconds total.
+
+Run5_28800
+File reading done. Time taken: 0.599226s
+Preprocessing files done. Time taken: 0.845356s
+Interest point search done. Time taken: 0.918868s
+Fitting done. Time taken: 0.666226s
+Average standard deviation of the interest points is 0.709568
+Average cost of best fit to the analytical function is 2.43865
+Final parameters are { 8.13306, 0.362036, 0.000355983, 0.0279295, 2.98732, 0.544044, 0.154694, 2.97246, 0.538595, 0.15453, 0.5 }
+Average ||grad(||J||)|| is -nan
+Analysis done. Time taken: 0.00337733s
+Interest points, parameters and file saving done. Time taken: 0.0204591s
+Finished fitting the data point at Run5, timestep 28800
+Time taken: 3 seconds total.
+
+Run5_27000
+File reading done. Time taken: 0.958488s
+Preprocessing files done. Time taken: 0.602343s
+Interest point search done. Time taken: 0.535379s
+Fitting done. Time taken: 0.64109s
+Average standard deviation of the interest points is 0.652511
+Average cost of best fit to the analytical function is 2.64183
+Final parameters are { 8.33211, 0.358287, 0.000643377, 0.0241814, 3.38946, 0.534225, 0.189984, 3.44713, 0.539474, 0.186816, 0.5 }
+Average ||grad(||J||)|| is 9.75433e+11
+Analysis done. Time taken: 0.00331379s
+Interest points, parameters and file saving done. Time taken: 0.0209282s
+Finished fitting the data point at Run5, timestep 27000
+Time taken: 3 seconds total.
+
+Run5_23100
+File reading done. Time taken: 0.668102s
+Preprocessing files done. Time taken: 0.763712s
+Interest point search done. Time taken: 0.539584s
+Fitting done. Time taken: 0.405264s
+Average standard deviation of the interest points is 1.35032
+Average cost of best fit to the analytical function is 0.775527
+Final parameters are { 8.94901, 0.414231, 0.000159036, 0.0318661, 2.84723, 0.816102, 0.193455, 2.64899, 0.867425, 0.189303, 0.323496 }
+Average ||grad(||J||)|| is 9.99119e+07
+Analysis done. Time taken: 0.00514792s
+Interest points, parameters and file saving done. Time taken: 0.0316714s
+Finished fitting the data point at Run5, timestep 23100
+Time taken: 3 seconds total.
+
+Run5_22500
+File reading done. Time taken: 0.635199s
+Preprocessing files done. Time taken: 0.639452s
+Interest point search done. Time taken: 0.538632s
+Fitting done. Time taken: 0.46905s
+Average standard deviation of the interest points is 1.29499
+Average cost of best fit to the analytical function is 0.85703
+Final parameters are { 9.30237, 0.445019, 0.000766399, 0.0212461, 2.60265, 1.03553, 0.193048, 2.52141, 1.03743, 0.196835, 0.26096 }
+Average ||grad(||J||)|| is 7.07799e-08
+Analysis done. Time taken: 0.00320204s
+Interest points, parameters and file saving done. Time taken: 0.0221728s
+Finished fitting the data point at Run5, timestep 22500
+Time taken: 2 seconds total.
+
+Run5_21900
+File reading done. Time taken: 0.676677s
+Preprocessing files done. Time taken: 0.643141s
+Interest point search done. Time taken: 0.540528s
+Fitting done. Time taken: 0.495044s
+Average standard deviation of the interest points is 1.34894
+Average cost of best fit to the analytical function is 0.923351
+Final parameters are { 8.50003, 0.430087, 0.000548065, 0.0189489, 1.48491, 0.638676, 0.194131, 2.18746, 0.530478, 0.1, 0.337521 }
+Average ||grad(||J||)|| is 9.38956e-10
+Analysis done. Time taken: 0.00306139s
+Interest points, parameters and file saving done. Time taken: 0.0201108s
+Finished fitting the data point at Run5, timestep 21900
+Time taken: 3 seconds total.
+
+Run5_21000
+File reading done. Time taken: 0.666282s
+Preprocessing files done. Time taken: 0.735414s
+Interest point search done. Time taken: 0.694118s
+Fitting done. Time taken: 0.532883s
+Average standard deviation of the interest points is 1.3728
+Average cost of best fit to the analytical function is 1.03149
+Final parameters are { 8.42432, 0.425947, 6.4622e-05, 0.0231993, 1.19713, 0.894446, 0.142408, 2.40386, 0.551513, 0.1, 0.343724 }
+Average ||grad(||J||)|| is 2.83921e+08
+Analysis done. Time taken: 0.00310403s
+Interest points, parameters and file saving done. Time taken: 0.0210469s
+Finished fitting the data point at Run5, timestep 21000
+Time taken: 2 seconds total.
+
+Run5_20100
+File reading done. Time taken: 0.861826s
+Preprocessing files done. Time taken: 0.507034s
+Interest point search done. Time taken: 0.548538s
+Fitting done. Time taken: 0.556773s
+Average standard deviation of the interest points is 1.29396
+Average cost of best fit to the analytical function is 0.968191
+Final parameters are { 8.37288, 0.414993, 0.000698128, 0.0350836, 1.13813, 0.500837, 0.208485, 2.14511, 0.527444, 0.115014, 0.350041 }
+Average ||grad(||J||)|| is 9.26261e-10
+Analysis done. Time taken: 0.00310519s
+Interest points, parameters and file saving done. Time taken: 0.0189436s
+Finished fitting the data point at Run5, timestep 20100
+Time taken: 3 seconds total.
+
+Run9_28800
+File reading done. Time taken: 0.69931s
+Preprocessing files done. Time taken: 0.443841s
+Interest point search done. Time taken: 0.546973s
+Fitting done. Time taken: 0.602925s
+Average standard deviation of the interest points is 0.594716
+Average cost of best fit to the analytical function is 6.68238
+Final parameters are { 8.5942, 0.347055, 0.0020055, 0.0538622, 3.9171, 0.534157, 0.180701, 3.61938, 0.522377, 0.189023, 0.5 }
+Average ||grad(||J||)|| is -nan
+Analysis done. Time taken: 0.00326987s
+Interest points, parameters and file saving done. Time taken: 0.0202981s
+Finished fitting the data point at Run9, timestep 28800
+Time taken: 2 seconds total.
+
+Run9_27000
+File reading done. Time taken: 0.663668s
+Preprocessing files done. Time taken: 0.405875s
+Interest point search done. Time taken: 0.496725s
+Fitting done. Time taken: 0.584548s
+Average standard deviation of the interest points is 0.483825
+Average cost of best fit to the analytical function is 4.70744
+Final parameters are { 8.61105, 0.34807, -0.000368401, 0.0309783, 3.30348, 0.546661, 0.19378, 3.31853, 0.544194, 0.195884, 0.5 }
+Average ||grad(||J||)|| is 3.08735e-09
+Analysis done. Time taken: 0.00418452s
+Interest points, parameters and file saving done. Time taken: 0.0209207s
+Finished fitting the data point at Run9, timestep 27000
+Time taken: 3 seconds total.
+
+Run9_23100
+File reading done. Time taken: 0.861591s
+Preprocessing files done. Time taken: 0.724717s
+Interest point search done. Time taken: 0.682483s
+Fitting done. Time taken: 0.615146s
+Average standard deviation of the interest points is 1.20634
+Average cost of best fit to the analytical function is 1.40865
+Final parameters are { 10.5632, 0.4302, -0.00102801, 0.0298954, 3.24801, 1.296, 0.620185, 3.16359, 1.42243, 0.727246, 0.225195 }
+Average ||grad(||J||)|| is -nan
+Analysis done. Time taken: 0.00331504s
+Interest points, parameters and file saving done. Time taken: 0.0240093s
+Finished fitting the data point at Run9, timestep 23100
+Time taken: 3 seconds total.
+
+Run9_22500
+File reading done. Time taken: 0.73292s
+Preprocessing files done. Time taken: 0.949083s
+Interest point search done. Time taken: 0.631091s
+Fitting done. Time taken: 0.44292s
+Average standard deviation of the interest points is 1.11327
+Average cost of best fit to the analytical function is 1.58665
+Final parameters are { 9.88444, 0.439567, -0.000873731, 0.0277812, 2.61307, 1.09566, 0.217394, 2.62193, 1.09832, 0.225378, 0.242256 }
+Average ||grad(||J||)|| is 6.53852e-10
+Analysis done. Time taken: 0.00311267s
+Interest points, parameters and file saving done. Time taken: 0.0172981s
+Finished fitting the data point at Run9, timestep 22500
+Time taken: 3 seconds total.
+
+Run9_21900
+File reading done. Time taken: 0.553986s
+Preprocessing files done. Time taken: 0.843465s
+Interest point search done. Time taken: 0.810709s
+Fitting done. Time taken: 0.478661s
+Average standard deviation of the interest points is 1.12447
+Average cost of best fit to the analytical function is 1.56091
+Final parameters are { 9.07327, 0.431345, -0.000253617, 0.0211157, 1.55919, 0.97332, 0.151804, 1.5317, 1.02031, 0.135638, 0.314419 }
+Average ||grad(||J||)|| is 4.34681e+15
+Analysis done. Time taken: 0.00443285s
+Interest points, parameters and file saving done. Time taken: 0.0215841s
+Finished fitting the data point at Run9, timestep 21900
+Time taken: 2 seconds total.
+
+Run9_21000
+File reading done. Time taken: 0.676792s
+Preprocessing files done. Time taken: 0.825196s
+Interest point search done. Time taken: 0.631903s
+Fitting done. Time taken: 0.552578s
+Average standard deviation of the interest points is 1.10448
+Average cost of best fit to the analytical function is 1.56211
+Final parameters are { 8.84659, 0.430037, -0.00029608, 0.0139195, 1.31845, 0.967169, 0.101526, 1.20351, 0.974469, 0.1, 0.342434 }
+Average ||grad(||J||)|| is -nan
+Analysis done. Time taken: 0.00461844s
+Interest points, parameters and file saving done. Time taken: 0.0220204s
+Finished fitting the data point at Run9, timestep 21000
+Time taken: 3 seconds total.
+
+Run9_20100
+File reading done. Time taken: 0.939961s
+Preprocessing files done. Time taken: 0.872841s
+Interest point search done. Time taken: 0.660587s
+Fitting done. Time taken: 0.52486s
+Average standard deviation of the interest points is 1.0407
+Average cost of best fit to the analytical function is 1.69917
+Final parameters are { 8.31216, 0.406171, -0.000280645, 0.0122589, 0, 1.20283, 0.1, 0, 0.872762, 0.1, 0.421387 }
+Average ||grad(||J||)|| is 6.26928e-10
+Analysis done. Time taken: 0.00429963s
+Interest points, parameters and file saving done. Time taken: 0.0187751s
+Finished fitting the data point at Run9, timestep 20100
+Time taken: 3 seconds total.
+
+Run11_28800
+File reading done. Time taken: 0.877723s
+Preprocessing files done. Time taken: 0.877505s
+Interest point search done. Time taken: 0.577128s
+Fitting done. Time taken: 0.660106s
+Average standard deviation of the interest points is 0.40978
+Average cost of best fit to the analytical function is 15.7727
+Final parameters are { 10.4149, 0.30398, -0.00284984, 0.0573656, 4, 0.352191, 0.280296, 4, 0.354541, 0.279143, 0.5 }
+Average ||grad(||J||)|| is 1.04311e-09
+Analysis done. Time taken: 0.00449804s
+Interest points, parameters and file saving done. Time taken: 0.0223401s
+Finished fitting the data point at Run11, timestep 28800
+Time taken: 4 seconds total.
+
+Run11_27000
+File reading done. Time taken: 0.714995s
+Preprocessing files done. Time taken: 0.665202s
+Interest point search done. Time taken: 0.578239s
+Fitting done. Time taken: 0.608052s
+Average standard deviation of the interest points is 0.478607
+Average cost of best fit to the analytical function is 13.379
+Final parameters are { 10.1833, 0.300188, -0.00132098, 0.0683558, 4, 0.395162, 0.256233, 4, 0.365699, 0.258379, 0.5 }
+Average ||grad(||J||)|| is 6.82902e-10
+Analysis done. Time taken: 0.00527155s
+Interest points, parameters and file saving done. Time taken: 0.0201084s
+Finished fitting the data point at Run11, timestep 27000
+Time taken: 2 seconds total.
+
+Run11_23100
+File reading done. Time taken: 0.750772s
+Preprocessing files done. Time taken: 0.707479s
+Interest point search done. Time taken: 0.584355s
+Fitting done. Time taken: 0.659245s
+Average standard deviation of the interest points is 1.30932
+Average cost of best fit to the analytical function is 1.94668
+Final parameters are { 11.3901, 0.362995, 8.61501e-05, 0.043047, 4, 1.96154, 1, 4, 1.96124, 1, 0.3067 }
+Average ||grad(||J||)|| is 0.00091378
+Analysis done. Time taken: 0.00315083s
+Interest points, parameters and file saving done. Time taken: 0.0225446s
+Finished fitting the data point at Run11, timestep 23100
+Time taken: 3 seconds total.
+
+Run11_22500
+File reading done. Time taken: 0.81865s
+Preprocessing files done. Time taken: 0.664145s
+Interest point search done. Time taken: 0.621904s
+Fitting done. Time taken: 0.54015s
+Average standard deviation of the interest points is 1.13647
+Average cost of best fit to the analytical function is 3.34962
+Final parameters are { 11.3076, 0.380241, 0.00198318, 0.0661014, 2.57799, 1.3625, 0.414495, 2.51844, 1.43015, 0.508833, 0.242565 }
+Average ||grad(||J||)|| is 54.3678
+Analysis done. Time taken: 0.00323689s
+Interest points, parameters and file saving done. Time taken: 0.0176759s
+Finished fitting the data point at Run11, timestep 22500
+Time taken: 3 seconds total.
+
+Run11_21900
+File reading done. Time taken: 0.705813s
+Preprocessing files done. Time taken: 0.729083s
+Interest point search done. Time taken: 0.617657s
+Fitting done. Time taken: 0.574778s
+Average standard deviation of the interest points is 1.1288
+Average cost of best fit to the analytical function is 3.7401
+Final parameters are { 9.05745, 0.342161, 0.00212844, 0.0557405, 2.62686, 0.550653, 0.1, 1.4286, 0.491722, 0.1, 0.43845 }
+Average ||grad(||J||)|| is 4.52447e-08
+Analysis done. Time taken: 0.00456267s
+Interest points, parameters and file saving done. Time taken: 0.0478704s
+Finished fitting the data point at Run11, timestep 21900
+Time taken: 3 seconds total.
+
+Run11_21000
+File reading done. Time taken: 0.693423s
+Preprocessing files done. Time taken: 0.729736s
+Interest point search done. Time taken: 0.860205s
+Fitting done. Time taken: 0.546418s
+Average standard deviation of the interest points is 1.03876
+Average cost of best fit to the analytical function is 3.98772
+Final parameters are { 8.948, 0.364213, 0.00218474, 0.0314738, 1.68693, 0.54531, 0.1, 1.18323, 0.488529, 0.1, 0.443312 }
+Average ||grad(||J||)|| is 6.11139e-10
+Analysis done. Time taken: 0.00443517s
+Interest points, parameters and file saving done. Time taken: 0.0444128s
+Finished fitting the data point at Run11, timestep 21000
+Time taken: 3 seconds total.
+
+Run11_20100
+File reading done. Time taken: 0.943237s
+Preprocessing files done. Time taken: 0.424831s
+Interest point search done. Time taken: 0.513125s
+Fitting done. Time taken: 0.507606s
+Average standard deviation of the interest points is 0.929034
+Average cost of best fit to the analytical function is 4.61236
+Final parameters are { 8.75547, 0.360691, -0.00103459, 0.0162063, 0, 0.176447, 0.1, 0.524947, 0.592449, 0.1, 0.480858 }
+Average ||grad(||J||)|| is 8.92709e+09
+Analysis done. Time taken: 0.00338865s
+Interest points, parameters and file saving done. Time taken: 0.0354118s
+Finished fitting the data point at Run11, timestep 20100
+Time taken: 2 seconds total.
+
+Run12_28800
