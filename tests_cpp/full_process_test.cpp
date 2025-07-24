@@ -53,6 +53,8 @@ int main(int argc, char* argv[])
     bool save_params(true);
 
     bool logging(true);
+    bool timing(true);
+    bool warnings(true);
 
     std::string filepath(".");
     std::string timestep("");                       // TODO: could add support for multiple timesteps at a time?
@@ -160,6 +162,22 @@ int main(int argc, char* argv[])
             break;
         }
 
+        else if( std::string(argv[i]) == "--timing" )
+        {
+            if (std::string(argv[i+1]) == "true") timing = true;
+            else if (std::string(argv[i+1]) == "false") timing = false;
+            else { std::cout << "ERROR: unknown parameter for flag --timing\n"; exit(1); }
+            break;
+        }
+
+        else if( std::string(argv[i]) == "--warnings" )
+        {
+            if (std::string(argv[i+1]) == "true") warnings = true;
+            else if (std::string(argv[i+1]) == "false") warnings = false;
+            else { std::cout << "ERROR: unknown parameter for flag --warnings\n"; exit(1); }
+            break;
+        }
+
         else { std::cout << "ERROR: unknown command line argument: " << argv[i] << std::endl; exit(1); }
     }
 
@@ -184,7 +202,7 @@ int main(int argc, char* argv[])
     if (save_Z) save_file( savepath + std::string("/Z.txt"), Z );
 
     auto t1 = Time::now();
-    if (logging) std::cout << "File reading done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+    if (timing) std::cout << "File reading done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
     // *********************************************************************************************
@@ -214,7 +232,7 @@ int main(int argc, char* argv[])
     Matrix J_norm_real = J_processed_real.norm();
     
     t1 = Time::now();
-    if (logging) std::cout << "Preprocessing files done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+    if (timing) std::cout << "Preprocessing files done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
     // *********************************************************************************************
@@ -237,7 +255,7 @@ int main(int argc, char* argv[])
     process_interest_points( interest_points, nb_theta, nb_phi, new_shape_sim, new_shape_real, earth_pos_sim, earth_pos_real );
 
     t1 = Time::now();
-    if (logging) std::cout << "Interest point search done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+    if (timing) std::cout << "Interest point search done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
     // *********************************************************************************************
@@ -262,7 +280,7 @@ int main(int argc, char* argv[])
     );
 
     t1 = Time::now();
-    if (logging) std::cout << "Fitting done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+    if (timing) std::cout << "Fitting done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
 
@@ -286,7 +304,7 @@ int main(int argc, char* argv[])
 
 
     t1 = Time::now();
-    if (logging) std::cout << "Analysis done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+    if (timing) std::cout << "Analysis done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
 
@@ -304,7 +322,7 @@ int main(int argc, char* argv[])
     if (save_params) save_parameters( savepath + std::string("/params_cpp.txt"), result.params );
 
     t1 = Time::now();
-    if (logging) std::cout << "Interest points, parameters and file saving done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+    if (timing) std::cout << "Interest points, parameters and file saving done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
     // *********************************************************************************************

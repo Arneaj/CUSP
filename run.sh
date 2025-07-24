@@ -68,13 +68,18 @@ for run_nb in "${runs[@]}"; do
 		mkdir data/Run"$run_nb"_"$t" > /dev/null 2>&1
 
 		cd build
-		./full_process --input_dir /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run"$run_nb"/MS --timestep "$t" --output_dir /rds/general/user/avr24/home/Thesis/data/Run"$run_nb"_"$t"
+		./full_process 	-i /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run"$run_nb"/MS \
+						-t "$t" \
+						-o /rds/general/user/avr24/home/Thesis/data/Run"$run_nb"_"$t" \
+						--timing false \
+						-J true \
+						-B true
 
 		# cd ../python
 		# python fit_to_analytical.py ../data/Run"$run_nb"_"$t"
 
 		cd ..
-		echo "Finished fitting the data point at Run$((run_nb)), timestep $((t))"
+		# echo "Finished fitting the data point at Run$((run_nb)), timestep $((t))"
 		echo "Time taken: $((SECONDS-start_time)) seconds total."
 
 		echo

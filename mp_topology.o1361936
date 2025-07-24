@@ -1,0 +1,130 @@
+/rds/general/user/avr24/home/.profile: line 1: .bashrc: No such file or directory
+Finished loading modules.
+
+Run1_28800
+Average standard deviation of the interest points is 0.651566
+Average cost of best fit to the analytical function is 3.43267
+Final parameters are { 8.50612, 0.352016, 0.000215659, 0.0338582, 3.164, 0.633204, 0.160096, 3.11697, 0.626549, 0.167227, 0.5 }
+Average ||grad(||J||)|| is 1.82828e-09
+Time taken: 7 seconds total.
+
+Run1_27000
+Average standard deviation of the interest points is 0.58923
+Average cost of best fit to the analytical function is 2.92463
+Final parameters are { 8.72952, 0.356921, 0.000390067, 0.0135247, 3.45919, 0.629611, 0.196917, 3.54311, 0.624682, 0.19943, 0.5 }
+Average ||grad(||J||)|| is 1.67388e-09
+Time taken: 4 seconds total.
+
+Run1_23100
+Average standard deviation of the interest points is 1.18024
+Average cost of best fit to the analytical function is 1.19565
+Final parameters are { 9.9388, 0.441279, 0.000369954, 0.0291568, 2.75571, 1.08616, 0.277117, 2.51051, 1.10292, 0.312301, 0.226571 }
+Average ||grad(||J||)|| is 9.27754e-10
+Time taken: 3 seconds total.
+
+Run1_22500
+Average standard deviation of the interest points is 1.1694
+Average cost of best fit to the analytical function is 1.33312
+Final parameters are { 9.89481, 0.413823, 0.000843035, 0.0511183, 2.63221, 1.09338, 0.227411, 2.57081, 1.09893, 0.230237, 0.2471 }
+Average ||grad(||J||)|| is -nan
+Time taken: 3 seconds total.
+
+Run1_21900
+Average standard deviation of the interest points is 1.19428
+Average cost of best fit to the analytical function is 1.38073
+Final parameters are { 9.13595, 0.405531, 0.000209339, 0.0460336, 1.62818, 0.969886, 0.161875, 1.54777, 1.02233, 0.14635, 0.312577 }
+Average ||grad(||J||)|| is 6.38928e-10
+Time taken: 3 seconds total.
+
+Run1_21000
+Average standard deviation of the interest points is 1.23646
+Average cost of best fit to the analytical function is 1.68786
+Final parameters are { 8.95703, 0.417855, -0.000912456, 0.0324597, 1.39548, 0.965976, 0.128869, 1.29952, 0.978973, 0.12387, 0.3246 }
+Average ||grad(||J||)|| is -nan
+Time taken: 3 seconds total.
+
+Run1_20100
+Average standard deviation of the interest points is 1.15795
+Average cost of best fit to the analytical function is 1.61086
+Final parameters are { 8.47403, 0.416909, -0.000461578, 0.0188131, 3.66878, 0.161313, 0.1, 3.70052, 0.160716, 0.1, 0.377267 }
+Average ||grad(||J||)|| is 5.68361e-07
+Time taken: 3 seconds total.
+
+Run2_28800
+Average standard deviation of the interest points is 0.694527
+Average cost of best fit to the analytical function is 5.46152
+Final parameters are { 8.55441, 0.343576, -0.0018144, 0.0535172, 3.29636, 0.368984, 0.206333, 3.18651, 0.364902, 0.212991, 0.5 }
+Average ||grad(||J||)|| is 1.21772e-09
+Time taken: 4 seconds total.
+
+Run2_27000
+Average standard deviation of the interest points is 0.476531
+Average cost of best fit to the analytical function is 5.56034
+Final parameters are { 8.56965, 0.348123, 0.00143979, 0.0524113, 3.8078, 0.467224, 0.1952, 3.23649, 0.450649, 0.212002, 0.5 }
+Average ||grad(||J||)|| is 1.55669e-09
+Time taken: 4 seconds total.
+
+Run2_23100
+Average standard deviation of the interest points is 1.24742
+Average cost of best fit to the analytical function is 0.911272
+Final parameters are { 9.9358, 0.412772, -0.000251393, 0.0263003, 2.82727, 1.95284, 1, 3.14121, 2, 1, 0.294069 }
+Average ||grad(||J||)|| is 0.00675392
+Time taken: 4 seconds total.
+
+Run2_22500
+Average standard deviation of the interest points is 1.1556
+Average cost of best fit to the analytical function is 1.25463
+Final parameters are { 10.3108, 0.419409, 0.000888817, 0.0514288, 3.11794, 1.11583, 0.289154, 2.8835, 1.16783, 0.325583, 0.21501 }
+Average ||grad(||J||)|| is 1.10512e-09
+Time taken: 3 seconds total.
+
+Run2_21900
+Average standard deviation of the interest points is 1.19429
+Average cost of best fit to the analytical function is 1.38072
+Final parameters are { 9.1359, 0.40553, 0.000209297, 0.0460334, 1.62809, 0.969891, 0.161872, 1.54781, 1.02233, 0.14632, 0.312581 }
+Average ||grad(||J||)|| is -nan
+Time taken: 3 seconds total.
+
+Run2_21000
+Average standard deviation of the interest points is 1.23646
+Average cost of best fit to the analytical function is 1.68786
+Final parameters are { 8.95705, 0.417855, -0.000912452, 0.0324597, 1.39485, 0.965974, 0.128863, 1.29877, 0.978977, 0.123891, 0.324597 }
+Average ||grad(||J||)|| is 6.41798e-10
+Time taken: 4 seconds total.
+
+Run2_20100
+Average standard deviation of the interest points is 1.15795
+Average cost of best fit to the analytical function is 1.61072
+Final parameters are { 8.47109, 0.417041, -0.000461516, 0.018807, 3.5106, 0.159071, 0.1, 3.6191, 0.15956, 0.1, 0.377209 }
+Average ||grad(||J||)|| is 6.79841e-10
+Time taken: 3 seconds total.
+
+Run4_28800
+Average standard deviation of the interest points is 0.772357
+Average cost of best fit to the analytical function is 5.72968
+Final parameters are { 8.5757, 0.330672, 0.00529338, 0.0714816, 3.41901, 0.444397, 0.197187, 3.12981, 0.442015, 0.199639, 0.5 }
+Average ||grad(||J||)|| is -nan
+Time taken: 4 seconds total.
+
+Run4_27000
+Average standard deviation of the interest points is 0.522834
+Average cost of best fit to the analytical function is 4.11773
+Final parameters are { 8.63031, 0.34809, 0.00110737, 0.0382047, 3.87965, 0.470875, 0.204714, 3.58267, 0.464411, 0.213068, 0.5 }
+Average ||grad(||J||)|| is 1.72237e-09
+Time taken: 4 seconds total.
+
+Run4_23100
+Average standard deviation of the interest points is 2.18994
+Average cost of best fit to the analytical function is 1.021
+Final parameters are { 11.5785, 0.461373, -0.000141266, 0.00233744, 3.99795, 1.61922, 1, 4, 1.81515, 1, 0.138562 }
+Average ||grad(||J||)|| is 1.52354e-09
+Time taken: 3 seconds total.
+
+Run4_22500
+Average standard deviation of the interest points is 1.69287
+Average cost of best fit to the analytical function is 1.47543
+Final parameters are { 12.047, 0.475728, -0.000183255, 0.0367346, 4, 1.16342, 0.338718, 3.6852, 1.16125, 0.408388, 0.0128193 }
+Average ||grad(||J||)|| is 8.02176e-10
+Time taken: 3 seconds total.
+
+Run4_21900
