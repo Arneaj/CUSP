@@ -5,10 +5,12 @@
 #include "matrix.h"
 
 
+const float PI = 3.141592653589793238462643383279502884f;
+
+
 enum class DerivativeAccuracy { normal, high };
 
-Point local_grad_of_normed_matrix(Matrix M_norm, Point p, DerivativeAccuracy accuracy=DerivativeAccuracy::normal, float dx=1.0, float dy=1.0, float dz=1.0);
-
+Point local_grad_of_normed_matrix(const Matrix& M_norm, const Point& p, DerivativeAccuracy accuracy, float dx, float dy, float dz);
 
 
 #endif
