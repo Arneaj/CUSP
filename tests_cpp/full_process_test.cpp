@@ -152,7 +152,7 @@ int main(int argc, char* argv[])
             if (std::string(argv[i+1]) == "true") logging = true;
             else if (std::string(argv[i+1]) == "false") logging = false;
             else { std::cout << "ERROR: unknown parameter for flag --logging\n"; exit(1); }
-        }s
+        }
         else if( std::string(argv[i]) == "--timing" )
         {
             if (std::string(argv[i+1]) == "true") timing = true;
@@ -177,7 +177,7 @@ int main(int argc, char* argv[])
 
     Matrix J = read_pvtr(filepath + std::string("/") + J_format + timestep + std::string(".") + file_format);
     Matrix B = read_pvtr(filepath + std::string("/") + B_format + timestep + std::string(".") + file_format);
-    Matrix V = read_pvtr(filepath + std::string("/") + V_format + timestep + std::string(".") + file_format);
+    // Matrix V = read_pvtr(filepath + std::string("/") + V_format + timestep + std::string(".") + file_format);
 
     Matrix X;
     Matrix Y;
@@ -202,19 +202,19 @@ int main(int argc, char* argv[])
 
     float hyper_sampling = 1.2;
 
-    Shape new_shape_real(std::round(p_range.x), std::round(p_range.y), std::round(p_range.z), V.get_shape().i);
-    Shape new_shape_sim(V.get_shape().x*hyper_sampling, V.get_shape().y*hyper_sampling, V.get_shape().z*hyper_sampling, V.get_shape().i);
+    Shape new_shape_real(std::round(p_range.x), std::round(p_range.y), std::round(p_range.z), J.get_shape().i);
+    Shape new_shape_sim(J.get_shape().x*hyper_sampling, J.get_shape().y*hyper_sampling, J.get_shape().z*hyper_sampling, J.get_shape().i);
 
     Point earth_pos_real = find_real_earth_pos( X, Y, Z );
     Point earth_pos_sim = find_sim_earth_pos( earth_pos_real, new_shape_real, new_shape_sim );
 
     Matrix B_processed_sim = orthonormalise(B, X, Y, Z, &new_shape_sim);
     Matrix J_processed_sim = orthonormalise(J, X, Y, Z, &new_shape_sim);
-    Matrix V_processed_sim = orthonormalise(V, X, Y, Z, &new_shape_sim);
+    // Matrix V_processed_sim = orthonormalise(V, X, Y, Z, &new_shape_sim);
 
     Matrix B_processed_real = orthonormalise(B, X, Y, Z, &new_shape_real);
     Matrix J_processed_real = orthonormalise(J, X, Y, Z, &new_shape_real);
-    Matrix V_processed_real = orthonormalise(V, X, Y, Z, &new_shape_real);
+    // Matrix V_processed_real = orthonormalise(V, X, Y, Z, &new_shape_real);
 
     Matrix J_norm_sim = J_processed_sim.norm();
     Matrix J_norm_real = J_processed_real.norm();
@@ -251,9 +251,9 @@ int main(int argc, char* argv[])
 
     //                              r_0,    a_0,    a_1,    a_2,    d_n,    l_n,    s_n,    d_s,    l_s,    s_s,    e    
     double initial_params[11] = {   10.0,   0.5,    0.0,    0.0,    2.0,    0.55,   0.55,   2.0,    0.55,   0.55,   0.0     };
-    double lowerbound[11] =     {   5.0,    0.3,    -1.0,   -1.0,   0.0,    0.1,    0.1,    0.0,    0.1,    0.1,    -0.5    };
-    double upperbound[11] =     {   15.0,   0.8,    1.0,    1.0,    4.0,    2.0,    1.0,    4.0,    2.0,    1.0,    0.5     };
-    double radii[11] =          {   3.0,    0.1,    0.5,    0.5,    1.0,    0.05,   0.25,   1.0,    0.05,   0.25,   0.15    };
+    double lowerbound[11] =     {   5.0,    0.3,    -1.0,   -1.0,   0.0,    0.1,    0.1,    0.0,    0.1,    0.1,    -0.8    };
+    double upperbound[11] =     {   15.0,   0.8,    1.0,    1.0,    4.0,    2.0,    1.0,    4.0,    2.0,    1.0,    0.8     };
+    double radii[11] =          {   3.0,    0.1,    0.5,    0.5,    1.0,    0.05,   0.25,   1.0,    0.05,   0.25,   0.2     };
 
 
     int nb_runs = 50;
@@ -301,7 +301,10 @@ int main(int argc, char* argv[])
 
     if (save_J) save_file_bin( savepath + std::string("/J_processed_real.") + file_save_format, J_processed_real );
     if (save_B) save_file_bin( savepath + std::string("/B_processed_real.") + file_save_format, B_processed_real );
-    if (save_V) save_file_bin( savepath + std::string("/V_processed_real.") + file_save_format, V_processed_real );
+    // if (save_V) save_file_bin( savepath + std::string("/V_processed_real.") + file_save_format, V_processed_real );
+
+    save_file_bin( savepath + std::string("/J.") + file_save_format, J );
+    save_file_bin( savepath + std::string("/J_processed_sim.") + file_save_format, J_processed_sim );
 
     if (save_J_norm) save_file_bin( savepath + std::string("/J_norm_processed_real.") + file_save_format, J_norm_real );
 
@@ -314,8 +317,8 @@ int main(int argc, char* argv[])
 
 
     // *********************************************************************************************
-    V.del(); J.del(); B.del();
+    J.del(); B.del(); // V.del();
     X.del(); Y.del(); Z.del();
-    V_processed_sim.del(); B_processed_sim.del(); J_processed_sim.del(); J_norm_sim.del();
-    V_processed_real.del(); B_processed_real.del(); J_processed_real.del(); J_norm_real.del();
+    B_processed_sim.del(); J_processed_sim.del(); J_norm_sim.del(); // V_processed_sim.del();
+    B_processed_real.del(); J_processed_real.del(); J_norm_real.del(); // V_processed_real.del();
 }

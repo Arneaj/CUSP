@@ -25,9 +25,9 @@ filepath = sys.argv[1]
 # B_norm = np.linalg.norm( B, axis=3 )
 
 # J_norm = import_from(f"{filepath}/J_norm_processed_real.txt")
-J_norm = import_from_bin(f"{filepath}/B_processed_real.bin")
+J_norm = import_from_bin(f"{filepath}/J_norm_processed_real.bin")
 
-J_norm = np.linalg.norm( J_norm, axis=3 )
+# J_norm = np.linalg.norm( J_norm, axis=3 )
 
 
 # earth_pos = get_earth_pos( B_norm )
@@ -118,12 +118,12 @@ xz_c = interest_points_w[ np.abs(Y - iy) < epsilon ]
 # V: None
 
 
-J_xy = axes[0].imshow(J_norm_xy_i, cmap="inferno", vmin=0, vmax=1e-7, interpolation="none")
+J_xy = axes[0].imshow(J_norm_xy_i, cmap="inferno", vmin=0, vmax=3e-9, interpolation="none")
 plt.colorbar(J_xy, ax=axes[0])
 J_xy = axes[0].scatter( xy_points_y, xy_points_x, s=0.3, c=xy_c )
 axes[0].set_title(fr"$||J||$ in $({58},\hat x, \hat y)$ plane")
 
-J_xz = axes[1].imshow(J_norm_xz_i, cmap="inferno", vmin=0, vmax=1e-7, interpolation="none")
+J_xz = axes[1].imshow(J_norm_xz_i, cmap="inferno", vmin=0, vmax=3e-9, interpolation="none")
 plt.colorbar(J_xz, ax=axes[1])
 J_xz = axes[1].scatter( xz_points_z, xz_points_x, s=0.3, c=xz_c )
 axes[1].set_title(fr"$||J||$ in $({58},\hat z, \hat x)$ plane")
