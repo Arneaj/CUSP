@@ -166,8 +166,8 @@ InterestPoint* get_interest_points( const Matrix& J_norm, Point earth_pos,
             if (avg_std_dev) *avg_std_dev += std_dev;
 
             // float weight = std::exp( -std_dev );  // TODO: change weights
-            // float weight = 1.0f / (1.0f + std_dev);
-            float weight = 5.0f / (5.0f + std_dev*std_dev);
+            float weight = 1.0f / (1.0f + std_dev);
+            // float weight = 5.0f / (5.0f + std_dev*std_dev);
             // if (std::abs(theta) < 0.5*PI) weight *= sin_theta;
 
             interest_points[ itheta*nb_phi + iphi ] = InterestPoint( theta, phi, interest_radius, weight ); 
