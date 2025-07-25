@@ -1,0 +1,689 @@
+/rds/general/user/avr24/home/.profile: line 1: .bashrc: No such file or directory
+Finished loading modules.
+
+Run1_28800
+Average standard deviation of the interest points is 0.316303
+Average cost of best fit to the analytical function is 1.00311
+Final parameters are { 8.44362, 0.383059, -1.26518e-05, 0.0926496, 2.75711, 0.627699, 0.150826, 2.81412, 0.624844, 0.149295, 0.425019 }
+Average ||grad(||J||)|| is 1.67817e-09
+Time taken: 5 seconds total.
+
+Run1_27000
+Average standard deviation of the interest points is 0.28184
+Average cost of best fit to the analytical function is 2.08262
+Final parameters are { 8.39507, 0.3, 0.000105955, 0.129874, 2.79016, 0.627306, 0.149565, 2.77699, 0.62856, 0.150123, 0.500644 }
+Average ||grad(||J||)|| is 1.58765e-09
+Time taken: 2 seconds total.
+
+Run1_23100
+Average standard deviation of the interest points is 0.419589
+Average cost of best fit to the analytical function is 0.963755
+Final parameters are { 10.4055, 0.489108, -0.000448644, 0.140456, 2.88624, 1.0826, 0.294041, 2.86124, 1.08781, 0.296701, 0.0473472 }
+Average ||grad(||J||)|| is 1.06942e-09
+Time taken: 3 seconds total.
+
+Run1_22500
+Average standard deviation of the interest points is 0.444296
+Average cost of best fit to the analytical function is 1.01516
+Final parameters are { 10.4949, 0.481797, 0.000143113, 0.151988, 3.12285, 1.08843, 0.246534, 3.09757, 1.09015, 0.247338, 0.0455867 }
+Average ||grad(||J||)|| is 7.8838e-10
+Time taken: 2 seconds total.
+
+Run1_21900
+Average standard deviation of the interest points is 0.531166
+Average cost of best fit to the analytical function is 1.09182
+Final parameters are { 9.48828, 0.409371, 0.000378956, 0.155471, 1.84252, 1.0425, 0.236213, 1.80267, 1.04272, 0.24367, 0.188116 }
+Average ||grad(||J||)|| is 5.93996e-10
+Time taken: 2 seconds total.
+
+Run1_21000
+Average standard deviation of the interest points is 0.555939
+Average cost of best fit to the analytical function is 1.16056
+Final parameters are { 9.38311, 0.391728, 0.000142434, 0.159314, 1.72493, 1.03164, 0.243634, 1.6952, 1.03946, 0.237783, 0.213418 }
+Average ||grad(||J||)|| is 5.91587e-10
+Time taken: 3 seconds total.
+
+Run1_20100
+Average standard deviation of the interest points is 0.615678
+Average cost of best fit to the analytical function is 1.22982
+Final parameters are { 8.59166, 0.300723, 0.000274617, 0.15907, 2.82672, 0.119959, 0.1, 2.7973, 0.11836, 0.1, 0.37818 }
+Average ||grad(||J||)|| is 6.82762e-10
+Time taken: 2 seconds total.
+
+Run2_28800
+Average standard deviation of the interest points is 0.601538
+Average cost of best fit to the analytical function is 1.10405
+Final parameters are { 8.7071, 0.3, 0.00349079, 0.135631, 3.18707, 0.309774, 0.246049, 3.18801, 0.310365, 0.244992, 0.463157 }
+Average ||grad(||J||)|| is 1.45737e-09
+Time taken: 2 seconds total.
+
+Run2_27000
+Average standard deviation of the interest points is 0.179204
+Average cost of best fit to the analytical function is 1.1914
+Final parameters are { 8.35983, 0.3, 0.000431059, 0.137321, 3.43445, 0.484594, 0.155373, 3.40047, 0.48464, 0.156262, 0.501897 }
+Average ||grad(||J||)|| is 2.2404e-09
+Time taken: 2 seconds total.
+
+Run2_23100
+Average standard deviation of the interest points is 0.457847
+Average cost of best fit to the analytical function is 0.773413
+Final parameters are { 10.5325, 0.44911, -0.00049028, 0.120643, 2.77276, 1.129, 0.692449, 2.73657, 1.13637, 0.721347, 0.103212 }
+Average ||grad(||J||)|| is 1.50606e-09
+Time taken: 2 seconds total.
+
+Run2_22500
+Average standard deviation of the interest points is 0.434717
+Average cost of best fit to the analytical function is 0.889094
+Final parameters are { 10.8815, 0.493111, 7.78355e-05, 0.151537, 3.43382, 1.09919, 0.282049, 3.40444, 1.10172, 0.282544, 0.0114177 }
+Average ||grad(||J||)|| is 7.60987e-10
+Time taken: 3 seconds total.
+
+Run2_21900
+Average standard deviation of the interest points is 0.531162
+Average cost of best fit to the analytical function is 1.09182
+Final parameters are { 9.48833, 0.409377, 0.0003789, 0.155471, 1.84267, 1.04249, 0.236208, 1.8027, 1.04272, 0.243689, 0.188106 }
+Average ||grad(||J||)|| is 5.94002e-10
+Time taken: 2 seconds total.
+
+Run2_21000
+Average standard deviation of the interest points is 0.555939
+Average cost of best fit to the analytical function is 1.16056
+Final parameters are { 9.38302, 0.391717, 0.000142476, 0.159314, 1.72489, 1.03164, 0.243604, 1.6952, 1.03946, 0.237736, 0.213437 }
+Average ||grad(||J||)|| is 5.91585e-10
+Time taken: 2 seconds total.
+
+Run2_20100
+Average standard deviation of the interest points is 0.615678
+Average cost of best fit to the analytical function is 1.22984
+Final parameters are { 8.58934, 0.3, 0.00027453, 0.159042, 2.82229, 0.119933, 0.1, 2.79287, 0.118332, 0.1, 0.379228 }
+Average ||grad(||J||)|| is 6.82476e-10
+Time taken: 3 seconds total.
+
+Run4_28800
+Average standard deviation of the interest points is 0.409896
+Average cost of best fit to the analytical function is 0.987106
+Final parameters are { 8.55801, 0.343343, -0.00160503, 0.128737, 3.08614, 0.39897, 0.204366, 3.24682, 0.462112, 0.184054, 0.430283 }
+Average ||grad(||J||)|| is 1.82999e-09
+Time taken: 2 seconds total.
+
+Run4_27000
+Average standard deviation of the interest points is 0.346317
+Average cost of best fit to the analytical function is 1.62861
+Final parameters are { 8.4091, 0.3, -6.11953e-05, 0.166692, 3.49093, 0.487984, 0.162029, 3.4227, 0.485993, 0.163697, 0.474969 }
+Average ||grad(||J||)|| is 2.39053e-09
+Time taken: 2 seconds total.
+
+Run4_23100
+Average standard deviation of the interest points is 0.528377
+Average cost of best fit to the analytical function is 0.643447
+Final parameters are { 11.9884, 0.379629, -2.72156e-05, 0.154602, 4, 1.46117, 1, 4, 1.46493, 1, 0.0590297 }
+Average ||grad(||J||)|| is 1.42328e-09
+Time taken: 2 seconds total.
+
+Run4_22500
+Average standard deviation of the interest points is 0.399265
+Average cost of best fit to the analytical function is 0.76374
+Final parameters are { 12.5863, 0.496449, -1.26251e-05, 0.148967, 4, 1.15073, 0.379633, 3.99716, 1.14848, 0.391446, -0.116948 }
+Average ||grad(||J||)|| is 6.64872e-10
+Time taken: 2 seconds total.
+
+Run4_21900
+Average standard deviation of the interest points is 0.503773
+Average cost of best fit to the analytical function is 0.659733
+Final parameters are { 9.30475, 0.34194, 0.00036829, 0.145306, 0.690378, 1.42913, 0.490028, 0.764144, 1.41926, 0.322184, 0.242839 }
+Average ||grad(||J||)|| is 7.03801e-10
+Time taken: 2 seconds total.
+
+Run4_21000
+Average standard deviation of the interest points is 0.528299
+Average cost of best fit to the analytical function is 0.623019
+Final parameters are { 9.59203, 0.374377, 0.000350826, 0.148136, 1.02497, 1.29862, 0.408949, 1.1162, 1.30712, 0.317237, 0.185693 }
+Average ||grad(||J||)|| is 7.44454e-10
+Time taken: 2 seconds total.
+
+Run4_20100
+Average standard deviation of the interest points is 0.519618
+Average cost of best fit to the analytical function is 0.609371
+Final parameters are { 9.83125, 0.376896, 0.000316712, 0.15776, 1.36288, 1.2669, 0.437435, 1.38072, 1.26989, 0.417165, 0.162501 }
+Average ||grad(||J||)|| is 7.40301e-10
+Time taken: 2 seconds total.
+
+Run5_28800
+Average standard deviation of the interest points is 0.381077
+Average cost of best fit to the analytical function is 1.09784
+Final parameters are { 8.31805, 0.356557, 0.000932992, 0.0950391, 3.36398, 0.555369, 0.167355, 3.2599, 0.553066, 0.169033, 0.435285 }
+Average ||grad(||J||)|| is 3.08753e-09
+Time taken: 2 seconds total.
+
+Run5_27000
+Average standard deviation of the interest points is 0.34023
+Average cost of best fit to the analytical function is 1.13642
+Final parameters are { 8.16401, 0.320086, 0.000467459, 0.114002, 3.29964, 0.543699, 0.157277, 3.27682, 0.544289, 0.157694, 0.48871 }
+Average ||grad(||J||)|| is 2.60555e-09
+Time taken: 2 seconds total.
+
+Run5_23100
+Average standard deviation of the interest points is 0.388251
+Average cost of best fit to the analytical function is 0.961411
+Final parameters are { 8.87747, 0.30666, -0.00042576, 0.12795, 2.21772, 0.843659, 0.221278, 2.18863, 0.848207, 0.221686, 0.366621 }
+Average ||grad(||J||)|| is 1.0913e-09
+Time taken: 2 seconds total.
+
+Run5_22500
+Average standard deviation of the interest points is 0.489777
+Average cost of best fit to the analytical function is 0.798576
+Final parameters are { 9.71474, 0.479467, -2.39274e-05, 0.138792, 2.73593, 1.04305, 0.252639, 2.68501, 1.07916, 0.249134, 0.0979591 }
+Average ||grad(||J||)|| is 1.08217e-09
+Time taken: 2 seconds total.
+
+Run5_21900
+Average standard deviation of the interest points is 0.528187
+Average cost of best fit to the analytical function is 0.885064
+Final parameters are { 8.24283, 0.300831, 0.00026819, 0.138944, 1.2581, 0.537067, 0.1, 1.50796, 0.525448, 0.1, 0.409216 }
+Average ||grad(||J||)|| is 9.62891e-10
+Time taken: 3 seconds total.
+
+Run5_21000
+Average standard deviation of the interest points is 0.511093
+Average cost of best fit to the analytical function is 0.962108
+Final parameters are { 8.27079, 0.300042, 0.000367583, 0.145025, 1.53406, 0.536028, 0.1, 2.01659, 0.53493, 0.1, 0.401129 }
+Average ||grad(||J||)|| is 8.09211e-10
+Time taken: 2 seconds total.
+
+Run5_20100
+Average standard deviation of the interest points is 0.500542
+Average cost of best fit to the analytical function is 0.928907
+Final parameters are { 8.2335, 0.3, 4.86754e-05, 0.148998, 2.2849, 0.487604, 0.104216, 2.54587, 0.485485, 0.10392, 0.39896 }
+Average ||grad(||J||)|| is 9.11989e-10
+Time taken: 2 seconds total.
+
+Run9_28800
+Average standard deviation of the interest points is 0.324917
+Average cost of best fit to the analytical function is 1.94592
+Final parameters are { 8.72216, 0.327784, 0.000231343, 0.143579, 4, 0.537226, 0.18329, 3.94113, 0.533916, 0.184157, 0.431066 }
+Average ||grad(||J||)|| is 2.67591e-09
+Time taken: 2 seconds total.
+
+Run9_27000
+Average standard deviation of the interest points is 0.297084
+Average cost of best fit to the analytical function is 1.97517
+Final parameters are { 8.37461, 0.30191, 0.000575107, 0.165405, 2.7672, 0.557268, 0.167663, 2.70384, 0.553804, 0.169626, 0.470962 }
+Average ||grad(||J||)|| is 3.13595e-09
+Time taken: 3 seconds total.
+
+Run9_23100
+Average standard deviation of the interest points is 0.435134
+Average cost of best fit to the analytical function is 0.859674
+Final parameters are { 11.0613, 0.463643, 0.000139513, 0.152072, 3.3784, 1.19207, 0.565996, 3.38739, 1.19302, 0.56296, 0.0428997 }
+Average ||grad(||J||)|| is 1.02067e-09
+Time taken: 2 seconds total.
+
+Run9_22500
+Average standard deviation of the interest points is 0.483932
+Average cost of best fit to the analytical function is 1.07922
+Final parameters are { 10.6791, 0.481021, 0.000518115, 0.158652, 3.33927, 1.09171, 0.27275, 3.35236, 1.09032, 0.269034, 0.0344382 }
+Average ||grad(||J||)|| is 6.50606e-10
+Time taken: 2 seconds total.
+
+Run9_21900
+Average standard deviation of the interest points is 0.561338
+Average cost of best fit to the analytical function is 1.11496
+Final parameters are { 9.58398, 0.415414, -1.63676e-05, 0.162055, 1.94601, 1.07624, 0.26284, 1.96679, 1.079, 0.255685, 0.175135 }
+Average ||grad(||J||)|| is 6.09441e-10
+Time taken: 2 seconds total.
+
+Run9_21000
+Average standard deviation of the interest points is 0.581964
+Average cost of best fit to the analytical function is 1.20595
+Final parameters are { 9.38883, 0.426165, -8.99153e-05, 0.159211, 1.70857, 1.03261, 0.215176, 1.68053, 1.03034, 0.221379, 0.181595 }
+Average ||grad(||J||)|| is 6.43492e-10
+Time taken: 2 seconds total.
+
+Run9_20100
+Average standard deviation of the interest points is 0.550069
+Average cost of best fit to the analytical function is 1.27542
+Final parameters are { 8.57568, 0.344759, 0.000532913, 0.154714, 0.735586, 1.02108, 0.1, 0.817966, 1.01844, 0.1, 0.346735 }
+Average ||grad(||J||)|| is 6.19565e-10
+Time taken: 2 seconds total.
+
+Run11_28800
+Average standard deviation of the interest points is 0.295473
+Average cost of best fit to the analytical function is 10.7868
+Final parameters are { 10.3512, 0.3, 0.00201516, 0.166135, 4, 0.329654, 0.276154, 4, 0.372411, 0.264033, 0.42912 }
+Average ||grad(||J||)|| is 6.39227e-10
+Time taken: 2 seconds total.
+
+Run11_27000
+Average standard deviation of the interest points is 0.49617
+Average cost of best fit to the analytical function is 9.73625
+Final parameters are { 10.3375, 0.3, 0.00321656, 0.189615, 4, 0.445312, 0.262614, 4, 0.424391, 0.267264, 0.404392 }
+Average ||grad(||J||)|| is 5.15778e-10
+Time taken: 2 seconds total.
+
+Run11_23100
+Average standard deviation of the interest points is 0.567315
+Average cost of best fit to the analytical function is 1.30527
+Final parameters are { 12.1417, 0.456605, -0.000493305, 0.120325, 3.06559, 1.25693, 0.951211, 3.06362, 1.26012, 0.951629, 0.0532809 }
+Average ||grad(||J||)|| is 9.99889e-10
+Time taken: 2 seconds total.
+
+Run11_22500
+Average standard deviation of the interest points is 0.528402
+Average cost of best fit to the analytical function is 1.37598
+Final parameters are { 12.5256, 0.50363, -0.00015112, 0.152203, 3.69793, 1.14289, 0.278052, 3.63264, 1.1403, 0.292878, -0.0482245 }
+Average ||grad(||J||)|| is 7.61955e-10
+Time taken: 2 seconds total.
+
+Run11_21900
+Average standard deviation of the interest points is 0.595232
+Average cost of best fit to the analytical function is 1.52846
+Final parameters are { 9.35912, 0.300399, 0.000637639, 0.149227, 3.46758, 0.551509, 0.1, 3.37254, 0.558902, 0.1, 0.372677 }
+Average ||grad(||J||)|| is 5.70861e-10
+Time taken: 3 seconds total.
+
+Run11_21000
+Average standard deviation of the interest points is 0.549757
+Average cost of best fit to the analytical function is 1.61488
+Final parameters are { 9.39335, 0.327945, 0.000235054, 0.153228, 2.99361, 0.547058, 0.1, 2.78365, 0.549366, 0.1, 0.33872 }
+Average ||grad(||J||)|| is 6.11513e-10
+Time taken: 2 seconds total.
+
+Run11_20100
+Average standard deviation of the interest points is 0.554751
+Average cost of best fit to the analytical function is 1.75686
+Final parameters are { 9.33751, 0.323317, 0.000218326, 0.158276, 1.36988, 0.458285, 0.1, 1.30827, 0.468338, 0.1, 0.348578 }
+Average ||grad(||J||)|| is 5.65275e-10
+Time taken: 2 seconds total.
+
+Run12_28800
+Average standard deviation of the interest points is 0.394844
+Average cost of best fit to the analytical function is 0.911807
+Final parameters are { 8.15382, 0.3, 0.00244882, 0.12409, 3.02653, 0.458769, 0.203594, 3.05515, 0.461577, 0.198542, 0.475979 }
+Average ||grad(||J||)|| is 1.72526e-09
+Time taken: 2 seconds total.
+
+Run12_27000
+Average standard deviation of the interest points is 0.204464
+Average cost of best fit to the analytical function is 0.903187
+Final parameters are { 7.93548, 0.314489, 0.000528975, 0.133796, 2.7744, 0.48918, 0.175365, 2.74923, 0.487949, 0.175135, 0.473082 }
+Average ||grad(||J||)|| is 1.83021e-09
+Time taken: 2 seconds total.
+
+Run12_23100
+Average standard deviation of the interest points is 0.403006
+Average cost of best fit to the analytical function is 0.617499
+Final parameters are { 9.518, 0.450994, 0.000178387, 0.120601, 2.48729, 1.0435, 0.536673, 2.47601, 1.04787, 0.542307, 0.136637 }
+Average ||grad(||J||)|| is 1.23452e-09
+Time taken: 2 seconds total.
+
+Run12_22500
+Average standard deviation of the interest points is 0.415659
+Average cost of best fit to the analytical function is 0.698003
+Final parameters are { 9.89212, 0.479655, 0.000197167, 0.152815, 3.15863, 1.09082, 0.293342, 3.15977, 1.0923, 0.293802, 0.0592631 }
+Average ||grad(||J||)|| is 9.8325e-10
+Time taken: 2 seconds total.
+
+Run12_21900
+Average standard deviation of the interest points is 0.490616
+Average cost of best fit to the analytical function is 0.795334
+Final parameters are { 9.02283, 0.418277, 0.00043477, 0.155036, 2.16596, 1.03367, 0.260283, 2.17103, 1.04296, 0.245709, 0.183891 }
+Average ||grad(||J||)|| is 8.41598e-10
+Time taken: 2 seconds total.
+
+Run12_21000
+Average standard deviation of the interest points is 0.495317
+Average cost of best fit to the analytical function is 0.872313
+Final parameters are { 8.91413, 0.406502, 0.000311124, 0.160124, 1.9992, 1.03162, 0.24585, 2.00524, 1.03525, 0.237453, 0.199572 }
+Average ||grad(||J||)|| is 8.49869e-10
+Time taken: 2 seconds total.
+
+Run12_20100
+Average standard deviation of the interest points is 0.533861
+Average cost of best fit to the analytical function is 0.981864
+Final parameters are { 8.73928, 0.387499, 0.000114918, 0.164193, 1.70721, 1.02412, 0.230492, 1.69814, 1.02581, 0.228278, 0.231131 }
+Average ||grad(||J||)|| is 8.69598e-10
+Time taken: 3 seconds total.
+
+Run13_28800
+Average standard deviation of the interest points is 0.686309
+Average cost of best fit to the analytical function is 6.61791
+Final parameters are { 10.1559, 0.3, 0.00110453, 0.165033, 4, 0.309852, 0.274789, 4, 0.306149, 0.275488, 0.415202 }
+Average ||grad(||J||)|| is 5.02875e-10
+Time taken: 2 seconds total.
+
+Run13_27000
+Average standard deviation of the interest points is 0.44023
+Average cost of best fit to the analytical function is 6.25394
+Final parameters are { 10.0975, 0.3, 0.000235548, 0.151801, 4, 0.333333, 0.276039, 4, 0.314681, 0.27984, 0.442977 }
+Average ||grad(||J||)|| is 4.76541e-10
+Time taken: 2 seconds total.
+
+Run13_23100
+Average standard deviation of the interest points is 0.770489
+Average cost of best fit to the analytical function is 4.29868
+Final parameters are { 10.9556, 0.3, -0.000314305, 0.09113, 4, 0.709848, 0.209516, 4, 0.706062, 0.211765, 0.326846 }
+Average ||grad(||J||)|| is 1.48047e-09
+Time taken: 3 seconds total.
+
+Run13_22500
+Average standard deviation of the interest points is 0.604645
+Average cost of best fit to the analytical function is 0.888221
+Final parameters are { 12.2176, 0.497038, -9.50079e-05, 0.151527, 3.52, 1.14062, 0.390094, 3.48505, 1.14809, 0.394445, -0.027036 }
+Average ||grad(||J||)|| is 9.6421e-10
+Time taken: 2 seconds total.
+
+Run13_21900
+Average standard deviation of the interest points is 0.607101
+Average cost of best fit to the analytical function is 1.34034
+Final parameters are { 9.07748, 0.3, -0.000207534, 0.142762, 3.41072, 0.55607, 0.1, 4, 0.464279, 0.150665, 0.395503 }
+Average ||grad(||J||)|| is 4.94607e-10
+Time taken: 2 seconds total.
+
+Run13_21000
+Average standard deviation of the interest points is 0.646653
+Average cost of best fit to the analytical function is 1.3108
+Final parameters are { 9.07491, 0.3, 1.55611e-05, 0.139165, 3.66925, 0.567595, 0.1, 4, 0.470924, 0.151836, 0.39917 }
+Average ||grad(||J||)|| is 5.20818e-10
+Time taken: 2 seconds total.
+
+Run13_20100
+Average standard deviation of the interest points is 0.628562
+Average cost of best fit to the analytical function is 1.41216
+Final parameters are { 9.08412, 0.3, 0.000371412, 0.15006, 4, 0.559173, 0.101111, 4, 0.469992, 0.156292, 0.388414 }
+Average ||grad(||J||)|| is 5.55424e-10
+Time taken: 2 seconds total.
+
+Run14_28800
+Average standard deviation of the interest points is 0.598919
+Average cost of best fit to the analytical function is 1.00359
+Final parameters are { 8.30682, 0.3, 0.000723104, 0.134514, 4, 0.365553, 0.249818, 4, 0.365376, 0.249574, 0.439286 }
+Average ||grad(||J||)|| is 1.1226e-09
+Time taken: 3 seconds total.
+
+Run14_27000
+Average standard deviation of the interest points is 0.526756
+Average cost of best fit to the analytical function is 0.864449
+Final parameters are { 8.11645, 0.3, 0.000741558, 0.125777, 4, 0.379362, 0.226437, 4, 0.379412, 0.227091, 0.441481 }
+Average ||grad(||J||)|| is 1.60085e-09
+Time taken: 2 seconds total.
+
+Run14_23100
+Average standard deviation of the interest points is 0.373978
+Average cost of best fit to the analytical function is 0.688792
+Final parameters are { 7.78281, 0.3, -4.71144e-05, 0.078889, 1.91046, 0.701803, 0.165401, 1.9019, 0.701742, 0.166389, 0.479235 }
+Average ||grad(||J||)|| is 1.99986e-09
+Time taken: 2 seconds total.
+
+Run14_22500
+Average standard deviation of the interest points is 0.427923
+Average cost of best fit to the analytical function is 0.52464
+Final parameters are { 8.98458, 0.489481, 0.000840516, 0.139596, 2.50539, 1.03068, 0.320983, 2.52424, 1.03191, 0.312201, 0.109491 }
+Average ||grad(||J||)|| is 1.26861e-09
+Time taken: 2 seconds total.
+
+Run14_21900
+Average standard deviation of the interest points is 0.447669
+Average cost of best fit to the analytical function is 0.642766
+Final parameters are { 8.36758, 0.391705, 0.00079993, 0.154856, 1.87781, 0.970989, 0.284192, 1.85457, 0.976233, 0.274756, 0.255788 }
+Average ||grad(||J||)|| is 1.01715e-09
+Time taken: 2 seconds total.
+
+Run14_21000
+Average standard deviation of the interest points is 0.439685
+Average cost of best fit to the analytical function is 0.661229
+Final parameters are { 8.33176, 0.382074, 0.000622787, 0.153899, 1.77146, 0.971454, 0.278688, 1.74793, 0.975011, 0.274496, 0.268364 }
+Average ||grad(||J||)|| is 1.0884e-09
+Time taken: 2 seconds total.
+
+Run14_20100
+Average standard deviation of the interest points is 0.428864
+Average cost of best fit to the analytical function is 0.66499
+Final parameters are { 8.25704, 0.353925, 0.000309705, 0.15177, 1.55822, 0.967739, 0.290239, 1.54293, 0.974925, 0.285794, 0.304712 }
+Average ||grad(||J||)|| is 1.13826e-09
+Time taken: 2 seconds total.
+
+Run15_28800
+Average standard deviation of the interest points is 0.484004
+Average cost of best fit to the analytical function is 29.5398
+Final parameters are { 10.2148, 0.3, 0.000735738, 0.0538773, 4, 0.346909, 0.334071, 4, 0.346907, 0.337267, 0.451568 }
+Average ||grad(||J||)|| is 5.01199e-10
+Time taken: 2 seconds total.
+
+Run15_27000
+Average standard deviation of the interest points is 0.322976
+Average cost of best fit to the analytical function is 29.3374
+Final parameters are { 10.1086, 0.3, 0.00167969, 0.0987984, 4, 0.346907, 0.329375, 4, 0.346906, 0.330341, 0.415415 }
+Average ||grad(||J||)|| is 5.69951e-10
+Time taken: 2 seconds total.
+
+Run15_23100
+Average standard deviation of the interest points is 0.443513
+Average cost of best fit to the analytical function is 10.798
+Final parameters are { 10.4867, 0.3, 0.000520987, 0.0373839, 4, 0.477001, 0.255139, 4, 0.477745, 0.258414, 0.360537 }
+Average ||grad(||J||)|| is 1.28976e-09
+Time taken: 3 seconds total.
+
+Run15_22500
+Average standard deviation of the interest points is 0.476274
+Average cost of best fit to the analytical function is 0.682683
+Final parameters are { 11.0349, 0.518179, 0.000666728, 0.143751, 3.55454, 1.15353, 0.446578, 3.55365, 1.1569, 0.439269, 0.00172191 }
+Average ||grad(||J||)|| is 9.34448e-10
+Time taken: 2 seconds total.
+
+Run15_21900
+Average standard deviation of the interest points is 0.558424
+Average cost of best fit to the analytical function is 1.19529
+Final parameters are { 9.12124, 0.387065, 0.000628364, 0.1495, 2.42002, 0.627005, 0.110624, 2.93761, 0.617717, 0.1, 0.265476 }
+Average ||grad(||J||)|| is 6.01816e-10
+Time taken: 2 seconds total.
+
+Run15_21000
+Average standard deviation of the interest points is 0.564617
+Average cost of best fit to the analytical function is 1.21601
+Final parameters are { 8.8344, 0.327076, 0.000170972, 0.158385, 1.69998, 0.627948, 0.124499, 2.60921, 0.613375, 0.1, 0.347276 }
+Average ||grad(||J||)|| is 6.30202e-10
+Time taken: 2 seconds total.
+
+Run15_20100
+Average standard deviation of the interest points is 0.568503
+Average cost of best fit to the analytical function is 1.3449
+Final parameters are { 8.70158, 0.306341, 0.000332461, 0.163289, 0.942547, 0.651687, 0.127915, 2.05458, 0.55753, 0.140843, 0.378689 }
+Average ||grad(||J||)|| is 7.10738e-10
+Time taken: 2 seconds total.
+
+Run16_28800
+Average standard deviation of the interest points is 0.4607
+Average cost of best fit to the analytical function is 29.0388
+Final parameters are { 10.1061, 0.3, 0.00121356, -0.0142218, 4, 0.346948, 0.366369, 4, 0.346908, 0.361835, 0.48259 }
+Average ||grad(||J||)|| is 6.0661e-10
+Time taken: 2 seconds total.
+
+Run16_27000
+Average standard deviation of the interest points is 0.278432
+Average cost of best fit to the analytical function is 29.7006
+Final parameters are { 9.77725, 0.3, 0.000500672, 0.0425569, 4, 0.366051, 0.334105, 4, 0.358938, 0.333932, 0.459522 }
+Average ||grad(||J||)|| is 7.32111e-10
+Time taken: 2 seconds total.
+
+Run16_23100
+Average standard deviation of the interest points is 0.413633
+Average cost of best fit to the analytical function is 12.8332
+Final parameters are { 10.4286, 0.3, 0.000570195, 0.0125845, 4, 0.541603, 0.259936, 4, 0.541751, 0.260316, 0.376987 }
+Average ||grad(||J||)|| is 1.29052e-09
+Time taken: 2 seconds total.
+
+Run16_22500
+Average standard deviation of the interest points is 0.461317
+Average cost of best fit to the analytical function is 0.666973
+Final parameters are { 10.9259, 0.520429, 0.000808873, 0.144, 3.5802, 1.15769, 0.45573, 3.57904, 1.15951, 0.444786, 0.0037768 }
+Average ||grad(||J||)|| is 8.63547e-10
+Time taken: 2 seconds total.
+
+Run16_21900
+Average standard deviation of the interest points is 0.558375
+Average cost of best fit to the analytical function is 1.19529
+Final parameters are { 9.12077, 0.387093, 0.000630549, 0.149502, 2.40525, 0.626929, 0.111472, 3.00168, 0.618001, 0.1, 0.265471 }
+Average ||grad(||J||)|| is 6.01704e-10
+Time taken: 2 seconds total.
+
+Run16_21000
+Average standard deviation of the interest points is 0.564617
+Average cost of best fit to the analytical function is 1.21601
+Final parameters are { 8.83514, 0.327304, 0.0001712, 0.15838, 1.69748, 0.627917, 0.125024, 2.61098, 0.613382, 0.1, 0.346961 }
+Average ||grad(||J||)|| is 6.30063e-10
+Time taken: 2 seconds total.
+
+Run16_20100
+Average standard deviation of the interest points is 0.568503
+Average cost of best fit to the analytical function is 1.3449
+Final parameters are { 8.70175, 0.30637, 0.000332394, 0.163289, 0.941151, 0.65203, 0.128176, 2.05228, 0.557568, 0.141198, 0.378643 }
+Average ||grad(||J||)|| is 7.10705e-10
+Time taken: 2 seconds total.
+
+Run17_28800
+Average standard deviation of the interest points is 0.488379
+Average cost of best fit to the analytical function is 16.2497
+Final parameters are { 9.27492, 0.3, -0.00159802, -0.0287124, 4, 0.492555, 0.324267, 4, 0.48375, 0.318055, 0.43365 }
+Average ||grad(||J||)|| is 1.52952e-09
+Time taken: 2 seconds total.
+
+Run17_27000
+Average standard deviation of the interest points is 0.360465
+Average cost of best fit to the analytical function is 15.2583
+Final parameters are { 8.89618, 0.396396, 0.0012632, -0.0401508, 4, 0.493319, 0.282301, 4, 0.491007, 0.271838, 0.382295 }
+Average ||grad(||J||)|| is 1.79848e-09
+Time taken: 3 seconds total.
+
+Run17_23100
+Average standard deviation of the interest points is 0.385295
+Average cost of best fit to the analytical function is 15.0779
+Final parameters are { 10.0472, 0.3, 0.000390565, -0.0712687, 4, 0.653235, 0.304862, 4, 0.652788, 0.30851, 0.426983 }
+Average ||grad(||J||)|| is 1.92581e-09
+Time taken: 2 seconds total.
+
+Run17_22500
+Average standard deviation of the interest points is 0.418965
+Average cost of best fit to the analytical function is 0.615903
+Final parameters are { 10.4631, 0.531708, 0.000452407, 0.142606, 3.46781, 1.19294, 0.490051, 3.45954, 1.19587, 0.486257, 0.0141642 }
+Average ||grad(||J||)|| is 9.52791e-10
+Time taken: 2 seconds total.
+
+Run17_21900
+Average standard deviation of the interest points is 0.558077
+Average cost of best fit to the analytical function is 1.19533
+Final parameters are { 9.12056, 0.387072, 0.000630425, 0.149502, 2.4016, 0.626952, 0.111336, 3.00105, 0.617964, 0.1, 0.265511 }
+Average ||grad(||J||)|| is 6.01825e-10
+Time taken: 2 seconds total.
+
+Run17_21000
+Average standard deviation of the interest points is 0.564617
+Average cost of best fit to the analytical function is 1.21601
+Final parameters are { 8.83483, 0.327103, 0.0001711, 0.158398, 1.69987, 0.627942, 0.124686, 2.61044, 0.61338, 0.1, 0.347201 }
+Average ||grad(||J||)|| is 6.30126e-10
+Time taken: 2 seconds total.
+
+Run17_20100
+Average standard deviation of the interest points is 0.568503
+Average cost of best fit to the analytical function is 1.3449
+Final parameters are { 8.7019, 0.306394, 0.000332401, 0.16329, 0.940502, 0.651772, 0.128609, 2.0512, 0.557586, 0.141387, 0.378604 }
+Average ||grad(||J||)|| is 7.107e-10
+Time taken: 2 seconds total.
+
+Run18_28800
+Average standard deviation of the interest points is 0.372695
+Average cost of best fit to the analytical function is 0.925167
+Final parameters are { 7.67278, 0.3, 0.000233682, 0.116041, 4, 0.297306, 0.220605, 4, 0.297517, 0.219967, 0.481457 }
+Average ||grad(||J||)|| is 2.23747e-09
+Time taken: 3 seconds total.
+
+Run18_27000
+Average standard deviation of the interest points is 0.223531
+Average cost of best fit to the analytical function is 0.804418
+Final parameters are { 7.48703, 0.3, 0.000221232, 0.112277, 3.72494, 0.297727, 0.213168, 3.75485, 0.299567, 0.213683, 0.496858 }
+Average ||grad(||J||)|| is 2.59479e-09
+Time taken: 2 seconds total.
+
+Run18_23100
+Average standard deviation of the interest points is 0.364441
+Average cost of best fit to the analytical function is 0.771896
+Final parameters are { 7.35771, 0.3, -0.000906866, 0.118801, 2.56611, 0.578921, 0.182545, 2.54629, 0.579515, 0.184651, 0.46912 }
+Average ||grad(||J||)|| is 3.89926e-09
+Time taken: 2 seconds total.
+
+Run18_22500
+Average standard deviation of the interest points is 0.3575
+Average cost of best fit to the analytical function is 0.511119
+Final parameters are { 7.98685, 0.476377, 0.000346085, 0.124142, 1.92464, 0.921482, 0.261179, 1.9182, 0.922809, 0.260067, 0.186773 }
+Average ||grad(||J||)|| is 1.59726e-09
+Time taken: 2 seconds total.
+
+Run18_21900
+Average standard deviation of the interest points is 0.372465
+Average cost of best fit to the analytical function is 0.504019
+Final parameters are { 7.7826, 0.433366, -0.000505127, 0.129138, 1.71522, 0.920296, 0.213156, 1.68351, 0.954855, 0.214664, 0.256303 }
+Average ||grad(||J||)|| is 1.39496e-09
+Time taken: 2 seconds total.
+
+Run18_21000
+Average standard deviation of the interest points is 0.467149
+Average cost of best fit to the analytical function is 0.563979
+Final parameters are { 7.79239, 0.388503, 0.00037499, 0.141346, 1.69682, 0.963096, 0.2203, 1.67392, 0.965376, 0.214682, 0.295961 }
+Average ||grad(||J||)|| is 1.33432e-09
+Time taken: 2 seconds total.
+
+Run18_20100
+Average standard deviation of the interest points is 0.497986
+Average cost of best fit to the analytical function is 0.50981
+Final parameters are { 7.82551, 0.312226, 0.00110357, 0.145758, 1.6893, 0.9729, 0.23207, 1.68983, 0.971232, 0.228382, 0.368742 }
+Average ||grad(||J||)|| is 1.29447e-09
+Time taken: 2 seconds total.
+
+Run19_28800
+Average standard deviation of the interest points is 0.305772
+Average cost of best fit to the analytical function is 0.63067
+Final parameters are { 7.21558, 0.3, 0.000450239, 0.118156, 3.6067, 0.308031, 0.20664, 3.5764, 0.306849, 0.207576, 0.500028 }
+Average ||grad(||J||)|| is 2.12901e-09
+Time taken: 2 seconds total.
+
+Run19_27000
+Average standard deviation of the interest points is 0.26808
+Average cost of best fit to the analytical function is 0.700773
+Final parameters are { 7.2013, 0.3, -0.000227021, 0.118596, 3.55646, 0.308282, 0.208581, 3.51199, 0.307518, 0.210473, 0.492646 }
+Average ||grad(||J||)|| is 2.10301e-09
+Time taken: 2 seconds total.
+
+Run19_23100
+Average standard deviation of the interest points is 0.396908
+Average cost of best fit to the analytical function is 0.700608
+Final parameters are { 7.03835, 0.346379, 0.000579612, 0.121753, 2.32157, 0.468151, 0.221354, 2.32109, 0.46803, 0.220758, 0.429703 }
+Average ||grad(||J||)|| is 2.5005e-09
+Time taken: 2 seconds total.
+
+Run19_22500
+Average standard deviation of the interest points is 0.236697
+Average cost of best fit to the analytical function is 0.602666
+Final parameters are { 7.02395, 0.386772, 0.00012531, 0.100993, 1.64584, 0.787916, 0.163312, 1.63976, 0.788904, 0.163454, 0.373371 }
+Average ||grad(||J||)|| is 2.42046e-09
+Time taken: 2 seconds total.
+
+Run19_21900
+Average standard deviation of the interest points is 0.270075
+Average cost of best fit to the analytical function is 0.539866
+Final parameters are { 7.21604, 0.455995, -0.000322251, 0.127101, 1.59576, 0.846107, 0.195281, 1.58043, 0.848383, 0.195813, 0.265255 }
+Average ||grad(||J||)|| is 2.09531e-09
+Time taken: 2 seconds total.
+
+Run19_21000
+Average standard deviation of the interest points is 0.336742
+Average cost of best fit to the analytical function is 0.523329
+Final parameters are { 7.21006, 0.443534, -0.00147939, 0.130546, 1.55428, 0.848532, 0.187904, 1.51949, 0.852755, 0.195041, 0.281825 }
+Average ||grad(||J||)|| is 2.13076e-09
+Time taken: 2 seconds total.
+
+Run19_20100
+Average standard deviation of the interest points is 0.438341
+Average cost of best fit to the analytical function is 0.49654
+Final parameters are { 7.21695, 0.36677, -0.00114998, 0.151699, 1.46487, 0.889387, 0.199167, 1.45482, 0.890203, 0.202182, 0.350372 }
+Average ||grad(||J||)|| is 2.19912e-09
+Time taken: 2 seconds total.
+
