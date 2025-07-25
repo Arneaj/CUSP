@@ -231,7 +231,7 @@ int main(int argc, char* argv[])
     int nb_theta = 40;
     int nb_phi = 90;
     float theta_min = 0.0f;
-    float theta_max = PI*0.75;
+    float theta_max = PI*0.75f;
 
     float dx = 0.1f;
     float dr = 0.1f;

@@ -32,7 +32,7 @@ public:
 
 
 InterestPoint* get_interest_points( const Matrix& J_norm, Point earth_pos,
-                                    float theta_min, int theta_max, 
+                                    float theta_min, float theta_max, 
                                     int nb_theta, int nb_phi, 
                                     float dx, float dr,
                                     float alpha_0_min, float alpha_0_max, float nb_alpha_0,
