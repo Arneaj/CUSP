@@ -39,7 +39,7 @@ interest_points_phi = []
 interest_points_r = []
 interest_points_w = []
 
-with open(f"{filepath}/interest_points_cpp.txt", "r") as f:
+with open(f"{filepath}/interest_points_cpp.csv", "r") as f:
     lines = f.readlines()
 
     for line in lines:

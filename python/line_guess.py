@@ -27,7 +27,7 @@ fig.set_figheight(5.5)
 
 ############### ME25
 
-with open(f"{filepath}/params_cpp.txt", "r") as f:
+with open(f"{filepath}/params_cpp.csv", "r") as f:
     params = np.array( f.readline().split(","), dtype=np.float32 )
 
 
