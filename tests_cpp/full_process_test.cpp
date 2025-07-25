@@ -14,6 +14,8 @@
 typedef std::chrono::high_resolution_clock Time;
 typedef std::chrono::duration<float> fsec;
 
+// const float PI = 3.141592653589793238462643383279502884f;
+
 
 int main(int argc, char* argv[])
 {
@@ -228,15 +230,29 @@ int main(int argc, char* argv[])
 
     int nb_theta = 40;
     int nb_phi = 90;
+    float theta_min = 0.0f;
+    float theta_max = PI*0.75;
+
+    float dx = 0.1f;
+    float dr = 0.1f;
+
+    float alpha_0_min = 0.4f;
+    float alpha_0_max = 0.6f;
+    int nb_alpha_0 = 3;
+
+    float r_0_mult_min = 1.15f;
+    float r_0_mult_max = 1.8f;
+    int nb_r_0 = 20;
 
     float avg_std_dev;
 
     InterestPoint* interest_points = get_interest_points(
         J_norm_sim, earth_pos_sim,
-        nb_theta, nb_phi,
-        0.1, 0.1,
-        0.6, 0.7, 2,
-        1.15, 1.8, 20,
+        theta_min, theta_max,
+        nb_theta, nb_phi, 
+        dx, dr,
+        alpha_0_min, alpha_0_max, nb_alpha_0,
+        r_0_mult_min, r_0_mult_max, nb_r_0,
         &avg_std_dev
     );
 

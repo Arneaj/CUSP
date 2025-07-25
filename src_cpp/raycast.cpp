@@ -15,17 +15,18 @@ float Shue97(float r_0, float alpha_0, float one_plus_cos_theta)
 void interest_points_helper(    float r_0, float alpha_0, 
                                 std::vector<float>* interest_points,
                                 const Matrix& J_norm, Point earth_pos, 
+                                float theta_min,
                                 int nb_theta, int nb_phi, 
                                 float dr, float dtheta, float dphi )
 {
-    float theta = 0;
+    float theta = theta_min;
 
     #pragma omp parallel for
     for (int itheta=0; itheta<nb_theta; itheta++)
     {
-        theta = (itheta+1)*dtheta;
+        theta = theta_min + (itheta+1)*dtheta;
 
-	    if (std::abs(theta) < 0.05) continue;
+	    // if (std::abs(theta) < 0.05) continue;
 
         float sin_theta = std::sin(theta);
         float cos_theta = std::cos(theta);
@@ -101,21 +102,9 @@ float get_std_dev( std::vector<float>& vec )
 
 
 
-/// @brief 
-/// @param J_norm 
-/// @param earth_pos 
-/// @param nb_theta 
-/// @param nb_phi 
-/// @param dx 
-/// @param dr 
-/// @param alpha_0_min 
-/// @param alpha_0_max 
-/// @param nb_alpha_0 
-/// @param r_0_mult_min 
-/// @param r_0_mult_max 
-/// @param nb_r_0 
-/// @return 
-InterestPoint* get_interest_points( const Matrix& J_norm, Point earth_pos, 
+
+InterestPoint* get_interest_points( const Matrix& J_norm, Point earth_pos,
+                                    float theta_min, int theta_max, 
                                     int nb_theta, int nb_phi, 
                                     float dx, float dr,
                                     float alpha_0_min, float alpha_0_max, float nb_alpha_0,
@@ -139,19 +128,20 @@ InterestPoint* get_interest_points( const Matrix& J_norm, Point earth_pos,
     float dr_0_mult = (r_0_mult_max - r_0_mult_min) / nb_r_0;
     float dalpha_0 = (alpha_0_max - alpha_0_min) / nb_alpha_0;
 
-    float dtheta = PI / nb_theta;
+    float dtheta = (theta_max - theta_min) / nb_theta;
     float dphi = 2.0*PI / nb_phi;
 
     for (float r_0_mult=r_0_mult_min; r_0_mult<=r_0_mult_max; r_0_mult+=dr_0_mult) for (float alpha_0=alpha_0_min; alpha_0<=alpha_0_max; alpha_0+=dalpha_0)
         interest_points_helper( r_0_mult * r_inner, alpha_0,
                                 interest_radii_candidates, 
                                 J_norm, earth_pos,
+                                theta_min,
                                 nb_theta, nb_phi, 
                                 dr, dtheta, dphi );
 
 
     InterestPoint* interest_points = new InterestPoint[ nb_theta*nb_phi ];
-    float theta = 0;
+    float theta = theta_min;
 
     for (int itheta=0; itheta<nb_theta; itheta++)
     {

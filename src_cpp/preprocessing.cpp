@@ -25,7 +25,7 @@ Matrix orthonormalise( const Matrix& mat, Matrix& X, Matrix& Y, Matrix& Z, const
     std::vector<float> dY(shape.y);
     std::vector<float> dZ(shape.z);
 
-    // #pragma omp parallel for
+    #pragma omp parallel for
     for (int sx=0; sx<shape.x; sx++) for (int i=0; i<X.get_shape().x-1; i++)
     {
         if ( sx > X[i+1] ) continue;
@@ -62,7 +62,7 @@ Matrix orthonormalise( const Matrix& mat, Matrix& X, Matrix& Y, Matrix& Z, const
         break;
     }
 
-    // #pragma omp parallel for
+    #pragma omp parallel for
     for (int sx=0; sx<shape.x; sx++) for (int sy=0; sy<shape.y; sy++)
         for (int sz=0; sz<shape.z; sz++) for (int i=0; i<shape.i; i++)
         {

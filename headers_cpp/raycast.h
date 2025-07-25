@@ -31,12 +31,13 @@ public:
 
 
 
-InterestPoint* get_interest_points(  const Matrix& J_norm, Point earth_pos, 
-                                            int nb_theta, int nb_phi, 
-                                            float dx, float dr,
-                                            float alpha_0_max, float alpha_0_min, float nb_alpha_0,
-                                            float r_0_max, float r_0_min, float nb_r_0,
-                                            float* avg_std_dev=nullptr );
+InterestPoint* get_interest_points( const Matrix& J_norm, Point earth_pos,
+                                    float theta_min, int theta_max, 
+                                    int nb_theta, int nb_phi, 
+                                    float dx, float dr,
+                                    float alpha_0_min, float alpha_0_max, float nb_alpha_0,
+                                    float r_0_mult_min, float r_0_mult_max, float nb_r_0,
+                                    float* avg_std_dev );
 
 
 
