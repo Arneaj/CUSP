@@ -28,17 +28,43 @@ template <typename T>
 T is_pos( T v ) { return T( v>=T(0) ); }
 
 
-// template <typename T>
-// T abs_approx( T v ) { return v*(v>=T(0)) - v*(v<T(0)); }
+template <typename T>
+T sigmoid( T v ) { return T(1.0) / ( T(1.0) + ceres::exp(-v * T(5.0)) ); }
 
 
-/// @brief analytical approximation of the Magnetopause topology
+
+/// @brief analytical approximation of the Magnetopause topology as written by Liu in his 2012 paper
+/// @param theta rotation around the \hat{y} axis in [0; \pi]
+/// @param phi rotation around the \hat{x} axis in [-\pi; \pi)
+/// @param params [r_0, alpha_0, alpha_1, alpha_2, d_n, l_n, s_n, d_s, l_s, s_s]
+/// @return the radius at angle (theta, phi)
+template <typename T>
+T Liu12( const T* const params, T theta, T phi )
+{
+    // if (theta<0 || theta>PI) { std::cout << "theta should be in [0; pi]\n"; exit(1); }
+    // if (phi<-PI || phi>PI) { std::cout << "phi should be in [-pi; pi)\n"; exit(1); }
+
+    T cos_theta = ceres::cos(theta);
+    T cos_phi = ceres::cos(phi);
+
+    return params[0] * ceres::pow(
+        T(2.0) / (T(1.0)+cos_theta), 
+        params[1] + params[2]*cos_phi + params[3]*cos_phi*cos_phi
+    ) - (
+        params[4] * ceres::exp( -ceres::abs(theta - params[5]) / params[6] ) * is_pos<T>( cos_phi ) +
+        params[7] * ceres::exp( -ceres::abs(theta - params[8]) / params[9] ) * is_pos<T>( -cos_phi )
+    ) * cos_phi*cos_phi;
+}
+
+
+
+/// @brief analytical approximation of the Magnetopause topology adapted from Liu12 with a new elliptical form added
 /// @param theta rotation around the \hat{y} axis in [0; \pi]
 /// @param phi rotation around the \hat{x} axis in [-\pi; \pi)
 /// @param params [r_0, alpha_0, alpha_1, alpha_2, d_n, l_n, s_n, d_s, l_s, s_s, e]
 /// @return the radius at angle (theta, phi)
 template <typename T>
-T Rolland25( const T* const params, T theta, T phi )
+T Ellipsis( const T* const params, T theta, T phi )
 {
     // if (theta<0 || theta>PI) { std::cout << "theta should be in [0; pi]\n"; exit(1); }
     // if (phi<-PI || phi>PI) { std::cout << "phi should be in [-pi; pi)\n"; exit(1); }
@@ -58,22 +84,103 @@ T Rolland25( const T* const params, T theta, T phi )
 }
 
 
-class SphericalResidual 
+
+/// @brief analytical approximation of the Magnetopause topology adapted from Liu12 with a new elliptical form and new cusps added
+/// @param theta rotation around the \hat{y} axis in [0; \pi]
+/// @param phi rotation around the \hat{x} axis in [-\pi; \pi)
+/// @param params [r_0, alpha_0, alpha_1, alpha_2, d_n, l_n, s_n, d_s, l_s, s_s, e]
+/// @return the radius at angle (theta, phi)
+template <typename T>
+T EllipsisPoly( const T* const params, T theta, T phi )
+{
+    // if (theta<0 || theta>PI) { std::cout << "theta should be in [0; pi]\n"; exit(1); }
+    // if (phi<-PI || phi>PI) { std::cout << "phi should be in [-pi; pi)\n"; exit(1); }
+
+    T cos_theta = ceres::cos(theta);
+    T cos_phi = ceres::cos(phi);
+
+    T sigm_cos_phi = sigmoid<T>(cos_phi);
+
+    T theta_by_ln_sq = theta / params[5];
+    theta_by_ln_sq *= theta_by_ln_sq;
+
+    T theta_by_ls_sq = theta / params[8];
+    theta_by_ls_sq *= theta_by_ls_sq;
+
+    return params[0] * (
+        (T(1.0)+params[10]) / (T(1.0)+params[10]*cos_theta)
+    ) * ceres::pow(
+        T(2.0) / (T(1.0)+cos_theta), 
+        params[1] + params[2]*cos_phi + params[3]*cos_phi*cos_phi
+    ) + (
+        params[4] * ( ceres::pow( ceres::abs((T(1.0)-theta_by_ln_sq)/(T(1.0)+theta_by_ln_sq )), params[6] ) - T(1.0) ) * sigm_cos_phi +
+        params[7] * ( ceres::pow( ceres::abs((T(1.0)-theta_by_ls_sq)/(T(1.0)+theta_by_ls_sq )), params[9] ) - T(1.0) ) * (T(1.0)-sigm_cos_phi)
+    ) * cos_phi*cos_phi;
+}
+
+
+
+class Liu12Residual 
 {
 private:
     const double m_theta, m_phi, m_observed_radius, m_weight;
 
 public:
-    SphericalResidual(const InterestPoint& interest_point) 
+    Liu12Residual(const InterestPoint& interest_point) 
         : m_theta(interest_point.theta), m_phi(interest_point.phi), m_observed_radius(interest_point.radius), m_weight(interest_point.weight) {;}
 
-    SphericalResidual(double theta, double phi, double observed_radius, double weight) 
+    Liu12Residual(double theta, double phi, double observed_radius, double weight) 
         : m_theta(theta), m_phi(phi), m_observed_radius(observed_radius), m_weight(weight) {;}
 
     template <typename T>
     bool operator()(const T* const params, T* residual) const 
     {
-        T predicted_radius = Rolland25(params, T(m_theta), T(m_phi));
+        T predicted_radius = Liu12<T>(params, T(m_theta), T(m_phi));
+        residual[0] = (m_observed_radius - predicted_radius)*m_weight;
+        return true;
+    }
+};
+
+
+
+class EllipsisResidual 
+{
+private:
+    const double m_theta, m_phi, m_observed_radius, m_weight;
+
+public:
+    EllipsisResidual(const InterestPoint& interest_point) 
+        : m_theta(interest_point.theta), m_phi(interest_point.phi), m_observed_radius(interest_point.radius), m_weight(interest_point.weight) {;}
+
+    EllipsisResidual(double theta, double phi, double observed_radius, double weight) 
+        : m_theta(theta), m_phi(phi), m_observed_radius(observed_radius), m_weight(weight) {;}
+
+    template <typename T>
+    bool operator()(const T* const params, T* residual) const 
+    {
+        T predicted_radius = Ellipsis<T>(params, T(m_theta), T(m_phi));
+        residual[0] = (m_observed_radius - predicted_radius)*m_weight;
+        return true;
+    }
+};
+
+
+class EllipsisPolyResidual 
+{
+private:
+    const double m_theta, m_phi, m_observed_radius, m_weight;
+
+public:
+    EllipsisPolyResidual(const InterestPoint& interest_point) 
+        : m_theta(interest_point.theta), m_phi(interest_point.phi), m_observed_radius(interest_point.radius), m_weight(interest_point.weight) {;}
+
+    EllipsisPolyResidual(double theta, double phi, double observed_radius, double weight) 
+        : m_theta(theta), m_phi(phi), m_observed_radius(observed_radius), m_weight(weight) {;}
+
+    template <typename T>
+    bool operator()(const T* const params, T* residual) const 
+    {
+        T predicted_radius = EllipsisPoly<T>(params, T(m_theta), T(m_phi));
         residual[0] = (m_observed_radius - predicted_radius)*m_weight;
         return true;
     }

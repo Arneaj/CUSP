@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
     int nb_runs = 10;
 
 
-    OptiResult result = fit_MP<SphericalResidual, 11>( 
+    OptiResult result = fit_MP<EllipsisResidual, 11>( 
         interest_points, nb_interest_points, 
         initial_params, 
         lowerbound, upperbound, radii, 

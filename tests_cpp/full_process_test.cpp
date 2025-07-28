@@ -276,7 +276,7 @@ int main(int argc, char* argv[])
     int nb_interest_points = nb_theta * nb_phi;
     const int nb_params = 11;
 
-    OptiResult result = fit_MP<SphericalResidual, nb_params>( 
+    OptiResult result = fit_MP<EllipsisPolyResidual, nb_params>( 
         interest_points, nb_interest_points, 
         initial_params, 
         lowerbound, upperbound, radii, 
@@ -291,7 +291,7 @@ int main(int argc, char* argv[])
     // *********************************************************************************************
     t0 = Time::now();
 
-    float avg_J_norm_grad = get_avg_grad_of_func( Rolland25, result.params, J_norm_real, nb_theta, nb_phi, earth_pos_real );
+    float avg_J_norm_grad = get_avg_grad_of_func( EllipsisPoly, result.params, J_norm_real, nb_theta, nb_phi, earth_pos_real );
 
     if (logging)
     {
