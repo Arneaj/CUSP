@@ -337,3 +337,46 @@ def Me25_fix(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -
 
 
 
+def Me25_poly(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -> np.ndarray | float:
+    """
+    Expects theta in [0;pi] and phi in [-pi;pi)
+    
+    - params[0]: r_0 in [0, +inf]
+    - params[1]: alpha_0 in [0, 1]
+    - params[2]: alpha_1 in [-1, 1]
+    - params[3]: alpha_2 in [-1, 1]
+    - params[4]: d_n in [0, +inf]
+    - params[5]: l_n in [0, pi]
+    - params[6]: s_n in [0, +inf]
+    - params[7]: d_s in [0, +inf]
+    - params[8]: l_s in [0, pi]
+    - params[9]: s_s in [0, +inf]
+    - params[10]: e in [-1, 1]
+    """
+    
+
+    cos_phi = np.cos(phi)
+    cos_theta = np.cos(theta)
+    
+    main_part = params[0] * ( 
+        (1+params[10])/(1+params[10]*cos_theta) 
+    ) * (
+        2 / (1+cos_theta)
+    ) ** (
+        params[1] + params[2]*cos_phi + params[3]*cos_phi*cos_phi
+    )
+    
+    theta_by_ln_to_sn = (theta / params[5])**params[6]
+    theta_by_ls_to_ss = (theta / params[8])**params[9]
+        
+    north = np.abs((1.0-theta_by_ln_to_sn)/(1.0+theta_by_ln_to_sn )) - 1.0
+    south = np.abs((1.0-theta_by_ls_to_ss)/(1.0+theta_by_ls_to_ss )) - 1.0
+    
+    sigm_cos_phi = sigmoid( np.cos(phi) )
+
+    return main_part + ( 
+        params[4] * north * sigm_cos_phi + 
+        params[7] * south * (1.0 - sigm_cos_phi)
+    )*cos_phi*cos_phi
+
+

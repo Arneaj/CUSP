@@ -101,11 +101,8 @@ T EllipsisPoly( const T* const params, T theta, T phi )
 
     T sigm_cos_phi = sigmoid<T>(cos_phi);
 
-    T theta_by_ln_sq = theta / params[5];
-    theta_by_ln_sq *= theta_by_ln_sq;
-
-    T theta_by_ls_sq = theta / params[8];
-    theta_by_ls_sq *= theta_by_ls_sq;
+    T theta_by_ln_to_sn = ceres::pow( theta / params[5], params[6] );
+    T theta_by_ls_to_ss = ceres::pow( theta / params[8], params[9] );
 
     return params[0] * (
         (T(1.0)+params[10]) / (T(1.0)+params[10]*cos_theta)
@@ -113,8 +110,8 @@ T EllipsisPoly( const T* const params, T theta, T phi )
         T(2.0) / (T(1.0)+cos_theta), 
         params[1] + params[2]*cos_phi + params[3]*cos_phi*cos_phi
     ) + (
-        params[4] * ( ceres::pow( ceres::abs((T(1.0)-theta_by_ln_sq)/(T(1.0)+theta_by_ln_sq )), params[6] ) - T(1.0) ) * sigm_cos_phi +
-        params[7] * ( ceres::pow( ceres::abs((T(1.0)-theta_by_ls_sq)/(T(1.0)+theta_by_ls_sq )), params[9] ) - T(1.0) ) * (T(1.0)-sigm_cos_phi)
+        params[4] * ( ceres::abs((T(1.0)-theta_by_ln_to_sn)/(T(1.0)+theta_by_ln_to_sn )) - T(1.0) ) * sigm_cos_phi +
+        params[7] * ( ceres::abs((T(1.0)-theta_by_ls_to_ss)/(T(1.0)+theta_by_ls_to_ss )) - T(1.0) ) * (T(1.0)-sigm_cos_phi)
     ) * cos_phi*cos_phi;
 }
 
