@@ -51,7 +51,7 @@ float get_avg_grad_of_func( double (*fn)(const double* const, double, double), c
 
         for (float phi=-PI; phi<PI; phi+=dphi)
         {
-            float radius = fn(params.begin().base(), theta, phi);
+            float radius = fn(params.data(), theta, phi);
 
             Point proj = Point(
                 -cos_theta,
@@ -80,4 +80,22 @@ float get_avg_grad_of_func( double (*fn)(const double* const, double, double), c
 
 
 
+
+float get_delta_l( float l_n, float l_s ) { return l_n + l_s; }
+
+
+
+int get_params_at_boundaries( double* params, double* lowerbound, double* upperbound, int nb_params )
+{
+    int count = 0;
+
+    for (int i=0; i<nb_params; i++) 
+        if (
+            std::abs(params[i]-lowerbound[i]) < 1e-3 || 
+            std::abs(params[i]-upperbound[i]) < 1e-3 
+        )
+            count++;
+
+    return count;
+}
 

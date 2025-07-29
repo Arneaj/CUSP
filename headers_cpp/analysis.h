@@ -20,4 +20,14 @@ float get_avg_grad_of_func( double (*fn)(const double* const, double, double), c
                             float dx=0.5f, float dy=0.5f, float dz=0.5f  );
 
 
+float get_delta_l( float l_n, float l_s );
+
+
+int get_params_at_boundaries( double* params, double* lowerbound, double* upperbound, int nb_params );
+
+
+
+
+
+
 #endif

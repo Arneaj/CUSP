@@ -265,10 +265,11 @@ int main(int argc, char* argv[])
     // *********************************************************************************************
     t0 = Time::now();
 
-    //                              r_0,    a_0,    a_1,    a_2,    d_n,    l_n,    s_n,    d_s,    l_s,    s_s,    e    
+    //     index                    0       1       2       3       4       5       6       7       8       9       10
+    //     param                    r_0,    a_0,    a_1,    a_2,    d_n,    l_n,    s_n,    d_s,    l_s,    s_s,    e    
     double initial_params[11] = {   10.0,   0.5,    0.0,    0.0,    3.0,    0.55,   5.0,    3.0,    0.55,   5.0,    0.0     };
     double lowerbound[11] =     {   5.0,    0.3,    -1.0,   -1.0,   0.0,    0.1,    0.1,    0.0,    0.1,    0.1,    -0.8    };
-    double upperbound[11] =     {   15.0,   0.8,    1.0,    1.0,    6.0,    2.0,    10.0,   6.0,    2.0,    10.0,    0.8     };
+    double upperbound[11] =     {   15.0,   0.8,    1.0,    1.0,    6.0,    2.0,    10.0,   6.0,    2.0,    10.0,   0.8     };
     double radii[11] =          {   3.0,    0.1,    0.5,    0.5,    1.0,    0.05,   1.5,    1.0,    0.05,   1.5,    0.2     };
 
 
@@ -292,6 +293,11 @@ int main(int argc, char* argv[])
     t0 = Time::now();
 
     float avg_J_norm_grad = get_avg_grad_of_func( EllipsisPoly, result.params, J_norm_real, nb_theta, nb_phi, earth_pos_real );
+    float delta_l = get_delta_l( result.params[5], result.params[8] );
+    int nb_params_at_boundaries = get_params_at_boundaries( result.params.data(), lowerbound, upperbound, nb_params );
+
+    const float delta_l_lowerbound = 1.0;
+    const float r_0_lowerbound = 8.0;
 
     if (logging)
     {
@@ -304,7 +310,15 @@ int main(int argc, char* argv[])
         std::cout << " }" << std::endl;
 
         std::cout << "Average ||grad(||J||)|| is " << avg_J_norm_grad << std::endl;
+
+        std::cout << "delta_l is " << delta_l << std::endl;
     }
+    if (warning && delta_l<delta_l_lowerbound) std::cout << "--> WARNING: delta_l very low, which could indicate a Gorgon error\n";
+
+    if (logging) std::cout << "Number of parameters at boundaries is " << nb_params_at_boundaries << std::endl;
+    if (warning && nb_params_at_boundaries) std::cout << "--> WARNING: at least one parameter has reached bounds, which could indicate an error\n";
+
+    if (warning && params[0]<r_0_lowerbound) std::cout << "--> WARNING: r_0 < " << r_0_lowerbound << " is very low, which could indicate a Gorgon error\n"
 
 
     t1 = Time::now();
