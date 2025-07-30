@@ -294,10 +294,12 @@ int main(int argc, char* argv[])
 
     const float threshold = 2.0f;
 
+    bool is_concave;
+
     // float avg_J_norm_grad = get_avg_grad_of_func( EllipsisPoly, result.params, J_norm_real, nb_theta, nb_phi, earth_pos_real );
     float delta_l = get_delta_l( result.params[5], result.params[8] );
     int nb_params_at_boundaries = get_params_at_boundaries( result.params.data(), lowerbound, upperbound, nb_params );
-    float max_theta_in_threshold = interest_point_flatness_checker( interest_points, nb_theta, nb_phi, threshold );
+    float max_theta_in_threshold = interest_point_flatness_checker( interest_points, nb_theta, nb_phi, &is_concave, threshold );
 
     const float delta_l_lowerbound = 1.0;
     const float r_0_lowerbound = 8.0;
@@ -325,6 +327,8 @@ int main(int argc, char* argv[])
 
     if (logging) std::cout << "Maximum angle theta where abs(P.x - max(P.x)) < " << threshold << " is " << max_theta_in_threshold << std::endl;
     if (warnings && max_theta_in_threshold>1.0f) std::cout << "\t--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error\n";
+
+    if (warnings && is_concave) std::cout << "\t--> WARNING: interest points seem concave on the dayside, which could indicate an analysis or Gorgon error\n";
 
     t1 = Time::now();
     if (timing) std::cout << "Analysis done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;

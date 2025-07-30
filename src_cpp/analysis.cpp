@@ -101,7 +101,7 @@ int get_params_at_boundaries( double* params, double* lowerbound, double* upperb
 
 
 
-float interest_point_flatness_checker( const InterestPoint* const interest_points, int nb_theta, int nb_phi, float threshold, float phi_radius )
+float interest_point_flatness_checker( const InterestPoint* const interest_points, int nb_theta, int nb_phi, bool* p_is_concave, float threshold, float phi_radius )
 {
     float avg_X[nb_theta];
     float max_X = 0.0f;
@@ -131,9 +131,15 @@ float interest_point_flatness_checker( const InterestPoint* const interest_point
 
     float max_theta_in_threshold = 0.0f;
 
+    if (p_is_concave) *p_is_concave = (avg_X[0] < max_X) && (avg_X[1] < max_X) && (avg_X[2] < max_X);
+
     for (int itheta=0; itheta<nb_theta; itheta++) 
-        if ( std::abs(avg_X[itheta] - max_X) < threshold ) max_theta_in_threshold = interest_points[itheta*nb_phi].theta;
+        if ( max_X - avg_X[itheta] < threshold ) max_theta_in_threshold = interest_points[itheta*nb_phi].theta;
 
     return max_theta_in_threshold;
 }
+
+
+
+
 
