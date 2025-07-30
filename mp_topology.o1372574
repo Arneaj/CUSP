@@ -1,0 +1,287 @@
+/rds/general/user/avr24/home/.profile: line 1: .bashrc: No such file or directory
+Finished loading modules.
+
+Run1_28800
+
+Run1_27000
+
+Run1_23100
+
+Run1_22500
+
+Run1_21900
+
+Run1_21000
+
+Run1_20100
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+
+Run2_28800
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+
+Run2_27000
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+
+Run2_23100
+
+Run2_22500
+
+Run2_21900
+
+Run2_21000
+
+Run2_20100
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+
+Run4_28800
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+
+Run4_27000
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+
+Run4_23100
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+
+Run4_22500
+
+Run4_21900
+
+Run4_21000
+	--> WARNING: interest points seem concave on the dayside, which could indicate an analysis or Gorgon error
+
+Run4_20100
+
+Run5_28800
+
+Run5_27000
+
+Run5_23100
+
+Run5_22500
+
+Run5_21900
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+
+Run5_21000
+
+Run5_20100
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+
+Run9_28800
+
+Run9_27000
+
+Run9_23100
+
+Run9_22500
+
+Run9_21900
+
+Run9_21000
+
+Run9_20100
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+
+Run11_28800
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+
+Run11_27000
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+
+Run11_23100
+
+Run11_22500
+
+Run11_21900
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+
+Run11_21000
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+
+Run11_20100
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+
+Run12_28800
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+
+Run12_27000
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+	--> WARNING: r_0 < 8 is very low, which could indicate a Gorgon error
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+
+Run12_23100
+
+Run12_22500
+
+Run12_21900
+
+Run12_21000
+
+Run12_20100
+
+Run13_28800
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+	--> WARNING: interest points seem concave on the dayside, which could indicate an analysis or Gorgon error
+
+Run13_27000
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+
+Run13_23100
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+
+Run13_22500
+
+Run13_21900
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+
+Run13_21000
+
+Run13_20100
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+
+Run14_28800
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+
+Run14_27000
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+
+Run14_23100
+	--> WARNING: r_0 < 8 is very low, which could indicate a Gorgon error
+
+Run14_22500
+
+Run14_21900
+
+Run14_21000
+
+Run14_20100
+
+Run15_28800
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+
+Run15_27000
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+
+Run15_23100
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+
+Run15_22500
+
+Run15_21900
+
+Run15_21000
+
+Run15_20100
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+
+Run16_28800
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+
+Run16_27000
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+
+Run16_23100
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+
+Run16_22500
+
+Run16_21900
+
+Run16_21000
+
+Run16_20100
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+
+Run17_28800
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+
+Run17_27000
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+
+Run17_23100
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+
+Run17_22500
+
+Run17_21900
+
+Run17_21000
+
+Run17_20100
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+
+Run18_28800
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+	--> WARNING: r_0 < 8 is very low, which could indicate a Gorgon error
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+	--> WARNING: interest points seem concave on the dayside, which could indicate an analysis or Gorgon error
+
+Run18_27000
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+	--> WARNING: r_0 < 8 is very low, which could indicate a Gorgon error
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+	--> WARNING: interest points seem concave on the dayside, which could indicate an analysis or Gorgon error
+
+Run18_23100
+	--> WARNING: r_0 < 8 is very low, which could indicate a Gorgon error
+
+Run18_22500
+	--> WARNING: r_0 < 8 is very low, which could indicate a Gorgon error
+
+Run18_21900
+	--> WARNING: r_0 < 8 is very low, which could indicate a Gorgon error
+
+Run18_21000
+	--> WARNING: r_0 < 8 is very low, which could indicate a Gorgon error
+
+Run18_20100
+	--> WARNING: r_0 < 8 is very low, which could indicate a Gorgon error
+
+Run19_28800
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+	--> WARNING: r_0 < 8 is very low, which could indicate a Gorgon error
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+
+Run19_27000
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+	--> WARNING: r_0 < 8 is very low, which could indicate a Gorgon error
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+
+Run19_23100
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+	--> WARNING: r_0 < 8 is very low, which could indicate a Gorgon error
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+
+Run19_22500
+	--> WARNING: r_0 < 8 is very low, which could indicate a Gorgon error
+
+Run19_21900
+	--> WARNING: r_0 < 8 is very low, which could indicate a Gorgon error
+
+Run19_21000
+	--> WARNING: r_0 < 8 is very low, which could indicate a Gorgon error
+
+Run19_20100
+	--> WARNING: r_0 < 8 is very low, which could indicate a Gorgon error
+

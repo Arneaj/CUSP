@@ -72,6 +72,8 @@ for run_nb in "${runs[@]}"; do
 						-t "$t" \
 						-o /rds/general/user/avr24/home/Thesis/data/Run"$run_nb"_"$t" \
 						--timing false \
+						--logging false \
+						--warnings true \
 						--save_J true \
 						--save_B true
 
@@ -80,7 +82,7 @@ for run_nb in "${runs[@]}"; do
 
 		cd ..
 		# echo "Finished fitting the data point at Run$((run_nb)), timestep $((t))"
-		echo "Time taken: $((SECONDS-start_time)) seconds total."
+		# echo "Time taken: $((SECONDS-start_time)) seconds total."
 
 		echo
 	done

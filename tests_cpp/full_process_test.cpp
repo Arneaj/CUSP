@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
 
     bool save_J(false);
     bool save_B(false);
-    bool save_V(false);
+    // bool save_V(false);
 
     bool save_J_norm(true);
 
@@ -103,12 +103,12 @@ int main(int argc, char* argv[])
             else if (std::string(argv[i+1]) == "false") save_B = false;
             else { std::cout << "ERROR: unknown parameter for flag --save_B\n"; exit(1); }
         }
-        else if( std::string(argv[i]) == "--save_V" || std::string(argv[i]) == "-V" )
-        {
-            if (std::string(argv[i+1]) == "true") save_V = true;
-            else if (std::string(argv[i+1]) == "false") save_V = false;
-            else { std::cout << "ERROR: unknown parameter for flag --save_V\n"; exit(1); }
-        } 
+        // else if( std::string(argv[i]) == "--save_V" || std::string(argv[i]) == "-V" )
+        // {
+        //     if (std::string(argv[i+1]) == "true") save_V = true;
+        //     else if (std::string(argv[i+1]) == "false") save_V = false;
+        //     else { std::cout << "ERROR: unknown parameter for flag --save_V\n"; exit(1); }
+        // } 
         
         else if( std::string(argv[i]) == "--save_J_norm" )
         {
