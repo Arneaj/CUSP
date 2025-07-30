@@ -3,6 +3,7 @@
 
 #include "points.h"
 #include "matrix.h"
+#include "raycast.h"
 
 
 
@@ -26,7 +27,7 @@ float get_delta_l( float l_n, float l_s );
 int get_params_at_boundaries( double* params, double* lowerbound, double* upperbound, int nb_params );
 
 
-
+float interest_point_flatness_checker( const InterestPoint* const interest_points, int nb_theta, int nb_phi, float threshold=2.0f, float phi_radius=0.3f );
 
 
 

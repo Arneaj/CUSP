@@ -99,3 +99,41 @@ int get_params_at_boundaries( double* params, double* lowerbound, double* upperb
     return count;
 }
 
+
+
+float interest_point_flatness_checker( const InterestPoint* const interest_points, int nb_theta, int nb_phi, float threshold, float phi_radius )
+{
+    float avg_X[nb_theta];
+    float max_X = 0.0f;
+
+    for (int itheta=0; itheta<nb_theta; itheta++) 
+    {
+        avg_X[itheta] = 0.0f;
+        float sum_weights = 0.0f;
+
+        for (int iphi=0; iphi<nb_phi; iphi++) 
+        {
+            const InterestPoint& ip = interest_points[itheta*nb_phi + iphi];
+
+            if ( 
+                std::abs(ip.phi) < phi_radius ||
+                PI + ip.phi < phi_radius ||
+                PI - ip.phi < phi_radius
+            ) continue;
+
+            sum_weights += ip.weight;
+            avg_X[itheta] += ip.radius * std::cos(ip.theta) * ip.weight;
+        }
+        
+        avg_X[itheta] /= sum_weights;
+        if (avg_X[itheta] > max_X) max_X = avg_X[itheta];
+    }
+
+    float max_theta_in_threshold = 0.0f;
+
+    for (int itheta=0; itheta<nb_theta; itheta++) 
+        if ( std::abs(avg_X[itheta] - max_X) < threshold ) max_theta_in_threshold = interest_points[itheta*nb_phi].theta;
+
+    return max_theta_in_threshold;
+}
+

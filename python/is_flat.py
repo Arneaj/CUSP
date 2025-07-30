@@ -46,7 +46,6 @@ while np.abs(interest_points_theta[nb_phi] - theta_0) < 1e-3:
 nb_theta = interest_points_phi.size // nb_phi
     
 X = X.reshape( (nb_theta, nb_phi) )
-D = np.sqrt( Y*Y + Z*Z ).reshape( (nb_theta, nb_phi) )
 W = interest_points_w.reshape( (nb_theta, nb_phi) )
 
 RADIUS_FOR_AVG = 3

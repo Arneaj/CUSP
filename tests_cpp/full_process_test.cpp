@@ -292,9 +292,12 @@ int main(int argc, char* argv[])
     // *********************************************************************************************
     t0 = Time::now();
 
-    float avg_J_norm_grad = get_avg_grad_of_func( EllipsisPoly, result.params, J_norm_real, nb_theta, nb_phi, earth_pos_real );
+    const float threshold = 2.0f;
+
+    // float avg_J_norm_grad = get_avg_grad_of_func( EllipsisPoly, result.params, J_norm_real, nb_theta, nb_phi, earth_pos_real );
     float delta_l = get_delta_l( result.params[5], result.params[8] );
     int nb_params_at_boundaries = get_params_at_boundaries( result.params.data(), lowerbound, upperbound, nb_params );
+    float max_theta_in_threshold = interest_point_flatness_checker( interest_points, nb_theta, nb_phi, threshold );
 
     const float delta_l_lowerbound = 1.0;
     const float r_0_lowerbound = 8.0;
@@ -309,17 +312,19 @@ int main(int argc, char* argv[])
         for (int i=1; i<nb_params; i++) std::cout << ", " << result.params[i];
         std::cout << " }" << std::endl;
 
-        std::cout << "Average ||grad(||J||)|| is " << avg_J_norm_grad << std::endl;
+        // std::cout << "Average ||grad(||J||)|| is " << avg_J_norm_grad << std::endl;
 
         std::cout << "delta_l is " << delta_l << std::endl;
     }
-    if (warning && delta_l<delta_l_lowerbound) std::cout << "--> WARNING: delta_l very low, which could indicate a Gorgon error\n";
+    if (warnings && delta_l<delta_l_lowerbound) std::cout << "\t--> WARNING: delta_l very low, which could indicate a Gorgon error\n";
 
     if (logging) std::cout << "Number of parameters at boundaries is " << nb_params_at_boundaries << std::endl;
-    if (warning && nb_params_at_boundaries) std::cout << "--> WARNING: at least one parameter has reached bounds, which could indicate an error\n";
+    if (warnings && nb_params_at_boundaries>0) std::cout << "\t--> WARNING: at least one parameter has reached bounds, which could indicate an error\n";
 
-    if (warning && params[0]<r_0_lowerbound) std::cout << "--> WARNING: r_0 < " << r_0_lowerbound << " is very low, which could indicate a Gorgon error\n"
+    if (warnings && result.params[0]<r_0_lowerbound) std::cout << "\t--> WARNING: r_0 < " << r_0_lowerbound << " is very low, which could indicate a Gorgon error\n";
 
+    if (logging) std::cout << "Maximum angle theta where abs(P.x - max(P.x)) < " << threshold << " is " << max_theta_in_threshold << std::endl;
+    if (warnings && max_theta_in_threshold>1.0f) std::cout << "\t--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error\n";
 
     t1 = Time::now();
     if (timing) std::cout << "Analysis done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
