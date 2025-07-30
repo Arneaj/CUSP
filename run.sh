@@ -24,18 +24,18 @@ echo Finished loading modules.
 echo
 
 runs=(
-	"1"
-	"2"
-	"4"
-	"5"
-	"9"
-	"11"
-	"12"
-	"13"
-	"14"
-	"15"
-	"16"
-	"17"
+	# "1"
+	# "2"
+	# "4"
+	# "5"
+	# "9"
+	# "11"
+	# "12"
+	# "13"
+	# "14"
+	# "15"
+	# "16"
+	# "17"
 	"18"
 	"19"
 )
@@ -72,7 +72,7 @@ for run_nb in "${runs[@]}"; do
 						-t "$t" \
 						-o /rds/general/user/avr24/home/Thesis/data/Run"$run_nb"_"$t" \
 						--timing false \
-						--logging false \
+						--logging true \
 						--warnings true \
 						--save_J true \
 						--save_B true
