@@ -236,12 +236,12 @@ int main(int argc, char* argv[])
     float dx = 0.1f;
     float dr = 0.1f;
 
-    float alpha_0_min = 0.4f;
+    float alpha_0_min = 0.3f;
     float alpha_0_max = 0.6f;
-    int nb_alpha_0 = 3;
+    int nb_alpha_0 = 4;
 
     float r_0_mult_min = 1.15f;
-    float r_0_mult_max = 1.8f;
+    float r_0_mult_max = 2.1f;
     int nb_r_0 = 20;
 
     float avg_std_dev;
