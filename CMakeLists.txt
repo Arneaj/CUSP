@@ -100,6 +100,7 @@ vtk_module_autoinit(
 
 add_executable(read_pvtr tests_cpp/read_pvtr_test.cpp
     src_cpp/read_pvtr.cpp
+    src_cpp/read_file.cpp
     src_cpp/points.cpp
     src_cpp/matrix.cpp)
 
