@@ -1,6 +1,7 @@
 #include "../headers_cpp/raycast.h"
 #include "../headers_cpp/read_file.h"
 #include "../headers_cpp/read_pvtr.h"
+#include "../headers_cpp/reader_writer.h"
 #include "../headers_cpp/magnetopause.h"
 #include "../headers_cpp/preprocessing.h"
 #include "../headers_cpp/fit_to_analytical.h"
@@ -19,31 +20,11 @@ typedef std::chrono::duration<float> fsec;
 
 int main(int argc, char* argv[])
 {
-    // if (argc < 2)
-    // {
-    //     std::cout << "No Run path given!\n";
-    //     exit(1);
-    // }
-
-    // if (argc < 3)
-    // {
-    //     std::cout << "No timestep given!\n";
-    //     exit(1);
-    // }
-
-    // if (argc < 4)
-    // {
-    //     std::cout << "No save path given!\n";
-    //     exit(1);
-    // }
-
-    // std::string filepath(argv[1]);
-    // std::string timestep(argv[2]);
-    // std::string savepath(argv[3]);
+    // *** flags ***********************************************************************************
 
     bool save_J(false);
     bool save_B(false);
-    // bool save_V(false);
+    bool save_V(false);
 
     bool save_J_norm(true);
 
@@ -82,13 +63,6 @@ int main(int argc, char* argv[])
 
         else if( std::string(argv[i]) == "--timestep" || std::string(argv[i]) == "-t" ) timestep = argv[i+1];
 
-        // else if( std::string(argv[i]) == "--file_format" ) file_format = argv[i+1];              // TODO: can't do that yet
-        // else if( std::string(argv[i]) == "--file_save_format" ) file_save_format = argv[i+1];    // TODO: can't do that yet
-
-        else if( std::string(argv[i]) == "--J_format" ) J_format = argv[i+1];
-        else if( std::string(argv[i]) == "--B_format" ) B_format = argv[i+1];
-        else if( std::string(argv[i]) == "--V_format" ) V_format = argv[i+1];
-
         // else if( std::string(argv[i]) == "--analytical_model" ) analytical_model = argv[i+1];    // TODO: can't do that yet
 
         else if( std::string(argv[i]) == "--save_J" || std::string(argv[i]) == "-J" )
@@ -103,12 +77,12 @@ int main(int argc, char* argv[])
             else if (std::string(argv[i+1]) == "false") save_B = false;
             else { std::cout << "ERROR: unknown parameter for flag --save_B\n"; exit(1); }
         }
-        // else if( std::string(argv[i]) == "--save_V" || std::string(argv[i]) == "-V" )
-        // {
-        //     if (std::string(argv[i+1]) == "true") save_V = true;
-        //     else if (std::string(argv[i+1]) == "false") save_V = false;
-        //     else { std::cout << "ERROR: unknown parameter for flag --save_V\n"; exit(1); }
-        // } 
+        else if( std::string(argv[i]) == "--save_V" || std::string(argv[i]) == "-V" )
+        {
+            if (std::string(argv[i+1]) == "true") save_V = true;
+            else if (std::string(argv[i+1]) == "false") save_V = false;
+            else { std::cout << "ERROR: unknown parameter for flag --save_V\n"; exit(1); }
+        } 
         
         else if( std::string(argv[i]) == "--save_J_norm" )
         {
@@ -174,28 +148,36 @@ int main(int argc, char* argv[])
 
     // "/rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run1/MS/x00_Bvec_c-21000.pvtr"
 
-    // *********************************************************************************************
+    // *** file reading ****************************************************************************
+    
     auto t0 = Time::now();
 
-    Matrix J = read_pvtr(filepath + std::string("/") + J_format + timestep + std::string(".") + file_format);
-    Matrix B = read_pvtr(filepath + std::string("/") + B_format + timestep + std::string(".") + file_format);
-    // Matrix V = read_pvtr(filepath + std::string("/") + V_format + timestep + std::string(".") + file_format);
+    PVTRReaderBinWriter reader_writer;    
+
+    Matrix J;
+    reader_writer.read(filepath + std::string("/") + J_format + timestep + std::string(".") + file_format, J);
+    Matrix B;
+    reader_writer.read(filepath + std::string("/") + B_format + timestep + std::string(".") + file_format, B);
+
+    Matrix V;
+    if (save_V) reader_writer.read(filepath + std::string("/") + V_format + timestep + std::string(".") + file_format, V);
 
     Matrix X;
     Matrix Y;
     Matrix Z;
 
-    get_coord(X, Y, Z, filepath + std::string("/") + B_format + timestep + std::string(".") + file_format);
+    reader_writer.get_coordinates(filepath + std::string("/") + B_format + timestep + std::string(".") + file_format, X, Y, Z);
 
-    if (save_X) save_file( savepath + std::string("/X.txt"), X );
-    if (save_Y) save_file( savepath + std::string("/Y.txt"), Y );
-    if (save_Z) save_file( savepath + std::string("/Z.txt"), Z );
+    if (save_X) reader_writer.write( savepath + std::string("/X.txt"), X );
+    if (save_Y) reader_writer.write( savepath + std::string("/Y.txt"), Y );
+    if (save_Z) reader_writer.write( savepath + std::string("/Z.txt"), Z );
 
     auto t1 = Time::now();
     if (timing) std::cout << "File reading done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
-    // *********************************************************************************************
+    // *** preprocessing ***************************************************************************
+    
     t0 = Time::now();
 
     Point p_min( X[0], Y[0], Z[0] );
@@ -212,11 +194,11 @@ int main(int argc, char* argv[])
 
     Matrix B_processed_sim = orthonormalise(B, X, Y, Z, &new_shape_sim);
     Matrix J_processed_sim = orthonormalise(J, X, Y, Z, &new_shape_sim);
-    // Matrix V_processed_sim = orthonormalise(V, X, Y, Z, &new_shape_sim);
 
     Matrix B_processed_real = orthonormalise(B, X, Y, Z, &new_shape_real);
     Matrix J_processed_real = orthonormalise(J, X, Y, Z, &new_shape_real);
-    // Matrix V_processed_real = orthonormalise(V, X, Y, Z, &new_shape_real);
+    Matrix V_processed_real;
+    if (save_V) V_processed_real = orthonormalise(V, X, Y, Z, &new_shape_real);
 
     Matrix J_norm_sim = J_processed_sim.norm();
     Matrix J_norm_real = J_processed_real.norm();
@@ -225,7 +207,8 @@ int main(int argc, char* argv[])
     if (timing) std::cout << "Preprocessing files done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
-    // *********************************************************************************************
+    // *** interest points *************************************************************************
+    
     t0 = Time::now();
 
     int nb_theta = 40;
@@ -262,7 +245,8 @@ int main(int argc, char* argv[])
     if (timing) std::cout << "Interest point search done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
-    // *********************************************************************************************
+    // *** fitting *********************************************************************************
+    
     t0 = Time::now();
 
     //     index                    0       1       2       3       4       5       6       7       8       9       10
@@ -289,7 +273,8 @@ int main(int argc, char* argv[])
 
 
 
-    // *********************************************************************************************
+    // *** analysis ********************************************************************************
+    
     t0 = Time::now();
 
     const float threshold = 2.0f;
@@ -335,7 +320,8 @@ int main(int argc, char* argv[])
 
 
 
-    // *********************************************************************************************
+    // *** saving **********************************************************************************
+    
     t0 = Time::now();
 
     if (save_J) save_file_bin( savepath + std::string("/J_processed_real.") + file_save_format, J_processed_real );
@@ -355,9 +341,10 @@ int main(int argc, char* argv[])
     if (timing) std::cout << "Interest points, parameters and file saving done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
-    // *********************************************************************************************
-    J.del(); B.del(); // V.del();
+    // *** freeing *********************************************************************************
+    
+    J.del(); B.del(); if (save_V) V.del();
     X.del(); Y.del(); Z.del();
-    B_processed_sim.del(); J_processed_sim.del(); J_norm_sim.del(); // V_processed_sim.del();
-    B_processed_real.del(); J_processed_real.del(); J_norm_real.del(); // V_processed_real.del();
+    B_processed_sim.del(); J_processed_sim.del(); J_norm_sim.del();
+    B_processed_real.del(); J_processed_real.del(); J_norm_real.del(); if (save_V) V_processed_real.del();
 }

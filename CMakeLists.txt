@@ -34,6 +34,7 @@ set(SOURCES
     src_cpp/matrix.cpp
     src_cpp/read_pvtr.cpp
     src_cpp/read_file.cpp
+    src_cpp/reader_writer.cpp
     src_cpp/raycast.cpp
     src_cpp/streamlines.cpp
     src_cpp/magnetopause.cpp
@@ -51,6 +52,7 @@ set(HEADERS
     headers_cpp/preprocessing.h  
     headers_cpp/read_pvtr.h
     headers_cpp/read_file.h
+    headers_cpp/reader_writer.h
     headers_cpp/fit_to_analytical.h
     headers_cpp/analysis.h
 )
@@ -64,6 +66,7 @@ add_executable(full_process tests_cpp/full_process_test.cpp
     src_cpp/matrix.cpp
     src_cpp/read_pvtr.cpp
     src_cpp/read_file.cpp
+    src_cpp/reader_writer.cpp
     src_cpp/raycast.cpp
     src_cpp/streamlines.cpp
     src_cpp/magnetopause.cpp
@@ -95,29 +98,29 @@ vtk_module_autoinit(
 # ************************************ read_pvtr: test of the reading of the file
 
 
-# add_executable(read_pvtr tests_cpp/read_pvtr_test.cpp
-#     src_cpp/read_pvtr.cpp
-#     src_cpp/points.cpp
-#     src_cpp/matrix.cpp)
+add_executable(read_pvtr tests_cpp/read_pvtr_test.cpp
+    src_cpp/read_pvtr.cpp
+    src_cpp/points.cpp
+    src_cpp/matrix.cpp)
 
-# # Link VTK libraries
-# target_link_libraries(read_pvtr PRIVATE ${VTK_LIBRARIES} OpenMP::OpenMP_CXX)
+# Link VTK libraries
+target_link_libraries(read_pvtr PRIVATE ${VTK_LIBRARIES} OpenMP::OpenMP_CXX)
 
-# # Include VTK headers - this is crucial!
-# target_include_directories(read_pvtr PRIVATE ${VTK_INCLUDE_DIRS})
+# Include VTK headers - this is crucial!
+target_include_directories(read_pvtr PRIVATE ${VTK_INCLUDE_DIRS})
 
-# # Set VTK definitions
-# target_compile_definitions(read_pvtr PRIVATE ${VTK_DEFINITIONS})
+# Set VTK definitions
+target_compile_definitions(read_pvtr PRIVATE ${VTK_DEFINITIONS})
 
-# if (UNIX)
-#   target_link_options(read_pvtr PUBLIC -pthread)
-# endif()
+if (UNIX)
+  target_link_options(read_pvtr PUBLIC -pthread)
+endif()
 
-# # vtk_module_autoinit is needed
-# vtk_module_autoinit(
-#   TARGETS read_pvtr
-#   MODULES ${VTK_LIBRARIES}
-# )
+# vtk_module_autoinit is needed
+vtk_module_autoinit(
+  TARGETS read_pvtr
+  MODULES ${VTK_LIBRARIES}
+)
 
 
 # *************************************** fit_to_analytical: test of the fitting to the interest points
