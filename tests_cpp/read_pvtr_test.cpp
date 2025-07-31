@@ -1,19 +1,26 @@
 #include "../headers_cpp/read_pvtr.h"
+#include "../headers_cpp/read_file.h"
 
 
-int main()
+int main(int argc, char* argv[])
 {
-    std::string filename("/rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run1/MS/x00_Bvec_c-21000.pvtr");
+    if (argc < 1) { std::cout << "Please provide input file path.\n"; exit(1); }
+    if (argc < 2) { std::cout << "Please provide output file path.\n"; exit(1); }
 
-    Matrix B = read_pvtr(filename);
+    std::string filepath(argv[1]);
+    std::string savepath(argv[1]);
+
+    Matrix M = read_pvtr(filepath);
 
     Matrix X;
     Matrix Y;
     Matrix Z;
     
-    get_coord(X, Y, Z, filename);
+    get_coord(X, Y, Z, filepath);
 
-    std::cout << "Shape of B: " << B.get_shape() << std::endl;
-    std::cout << "B(0,0,0,0) = " << B(0,0,0,0) << std::endl;
+    std::cout << "Shape of M: " << M.get_shape() << std::endl;
+    std::cout << "M(0,0,0,0) = " << M(0,0,0,0) << std::endl;
+
+    save_file_bin( savepath, M );
 }
 
