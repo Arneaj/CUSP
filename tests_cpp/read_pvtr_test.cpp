@@ -22,5 +22,8 @@ int main(int argc, char* argv[])
     std::cout << "M(0,0,0,0) = " << M(0,0,0,0) << std::endl;
 
     save_file_bin( savepath, M );
+
+    M.del();
+    X.del(); Y.del(); Z.del();
 }
 
