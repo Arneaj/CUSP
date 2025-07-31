@@ -126,7 +126,7 @@ float interest_point_flatness_checker( const InterestPoint* const interest_point
         }
         
         avg_X[itheta] /= sum_weights;
-        if (sum_weights/nb_theta > 0.5 && avg_X[itheta] > max_X) max_X = avg_X[itheta];
+        if (sum_weights/nb_theta > 0.7 && avg_X[itheta] > max_X) max_X = avg_X[itheta];
     }
 
     float max_theta_in_threshold = 0.0f;
