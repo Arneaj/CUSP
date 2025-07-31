@@ -1,5 +1,5 @@
 #!/bin/sh
-#PBS -l walltime=05:00:00
+#PBS -l walltime=00:30:00
 #PBS -l select=1:ncpus=16:mem=32gb:ompthreads=16
 #PBS -j oe
 #PBS -N mp_topology
@@ -36,8 +36,13 @@ runs=(
 	# "15"
 	# "16"
 	# "17"
-	"18"
-	"19"
+	# "18"
+	# "19"
+	"3"
+	"6"
+	"7"
+	"8"
+	"10"
 )
 
 
@@ -77,9 +82,6 @@ for run_nb in "${runs[@]}"; do
 						--save_J true \
 						--save_B true
 
-		# cd ../python
-		# python fit_to_analytical.py ../data/Run"$run_nb"_"$t"
-
 		cd ..
 		# echo "Finished fitting the data point at Run$((run_nb)), timestep $((t))"
 		# echo "Time taken: $((SECONDS-start_time)) seconds total."
@@ -88,23 +90,5 @@ for run_nb in "${runs[@]}"; do
 	done
 done
 
-# while read my_name; do
-# 	my_path=../data/"$my_name"
-# 	start_time=$SECONDS
 
-# 	echo "Path to data: ${my_path}"
-
-# 	cd ./output_cpp
-# 	make full_process_test > /dev/null
-# 	./full_process_test $my_path
-# 	# make interest_points_test > /dev/null
-# 	# ./interest_points_test $my_path
-# 	cd ../python
-# 	python fit_to_analytical.py $my_path
-# 	cd ..
-# 	echo "Finished fitting the data point at ${my_path}"
-# 	echo "Time taken: $((SECONDS-start_time)) seconds total."
-
-# 	echo
-# done <<< "$($command)"
 

@@ -1,0 +1,322 @@
+/rds/general/user/avr24/home/.profile: line 1: .bashrc: No such file or directory
+Finished loading modules.
+
+Run3_28800
+Average standard deviation of the interest points is 1.58264
+Average cost of best fit to the analytical function is 9.97426
+Final parameters are { 11.477, 0.2, 0.00103822, 0.281367, 6, 0.651357, 5.66191, 6, 0.68999, 6.21676, 0.311781 }
+delta_l is 1.34135
+Number of parameters at boundaries is 3
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 1.17657
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+
+Run3_27000
+Average standard deviation of the interest points is 1.14167
+Average cost of best fit to the analytical function is 9.23212
+Final parameters are { 10.6954, 0.2, 0.000258437, 0.263435, 5.25419, 0.698825, 6.81128, 5.26663, 0.697055, 6.73492, 0.388231 }
+delta_l is 1.39588
+Number of parameters at boundaries is 1
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 1.17657
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+
+Run3_23100
+Average standard deviation of the interest points is 0.758418
+Average cost of best fit to the analytical function is 1.2316
+Final parameters are { 9.75985, 0.25027, 0.00260919, 0.102472, 2.32243, 2, 1.06191, 1.94071, 2, 0.809012, 0.417165 }
+delta_l is 4
+Number of parameters at boundaries is 2
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.805869
+
+Run3_22500
+Average standard deviation of the interest points is 0.63347
+Average cost of best fit to the analytical function is 0.432415
+Final parameters are { 11.1281, 0.406807, 0.000587329, 0.161745, 3.78214, 1.14963, 3.52235, 3.77162, 1.15081, 3.5655, 0.0950988 }
+delta_l is 2.30044
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.735961
+
+Run3_21900
+Average standard deviation of the interest points is 0.722529
+Average cost of best fit to the analytical function is 0.593418
+Final parameters are { 10.1317, 0.390313, 0.000948677, 0.167011, 2.5251, 1.03686, 3.79958, 2.51677, 1.03824, 3.89446, 0.160639 }
+delta_l is 2.0751
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.588111
+
+Run3_21000
+Average standard deviation of the interest points is 0.768956
+Average cost of best fit to the analytical function is 0.665454
+Final parameters are { 10.0656, 0.378122, -0.000221601, 0.173363, 2.47742, 1.02864, 3.89621, 2.44709, 1.03354, 3.80982, 0.173924 }
+delta_l is 2.06219
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.588112
+
+Run3_20100
+Average standard deviation of the interest points is 0.950524
+Average cost of best fit to the analytical function is 0.776003
+Final parameters are { 9.42004, 0.351867, -5.43453e-06, 0.174876, 1.60956, 1.0287, 5.38833, 1.60074, 1.03226, 5.30138, 0.245205 }
+delta_l is 2.06097
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.663386
+
+Run6_28800
+Average standard deviation of the interest points is 1.34019
+Average cost of best fit to the analytical function is 0.712859
+Final parameters are { 9.0182, 0.233831, -0.000355812, 0.13427, 5.82581, 0.380771, 4.22588, 5.99952, 0.382041, 4.2305, 0.512694 }
+delta_l is 0.762813
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+Number of parameters at boundaries is 1
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 1.17657
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+	--> WARNING: interest points seem concave on the dayside, which could indicate an analysis or Gorgon error
+
+Run6_27000
+Average standard deviation of the interest points is 1.07807
+Average cost of best fit to the analytical function is 0.724357
+Final parameters are { 8.81074, 0.378973, 0.000945209, 0.120686, 5.13753, 0.396598, 4.56837, 5.2061, 0.397641, 4.57771, 0.371237 }
+delta_l is 0.794239
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 1.17657
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+
+Run6_23100
+Average standard deviation of the interest points is 0.543365
+Average cost of best fit to the analytical function is 0.798942
+Final parameters are { 8.43166, 0.26207, -0.00190516, 0.0714111, 1.33022, 0.634963, 5.48072, 1.35134, 0.703515, 6.23031, 0.50438 }
+delta_l is 1.33848
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.735961
+
+Run6_22500
+Average standard deviation of the interest points is 0.601719
+Average cost of best fit to the analytical function is 0.371158
+Final parameters are { 10.113, 0.438769, 0.00081301, 0.139588, 2.93007, 1.09281, 3.42018, 2.94457, 1.09389, 3.52517, 0.122377 }
+delta_l is 2.1867
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.735961
+
+Run6_21900
+Average standard deviation of the interest points is 0.737348
+Average cost of best fit to the analytical function is 0.531195
+Final parameters are { 8.77663, 0.324882, 0.000787803, 0.14415, 1.33893, 1.03374, 5.34834, 1.31193, 1.03768, 5.52071, 0.337405 }
+delta_l is 2.07142
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.429704
+
+Run6_21000
+Average standard deviation of the interest points is 0.739442
+Average cost of best fit to the analytical function is 0.567953
+Final parameters are { 8.92656, 0.341935, 0.000199008, 0.151772, 1.50216, 1.02836, 5.23921, 1.50677, 1.03232, 5.24158, 0.298145 }
+delta_l is 2.06067
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.429704
+
+Run6_20100
+Average standard deviation of the interest points is 0.714068
+Average cost of best fit to the analytical function is 0.645171
+Final parameters are { 8.48587, 0.291179, 0.000410267, 0.158052, 0.813015, 1.01754, 8.6675, 0.800104, 1.0189, 8.59741, 0.381008 }
+delta_l is 2.03645
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.588112
+
+Run7_28800
+Average standard deviation of the interest points is 1.64955
+Average cost of best fit to the analytical function is 5.46284
+Final parameters are { 10.7085, 0.2, -0.000963669, 0.240864, 5.2934, 0.691431, 6.53989, 5.25506, 0.69289, 6.40644, 0.360994 }
+delta_l is 1.38432
+Number of parameters at boundaries is 1
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 1.11971
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+	--> WARNING: interest points seem concave on the dayside, which could indicate an analysis or Gorgon error
+
+Run7_27000
+Average standard deviation of the interest points is 1.48355
+Average cost of best fit to the analytical function is 4.85126
+Final parameters are { 10.2764, 0.278712, -0.00156412, 0.204411, 4.47641, 0.69585, 7.00259, 4.49329, 0.696103, 7.00108, 0.327439 }
+delta_l is 1.39195
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 1.17657
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+	--> WARNING: interest points seem concave on the dayside, which could indicate an analysis or Gorgon error
+
+Run7_23100
+Average standard deviation of the interest points is 0.833814
+Average cost of best fit to the analytical function is 4.32127
+Final parameters are { 9.41139, 0.2, -0.0033193, 0.11322, 4.63267, 0.482147, 4.3489, 4.61711, 0.482103, 4.27952, 0.503504 }
+delta_l is 0.964249
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+Number of parameters at boundaries is 1
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.938071
+
+Run7_22500
+Average standard deviation of the interest points is 0.604969
+Average cost of best fit to the analytical function is 0.365872
+Final parameters are { 10.0519, 0.404498, 0.0011269, 0.138966, 2.81065, 1.19708, 2.19183, 2.83119, 1.19218, 2.32711, 0.173064 }
+delta_l is 2.38927
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.663386
+
+Run7_21900
+Average standard deviation of the interest points is 0.738246
+Average cost of best fit to the analytical function is 0.530648
+Final parameters are { 8.77439, 0.3247, 0.0007856, 0.144111, 1.33576, 1.03387, 5.3654, 1.30876, 1.03779, 5.53794, 0.337801 }
+delta_l is 2.07166
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.429704
+
+Run7_21000
+Average standard deviation of the interest points is 0.739471
+Average cost of best fit to the analytical function is 0.567944
+Final parameters are { 8.92652, 0.341929, 0.000198951, 0.151772, 1.50213, 1.02836, 5.23939, 1.50675, 1.03232, 5.24186, 0.298155 }
+delta_l is 2.06068
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.429704
+
+Run7_20100
+Average standard deviation of the interest points is 0.714059
+Average cost of best fit to the analytical function is 0.646855
+Final parameters are { 8.43542, 0.285199, 0.000548833, 0.157653, 0.752606, 1.01561, 9.4365, 6, 0.115666, 9.57719, 0.391841 }
+delta_l is 1.13127
+Number of parameters at boundaries is 1
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.588112
+
+Run8_28800
+Average standard deviation of the interest points is 1.16315
+Average cost of best fit to the analytical function is 0.734431
+Final parameters are { 8.94027, 0.340978, 1.81669e-05, 0.115078, 6, 0.385683, 4.45915, 5.94157, 0.384498, 4.43567, 0.415903 }
+delta_l is 0.770181
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+Number of parameters at boundaries is 1
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 1.11971
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+	--> WARNING: interest points seem concave on the dayside, which could indicate an analysis or Gorgon error
+
+Run8_27000
+Average standard deviation of the interest points is 1.08393
+Average cost of best fit to the analytical function is 0.972376
+Final parameters are { 8.7345, 0.357307, 0.00183013, 0.13915, 5.05024, 0.396205, 4.68092, 5.01476, 0.397869, 4.69153, 0.391506 }
+delta_l is 0.794073
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 1.17657
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+
+Run8_23100
+Average standard deviation of the interest points is 1.01048
+Average cost of best fit to the analytical function is 0.258099
+Final parameters are { 9.22677, 0.319116, 0.000834778, 0.0308779, 2.03727, 0.889091, 3.87445, 2.01925, 0.893774, 3.92383, 0.384837 }
+delta_l is 1.78287
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.735961
+
+Run8_22500
+Average standard deviation of the interest points is 0.747528
+Average cost of best fit to the analytical function is 0.434465
+Final parameters are { 11.5434, 0.459162, -0.000121834, 0.125614, 3.62476, 1.29843, 2.37867, 3.62569, 1.30174, 2.43337, 0.0136464 }
+delta_l is 2.60017
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.663386
+
+Run8_21900
+Average standard deviation of the interest points is 0.690554
+Average cost of best fit to the analytical function is 0.333085
+Final parameters are { 9.14331, 0.404243, 0.000351034, 0.115896, 0.95771, 1.26994, 3.94095, 0.94142, 1.29895, 3.73117, 0.203417 }
+delta_l is 2.5689
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.805868
+
+Run8_21000
+Average standard deviation of the interest points is 0.730007
+Average cost of best fit to the analytical function is 0.345163
+Final parameters are { 9.10905, 0.403356, 0.000379716, 0.121037, 3.28189, 0.117821, 1.23827, 3.24982, 0.115654, 1.25778, 0.199557 }
+delta_l is 0.233475
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.938071
+	--> WARNING: interest points seem concave on the dayside, which could indicate an analysis or Gorgon error
+
+Run8_20100
+Average standard deviation of the interest points is 0.726624
+Average cost of best fit to the analytical function is 0.301414
+Final parameters are { 9.31784, 0.377792, 0.000363367, 0.136605, 1.03164, 0.109462, 0.193108, 1.0741, 0.136332, 0.246702, 0.208354 }
+delta_l is 0.245793
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.873195
+	--> WARNING: interest points seem concave on the dayside, which could indicate an analysis or Gorgon error
+
+Run10_28800
+Average standard deviation of the interest points is 1.40071
+Average cost of best fit to the analytical function is 0.825572
+Final parameters are { 9.57846, 0.2, -0.000520969, 0.163567, 5.76288, 0.306865, 2.86622, 5.75556, 0.301465, 2.78013, 0.49056 }
+delta_l is 0.60833
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+Number of parameters at boundaries is 1
+	--> WARNING: at least one parameter has reached bounds, which could indicate an error
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 1.17657
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+	--> WARNING: interest points seem concave on the dayside, which could indicate an analysis or Gorgon error
+
+Run10_27000
+Average standard deviation of the interest points is 1.38311
+Average cost of best fit to the analytical function is 0.760429
+Final parameters are { 9.2762, 0.229953, -0.00113026, 0.142351, 5.43668, 0.370541, 3.74137, 5.49878, 0.379585, 3.88064, 0.498389 }
+delta_l is 0.750126
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 1.17657
+	--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error
+	--> WARNING: interest points seem concave on the dayside, which could indicate an analysis or Gorgon error
+
+Run10_23100
+Average standard deviation of the interest points is 0.754567
+Average cost of best fit to the analytical function is 0.836823
+Final parameters are { 8.65633, 0.286971, -0.00176418, 0.103781, 2.67202, 0.528106, 5.27179, 2.69963, 0.528439, 5.207, 0.489245 }
+delta_l is 1.05654
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.93807
+
+Run10_22500
+Average standard deviation of the interest points is 0.765964
+Average cost of best fit to the analytical function is 0.399606
+Final parameters are { 10.2579, 0.412759, 0.000443282, 0.126424, 2.69271, 1.06942, 2.10937, 2.67926, 1.07164, 2.07589, 0.179748 }
+delta_l is 2.14105
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.735961
+
+Run10_21900
+Average standard deviation of the interest points is 0.840817
+Average cost of best fit to the analytical function is 0.444312
+Final parameters are { 8.62852, 0.256876, 0.000409886, 0.140945, 1.94241, 0.375659, 4.34297, 2.42782, 0.37867, 5.04842, 0.451736 }
+delta_l is 0.754329
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.262095
+
+Run10_21000
+Average standard deviation of the interest points is 0.776326
+Average cost of best fit to the analytical function is 0.491092
+Final parameters are { 8.59148, 0.248012, 0.000548404, 0.143299, 1.68856, 0.415159, 5.07265, 2.25756, 0.400197, 4.9027, 0.460086 }
+delta_l is 0.815356
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.663386
+
+Run10_20100
+Average standard deviation of the interest points is 0.72508
+Average cost of best fit to the analytical function is 0.561808
+Final parameters are { 8.58108, 0.250198, 0.000126183, 0.147652, 2.15234, 0.399662, 5.04455, 2.3277, 0.401581, 5.22756, 0.452778 }
+delta_l is 0.801243
+	--> WARNING: delta_l very low, which could indicate a Gorgon error
+Number of parameters at boundaries is 0
+Maximum angle theta where abs(P.x - max(P.x)) < 2 is 0.429704
+
