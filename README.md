@@ -1,5 +1,9 @@
 # MP Topology Analysis
 
+## Map of content
+
+## Introduction
+
 This library has been created in the context of a Master's Thesis in Computer science at Imperial College London in collaboration with the Space Plasma science research team. 
 
 The first goal was to provide tools to extract certain topological elements from 3D voxel grids of simulation data extracted from ICL's Gorgon model. 
@@ -10,6 +14,29 @@ The main application of this library for computational models of the Earth magne
 Through statistical testing, it has been determined that the real time analysis is performant enough to be able to evaluate the output of the model with reasonable certainty.
 
 Though this library has been created with the Gorgon model in mind, it should be model agnostic if the user provides their own implementation of the ReaderWriter interface present to read the output of their model into the provided Matrix class.    
+
+## Installation
+
+### Dependencies
+
+The library provides an example implementation of a `.pvtr` to `.bin` ReaderWriter used for all of the tests. 
+In the case that the user wants to test their installation with the provided tests or wants to use the `.pvtr` reader provided, they will need to have a installation of the C++ library: 
+- **VTK**:
+
+For the least squares fitting to the analytical models, the user will need to have an installation of the following C++ libraries:
+- **Eigen**:
+- **Abseil**:
+- (*googletest*):
+- **Ceres**:
+
+### Compilation
+
+```bash
+mkdir build
+cd build
+cmake ..
+make
+```
 
 ## How to use
 
