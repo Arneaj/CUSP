@@ -1,10 +1,13 @@
 #include "../headers_cpp/raycast.h"
 #include "../headers_cpp/reader_writer.h"
+#include "../headers_cpp/preprocessing.h"
 #include "../headers_cpp/magnetopause.h"
 #include <iostream>
 
 
 #include <chrono>
+
+const float PI = 3.141592653589793238462643383279502884f;
 
 typedef std::chrono::high_resolution_clock Time;
 typedef std::chrono::duration<float> fsec;
@@ -47,7 +50,7 @@ int main()
     Matrix J_norm_sim = J_processed_sim.norm();
     
     t1 = Time::now();
-    if (timing) std::cout << "Preprocessing files done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
+    std::cout << "Preprocessing files done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
 
     t0 = Time::now();

@@ -88,7 +88,7 @@ vtk_module_autoinit(
 )
 
 
-# ************************************ read_pvtr: test of the reading of the file
+# ************************************ raycasting: test of the reading of the file
 
 
 add_executable(raycasting tests_cpp/raycast_test.cpp
@@ -97,24 +97,27 @@ add_executable(raycasting tests_cpp/raycast_test.cpp
     src_cpp/reader_writer.cpp
     src_cpp/points.cpp
     src_cpp/matrix.cpp
+    src_cpp/preprocessing.cpp
+    src_cpp/streamlines.cpp
+    src_cpp/magnetopause.cpp
     src_cpp/raycast.cpp)
 
 # Link VTK libraries
-target_link_libraries(read_pvtr PRIVATE ${VTK_LIBRARIES} OpenMP::OpenMP_CXX)
+target_link_libraries(raycasting PRIVATE ${VTK_LIBRARIES} OpenMP::OpenMP_CXX)
 
 # Include VTK headers - this is crucial!
-target_include_directories(read_pvtr PRIVATE ${VTK_INCLUDE_DIRS})
+target_include_directories(raycasting PRIVATE ${VTK_INCLUDE_DIRS})
 
 # Set VTK definitions
-target_compile_definitions(read_pvtr PRIVATE ${VTK_DEFINITIONS})
+target_compile_definitions(raycasting PRIVATE ${VTK_DEFINITIONS})
 
 if (UNIX)
-  target_link_options(read_pvtr PUBLIC -pthread)
+  target_link_options(raycasting PUBLIC -pthread)
 endif()
 
 # vtk_module_autoinit is needed
 vtk_module_autoinit(
-  TARGETS read_pvtr
+  TARGETS raycasting
   MODULES ${VTK_LIBRARIES}
 )
 
