@@ -7,3 +7,4 @@ build
 ceres
 .vscode
 images
+output_cpp
