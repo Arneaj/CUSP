@@ -27,7 +27,7 @@ cd build
 # make > /dev/null
 
 ./read_and_write 	/rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run1/MS/x00_rho-23100.pvtr \
-					test_data/rho_23100.bin
+					/rds/general/user/avr24/home/Thesis/test_data/rho_23100.bin
 
 
 

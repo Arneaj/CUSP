@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
 
     // *** saving **********************************************************************************
     
-    save_file_bin( savepath, M_processed_real );
+    reader_writer.write( savepath, M_processed_real );
 
     // *** freeing *********************************************************************************
     
