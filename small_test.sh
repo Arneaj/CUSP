@@ -26,11 +26,11 @@ cd build
 # cmake .. > /dev/null
 # make > /dev/null
 
-valgrind ./full_process -i test_data \
-						-t 23100 \
+valgrind -s --leak-check=full ./full_process -i test_data \
+						-t 21000 \
 						--save_J_norm false \
 						-X false -Y false -Z false \
-						--save_ip false --save_params false
+						--save_interest_points false --save_params false
 
 
 
