@@ -15,7 +15,7 @@ Though this library has been created with the Gorgon model in mind, it should be
 
 ### Reading data
 
-The library provides a ReaderWriter interface in ./headers_cpp/reader_writer.h explaining how to implement the proper reader for your data. As explained in the header, the indexing of the data should be in Fortran style indexing, i.e.
+The library provides a ReaderWriter interface in `./headers_cpp/reader_writer.h` explaining how to implement the proper reader for your data. As explained in the header, the indexing of the data should be in Fortran style indexing, i.e.
 
 ```cpp
 M(ix,iy,iz,ic) = M.mat[ ix + iy*shape.x + iz*shape.x*shape.y + ic*shape.x*shape.y*shape.z ];
@@ -23,4 +23,5 @@ M(ix,iy,iz,ic) = M.mat[ ix + iy*shape.x + iz*shape.x*shape.y + ic*shape.x*shape.
 
 ### Preprocessing data
 
-
+The library provides to extrapolate data from different grid types. 
+It can modify the shape of the grid to increase of decrease resolution through interpolation, but also create a uniform grid from non-uniform data if provided with the X, Y and Z matrices describing the value that corresponds to each cell. 
