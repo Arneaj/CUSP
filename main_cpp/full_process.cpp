@@ -356,4 +356,6 @@ int main(int argc, char* argv[])
     J_processed_real.del(); 
     J_norm_real.del(); 
     if (save_V) V_processed_real.del();
+
+    delete[] interest_points;
 }

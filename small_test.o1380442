@@ -1,7 +1,0 @@
-/rds/general/user/avr24/home/.profile: line 1: .bashrc: No such file or directory
-
-==202345== Memcheck, a memory error detector
-==202345== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==202345== Using Valgrind-3.17.0 and LibVEX; rerun with -h for copyright info
-==202345== Command: ./full_process -i /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run1/MS -t 23100 --save_J_norm false -X false -Y false -Z false --save_interest_points false --save_params false
-==202345== 
