@@ -1,5 +1,5 @@
 #!/bin/sh
-#PBS -l walltime=05:00:00
+#PBS -l walltime=01:00:00
 #PBS -l select=1:ncpus=16:mem=32gb:ompthreads=16
 #PBS -j oe
 #PBS -N small_test
@@ -23,14 +23,14 @@ module load googletest > /dev/null 2>&1
 echo
 
 cd build
-cmake .. > /dev/null
-make > /dev/null
+# cmake .. > /dev/null
+# make > /dev/null
 
-./full_process 	-i /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run12/MS \
-				-t 23100 \
-				--save_J_norm false \
-				-X false -Y false -Z false \
-				--save_ip false --save_params false
+valgrind ./full_process -i test_data \
+						-t 23100 \
+						--save_J_norm false \
+						-X false -Y false -Z false \
+						--save_ip false --save_params false
 
 
 

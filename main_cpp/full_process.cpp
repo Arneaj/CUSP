@@ -157,7 +157,7 @@ int main(int argc, char* argv[])
     Matrix J;
     reader_writer.read(filepath + std::string("/") + J_format + timestep + std::string(".") + file_format, J);
     Matrix B;
-    reader_writer.read(filepath + std::string("/") + B_format + timestep + std::string(".") + file_format, B);
+    if (save_B) reader_writer.read(filepath + std::string("/") + B_format + timestep + std::string(".") + file_format, B);
 
     Matrix V;
     if (save_V) reader_writer.read(filepath + std::string("/") + V_format + timestep + std::string(".") + file_format, V);
@@ -192,10 +192,12 @@ int main(int argc, char* argv[])
     Point earth_pos_real = find_real_earth_pos( X, Y, Z );
     Point earth_pos_sim = find_sim_earth_pos( earth_pos_real, new_shape_real, new_shape_sim );
 
-    Matrix B_processed_sim = orthonormalise(B, X, Y, Z, &new_shape_sim);
+    Matrix B_processed_sim;
+    if (save_B) B_processed_sim = orthonormalise(B, X, Y, Z, &new_shape_sim);
     Matrix J_processed_sim = orthonormalise(J, X, Y, Z, &new_shape_sim);
 
-    Matrix B_processed_real = orthonormalise(B, X, Y, Z, &new_shape_real);
+    Matrix B_processed_real;
+    if (save_B) B_processed_real = orthonormalise(B, X, Y, Z, &new_shape_real);
     Matrix J_processed_real = orthonormalise(J, X, Y, Z, &new_shape_real);
     Matrix V_processed_real;
     if (save_V) V_processed_real = orthonormalise(V, X, Y, Z, &new_shape_real);
@@ -343,8 +345,15 @@ int main(int argc, char* argv[])
 
     // *** freeing *********************************************************************************
     
-    J.del(); B.del(); if (save_V) V.del();
+    J.del(); 
+    if (save_B) B.del(); 
+    if (save_V) V.del();
     X.del(); Y.del(); Z.del();
-    B_processed_sim.del(); J_processed_sim.del(); J_norm_sim.del();
-    B_processed_real.del(); J_processed_real.del(); J_norm_real.del(); if (save_V) V_processed_real.del();
+    if (save_B) B_processed_sim.del(); 
+    J_processed_sim.del(); 
+    J_norm_sim.del();
+    if (save_B) B_processed_real.del(); 
+    J_processed_real.del(); 
+    J_norm_real.del(); 
+    if (save_V) V_processed_real.del();
 }
