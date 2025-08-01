@@ -10,4 +10,4 @@ images
 output_cpp
 mp_topology.* 
 run.sh.*
-small_test.*
+result_small_test.*
