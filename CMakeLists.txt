@@ -58,42 +58,6 @@ set(HEADERS
 )
 
 
-# ********************************* full_process: from read to fit
-
-
-add_executable(full_process tests_cpp/full_process_test.cpp
-    src_cpp/points.cpp
-    src_cpp/matrix.cpp
-    src_cpp/read_pvtr.cpp
-    src_cpp/read_file.cpp
-    src_cpp/reader_writer.cpp
-    src_cpp/raycast.cpp
-    src_cpp/streamlines.cpp
-    src_cpp/magnetopause.cpp
-    src_cpp/preprocessing.cpp
-    src_cpp/fit_to_analytical.cpp
-    src_cpp/analysis.cpp)
-
-
-# Link VTK libraries
-target_link_libraries(full_process PRIVATE ${VTK_LIBRARIES} ${CERES_LIBRARIES} OpenMP::OpenMP_CXX)
-
-# Include VTK headers - this is crucial!
-target_include_directories(full_process PRIVATE ${VTK_INCLUDE_DIRS} ${CERES_INCLUDE_DIRS})
-
-# Set VTK definitions
-target_compile_definitions(full_process PRIVATE ${VTK_DEFINITIONS} ${CERES_DEFINITIONS})
-
-if (UNIX)
-  target_link_options(full_process PUBLIC -pthread)
-endif()
-
-# vtk_module_autoinit is needed
-vtk_module_autoinit(
-  TARGETS full_process
-  MODULES ${VTK_LIBRARIES}
-)
-
 
 # ************************************ read_pvtr: test of the reading of the file
 
@@ -103,6 +67,37 @@ add_executable(read_pvtr tests_cpp/read_pvtr_test.cpp
     src_cpp/read_file.cpp
     src_cpp/points.cpp
     src_cpp/matrix.cpp)
+
+# Link VTK libraries
+target_link_libraries(read_pvtr PRIVATE ${VTK_LIBRARIES} OpenMP::OpenMP_CXX)
+
+# Include VTK headers - this is crucial!
+target_include_directories(read_pvtr PRIVATE ${VTK_INCLUDE_DIRS})
+
+# Set VTK definitions
+target_compile_definitions(read_pvtr PRIVATE ${VTK_DEFINITIONS})
+
+if (UNIX)
+  target_link_options(read_pvtr PUBLIC -pthread)
+endif()
+
+# vtk_module_autoinit is needed
+vtk_module_autoinit(
+  TARGETS read_pvtr
+  MODULES ${VTK_LIBRARIES}
+)
+
+
+# ************************************ read_pvtr: test of the reading of the file
+
+
+add_executable(raycasting tests_cpp/raycast_test.cpp
+    src_cpp/read_pvtr.cpp
+    src_cpp/read_file.cpp
+    src_cpp/reader_writer.cpp
+    src_cpp/points.cpp
+    src_cpp/matrix.cpp
+    src_cpp/raycast.cpp)
 
 # Link VTK libraries
 target_link_libraries(read_pvtr PRIVATE ${VTK_LIBRARIES} OpenMP::OpenMP_CXX)
@@ -157,3 +152,40 @@ vtk_module_autoinit(
   MODULES ${VTK_LIBRARIES}
 )
 
+
+
+# ********************************* full_process: from read to fit
+
+
+add_executable(full_process main_cpp/full_process.cpp
+    src_cpp/points.cpp
+    src_cpp/matrix.cpp
+    src_cpp/read_pvtr.cpp
+    src_cpp/read_file.cpp
+    src_cpp/reader_writer.cpp
+    src_cpp/raycast.cpp
+    src_cpp/streamlines.cpp
+    src_cpp/magnetopause.cpp
+    src_cpp/preprocessing.cpp
+    src_cpp/fit_to_analytical.cpp
+    src_cpp/analysis.cpp)
+
+
+# Link VTK libraries
+target_link_libraries(full_process PRIVATE ${VTK_LIBRARIES} ${CERES_LIBRARIES} OpenMP::OpenMP_CXX)
+
+# Include VTK headers - this is crucial!
+target_include_directories(full_process PRIVATE ${VTK_INCLUDE_DIRS} ${CERES_INCLUDE_DIRS})
+
+# Set VTK definitions
+target_compile_definitions(full_process PRIVATE ${VTK_DEFINITIONS} ${CERES_DEFINITIONS})
+
+if (UNIX)
+  target_link_options(full_process PUBLIC -pthread)
+endif()
+
+# vtk_module_autoinit is needed
+vtk_module_autoinit(
+  TARGETS full_process
+  MODULES ${VTK_LIBRARIES}
+)
