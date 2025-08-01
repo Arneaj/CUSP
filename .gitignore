@@ -8,3 +8,5 @@ ceres
 .vscode
 images
 output_cpp
+mp_topology.* 
+run.sh.*
