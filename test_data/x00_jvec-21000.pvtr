@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<VTKFile type="PRectilinearGrid" version="1.0" byte_order="LittleEndian" header_type="UInt64">
+    <PRectilinearGrid WholeExtent="0 180 0 100 0 100" GhostLevel="0">
+         <PCellData Vectors="jvec">
+             <PDataArray type="Float64" Name="jvec" NumberOfComponents="3">
+             </PDataArray>
+         </PCellData>
+         <PCoordinates>
+             <PDataArray type="Float64"/>
+             <PDataArray type="Float64"/>
+             <PDataArray type="Float64"/>
+         </PCoordinates>
+         <Piece Extent="0 180 0 100 0 100" Source="vtr/x00_jvec-21000.vtr"/>
+    </PRectilinearGrid>
+</VTKFile>
