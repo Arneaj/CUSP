@@ -46,12 +46,9 @@ int main(int argc, char* argv[])
     Point p_max( X[ X.get_shape().x-1 ], Y[ Y.get_shape().x-1 ], Z[ Z.get_shape().x-1 ] );
     Point p_range = p_max - p_min;
 
-    Shape new_shape_real(std::round(p_range.x), std::round(p_range.y), std::round(p_range.z), J.get_shape().i);
+    Shape new_shape_real(std::round(p_range.x), std::round(p_range.y), std::round(p_range.z), M.get_shape().i);
 
-    Point earth_pos_real = find_real_earth_pos( X, Y, Z );
-
-    Matrix M_processed_real;
-    B_processed_real = orthonormalise(M, X, Y, Z, &new_shape_real);
+    Matrix M_processed_real = orthonormalise(M, X, Y, Z, &new_shape_real);
 
     // *** saving **********************************************************************************
     

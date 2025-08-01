@@ -2,7 +2,7 @@
 #PBS -l walltime=01:00:00
 #PBS -l select=1:ncpus=16:mem=32gb:ompthreads=16
 #PBS -j oe
-#PBS -N result_small_test
+#PBS -N result_read_and_write
 cd $PBS_O_WORKDIR
 
 # echo $OMP_NUM_THREADS
@@ -26,11 +26,8 @@ cd build
 # cmake .. > /dev/null
 # make > /dev/null
 
-valgrind -s --leak-check=full --show-leak-kinds=all ./full_process -i /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run1/MS \
-						-t 23100 \
-						--save_J_norm false \
-						-X false -Y false -Z false \
-						--save_interest_points false --save_params false
+./read_and_write 	/rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run1/MS/x00_rho-23100.pvtr \
+					test_data/rho_23100.bin
 
 
 

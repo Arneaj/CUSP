@@ -157,6 +157,44 @@ vtk_module_autoinit(
 
 
 
+
+# ********************************* read_and_write: read some data and write it in real dims
+
+
+add_executable(read_and_write main_cpp/read_and_write.cpp
+    src_cpp/points.cpp
+    src_cpp/matrix.cpp
+    src_cpp/read_pvtr.cpp
+    src_cpp/read_file.cpp
+    src_cpp/reader_writer.cpp
+    src_cpp/streamlines.cpp
+    src_cpp/magnetopause.cpp
+    src_cpp/preprocessing.cpp
+)
+
+
+# Link VTK libraries
+target_link_libraries(read_and_write PRIVATE ${VTK_LIBRARIES} ${CERES_LIBRARIES} OpenMP::OpenMP_CXX)
+
+# Include VTK headers - this is crucial!
+target_include_directories(read_and_write PRIVATE ${VTK_INCLUDE_DIRS} ${CERES_INCLUDE_DIRS})
+
+# Set VTK definitions
+target_compile_definitions(read_and_write PRIVATE ${VTK_DEFINITIONS} ${CERES_DEFINITIONS})
+
+if (UNIX)
+  target_link_options(read_and_write PUBLIC -pthread)
+endif()
+
+# vtk_module_autoinit is needed
+vtk_module_autoinit(
+  TARGETS read_and_write
+  MODULES ${VTK_LIBRARIES}
+)
+
+
+
+
 # ********************************* full_process: from read to fit
 
 
