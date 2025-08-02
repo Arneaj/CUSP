@@ -350,7 +350,7 @@ int main(int argc, char* argv[])
 
     if (save_J) save_file_bin( savepath + std::string("/J_processed_real.") + file_save_format, J_processed_real );
     if (save_B) save_file_bin( savepath + std::string("/B_processed_real.") + file_save_format, B_processed_real );
-    // if (save_V) save_file_bin( savepath + std::string("/V_processed_real.") + file_save_format, V_processed_real );
+    if (save_V) save_file_bin( savepath + std::string("/V_processed_real.") + file_save_format, V_processed_real );
 
     save_file_bin( savepath + std::string("/J.") + file_save_format, J );
     save_file_bin( savepath + std::string("/J_processed_sim.") + file_save_format, J_processed_sim );
