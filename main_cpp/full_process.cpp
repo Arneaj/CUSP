@@ -290,10 +290,10 @@ int main(int argc, char* argv[])
 
     const float delta_l_lowerbound = 1.0;
     const float r_0_lowerbound = 8.0;
-    const float avg_std_dev_upperbound = 8.0;
+    const float avg_std_dev_upperbound = 1.5;
 
     if (logging) std::cout << "Average standard deviation of the interest points is " << avg_std_dev << std::endl;
-    if (warnings && avg_std_dev > avg_std_dev_upperbound) std::cout << "\t--> WARNING: high average standard deviation which could indicate an analysis error\n";
+    if (warnings && avg_std_dev > avg_std_dev_upperbound) std::cout << "\t--> WARNING: high average interest point standard deviation\n";
 
     if (logging)
     {
@@ -303,23 +303,23 @@ int main(int argc, char* argv[])
         for (int i=1; i<nb_params; i++) std::cout << ", " << result.params[i];
         std::cout << " }" << std::endl;
     }
-    if (warnings && result.cost / nb_interest_points > 1.5) std::cout << "\t--> WARNING: high average fitting cost which could indicate an analysis or Gorgon error\n";
+    if (warnings && result.cost / nb_interest_points > 1.5) std::cout << "\t--> WARNING: high average fitting cost\n";
 
 
     if (logging) std::cout << "||grad(||J||)||_{fit} / ||grad(||J||)||_{ip} is " << grad_J_fit_over_ip << std::endl;
 
     if (logging) std::cout << "delta_l is " << delta_l << std::endl;
-    if (warnings && delta_l<delta_l_lowerbound) std::cout << "\t--> WARNING: delta_l very low, which could indicate a Gorgon error\n";
+    if (warnings && delta_l<delta_l_lowerbound) std::cout << "\t--> WARNING: delta_l very low\n";
 
     if (logging) std::cout << "Number of parameters at boundaries is " << nb_params_at_boundaries << std::endl;
-    if (warnings && nb_params_at_boundaries>0) std::cout << "\t--> WARNING: at least one parameter has reached bounds, which could indicate an analysis or Gorgon error\n";
+    if (warnings && nb_params_at_boundaries>0) std::cout << "\t--> WARNING: at least one parameter has reached bounds\n";
 
-    if (warnings && result.params[0]<r_0_lowerbound) std::cout << "\t--> WARNING: r_0 < " << r_0_lowerbound << " is very low, which could indicate a Gorgon error\n";
+    if (warnings && result.params[0]<r_0_lowerbound) std::cout << "\t--> WARNING: r_0 < " << r_0_lowerbound << " is very low\n";
 
     if (logging) std::cout << "Maximum angle theta where abs(P.x - max(P.x)) < " << threshold << " is " << max_theta_in_threshold << std::endl;
-    if (warnings && max_theta_in_threshold>1.0f) std::cout << "\t--> WARNING: looking at the interest points, the dayside magnetopause looks flat, which could indicate a Gorgon error\n";
+    if (warnings && max_theta_in_threshold>1.0f) std::cout << "\t--> WARNING: interest points seem flat on the dayside magnetopause\n";
 
-    if (warnings && is_concave) std::cout << "\t--> WARNING: interest points seem concave on the dayside, which could indicate an analysis or Gorgon error\n";
+    if (warnings && is_concave) std::cout << "\t--> WARNING: interest points seem concave on the dayside\n";
 
     t1 = Time::now();
     if (timing) std::cout << "Analysis done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
