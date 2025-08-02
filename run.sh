@@ -24,25 +24,25 @@ echo Finished loading modules.
 echo
 
 runs=(
-	# "1"
-	# "2"
-	# "4"
-	# "5"
-	# "9"
-	# "11"
-	# "12"
-	# "13"
-	# "14"
-	# "15"
-	# "16"
-	# "17"
-	# "18"
-	# "19"
+	"1"
+	"2"
 	"3"
+	"4"
+	"5"
 	"6"
 	"7"
 	"8"
+	"9"
 	"10"
+	"11"
+	"12"
+	"13"
+	"14"
+	"15"
+	"16"
+	"17"
+	"18"
+	"19"
 )
 
 
@@ -79,8 +79,7 @@ for run_nb in "${runs[@]}"; do
 						--timing false \
 						--logging true \
 						--warnings true \
-						--save_J true \
-						--save_B true
+						--save_J_norm false
 
 		cd ..
 		# echo "Finished fitting the data point at Run$((run_nb)), timestep $((t))"
