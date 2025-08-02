@@ -131,3 +131,46 @@ float interest_point_flatness_checker( const InterestPoint* const interest_point
 
 
 
+void save_analysis_csv( std::string filepath, 
+                        const std::vector<float>& inputs, const std::vector<std::string>& inputs_names,
+                        const std::vector<double>& params, const std::vector<std::string>& params_names, 
+                        const std::vector<float>& metrics, const std::vector<std::string>& metrics_names )
+{
+    std::ofstream fs;
+    fs.open(filepath);
+
+    for (const std::string& input_name: inputs_names) 
+    {
+        if (input_name == inputs_names.front()) fs << input_name;
+        else fs << ',' << input_name;
+    }
+    for (const std::string& param_name: params_names) 
+    {
+        if (param_name == params_names.front()) fs << param_name;
+        else fs << ',' << param_name;
+    }
+    for (const std::string& metric_name: metrics_names) 
+    {
+        if (metric_name == metrics_names.front()) fs << metric_name;
+        else fs << ',' << metric_name;
+    }
+
+    for (float input: inputs) 
+    {
+        if (input == inputs.front()) fs << input;
+        else fs << ',' << input;
+    }
+    for (double param: params) 
+    {
+        if (param == params.front()) fs << param;
+        else fs << ',' << param;
+    }
+    for (float metric: metrics) 
+    {
+        if (metric == metrics.front()) fs << metric;
+        else fs << ',' << metric;
+    }
+
+    fs.close();
+}
+

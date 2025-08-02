@@ -42,7 +42,10 @@ int get_params_at_boundaries( double* params, double* lowerbound, double* upperb
 float interest_point_flatness_checker( const InterestPoint* const interest_points, int nb_theta, int nb_phi, bool* p_is_concave=nullptr, float threshold=2.0f, float phi_radius=0.3f );
 
 
-
+void save_analysis_csv( std::string filepath, 
+                        const std::vector<float>& inputs, const std::vector<std::string>& inputs_names,
+                        const std::vector<double>& params, const std::vector<std::string>& params_names, 
+                        const std::vector<float>& metrics, const std::vector<std::string>& metrics_names );
 
 
 

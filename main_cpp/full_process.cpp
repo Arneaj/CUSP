@@ -34,6 +34,7 @@ int main(int argc, char* argv[])
 
     bool save_ip(true);
     bool save_params(true);
+    bool save_analysis(true);
 
     bool logging(true);
     bool timing(true);
@@ -121,6 +122,12 @@ int main(int argc, char* argv[])
             if (std::string(argv[i+1]) == "true") save_params = true;
             else if (std::string(argv[i+1]) == "false") save_params = false;
             else { std::cout << "ERROR: unknown parameter for flag --save_params\n"; exit(1); }
+        }
+        else if( std::string(argv[i]) == "--save_analysis" )
+        {
+            if (std::string(argv[i+1]) == "true") save_analysis = true;
+            else if (std::string(argv[i+1]) == "false") save_analysis = false;
+            else { std::cout << "ERROR: unknown parameter for flag --save_analysis\n"; exit(1); }
         }
 
         else if( std::string(argv[i]) == "--logging" )
@@ -321,6 +328,17 @@ int main(int argc, char* argv[])
 
     if (warnings && is_concave) std::cout << "\t--> WARNING: interest points seem concave on the dayside\n";
 
+
+
+    std::vector<std::string> inputs_names = {};
+    std::vector<std::string> params_names = {"r_0", "alpha_0", "alpha_1", "alpha_2", "d_n", "l_n", "s_n", "d_s", "l_s", "s_s", "e"};
+    std::vector<std::string> metrics_names = {"ip_avg_std_dev", "fit_cost", "grad_J_fit_over_ip", "delta_l", "nb_params_at_bounds", "max_theta_flat", "is_concave"};
+
+    std::vector<float> inputs = {};
+    std::vector<double> params = result.params;
+    std::vector<float> metrics = {avg_std_dev, float(result.cost/nb_interest_points), grad_J_fit_over_ip, delta_l, float(nb_params_at_boundaries), max_theta_in_threshold, float(is_concave)};
+
+
     t1 = Time::now();
     if (timing) std::cout << "Analysis done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
@@ -342,6 +360,8 @@ int main(int argc, char* argv[])
     if (save_ip) save_interest_points( savepath + std::string("/interest_points_cpp.csv"), interest_points, nb_theta, nb_phi );
 
     if (save_params) save_parameters( savepath + std::string("/params_cpp.csv"), result.params );
+
+    if (save_analysis) save_analysis_csv( savepath + std::string("/analysis.csv"), inputs, inputs_names, params, params_names, metrics, metrics_names );
 
     t1 = Time::now();
     if (timing) std::cout << "Interest points, parameters and file saving done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
