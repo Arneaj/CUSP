@@ -20,6 +20,9 @@
 #include <ceres/ceres.h>
 
 
+// *** Helper stuff ***
+
+
 const float PI = 3.141592653589793238462643383279502884f;
 
 
@@ -31,6 +34,12 @@ T is_pos( T v ) { return T( v>=T(0) ); }
 template <typename T>
 T sigmoid( T v ) { return T(1.0) / ( T(1.0) + ceres::exp(-v * T(5.0)) ); }
 
+
+
+
+
+
+// *** Analytical functions ***
 
 
 /// @brief analytical approximation of the Magnetopause topology as written by Liu in his 2012 paper
@@ -117,17 +126,41 @@ T EllipsisPoly( const T* const params, T theta, T phi )
 
 
 
-class Liu12Residual 
+
+
+
+// *** Residual classes ***
+
+
+/// @brief Interface for the user to define their own Residual class to be used for the fitting to some specific analytical model
+class Residual
 {
-private:
+protected:
     const double m_theta, m_phi, m_observed_radius, m_weight;
 
 public:
-    Liu12Residual(const InterestPoint& interest_point) 
+    Residual(const InterestPoint& interest_point) 
         : m_theta(interest_point.theta), m_phi(interest_point.phi), m_observed_radius(interest_point.radius), m_weight(interest_point.weight) {;}
 
-    Liu12Residual(double theta, double phi, double observed_radius, double weight) 
+    Residual(double theta, double phi, double observed_radius, double weight) 
         : m_theta(theta), m_phi(phi), m_observed_radius(observed_radius), m_weight(weight) {;}
+
+    /// @brief 
+    /// @tparam T this class needs to be templated for use by Ceres which uses both double and their own type `Jet`.
+    ///           More info at [Ceres Solver Modeling Guide](http://ceres-solver.org/nnls_modeling.html)
+    /// @param params current parameters which should be of the same size as the function accepting them
+    /// @param residual `residual[0]` will hold the residual, i.e. the cost of that specific `(theta, phi)` point  
+    /// @return 
+    template <typename T>
+    bool operator()(const T* const params, T* residual) const;
+};
+
+
+
+class Liu12Residual : public Residual
+{
+public:
+    using Residual::Residual;
 
     template <typename T>
     bool operator()(const T* const params, T* residual) const 
@@ -140,17 +173,10 @@ public:
 
 
 
-class EllipsisResidual 
+class EllipsisResidual : public Residual
 {
-private:
-    const double m_theta, m_phi, m_observed_radius, m_weight;
-
 public:
-    EllipsisResidual(const InterestPoint& interest_point) 
-        : m_theta(interest_point.theta), m_phi(interest_point.phi), m_observed_radius(interest_point.radius), m_weight(interest_point.weight) {;}
-
-    EllipsisResidual(double theta, double phi, double observed_radius, double weight) 
-        : m_theta(theta), m_phi(phi), m_observed_radius(observed_radius), m_weight(weight) {;}
+    using Residual::Residual;
 
     template <typename T>
     bool operator()(const T* const params, T* residual) const 
@@ -162,17 +188,10 @@ public:
 };
 
 
-class EllipsisPolyResidual 
+class EllipsisPolyResidual  : public Residual
 {
-private:
-    const double m_theta, m_phi, m_observed_radius, m_weight;
-
 public:
-    EllipsisPolyResidual(const InterestPoint& interest_point) 
-        : m_theta(interest_point.theta), m_phi(interest_point.phi), m_observed_radius(interest_point.radius), m_weight(interest_point.weight) {;}
-
-    EllipsisPolyResidual(double theta, double phi, double observed_radius, double weight) 
-        : m_theta(theta), m_phi(phi), m_observed_radius(observed_radius), m_weight(weight) {;}
+    using Residual::Residual;
 
     template <typename T>
     bool operator()(const T* const params, T* residual) const 
@@ -185,6 +204,12 @@ public:
 
 
 
+
+
+
+// *** Optimisation related ***
+
+
 struct OptiResult
 {
     std::vector<double> params;
@@ -193,8 +218,6 @@ struct OptiResult
     OptiResult(): cost(MAXFLOAT) {;}
     OptiResult(int nb_params): params(nb_params), cost(MAXFLOAT) {;}
 };
-
-
 
 
 
