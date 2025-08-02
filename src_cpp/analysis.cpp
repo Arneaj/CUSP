@@ -134,7 +134,7 @@ float interest_point_flatness_checker( const InterestPoint* const interest_point
     if (p_is_concave) *p_is_concave = (avg_X[0] < max_X) && (avg_X[1] < max_X) && (avg_X[2] < max_X);
 
     for (int itheta=0; itheta<nb_theta; itheta++) 
-        if ( max_X - avg_X[itheta] < threshold ) max_theta_in_threshold = interest_points[itheta*nb_phi].theta;
+        if ( avg_X[itheta] > max_X - threshold ) max_theta_in_threshold = interest_points[itheta*nb_phi].theta;
 
     return max_theta_in_threshold;
 }

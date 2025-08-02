@@ -188,6 +188,8 @@ public:
 };
 
 
+/// @brief Example implementation of the Residual class with the latest analytical function
+///        defined and explained in my Thesis report.
 class EllipsisPolyResidual  : public Residual
 {
 public:
@@ -210,6 +212,7 @@ public:
 // *** Optimisation related ***
 
 
+/// @brief Struct to allow the fitting function to easily return both the final parameters and cost
 struct OptiResult
 {
     std::vector<double> params;
@@ -302,22 +305,24 @@ OptiResult fit_with_params(
 
 
 
-/// @brief 
-/// @tparam Residual 
+/// @brief fit an analytical function to the provided interest points with a least squares method. 
+///        The analytical method is provided through the Residual template parameter
+/// @tparam Residual class containing the cost function which will be associated with each `(theta, phi, radius, weight)` point.
+///                  see Residual interface defined above in this file for more information.
 /// @tparam nb_params 
-/// @param interest_points containing (theta, phi, radius, weight)
+/// @param interest_points array of interest points each containing (theta, phi, radius, weight) values
 /// @param nb_interest_points 
-/// @param params 
+/// @param initial_params 
 /// @param lowerbound lowerbound of each parameter
 /// @param upperbound upperbound of each parameter
 /// @param radii_of_variation how much each parameter should vary in positive and negative directions
 /// @param nb_runs number of different initial conditions tried
-/// @param max_nb_iterations_per_run 
-/// @param trust_region
-/// @param linear_solver 
-/// @param print_progress 
-/// @param print_results 
-/// @return 
+/// @param max_nb_iterations_per_run how far the solver will go in each run before stopping even if it hasn't converged
+/// @param trust_region see [Ceres Solver Modeling Guide](http://ceres-solver.org/nnls_modeling.html) for more information
+/// @param linear_solver see [Ceres Solver Modeling Guide](http://ceres-solver.org/nnls_modeling.html) for more information
+/// @param print_progress print information about the state of the fitting at each iteration of the solver
+/// @param print_results print the final results the solver found
+/// @return the final lowest cost solution found, in a struct containing both the final parameter array and cost
 template <typename Residual, int nb_params>
 OptiResult fit_MP( 
     InterestPoint* interest_points,
