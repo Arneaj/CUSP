@@ -29,53 +29,41 @@ Point local_grad_of_normed_matrix(const Matrix& M_norm, const Point& p, Derivati
 }
 
 
-float get_avg_grad_of_func( double (*fn)(const double* const, double, double), const std::vector<double>& params, 
+
+
+
+float get_grad_J_fit_over_interest_points( double (*fn)(const double* const, double, double), const std::vector<double>& params, 
+                            const InterestPoint* const interest_points, int nb_interest_points,
                             const Matrix& J_norm,
-                            int nb_theta, int nb_phi,
                             const Point& earth_pos,
-                            float dx, float dy, float dz  )
+                            float dx, float dy, float dz )
 {
     float total_grad_norm = 0.0f;
+    float total_grad_norm_ip = 0.0f;
 
-    float dtheta = PI / nb_theta;
-    float dphi = 2.0f*PI / nb_phi;
-
-    Point dp = Point(dx, dy, dz);
-
-    int valid_points = 0;
-
-    for (float theta=0.0f; theta<PI; theta+=dtheta)
+    for (int i=0; i<nb_interest_points; i++)
     {
-        float cos_theta = std::cos(theta);
-        float sin_theta = std::sin(theta);
+        const InterestPoint& ip = interest_points[i];
 
-        for (float phi=-PI; phi<PI; phi+=dphi)
-        {
-            float radius = fn(params.data(), theta, phi);
+        float sin_theta = std::sin(ip.theta);
+        float radius = fn(params.data(), ip.theta, ip.phi);
+        Point proj = Point(
+            -std::cos(ip.theta),
+            sin_theta*std::sin(ip.phi),
+            sin_theta*std::cos(ip.phi)
+        );
 
-            Point proj = Point(
-                -cos_theta,
-                sin_theta*std::sin(phi),
-                sin_theta*std::cos(phi)
-            );
+        Point p_ip = ip.radius * proj + earth_pos;
+        Point p = radius * proj + earth_pos;
 
-            Point p = radius * proj + earth_pos;
+        Point grad_J_ip = local_grad_of_normed_matrix(J_norm, p_ip, DerivativeAccuracy::high, dx, dy, dz);
+        Point grad_J = local_grad_of_normed_matrix(J_norm, p, DerivativeAccuracy::high, dx, dy, dz);
 
-
-            if ( J_norm.is_point_OOB(p + 2.0f*dp) ) continue;
-            if ( J_norm.is_point_OOB(p - 2.0f*dp) ) continue;
-
-            Point grad_J = local_grad_of_normed_matrix(J_norm, p, DerivativeAccuracy::high, dx, dy, dz);
-            
-            // std::cout << "grad norm: " << grad_J.norm() << std::endl;
-            total_grad_norm += grad_J.norm();
-            valid_points++;
-        }
+        total_grad_norm_ip += grad_J_ip.norm() * ip.weight;
+        total_grad_norm += grad_J.norm() * ip.weight;
     }
 
-    // std::cout << "total grad norm: " << total_grad_norm << std::endl;
-    // std::cout << "avg grad norm: " << total_grad_norm / valid_points << std::endl;
-    return total_grad_norm / valid_points;
+    return total_grad_norm / total_grad_norm_ip;
 }
 
 
@@ -103,12 +91,12 @@ int get_params_at_boundaries( double* params, double* lowerbound, double* upperb
 
 float interest_point_flatness_checker( const InterestPoint* const interest_points, int nb_theta, int nb_phi, bool* p_is_concave, float threshold, float phi_radius )
 {
-    float avg_X[nb_theta];
+    float avg_X[nb_theta] = {0.0f};
     float max_X = 0.0f;
 
     for (int itheta=0; itheta<nb_theta; itheta++) 
     {
-        avg_X[itheta] = 0.0f;
+        // avg_X[itheta] = 0.0f;
         float sum_weights = 0.0f;
 
         for (int iphi=0; iphi<nb_phi; iphi++) 

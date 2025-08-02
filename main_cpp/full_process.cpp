@@ -283,32 +283,36 @@ int main(int argc, char* argv[])
 
     bool is_concave;
 
-    // float avg_J_norm_grad = get_avg_grad_of_func( EllipsisPoly, result.params, J_norm_real, nb_theta, nb_phi, earth_pos_real );
+    float grad_J_fit_over_ip = get_grad_J_fit_over_interest_points( EllipsisPoly, result.params, interest_points, nb_interest_points, J_norm_real, earth_pos_real );
     float delta_l = get_delta_l( result.params[5], result.params[8] );
     int nb_params_at_boundaries = get_params_at_boundaries( result.params.data(), lowerbound, upperbound, nb_params );
     float max_theta_in_threshold = interest_point_flatness_checker( interest_points, nb_theta, nb_phi, &is_concave, threshold );
 
     const float delta_l_lowerbound = 1.0;
     const float r_0_lowerbound = 8.0;
+    const float avg_std_dev_upperbound = 8.0;
+
+    if (logging) std::cout << "Average standard deviation of the interest points is " << avg_std_dev << std::endl;
+    if (warnings && avg_std_dev > avg_std_dev_upperbound) std::cout << "\t--> WARNING: high average standard deviation which could indicate an analysis error\n";
 
     if (logging)
     {
-        std::cout << "Average standard deviation of the interest points is " << avg_std_dev << std::endl;
-
         std::cout << "Average cost of best fit to the analytical function is " << result.cost / nb_interest_points << std::endl;
         std::cout << "Final parameters are { ";
         std::cout << result.params[0];
         for (int i=1; i<nb_params; i++) std::cout << ", " << result.params[i];
         std::cout << " }" << std::endl;
-
-        // std::cout << "Average ||grad(||J||)|| is " << avg_J_norm_grad << std::endl;
-
-        std::cout << "delta_l is " << delta_l << std::endl;
     }
+    if (warnings && result.cost / nb_interest_points > 1.5) std::cout << "\t--> WARNING: high average fitting cost which could indicate an analysis or Gorgon error\n";
+
+
+    if (logging) std::cout << "||grad(||J||)||_{fit} / ||grad(||J||)||_{ip} is " << grad_J_fit_over_ip << std::endl;
+
+    if (logging) std::cout << "delta_l is " << delta_l << std::endl;
     if (warnings && delta_l<delta_l_lowerbound) std::cout << "\t--> WARNING: delta_l very low, which could indicate a Gorgon error\n";
 
     if (logging) std::cout << "Number of parameters at boundaries is " << nb_params_at_boundaries << std::endl;
-    if (warnings && nb_params_at_boundaries>0) std::cout << "\t--> WARNING: at least one parameter has reached bounds, which could indicate an error\n";
+    if (warnings && nb_params_at_boundaries>0) std::cout << "\t--> WARNING: at least one parameter has reached bounds, which could indicate an analysis or Gorgon error\n";
 
     if (warnings && result.params[0]<r_0_lowerbound) std::cout << "\t--> WARNING: r_0 < " << r_0_lowerbound << " is very low, which could indicate a Gorgon error\n";
 
