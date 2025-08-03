@@ -12,9 +12,18 @@ float Shue97(float r_0, float alpha_0, float one_plus_cos_theta)
 }
 
 
+float get_bowshock_radius(  float theta, float phi, 
+                            float r_0_min, float r_0_max, float alpha_0,
+                            const Matrix& rho, const Point& earth_pos,
+                            float dr )
+{
+    return 0.0f;
+}
+
+
 void interest_points_helper(    float r_0, float alpha_0, 
                                 std::vector<float>* interest_points,
-                                const Matrix& J_norm, Point earth_pos, 
+                                const Matrix& J_norm, const Point& earth_pos, 
                                 float theta_min,
                                 int nb_theta, int nb_phi, 
                                 float dr, float dtheta, float dphi )
@@ -103,7 +112,7 @@ float get_std_dev( std::vector<float>& vec )
 
 
 
-InterestPoint* get_interest_points( const Matrix& J_norm, Point earth_pos,
+InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos,
                                     float theta_min, float theta_max, 
                                     int nb_theta, int nb_phi, 
                                     float dx, float dr,
@@ -230,7 +239,7 @@ void process_interest_points(   InterestPoint* interest_points,
 
 
 
-void save_interest_points( std::string filename, const InterestPoint* interest_points, int nb_theta, int nb_phi )
+void save_interest_points( const std::string& filename, const InterestPoint* interest_points, int nb_theta, int nb_phi )
 {
     std::ofstream fs;
     fs.open(filename);

@@ -16,7 +16,7 @@ void Matrix::flatten()
 }
 
 
-bool Matrix::is_point_OOB(Point p) const
+bool Matrix::is_point_OOB(const Point& p) const
 {
     return  p.x>=shape.x-1 || p.x<0 ||
             p.y>=shape.y-1 || p.y<0 ||
@@ -24,7 +24,7 @@ bool Matrix::is_point_OOB(Point p) const
 }
 
 
-float Matrix::operator()(Point p, int i) const
+float Matrix::operator()(const Point& p, int i) const
 {
     // if ( is_point_OOB(p) ) throw exception_OOB("Point is out of bounds!");
 
@@ -43,7 +43,7 @@ float Matrix::operator()(Point p, int i) const
 }
 
 
-Point Matrix::operator()(Point p) const
+Point Matrix::operator()(const Point& p) const
 {
     return Point( (*this)(p,0), (*this)(p,1), (*this)(p,2) );
 }
@@ -260,7 +260,7 @@ void Matrix::operator/=(float val)
 
 
 
-std::ostream& operator<<(std::ostream& os, Shape sh)
+std::ostream& operator<<(std::ostream& os, const Shape& sh)
 {
     os << "(" << sh.x << ", " 
               << sh.y << ", " 

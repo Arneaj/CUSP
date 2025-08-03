@@ -4,11 +4,11 @@
 #include "matrix.h"
 
 
-Matrix read_file( std::string filename, int step=1 );
+Matrix read_file( const std::string& filename, int step=1 );
 
-void save_file( std::string filename, const Matrix& mat );
+void save_file( const std::string& filename, const Matrix& mat );
 
-void save_file_bin( std::string filename, Matrix& mat );
+void save_file_bin( const std::string& filename, Matrix& mat );
 
 
 struct SolarWindInputs
@@ -25,7 +25,7 @@ struct SolarWindInputs
 /// @param filepath 
 /// @param timestep 
 /// @return `SolarWindInputs` struct containing B, V, rho, Ti and Te
-SolarWindInputs read_Gorgon_inputs( std::string filepath, std::string timestep );
+SolarWindInputs read_Gorgon_inputs( const std::string& filepath, const std::string& timestep );
 
 
 #endif

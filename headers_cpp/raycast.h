@@ -31,7 +31,7 @@ public:
 
 
 
-InterestPoint* get_interest_points( const Matrix& J_norm, Point earth_pos,
+InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos,
                                     float theta_min, float theta_max, 
                                     int nb_theta, int nb_phi, 
                                     float dx, float dr,
@@ -42,7 +42,7 @@ InterestPoint* get_interest_points( const Matrix& J_norm, Point earth_pos,
 
 
 
-void save_interest_points( std::string filename, const InterestPoint* interest_points, int nb_theta, int nb_phi );
+void save_interest_points( const std::string& filename, const InterestPoint* interest_points, int nb_theta, int nb_phi );
 
 
 

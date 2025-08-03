@@ -38,7 +38,7 @@ Shape read_shape( std::ifstream& fs, int step )
 }
 
 
-Matrix read_matrix( std::ifstream& fs, Shape shape, int step )
+Matrix read_matrix( std::ifstream& fs, const Shape& shape, int step )
 {
     Matrix mat(shape);
     std::string s;
@@ -65,7 +65,7 @@ Matrix read_matrix( std::ifstream& fs, Shape shape, int step )
 }
 
 
-Matrix read_file( std::string filename, int step )
+Matrix read_file( const std::string& filename, int step )
 {
     std::ifstream fs;
     fs.open(filename);
@@ -79,7 +79,7 @@ Matrix read_file( std::string filename, int step )
 }
 
 
-void save_file( std::string filename, const Matrix& mat )
+void save_file( const std::string& filename, const Matrix& mat )
 {
     std::ofstream fs;
     fs.open(filename);
@@ -119,7 +119,7 @@ struct DataHeader {
 
 
 
-void save_file_bin( std::string filename, Matrix& mat )
+void save_file_bin( const std::string& filename, Matrix& mat )
 {
     std::ofstream fs;
     fs.open(filename, std::ios::binary);
@@ -135,7 +135,7 @@ void save_file_bin( std::string filename, Matrix& mat )
 
 
 
-SolarWindInputs read_Gorgon_inputs( std::string filepath, std::string timestep )
+SolarWindInputs read_Gorgon_inputs( const std::string& filepath, const std::string& timestep )
 {
     const int MAX_SIZE = 512;
     char s[MAX_SIZE] = "";

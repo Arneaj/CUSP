@@ -22,9 +22,9 @@
 #include "../headers_cpp/matrix.h"
 
 
-Matrix read_pvtr(std::string filename);
+Matrix read_pvtr(const std::string& filename);
 
-void get_coord(Matrix& X, Matrix& Y, Matrix& Z, std::string filename);
+void get_coord(Matrix& X, Matrix& Y, Matrix& Z, const std::string& filename);
 
 
 

@@ -30,11 +30,11 @@ public:
 
     Shape(int _x, int _y, int _z, int _i) : x(_x), y(_y), z(_z), i(_i) {;}
 
-    Shape(std::vector<int> sh) : Shape(sh[0],sh[1],sh[2],sh[3]) {;}
+    Shape(const std::vector<int>& sh) : Shape(sh[0],sh[1],sh[2],sh[3]) {;}
 
     Point xyz() { return Point(x, y, z); }
 
-    friend std::ostream& operator<<(std::ostream& os, Shape sh);
+    friend std::ostream& operator<<(std::ostream& os, const Shape& sh);
 };
 
 
@@ -72,14 +72,14 @@ public:
 
     Matrix norm() const;
 
-    bool is_point_OOB(Point p) const;
+    bool is_point_OOB(const Point& p) const;
 
 
     float& operator()(int ix, int iy, int iz, int i);
     const float& operator()(int ix, int iy, int iz, int i) const;
 
-    float operator()(Point p, int i) const;
-    Point operator()(Point p) const;
+    float operator()(const Point& p, int i) const;
+    Point operator()(const Point& p) const;
 
     Matrix operator()(int i);
 

@@ -4,7 +4,7 @@
 
 
 
-Matrix read_pvtr(std::string filename)
+Matrix read_pvtr( const std::string& filename )
 {
     vtkSmartPointer<vtkXMLPRectilinearGridReader> reader = 
         vtkSmartPointer<vtkXMLPRectilinearGridReader>::New();
@@ -93,7 +93,7 @@ Matrix read_pvtr(std::string filename)
 }
 
 
-void get_coord(Matrix& X, Matrix& Y, Matrix& Z, std::string filename)
+void get_coord(Matrix& X, Matrix& Y, Matrix& Z, const std::string& filename)
 {
     vtkSmartPointer<vtkXMLPRectilinearGridReader> reader = 
         vtkSmartPointer<vtkXMLPRectilinearGridReader>::New();
