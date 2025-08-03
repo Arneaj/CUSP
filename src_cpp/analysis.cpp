@@ -136,6 +136,27 @@ float interest_point_flatness_checker( const InterestPoint* const interest_point
 
 
 
+float get_delta_r_0( float r_0, const InterestPoint* const interest_points, int nb_theta, int nb_phi, float theta_used )
+{
+    float avg_r = 0.0f;
+    float sum_weights = 0.0f;
+
+    for (int iphi=0; iphi<nb_phi; iphi++) for (int itheta=0; itheta<nb_theta; itheta++)
+    {
+        const InterestPoint& ip = interest_points[itheta*nb_phi + iphi];
+
+        if ( ip.theta > theta_used ) break;
+
+        sum_weights += ip.weight;
+        avg_r += ip.radius * ip.weight;
+    }
+
+    avg_r /= sum_weights;
+
+    return r_0 - avg_r;
+}
+
+
 
 
 void save_analysis_csv( std::string filepath, 

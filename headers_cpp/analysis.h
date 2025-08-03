@@ -24,6 +24,16 @@ float get_grad_J_fit_over_interest_points( double (*fn)(const double* const, dou
 /// @brief returns l_n + l_s
 float get_delta_l( float l_n, float l_s );
 
+
+/// @brief returns `r_0 - avg_r` of the interest points where `theta < theta_used`
+/// @param r_0 
+/// @param interest_points 
+/// @param nb_theta 
+/// @param nb_phi 
+/// @param theta_used 
+float get_delta_r_0( float r_0, const InterestPoint* const interest_points, int nb_theta, int nb_phi, float theta_used=0.2f );
+
+
 /// @brief returns the number of parameters in params that have reached their lower or upper bounds after fitting
 /// @param params parameters after fitting with fit_MP in fit_to_analytical.h
 int get_params_at_boundaries( double* params, double* lowerbound, double* upperbound, int nb_params );

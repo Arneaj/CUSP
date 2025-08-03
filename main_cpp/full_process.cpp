@@ -295,12 +295,14 @@ int main(int argc, char* argv[])
 
     float grad_J_fit_over_ip = get_grad_J_fit_over_interest_points( EllipsisPoly, result.params, interest_points, nb_interest_points, J_norm_real, earth_pos_real );
     float delta_l = get_delta_l( result.params[5], result.params[8] );
+    float delta_r_0 = get_delta_r_0(result.params[0], interest_points, nb_theta, nb_theta);
     int nb_params_at_boundaries = get_params_at_boundaries( result.params.data(), lowerbound, upperbound, nb_params );
     float max_theta_in_threshold = interest_point_flatness_checker( interest_points, nb_theta, nb_phi, &is_concave, threshold );
 
-    const float delta_l_lowerbound = 1.0;
-    const float r_0_lowerbound = 8.0;
-    const float avg_std_dev_upperbound = 1.5;
+    const float delta_l_lowerbound = 1.0f;
+    const float delta_r_0_lowerbound = 3.0f;
+    const float r_0_lowerbound = 8.0f;
+    const float avg_std_dev_upperbound = 1.5f;
 
     if (logging) std::cout << "Average standard deviation of the interest points is " << avg_std_dev << std::endl;
     if (warnings && avg_std_dev > avg_std_dev_upperbound) std::cout << "\t--> WARNING: high average interest point standard deviation\n";
@@ -321,6 +323,9 @@ int main(int argc, char* argv[])
     if (logging) std::cout << "delta_l is " << delta_l << std::endl;
     if (warnings && delta_l<delta_l_lowerbound) std::cout << "\t--> WARNING: delta_l very low\n";
 
+    if (logging) std::cout << "delta_r_0 is " << delta_r_0 << std::endl;
+    if (warnings && std::abs(delta_r_0) > delta_r_0_lowerbound) std::cout << "\t--> WARNING: delta_r_0 very large\n";
+
     if (logging) std::cout << "Number of parameters at boundaries is " << nb_params_at_boundaries << std::endl;
     if (warnings && nb_params_at_boundaries>0) std::cout << "\t--> WARNING: at least one parameter has reached bounds\n";
 
@@ -335,11 +340,11 @@ int main(int argc, char* argv[])
 
     std::vector<std::string> inputs_names = { "B_x", "B_y", "B_z", "V_x", "V_y", "V_z", "rho", "Ti", "Te" };
     std::vector<std::string> params_names = { "r_0", "alpha_0", "alpha_1", "alpha_2", "d_n", "l_n", "s_n", "d_s", "l_s", "s_s", "e" };
-    std::vector<std::string> metrics_names = { "ip_avg_std_dev", "fit_cost", "grad_J_fit_over_ip", "delta_l", "nb_params_at_bounds", "max_theta_flat", "is_concave" };
+    std::vector<std::string> metrics_names = { "ip_avg_std_dev", "fit_cost", "grad_J_fit_over_ip", "delta_l", "delta_r_0", "nb_params_at_bounds", "max_theta_flat", "is_concave" };
 
     std::vector<float> inputs = { solar_wind.B.x, solar_wind.B.y, solar_wind.B.z, solar_wind.V.x, solar_wind.V.y, solar_wind.V.z, solar_wind.rho, solar_wind.Ti, solar_wind.Te };
     std::vector<double> params = result.params;
-    std::vector<float> metrics = { avg_std_dev, float(result.cost/nb_interest_points), grad_J_fit_over_ip, delta_l, float(nb_params_at_boundaries), max_theta_in_threshold, float(is_concave) };
+    std::vector<float> metrics = { avg_std_dev, float(result.cost/nb_interest_points), grad_J_fit_over_ip, delta_l, delta_r_0, float(nb_params_at_boundaries), max_theta_in_threshold, float(is_concave) };
 
 
     t1 = Time::now();
