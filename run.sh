@@ -24,36 +24,36 @@ echo Finished loading modules.
 echo
 
 runs=(
-	"1"
-	"2"
-	"3"
-	"4"
-	"5"
-	"6"
-	"7"
-	"8"
-	"9"
-	"10"
-	"11"
-	"12"
-	"13"
-	"14"
+	# "1"
+	# "2"
+	# "3"
+	# "4"
+	# "5"
+	# "6"
+	# "7"
+	# "8"
+	# "9"
+	# "10"
+	# "11"
+	# "12"
+	# "13"
+	# "14"
 	"15"
 	"16"
-	"17"
-	"18"
-	"19"
+	# "17"
+	# "18"
+	# "19"
 )
 
 
 timesteps=(
 	"28800"
 	"27000"
-	"23100"
-	"22500"
-	"21900"
-	"21000"
-	"20100"
+	# "23100"
+	# "22500"
+	# "21900"
+	# "21000"
+	# "20100"
 )
 
 # cd build
@@ -77,10 +77,10 @@ for run_nb in "${runs[@]}"; do
 						-s /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run"$run_nb"/MS_Vars.csv \
 						-t "$t" \
 						-o /rds/general/user/avr24/home/Thesis/data/Run"$run_nb"_"$t" \
-						--timing false \
+						--timing true \
 						--logging true \
 						--warnings true \
-						--save_J_norm false
+						--save_J_norm true
 
 		cd ..
 		# echo "Finished fitting the data point at Run$((run_nb)), timestep $((t))"

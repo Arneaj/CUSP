@@ -41,6 +41,8 @@ float get_grad_J_fit_over_interest_points( double (*fn)(const double* const, dou
     float total_grad_norm = 0.0f;
     float total_grad_norm_ip = 0.0f;
 
+    Point dp(dx, dy, dz);
+
     for (int i=0; i<nb_interest_points; i++)
     {
         const InterestPoint& ip = interest_points[i];
@@ -55,6 +57,11 @@ float get_grad_J_fit_over_interest_points( double (*fn)(const double* const, dou
 
         Point p_ip = ip.radius * proj + earth_pos;
         Point p = radius * proj + earth_pos;
+
+        if ( J_norm.is_point_OOB(p+2.0f*dp) || J_norm.is_point_OOB(p-2.0f*dp) ||
+             J_norm.is_point_OOB(p_ip+2.0f*dp) || J_norm.is_point_OOB(p_ip-2.0f*dp) ) continue;
+
+        
 
         Point grad_J_ip = local_grad_of_normed_matrix(J_norm, p_ip, DerivativeAccuracy::high, dx, dy, dz);
         Point grad_J = local_grad_of_normed_matrix(J_norm, p, DerivativeAccuracy::high, dx, dy, dz);
