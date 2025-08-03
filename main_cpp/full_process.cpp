@@ -159,6 +159,8 @@ int main(int argc, char* argv[])
     
     auto t0 = Time::now();
 
+    SolarWindInputs solar_wind = read_Gorgon_inputs( filepath, timestep );
+
     PVTRReaderBinWriter reader_writer;    
 
     Matrix J;
@@ -330,13 +332,13 @@ int main(int argc, char* argv[])
 
 
 
-    std::vector<std::string> inputs_names = {};
-    std::vector<std::string> params_names = {"r_0", "alpha_0", "alpha_1", "alpha_2", "d_n", "l_n", "s_n", "d_s", "l_s", "s_s", "e"};
-    std::vector<std::string> metrics_names = {"ip_avg_std_dev", "fit_cost", "grad_J_fit_over_ip", "delta_l", "nb_params_at_bounds", "max_theta_flat", "is_concave"};
+    std::vector<std::string> inputs_names = { "B_x", "B_y", "B_z", "V_x", "V_y", "V_z", "rho", "Ti", "Te" };
+    std::vector<std::string> params_names = { "r_0", "alpha_0", "alpha_1", "alpha_2", "d_n", "l_n", "s_n", "d_s", "l_s", "s_s", "e" };
+    std::vector<std::string> metrics_names = { "ip_avg_std_dev", "fit_cost", "grad_J_fit_over_ip", "delta_l", "nb_params_at_bounds", "max_theta_flat", "is_concave" };
 
-    std::vector<float> inputs = {};
+    std::vector<float> inputs = { solar_wind.B.x, solar_wind.B.y, solar_wind.B.z, solar_wind.V.x, solar_wind.V.y, solar_wind.V.z, solar_wind.rho, solar_wind.Ti, solar_wind.Te };
     std::vector<double> params = result.params;
-    std::vector<float> metrics = {avg_std_dev, float(result.cost/nb_interest_points), grad_J_fit_over_ip, delta_l, float(nb_params_at_boundaries), max_theta_in_threshold, float(is_concave)};
+    std::vector<float> metrics = { avg_std_dev, float(result.cost/nb_interest_points), grad_J_fit_over_ip, delta_l, float(nb_params_at_boundaries), max_theta_in_threshold, float(is_concave) };
 
 
     t1 = Time::now();
