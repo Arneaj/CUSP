@@ -144,16 +144,8 @@ void save_analysis_csv( std::string filepath,
         if (input_name == inputs_names.front()) fs << input_name;
         else fs << ',' << input_name;
     }
-    for (const std::string& param_name: params_names) 
-    {
-        if (param_name == params_names.front()) fs << param_name;
-        else fs << ',' << param_name;
-    }
-    for (const std::string& metric_name: metrics_names) 
-    {
-        if (metric_name == metrics_names.front()) fs << metric_name;
-        else fs << ',' << metric_name;
-    }
+    for (const std::string& param_name: params_names) fs << ',' << param_name;
+    for (const std::string& metric_name: metrics_names) fs << ',' << metric_name;
 
     fs << '\n';
 
@@ -162,16 +154,8 @@ void save_analysis_csv( std::string filepath,
         if (input == inputs.front()) fs << input;
         else fs << ',' << input;
     }
-    for (double param: params) 
-    {
-        if (param == params.front()) fs << param;
-        else fs << ',' << param;
-    }
-    for (float metric: metrics) 
-    {
-        if (metric == metrics.front()) fs << metric;
-        else fs << ',' << metric;
-    }
+    for (double param: params) fs << ',' << param;
+    for (float metric: metrics) fs << ',' << metric;
 
     fs.close();
 }
