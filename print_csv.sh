@@ -34,7 +34,7 @@ timesteps=(
 )
 
 touch result_print_csv.csv
-truncate -s 0 result_print_csv.csv
+cat data/Run1_23100/analysis.csv | sed -n 1p > result_print_csv.csv
 
 for run_nb in "${runs[@]}"; do
 	for t in "${timesteps[@]}"; do

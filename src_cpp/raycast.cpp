@@ -12,8 +12,7 @@ float Shue97(float r_0, float alpha_0, float one_plus_cos_theta)
 }
 
 
-float get_bowshock_radius(  float theta, float phi, 
-                            float r_0_min, float r_0_max, float alpha_0,
+float get_bowshock_radius(  float theta, float phi,
                             const Matrix& rho, const Point& earth_pos,
                             float dr )
 {
