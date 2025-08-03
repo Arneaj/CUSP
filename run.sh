@@ -74,6 +74,7 @@ for run_nb in "${runs[@]}"; do
 
 		cd build
 		./full_process 	-i /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run"$run_nb"/MS \
+						-s /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run"$run_nb"/MS_Vars.csv \
 						-t "$t" \
 						-o /rds/general/user/avr24/home/Thesis/data/Run"$run_nb"_"$t" \
 						--timing false \

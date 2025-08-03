@@ -155,6 +155,8 @@ void save_analysis_csv( std::string filepath,
         else fs << ',' << metric_name;
     }
 
+    fs << '\n';
+
     for (float input: inputs) 
     {
         if (input == inputs.front()) fs << input;

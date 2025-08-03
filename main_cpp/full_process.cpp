@@ -42,6 +42,7 @@ int main(int argc, char* argv[])
 
     std::string filepath(".");
     std::string timestep("");                       // TODO: could add support for multiple timesteps at a time?
+    std::string solarwind_inputpath(".");
     std::string savepath(".");
 
     std::string J_format("x00_jvec-");
@@ -59,7 +60,7 @@ int main(int argc, char* argv[])
         if (i+1>=argc || argv[i+1][0]=='-') { std::cout << "ERROR: no parameter provided for flag: " << argv[i] << std::endl; exit(1); }
 
         if( std::string(argv[i]) == "--input_dir" || std::string(argv[i]) == "-i" ) filepath = argv[i+1];
-        else if( std::string(argv[i]) == "--output_dir" || std::string(argv[i]) == "-o" ) savepath = argv[i+1];
+        else if( std::string(argv[i]) == "--solar_wind_input_path" || std::string(argv[i]) == "-s" ) solarwind_inputpath = argv[i+1];
         else if( std::string(argv[i]) == "--output_dir" || std::string(argv[i]) == "-o" ) savepath = argv[i+1];
 
         else if( std::string(argv[i]) == "--timestep" || std::string(argv[i]) == "-t" ) timestep = argv[i+1];
@@ -159,9 +160,9 @@ int main(int argc, char* argv[])
     
     auto t0 = Time::now();
 
-    SolarWindInputs solar_wind = read_Gorgon_inputs( filepath, timestep );
+    SolarWindInputs solar_wind = read_Gorgon_inputs( solarwind_inputpath, timestep );
 
-    PVTRReaderBinWriter reader_writer;    
+    PVTRReaderBinWriter reader_writer;
 
     Matrix J;
     reader_writer.read(filepath + std::string("/") + J_format + timestep + std::string(".") + file_format, J);

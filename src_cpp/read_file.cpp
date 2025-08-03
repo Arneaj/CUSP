@@ -137,31 +137,33 @@ void save_file_bin( std::string filename, Matrix& mat )
 
 SolarWindInputs read_Gorgon_inputs( std::string filepath, std::string timestep )
 {
-    char s[64] = "";
+    const int MAX_SIZE = 512;
+    char s[MAX_SIZE] = "";
     float timestep_f = std::stof(timestep);
 
     std::ifstream fs;
     fs.open(filepath);
 
-    fs.getline( s, 64 );
-    fs.getline( s, 64, ',' );
+    fs.getline( s, MAX_SIZE );
+    fs.getline( s, MAX_SIZE, ',' );
     if (fs.fail() || fs.eof()) { std::cout << "ERROR: couldn't read the solar wind inputs file\n"; fs.close(); exit(1); }
 
     while ( std::abs( std::stof(s) - timestep_f ) > 1.0f )
     {
-        fs.getline( s, 64 );
+        fs.getline( s, MAX_SIZE );
+        fs.getline( s, MAX_SIZE, ',' );
         if (fs.fail() || fs.eof()) { std::cout << "ERROR: couldn't find the provided timestep in the solar wind inputs file\n"; fs.close(); exit(1); }
     }
 
-    fs.getline( s, 64, ',' ); float rho = std::stof(s);
-    fs.getline( s, 64, ',' ); float Ti = std::stof(s);
-    fs.getline( s, 64, ',' ); float Te = std::stof(s);
-    fs.getline( s, 64, ',' ); float Vx = std::stof(s);
-    fs.getline( s, 64, ',' ); float Vy = std::stof(s);
-    fs.getline( s, 64, ',' ); float Vz = std::stof(s);
-    fs.getline( s, 64, ',' ); float Bx = std::stof(s);
-    fs.getline( s, 64, ',' ); float By = std::stof(s);
-    fs.getline( s, 64, ',' ); float Bz = std::stof(s);
+    fs.getline( s, MAX_SIZE, ',' ); float rho = std::stof(s);
+    fs.getline( s, MAX_SIZE, ',' ); float Ti = std::stof(s);
+    fs.getline( s, MAX_SIZE, ',' ); float Te = std::stof(s);
+    fs.getline( s, MAX_SIZE, ',' ); float Vx = std::stof(s);
+    fs.getline( s, MAX_SIZE, ',' ); float Vy = std::stof(s);
+    fs.getline( s, MAX_SIZE, ',' ); float Vz = std::stof(s);
+    fs.getline( s, MAX_SIZE, ',' ); float Bx = std::stof(s);
+    fs.getline( s, MAX_SIZE, ',' ); float By = std::stof(s);
+    fs.getline( s, MAX_SIZE, ',' ); float Bz = std::stof(s);
     
     fs.close();
 
