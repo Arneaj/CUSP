@@ -12,11 +12,49 @@ float Shue97(float r_0, float alpha_0, float one_plus_cos_theta)
 }
 
 
-float get_bowshock_radius(  float theta, float phi,
-                            const Matrix& rho, const Point& earth_pos,
+float get_bowshock_radius(  const Point& projection,
+                            const Matrix& Rho, const Point& earth_pos,
                             float dr )
 {
+    float bow_r = 0.0f;
+    float r = 0.0f;
+    Point p = r * projection + earth_pos;
+
+    float min_delta_rho = 0.0f;
+    float previous_rho = Rho(p, 0);
+
+    r += dr;
+
+    while ( !Rho.is_point_OOB(p) )
+    {
+        float rho = Rho(p, 0);
+        float delta_rho = rho - previous_rho;
+
+        if ( delta_rho < min_delta_rho ) min_delta_rho = delta_rho;
+
+        r += dr;
+        p = r * projection + earth_pos;
+
+        previous_rho = rho;
+    }
+    
     return 0.0f;
+}
+
+
+float get_bowshock_radius(  float theta, float phi,
+                            const Matrix& Rho, const Point& earth_pos,
+                            float dr )
+{
+    float sin_theta = std::sin(theta);
+
+    Point proj = Point(
+        -std::cos(theta),
+        sin_theta*std::sin(phi),
+        sin_theta*std::cos(phi)
+    );
+
+    return get_bowshock_radius(proj, Rho, earth_pos, dr);
 }
 
 
