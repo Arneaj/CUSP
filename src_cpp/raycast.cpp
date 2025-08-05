@@ -20,7 +20,7 @@ float get_bowshock_radius(  const Point& projection,
     float r = 0.0f;
     Point p = r * projection + earth_pos;
 
-    float min_delta_rho = 0.0f;
+    float min_value = 0.0f;
     float previous_rho = Rho(p, 0);
 
     r += dr;
@@ -28,17 +28,24 @@ float get_bowshock_radius(  const Point& projection,
     while ( !Rho.is_point_OOB(p) )
     {
         float rho = Rho(p, 0);
-        float delta_rho = rho - previous_rho;
+        float value = (rho - previous_rho) * r*r*r; 
+        // bit horrifying, but this is to try and ignore things near the earth
 
-        if ( delta_rho < min_delta_rho ) min_delta_rho = delta_rho;
+        if ( value < min_value )
+        {
+            min_value = value;
+            bow_r = r;
+        }
 
         r += dr;
         p = r * projection + earth_pos;
 
         previous_rho = rho;
     }
+
+    if ( std::abs( r-dr-bow_r ) < 0.1f*dr )
     
-    return 0.0f;
+    return bow_r;
 }
 
 
