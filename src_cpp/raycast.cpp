@@ -365,3 +365,58 @@ void save_interest_points( const std::string& filename, const InterestPoint* int
 
     fs.close();
 }
+
+
+
+
+void process_points(    std::vector<Point>& points, 
+                        const Shape& shape_sim, const Shape& shape_real,
+                        const Point& earth_pos_sim, const Point& earth_pos_real )
+{
+    for (Point& p: points)
+    {
+        Point point;
+
+        float sin_theta = std::sin(p.x);
+
+        point.x = std::cos(p.x);
+        point.y = sin_theta * std::sin(p.y);
+        point.z = sin_theta * std::cos(p.y);
+
+        point *= p.z;
+        point += earth_pos_sim;
+
+        point.x *= float(shape_real.x) / float(shape_sim.x);
+        point.y *= float(shape_real.y) / float(shape_sim.y);
+        point.z *= float(shape_real.z) / float(shape_sim.z);
+
+        // std::cout << point << std::endl;
+
+        point -= earth_pos_real;
+
+        p.z = point.norm();
+        p.x = std::acos( point.x / std::max(0.1f, p.z) );
+        p.y = std::acos( point.z / std::max(0.1f, std::sqrt( point.y*point.y + point.z*point.z )) );
+        p.y *= (point.y>0) - (point.y<=0);
+    }
+}
+
+
+
+
+
+
+void save_points( const std::string& filename, const std::vector<Point>& points )
+{
+    std::ofstream fs;
+    fs.open(filename);
+
+    for (const Point& p: points)
+    {
+        fs  << p.x << ','
+            << p.y << ','
+            << p.z << '\n';
+    }
+
+    fs.close();
+}

@@ -65,6 +65,18 @@ void process_interest_points(   InterestPoint* interest_points,
                                 const Point& earth_pos_sim, const Point& earth_pos_real );
 
 
+/// @brief transforms points from the simulation coordinates to the real coordinates
+/// @param points despite writing (x,y,z), points in this case are actually of coordinates (theta,phi,radius)
+/// @param shape_sim 
+/// @param shape_real 
+/// @param earth_pos_sim 
+/// @param earth_pos_real 
+void process_points(    std::vector<Point>& points, 
+                        const Shape& shape_sim, const Shape& shape_real,
+                        const Point& earth_pos_sim, const Point& earth_pos_real );
+
+
+void save_points( const std::string& filename, const std::vector<Point>& points );
 
 
 #endif
