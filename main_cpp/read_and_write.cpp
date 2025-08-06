@@ -15,7 +15,10 @@
 typedef std::chrono::high_resolution_clock Time;
 typedef std::chrono::duration<float> fsec;
 
-// const float PI = 3.141592653589793238462643383279502884f;
+#ifndef CUSTOM_PI
+#define CUSTOM_PI
+const float PI = 3.141592653589793238462643383279502884f;
+#endif
 
 
 int main(int argc, char* argv[])

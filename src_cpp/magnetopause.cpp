@@ -5,7 +5,10 @@
 #include "../headers_cpp/magnetopause.h"
 
 
+#ifndef CUSTOM_PI
+#define CUSTOM_PI
 const float PI = 3.141592653589793238462643383279502884f;
+#endif
 
 
 

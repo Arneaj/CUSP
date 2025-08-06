@@ -15,7 +15,10 @@
 typedef std::chrono::high_resolution_clock Time;
 typedef std::chrono::duration<float> fsec;
 
-// const float PI = 3.141592653589793238462643383279502884f;
+#ifndef CUSTOM_PI
+#define CUSTOM_PI
+const float PI = 3.141592653589793238462643383279502884f;
+#endif
 
 
 int main(int argc, char* argv[])
@@ -50,6 +53,7 @@ int main(int argc, char* argv[])
     std::string B_format("x00_Bvec_c-");
     std::string V_format("x00_vvec-");              // TODO: not sure how best to do this
     std::string Rho_format("x00_rho-");
+    std::string T_format("x00_Te-");
 
     std::string file_format("pvtr");                // TODO: would be interesting to support mutiple file formats (pvti, ...)
     std::string file_save_format("bin");
@@ -184,6 +188,9 @@ int main(int argc, char* argv[])
     Matrix Rho;
     if (save_Rho) reader_writer.read(filepath + std::string("/") + Rho_format + timestep + std::string(".") + file_format, Rho);
 
+    Matrix T;
+    reader_writer.read(filepath + std::string("/") + T_format + timestep + std::string(".") + file_format, T);
+
     Matrix X;
     Matrix Y;
     Matrix Z;
@@ -225,6 +232,9 @@ int main(int argc, char* argv[])
 
     Matrix Rho_processed_real;
     if (save_Rho) Rho_processed_real = orthonormalise(Rho, X, Y, Z, &new_shape_real);
+
+    Matrix T_processed_real;
+    T_processed_real = orthonormalise(T, X, Y, Z, &new_shape_real);
 
     Matrix J_norm_sim = J_processed_sim.norm();
     Matrix J_norm_real = J_processed_real.norm();
@@ -374,6 +384,7 @@ int main(int argc, char* argv[])
     if (save_B) save_file_bin( savepath + std::string("/B_processed_real.") + file_save_format, B_processed_real );
     if (save_V) save_file_bin( savepath + std::string("/V_processed_real.") + file_save_format, V_processed_real );
     if (save_Rho) save_file_bin( savepath + std::string("/Rho_processed_real.") + file_save_format, Rho_processed_real );
+    save_file_bin( savepath + std::string("/T_processed_real.") + file_save_format, T_processed_real );
 
     // save_file_bin( savepath + std::string("/J.") + file_save_format, J );
     // save_file_bin( savepath + std::string("/J_processed_sim.") + file_save_format, J_processed_sim );
