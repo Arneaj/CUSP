@@ -67,6 +67,8 @@ timesteps=(
 
 # echo Finished building program.
 
+cd ..
+
 
 for run_nb in "${runs[@]}"; do
 	for t in "${timesteps[@]}"; do

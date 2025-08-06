@@ -25,7 +25,7 @@ module load googletest > /dev/null 2>&1
 
 echo
 
-cd build
+cd ../build
 # cmake .. > /dev/null
 # make > /dev/null
 

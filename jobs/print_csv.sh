@@ -33,13 +33,15 @@ timesteps=(
 	"28800"
 )
 
-touch result_print_csv.csv
-cat data/Run1_23100/analysis.csv | sed -n 1p > result_print_csv.csv
+cd ..
+
+touch .result_folder/result_print_csv.csv
+cat data/Run1_23100/analysis.csv | sed -n 1p > .result_folder/result_print_csv.csv
 
 for run_nb in "${runs[@]}"; do
 	for t in "${timesteps[@]}"; do
-    	cat data/Run"$run_nb"_"$t"/analysis.csv | sed -n 2p >> result_print_csv.csv
-		echo >> result_print_csv.csv
+    	cat data/Run"$run_nb"_"$t"/analysis.csv | sed -n 2p >> .result_folder/result_print_csv.csv
+		echo >> .result_folder/result_print_csv.csv
 	done
 done
 

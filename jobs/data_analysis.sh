@@ -26,7 +26,7 @@ module load googletest > /dev/null 2>&1
 
 echo
 
-cd python
+cd ../python
 
 python data_analysis.py
 
