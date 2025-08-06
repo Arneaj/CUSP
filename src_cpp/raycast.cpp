@@ -114,7 +114,6 @@ std::vector<Point> get_bowshock( const Matrix& Rho, const Point& earth_pos, floa
             );
 
             float r = get_bowshock_radius(proj, Rho, earth_pos, dr, &is_at_bounds);
-            Point p = r*proj + earth_pos;
 
             if ( is_at_bounds || r < shue97_radii[itheta] ) break;
 

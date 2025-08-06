@@ -17,6 +17,8 @@ public:
     Point(float _x, float _y, float _z): x(_x), y(_y), z(_z), is_null(false) {;}
     // Point(const Point& _p): x(_p.x), y(_p.y), z(_p.z) {;}
 
+    bool operator==(const Point& p) { return x==p.x && y==p.y && z==p.z; }
+
     Point operator+(const Point& p);
     Point operator+(const Point& p) const;
     Point operator+=(const Point& p);
