@@ -32,7 +32,7 @@ Matrix orthonormalise( const Matrix& mat, Matrix& X, Matrix& Y, Matrix& Z, const
     {
         if ( sx > X[i+1] ) continue;
         iX[sx] = i;
-        dX[sx] = ( sx - X[i]) / (X[i+1] - X[i]);
+        dX[sx] = (sx - X[i]) / (X[i+1] - X[i]);
         break;
     }
 
@@ -41,7 +41,7 @@ Matrix orthonormalise( const Matrix& mat, Matrix& X, Matrix& Y, Matrix& Z, const
     {
         if ( sy > Y[i+1] ) continue;
         iY[sy] = i;
-        dY[sy] = ( sy - Y[i]) / (Y[i+1] - Y[i]);
+        dY[sy] = (sy - Y[i]) / (Y[i+1] - Y[i]);
         break;
     }
 
@@ -50,7 +50,7 @@ Matrix orthonormalise( const Matrix& mat, Matrix& X, Matrix& Y, Matrix& Z, const
     {
         if ( sz > Z[i+1] ) continue;
         iZ[sz] = i;
-        dZ[sz] = ( sz - Z[i]) / (Z[i+1] - Z[i]);
+        dZ[sz] = (sz - Z[i]) / (Z[i+1] - Z[i]);
         break;
     }
 

@@ -14,7 +14,8 @@ float Shue97(float r_0, float alpha_0, float one_plus_cos_theta)
 
 float get_bowshock_radius(  const Point& projection,
                             const Matrix& Rho, const Point& earth_pos,
-                            float dr )
+                            float dr,
+                            bool* is_at_bounds )
 {
     float bow_r = 0.0f;
     float r = 0.0f;
@@ -43,7 +44,7 @@ float get_bowshock_radius(  const Point& projection,
         previous_rho = rho;
     }
 
-    if ( std::abs( r-dr-bow_r ) < 0.1f*dr ) ;
+    if ( is_at_bounds != nullptr && std::abs( r-dr-bow_r ) < 0.1f*dr ) *is_at_bounds = true;
     
     return bow_r;
 }
@@ -51,7 +52,8 @@ float get_bowshock_radius(  const Point& projection,
 
 float get_bowshock_radius(  float theta, float phi,
                             const Matrix& Rho, const Point& earth_pos,
-                            float dr )
+                            float dr,
+                            bool* is_at_bounds )
 {
     float sin_theta = std::sin(theta);
 
@@ -61,8 +63,74 @@ float get_bowshock_radius(  float theta, float phi,
         sin_theta*std::cos(phi)
     );
 
-    return get_bowshock_radius(proj, Rho, earth_pos, dr);
+    return get_bowshock_radius(proj, Rho, earth_pos, dr, is_at_bounds);
 }
+
+
+inline void squeeze_vector( std::vector<Point>& points )
+{
+    Point empty_p{};
+    points.erase(std::remove(points.begin(), points.end(), empty_p), points.end());
+}
+
+
+std::vector<Point> get_bowshock( const Matrix& Rho, const Point& earth_pos, float dr, int nb_phi, int max_nb_theta )
+{
+    std::vector<Point> bs_points( nb_phi*max_nb_theta );
+
+    float shue97_radii[max_nb_theta];
+
+    float dphi = 2.0f*PI / nb_phi;
+    float dtheta = PI / max_nb_theta;
+
+    float theta=0.0f;
+
+    #pragma omp parallel for
+    for (int itheta=0; itheta<max_nb_theta; itheta++)
+    {
+        shue97_radii[itheta] = Shue97(5.0f, 0.7f, 1.0f+std::cos(theta));
+        theta += dtheta;
+    }
+
+    #pragma omp parallel for
+    for (int iphi=0; iphi<nb_phi; iphi++)
+    {
+        float phi = iphi*dphi - PI;
+        float sin_phi = std::sin(phi);
+        float cos_phi = std::cos(phi);
+
+        theta = 0.0f;
+
+        bool is_at_bounds = false;
+
+        for (int itheta=0; itheta<max_nb_theta; itheta++)
+        {
+            float sin_theta = std::sin(theta);
+
+            Point proj = Point(
+                -std::cos(theta),
+                sin_theta*sin_phi,
+                sin_theta*cos_phi
+            );
+
+            float r = get_bowshock_radius(proj, Rho, earth_pos, dr, &is_at_bounds);
+            Point p = r*proj + earth_pos;
+
+            if ( is_at_bounds || r < shue97_radii[itheta] ) break;
+
+            bs_points[itheta*nb_phi + iphi] = Point(theta, phi, r);
+
+            theta += dtheta;
+        }
+    }
+
+    squeeze_vector(bs_points);
+
+    return bs_points;
+}
+
+
+
 
 
 void interest_points_helper(    float r_0, float alpha_0, 

@@ -13,6 +13,19 @@
 
 
 
+float get_bowshock_radius(  const Point& projection,
+                            const Matrix& Rho, const Point& earth_pos,
+                            float dr,
+                            bool* is_at_bounds=nullptr );
+
+float get_bowshock_radius(  float theta, float phi,
+                            const Matrix& Rho, const Point& earth_pos,
+                            float dr,
+                            bool* is_at_bounds=nullptr );
+
+std::vector<Point> get_bowshock( const Matrix& Rho, const Point& earth_pos, float dr, int nb_phi, int max_nb_theta );
+
+
 class InterestPoint
 {
 public:
