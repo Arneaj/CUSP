@@ -5,6 +5,9 @@
 #PBS -N mp_topology
 cd $PBS_O_WORKDIR
 
+exec > ../.result_folder/${PBS_JOBNAME}.o${PBS_JOBID%%.*} 2>&1
+rm ${PBS_JOBNAME}.o${PBS_JOBID%%.*} 2>&1
+
 # echo $OMP_NUM_THREADS
 
 module load miniforge/3 > /dev/null 2>&1

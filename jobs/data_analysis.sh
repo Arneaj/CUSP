@@ -2,8 +2,11 @@
 #PBS -l walltime=01:00:00
 #PBS -l select=1:ncpus=16:mem=32gb:ompthreads=16
 #PBS -j oe
-#PBS -N result_small_test
+#PBS -N result_data_analysis
 cd $PBS_O_WORKDIR
+
+exec > ../.result_folder/${PBS_JOBNAME}.o${PBS_JOBID%%.*} 2>&1
+rm ${PBS_JOBNAME}.o${PBS_JOBID%%.*} 2>&1
 
 # echo $OMP_NUM_THREADS
 
@@ -20,17 +23,12 @@ module load Abseil > /dev/null 2>&1
 module load googletest > /dev/null 2>&1   	
 
 
+
 echo
 
-cd build
-# cmake .. > /dev/null
-# make > /dev/null
+cd python
 
-valgrind -s --leak-check=full --show-leak-kinds=all ./full_process -i /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run1/MS \
-						-t 23100 \
-						--save_J_norm false \
-						-X false -Y false -Z false \
-						--save_interest_points false --save_params false
+python data_analysis.py
 
 
 

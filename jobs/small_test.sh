@@ -2,8 +2,11 @@
 #PBS -l walltime=01:00:00
 #PBS -l select=1:ncpus=16:mem=32gb:ompthreads=16
 #PBS -j oe
-#PBS -N result_read_and_write
+#PBS -N result_small_test
 cd $PBS_O_WORKDIR
+
+exec > ../.result_folder/${PBS_JOBNAME}.o${PBS_JOBID%%.*} 2>&1
+rm ${PBS_JOBNAME}.o${PBS_JOBID%%.*} 2>&1
 
 # echo $OMP_NUM_THREADS
 
@@ -26,8 +29,11 @@ cd build
 # cmake .. > /dev/null
 # make > /dev/null
 
-./read_and_write 	/rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run10/MS/x00_rho-28800.pvtr \
-					/rds/general/user/avr24/home/Thesis/test_data/rho_10_28800.bin
+valgrind -s --leak-check=full --show-leak-kinds=all ./full_process -i /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run1/MS \
+						-t 23100 \
+						--save_J_norm false \
+						-X false -Y false -Z false \
+						--save_interest_points false --save_params false
 
 
 

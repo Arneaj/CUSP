@@ -2,8 +2,11 @@
 #PBS -l walltime=01:00:00
 #PBS -l select=1:ncpus=16:mem=32gb:ompthreads=16
 #PBS -j oe
-#PBS -N result_data_analysis
+#PBS -N result_read_and_write
 cd $PBS_O_WORKDIR
+
+exec > ../.result_folder/${PBS_JOBNAME}.o${PBS_JOBID%%.*} 2>&1
+rm ${PBS_JOBNAME}.o${PBS_JOBID%%.*} 2>&1
 
 # echo $OMP_NUM_THREADS
 
@@ -20,12 +23,14 @@ module load Abseil > /dev/null 2>&1
 module load googletest > /dev/null 2>&1   	
 
 
-
 echo
 
-cd python
+cd build
+# cmake .. > /dev/null
+# make > /dev/null
 
-python data_analysis.py
+./read_and_write 	/rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run10/MS/x00_rho-28800.pvtr \
+					/rds/general/user/avr24/home/Thesis/test_data/rho_10_28800.bin
 
 
 
