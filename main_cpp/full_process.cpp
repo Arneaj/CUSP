@@ -25,6 +25,7 @@ int main(int argc, char* argv[])
     bool save_J(false);
     bool save_B(false);
     bool save_V(false);
+    bool save_Rho(false);
 
     bool save_J_norm(true);
 
@@ -48,6 +49,7 @@ int main(int argc, char* argv[])
     std::string J_format("x00_jvec-");
     std::string B_format("x00_Bvec_c-");
     std::string V_format("x00_vvec-");              // TODO: not sure how best to do this
+    std::string Rho_format("x00_rho-");
 
     std::string file_format("pvtr");                // TODO: would be interesting to support mutiple file formats (pvti, ...)
     std::string file_save_format("bin");
@@ -84,6 +86,12 @@ int main(int argc, char* argv[])
             if (std::string(argv[i+1]) == "true") save_V = true;
             else if (std::string(argv[i+1]) == "false") save_V = false;
             else { std::cout << "ERROR: unknown parameter for flag --save_V\n"; exit(1); }
+        } 
+        else if( std::string(argv[i]) == "--save_Rho" || std::string(argv[i]) == "-R" )
+        {
+            if (std::string(argv[i+1]) == "true") save_Rho = true;
+            else if (std::string(argv[i+1]) == "false") save_Rho = false;
+            else { std::cout << "ERROR: unknown parameter for flag --save_Rho\n"; exit(1); }
         } 
         
         else if( std::string(argv[i]) == "--save_J_norm" )
@@ -166,11 +174,15 @@ int main(int argc, char* argv[])
 
     Matrix J;
     reader_writer.read(filepath + std::string("/") + J_format + timestep + std::string(".") + file_format, J);
+
     Matrix B;
     if (save_B) reader_writer.read(filepath + std::string("/") + B_format + timestep + std::string(".") + file_format, B);
 
     Matrix V;
     if (save_V) reader_writer.read(filepath + std::string("/") + V_format + timestep + std::string(".") + file_format, V);
+
+    Matrix Rho;
+    if (save_Rho) reader_writer.read(filepath + std::string("/") + Rho_format + timestep + std::string(".") + file_format, Rho);
 
     Matrix X;
     Matrix Y;
@@ -202,15 +214,17 @@ int main(int argc, char* argv[])
     Point earth_pos_real = find_real_earth_pos( X, Y, Z );
     Point earth_pos_sim = find_sim_earth_pos( earth_pos_real, new_shape_real, new_shape_sim );
 
-    Matrix B_processed_sim;
-    if (save_B) B_processed_sim = orthonormalise(B, X, Y, Z, &new_shape_sim);
     Matrix J_processed_sim = orthonormalise(J, X, Y, Z, &new_shape_sim);
+    Matrix J_processed_real = orthonormalise(J, X, Y, Z, &new_shape_real);
 
     Matrix B_processed_real;
     if (save_B) B_processed_real = orthonormalise(B, X, Y, Z, &new_shape_real);
-    Matrix J_processed_real = orthonormalise(J, X, Y, Z, &new_shape_real);
+
     Matrix V_processed_real;
     if (save_V) V_processed_real = orthonormalise(V, X, Y, Z, &new_shape_real);
+
+    Matrix Rho_processed_real;
+    if (save_Rho) Rho_processed_real = orthonormalise(Rho, X, Y, Z, &new_shape_real);
 
     Matrix J_norm_sim = J_processed_sim.norm();
     Matrix J_norm_real = J_processed_real.norm();
@@ -359,9 +373,10 @@ int main(int argc, char* argv[])
     if (save_J) save_file_bin( savepath + std::string("/J_processed_real.") + file_save_format, J_processed_real );
     if (save_B) save_file_bin( savepath + std::string("/B_processed_real.") + file_save_format, B_processed_real );
     if (save_V) save_file_bin( savepath + std::string("/V_processed_real.") + file_save_format, V_processed_real );
+    if (save_Rho) save_file_bin( savepath + std::string("/Rho_processed_real.") + file_save_format, Rho_processed_real );
 
-    save_file_bin( savepath + std::string("/J.") + file_save_format, J );
-    save_file_bin( savepath + std::string("/J_processed_sim.") + file_save_format, J_processed_sim );
+    // save_file_bin( savepath + std::string("/J.") + file_save_format, J );
+    // save_file_bin( savepath + std::string("/J_processed_sim.") + file_save_format, J_processed_sim );
 
     if (save_J_norm) save_file_bin( savepath + std::string("/J_norm_processed_real.") + file_save_format, J_norm_real );
 
@@ -380,14 +395,20 @@ int main(int argc, char* argv[])
     J.del(); 
     if (save_B) B.del(); 
     if (save_V) V.del();
+    if (save_Rho) Rho.del();
+
     X.del(); Y.del(); Z.del();
-    if (save_B) B_processed_sim.del(); 
+
     J_processed_sim.del(); 
     J_norm_sim.del();
-    if (save_B) B_processed_real.del(); 
+
     J_processed_real.del(); 
     J_norm_real.del(); 
+
+    if (save_B) B_processed_real.del(); 
     if (save_V) V_processed_real.del();
+    if (save_Rho) Rho_processed_real.del();
+    
 
     delete[] interest_points;
 }

@@ -43,7 +43,7 @@ float get_bowshock_radius(  const Point& projection,
         previous_rho = rho;
     }
 
-    if ( std::abs( r-dr-bow_r ) < 0.1f*dr )
+    if ( std::abs( r-dr-bow_r ) < 0.1f*dr ) ;
     
     return bow_r;
 }

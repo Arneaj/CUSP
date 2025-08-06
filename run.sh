@@ -80,7 +80,8 @@ for run_nb in "${runs[@]}"; do
 						--timing true \
 						--logging true \
 						--warnings true \
-						--save_J_norm true
+						--save_J_norm true \
+						--save_Rho true
 
 		cd ..
 		# echo "Finished fitting the data point at Run$((run_nb)), timestep $((t))"
