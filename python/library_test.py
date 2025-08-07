@@ -24,17 +24,39 @@ t0 = time.time()
 BS = ta.get_bowshock( Rho, earth_pos, 0.1, 50, 50 )
 t1 = time.time()
 print(f"Finished in {t1-t0}s -> Found entire Bowshock")
-# print("All bowshock radii:", BS)
 
 J_norm = gorgon.import_from_bin( filepath + "/J_norm_processed_real.bin" )
 
-X, Y, Z = gorgon.spherical_to_cartesian( BS[:,2], BS[:,0], BS[:,1], earth_pos )
+t0 = time.time()
+MP = ta.get_interest_points( 
+    J_norm, earth_pos, 
+    0.0, np.pi*0.9,  
+    50, 50,
+    0.5, 0.1,
+    0.3, 0.6, 4,
+    1.15, 2.1, 20
+)
+t1 = time.time()
+print(f"Finished in {t1-t0}s -> Found entire Magnetopause")
 
-is_in_plane = np.abs(Y-58) < 2
 
-X_plot = X[is_in_plane]
-Z_plot = Z[is_in_plane]
+X_BS, Y_BS, Z_BS = gorgon.spherical_to_cartesian( BS[:,2], BS[:,0], BS[:,1], earth_pos )
+
+is_in_plane_BS = np.abs(Y_BS-58) < 1
+
+X_BS_plot = X_BS[is_in_plane_BS]
+Z_BS_plot = Z_BS[is_in_plane_BS]
+
+
+X_MP, Y_MP, Z_MP = gorgon.spherical_to_cartesian( MP[:,2], MP[:,0], MP[:,1], earth_pos )
+
+is_in_plane_MP = np.abs(Y_MP-58) < 1
+
+X_MP_plot = X_MP[is_in_plane_MP]
+Z_MP_plot = Z_MP[is_in_plane_MP]
 
 plt.imshow( Rho[:,58,:], cmap="inferno", norm="log" )
-plt.scatter( Z_plot, X_plot, s=1.0 )
+plt.colorbar()
+plt.scatter( Z_BS_plot, X_BS_plot, s=1.0 )
+plt.scatter( Z_MP_plot, X_MP_plot, s=1.0, c=MP[is_in_plane_MP,3] )
 plt.savefig( "../images/bowshock.svg" )
