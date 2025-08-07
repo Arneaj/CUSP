@@ -11,3 +11,4 @@ output_cpp
 mp_topology.* 
 run.sh.*
 result_*
+topology_analysis.egg*
