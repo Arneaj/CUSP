@@ -76,6 +76,10 @@ pybind11::array_t<float> get_bowshock_numpy( const pybind11::array_t<float>& Rho
     return array_from_point_vec( get_bowshock(rho, earth_pos, dr, nb_phi, max_nb_theta) );
 }
 
+
+
+
+
 PYBIND11_MODULE(topology_analysis, m)
 {
     m.doc() = "Topology analysis module for magnetic field data";

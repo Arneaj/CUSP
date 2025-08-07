@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import topology_analysis as ta
 import gorgon
+import time
 
 import sys
 
@@ -15,10 +16,15 @@ Rho = gorgon.import_from_bin( filepath + "/Rho_processed_real.bin" )
 P_E = ta.Point(30, 58, 58)
 earth_pos = [30, 58, 58]
 
+t0 = time.time()
 bs_radius = ta.get_bowshock_radius( 0.0, 0.0, Rho, P_E, 0.1 )
-print("Bowshock radius for (theta,phi) = (0.0, 0.0):", bs_radius)
+t1 = time.time()
+print(f"Finished in {t1-t0}s -> Bowshock radius for (theta,phi) = (0.0, 0.0):", bs_radius)
 
+t0 = time.time()
 BS = ta.get_bowshock( Rho, P_E, 0.1, 50, 50 )
+t1 = time.time()
+print(f"Finished in {t1-t0}s -> Found entire Bowshock")
 # print("All bowshock radii:", BS)
 
 J_norm = gorgon.import_from_bin( filepath + "/J_norm_processed_real.bin" )
