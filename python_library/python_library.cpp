@@ -58,7 +58,7 @@ namespace casters
             arr[4*i] = interest_points[i].theta;
             arr[4*i+1] = interest_points[i].phi;
             arr[4*i+2] = interest_points[i].radius;
-            arr[4*i+3] = interest_points[i].radius;
+            arr[4*i+3] = interest_points[i].weight;
         }
 
         delete[] interest_points;
