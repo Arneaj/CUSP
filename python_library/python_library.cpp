@@ -237,11 +237,11 @@ PYBIND11_MODULE(topology_analysis, m)
     m.doc() = "Topology analysis module for magnetic field data";
     
     // Bind classes first
-    pybind11::class_<Point>(m, "Point")
-        .def(pybind11::init<float, float, float>())
-        .def_readwrite("x", &Point::x)
-        .def_readwrite("y", &Point::y)
-        .def_readwrite("z", &Point::z);
+    // pybind11::class_<Point>(m, "Point")
+    //     .def(pybind11::init<float, float, float>())
+    //     .def_readwrite("x", &Point::x)
+    //     .def_readwrite("y", &Point::y)
+    //     .def_readwrite("z", &Point::z);
 
     m.def("get_bowshock_radius", &raycasting::get_bowshock_radius_numpy);
     m.def("get_bowshock", &raycasting::get_bowshock_numpy);
