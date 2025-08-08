@@ -137,6 +137,7 @@ std::vector<Point> get_bowshock( const Matrix& Rho, const Point& earth_pos, floa
 
 void interest_points_helper(    float r_0, float alpha_0, 
                                 std::vector<float>* interest_points,
+                                const Point* const unsqueezed_bow_shock,
                                 const Matrix& J_norm, const Point& earth_pos, 
                                 float theta_min,
                                 int nb_theta, int nb_phi, 
@@ -158,13 +159,17 @@ void interest_points_helper(    float r_0, float alpha_0,
 
         float initial_r = Shue97(r_0, alpha_0, 1 + cos_theta);
 	    // float final_r = Shue97(12, 1, 1 + cos_theta);
-        float final_r = Shue97(20, 1, 1 + cos_theta);
+        // float final_r = Shue97(20, 1, 1 + cos_theta);
 
         float phi = -PI;
 
         for (int iphi=0; iphi<nb_phi; iphi++)
         {
             phi += dphi;
+
+            float final_r = unsqueezed_bow_shock[itheta*nb_phi+iphi].z;  // get radius of the bowshock at (theta,phi)
+            final_r -= 1.0f;  //    add a bit of extra space to be sure not to get the bowshock
+            //                      -> NOT SURE THIS IS A GOOD IDEA
 
             float max_value = 0;
             float max_r = initial_r;
@@ -258,7 +263,7 @@ InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos
     for (float r_0_mult=r_0_mult_min; r_0_mult<=r_0_mult_max; r_0_mult+=dr_0_mult) for (float alpha_0=alpha_0_min; alpha_0<=alpha_0_max; alpha_0+=dalpha_0)
         interest_points_helper( r_0_mult * r_inner, alpha_0,
                                 interest_radii_candidates,
-                                // unsqueezed_bow_shock,
+                                unsqueezed_bow_shock,
                                 J_norm, earth_pos,
                                 theta_min,
                                 nb_theta, nb_phi, 
