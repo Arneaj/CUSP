@@ -12,6 +12,13 @@ if len(sys.argv) < 2:
 
 filepath = sys.argv[1]
 
+if len(sys.argv) < 3 or sys.argv[2] == "xz":
+    axis = 'xz'
+elif sys.argv[2] == "xy":
+    axis = 'xy'
+else:
+    print( "Please provide xy or xz" )
+
 Rho = gorgon.import_from_bin( filepath + "/Rho_processed_real.bin" )
 earth_pos = np.array( [30, 58, 58], dtype=np.float32 )
 
@@ -21,43 +28,60 @@ t1 = time.time()
 print(f"Finished in {t1-t0}s -> Bowshock radius for (theta,phi) = (0.0, 0.0):", bs_radius)
 
 t0 = time.time()
-BS = ta.get_bowshock( Rho, earth_pos, 0.1, 50, 50 )
+BS = ta.get_bowshock( Rho, earth_pos, 0.1, 4, 50 )
 t1 = time.time()
 print(f"Finished in {t1-t0}s -> Found entire Bowshock")
 
 J_norm = gorgon.import_from_bin( filepath + "/J_norm_processed_real.bin" )
 
 t0 = time.time()
-MP = ta.get_interest_points( 
+MP = ta.get_interest_points(
     J_norm, earth_pos, 
+    Rho,
     0.0, np.pi*0.9,  
-    50, 50,
-    0.5, 0.1,
-    0.3, 0.6, 4,
-    1.15, 2.1, 20
+    50, 4,
+    0.1, 0.1,
+    0.4, 0.6, 4,
+    1.5, 3.0, 20
 )
 t1 = time.time()
 print(f"Finished in {t1-t0}s -> Found entire Magnetopause")
 
-
 X_BS, Y_BS, Z_BS = gorgon.spherical_to_cartesian( BS[:,2], BS[:,0], BS[:,1], earth_pos )
-
-is_in_plane_BS = np.abs(Y_BS-58) < 1
-
-X_BS_plot = X_BS[is_in_plane_BS]
-Z_BS_plot = Z_BS[is_in_plane_BS]
-
-
 X_MP, Y_MP, Z_MP = gorgon.spherical_to_cartesian( MP[:,2], MP[:,0], MP[:,1], earth_pos )
 
-is_in_plane_MP = np.abs(Y_MP-58) < 1
+if axis == "xz":
+    is_in_plane_BS = np.abs(Y_BS-58) < 1
 
-X_MP_plot = X_MP[is_in_plane_MP]
-Z_MP_plot = Z_MP[is_in_plane_MP]
+    X_BS_plot = X_BS[is_in_plane_BS]
+    Z_BS_plot = Z_BS[is_in_plane_BS]
 
-# plt.imshow( Rho[:,58,:], cmap="inferno", norm="log" )
-J_xy = plt.imshow( J_norm[:,58,:], cmap="inferno", vmin=0, vmax=3e-9)
-plt.colorbar()
-plt.scatter( Z_BS_plot, X_BS_plot, s=1.0 )
-plt.scatter( Z_MP_plot, X_MP_plot, s=1.0, c=MP[is_in_plane_MP,3] )
+    is_in_plane_MP = np.abs(Y_MP-58) < 1
+
+    X_MP_plot = X_MP[is_in_plane_MP]
+    Z_MP_plot = Z_MP[is_in_plane_MP]
+
+    # plt.imshow( Rho[:,58,:], cmap="inferno", norm="log" )
+    J_xy = plt.imshow( J_norm[:,58,:], cmap="inferno", vmin=0, vmax=3e-9)
+    plt.colorbar()
+    plt.scatter( Z_BS_plot, X_BS_plot, s=1.0 )
+    plt.scatter( Z_MP_plot, X_MP_plot, s=1.0, c=MP[is_in_plane_MP,3] )
+else:
+    is_in_plane_BS = np.abs(Z_BS-58) < 1
+
+    X_BS_plot = X_BS[is_in_plane_BS]
+    Y_BS_plot = Y_BS[is_in_plane_BS]
+
+    is_in_plane_MP = np.abs(Z_MP-58) < 1
+
+    X_MP_plot = X_MP[is_in_plane_MP]
+    Y_MP_plot = Y_MP[is_in_plane_MP]
+
+    # plt.imshow( Rho[:,58,:], cmap="inferno", norm="log" )
+    J_xy = plt.imshow( J_norm[:,:,58], cmap="inferno", vmin=0, vmax=3e-9)
+    plt.colorbar()
+    plt.scatter( Y_BS_plot, X_BS_plot, s=1.0 )
+    plt.scatter( Y_MP_plot, X_MP_plot, s=1.0, c=MP[is_in_plane_MP,3] )
+
+
 plt.savefig( "../images/bowshock.svg" )

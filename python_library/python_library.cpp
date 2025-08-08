@@ -156,6 +156,7 @@ namespace raycasting
 
     pybind11::array_t<float> get_interest_points_numpy( 
         const pybind11::array_t<float>& J_norm, const pybind11::array_t<float>& earth_pos,
+        const pybind11::array_t<float>& Rho,
         float theta_min, float theta_max, 
         int nb_theta, int nb_phi, 
         float dx, float dr,
@@ -163,11 +164,13 @@ namespace raycasting
         float r_0_mult_min, float r_0_mult_max, float nb_r_0,
         float& avg_std_dev )
     {
+        Matrix _Rho = casters::matrix_from_array( Rho );
         Matrix _J_norm = casters::matrix_from_array( J_norm );
         Point _earth_pos = casters::point_from_array( earth_pos );
 
         return casters::array_from_interest_point_vec( get_interest_points(
             _J_norm, _earth_pos, 
+            _Rho,
             theta_min, theta_max,
             nb_theta, nb_phi,
             dx, dr, alpha_0_min, alpha_0_max, nb_alpha_0,
@@ -178,6 +181,7 @@ namespace raycasting
 
     pybind11::array_t<float> get_interest_points_numpy_no_std_dev( 
         const pybind11::array_t<float>& J_norm, const pybind11::array_t<float>& earth_pos,
+        const pybind11::array_t<float>& Rho,
         float theta_min, float theta_max, 
         int nb_theta, int nb_phi, 
         float dx, float dr,
@@ -185,10 +189,12 @@ namespace raycasting
         float r_0_mult_min, float r_0_mult_max, float nb_r_0 )
     {
         Matrix _J_norm = casters::matrix_from_array( J_norm );
+        Matrix _Rho = casters::matrix_from_array( Rho );
         Point _earth_pos = casters::point_from_array( earth_pos );
 
         return casters::array_from_interest_point_vec( get_interest_points(
             _J_norm, _earth_pos, 
+            _Rho,
             theta_min, theta_max,
             nb_theta, nb_phi,
             dx, dr, alpha_0_min, alpha_0_max, nb_alpha_0,

@@ -28,6 +28,7 @@ float get_bowshock_radius(  const Point& projection,
     float previous_rho = Rho(p, 0);
 
     r += dr;
+    p = r * projection + earth_pos;
 
     while ( !Rho.is_point_OOB(p) )
     {
@@ -86,12 +87,12 @@ std::vector<Point> get_bowshock( const Matrix& Rho, const Point& earth_pos, floa
     float dphi = 2.0f*PI / nb_phi;
     float dtheta = PI / max_nb_theta;
 
-    float theta=0.0f;
+    float theta = 0.0f;
 
     #pragma omp parallel for
     for (int itheta=0; itheta<max_nb_theta; itheta++)
     {
-        shue97_radii[itheta] = Shue97(5.0f, 0.7f, 1.0f+std::cos(theta));
+        shue97_radii[itheta] = Shue97(5.0f, 0.5f, 1.0f+std::cos(theta));
         theta += dtheta;
     }
 
@@ -118,9 +119,10 @@ std::vector<Point> get_bowshock( const Matrix& Rho, const Point& earth_pos, floa
 
             float r = get_bowshock_radius(proj, Rho, earth_pos, dr, &is_at_bounds);
 
-            if ( is_at_bounds || r < shue97_radii[itheta] ) break;
+            if ( is_at_bounds ) break;
 
-            bs_points[itheta*nb_phi + iphi] = Point(theta, phi, r);
+            if ( r > shue97_radii[itheta] )
+                bs_points[itheta*nb_phi + iphi] = Point(theta, phi, r);
 
             theta += dtheta;
         }
@@ -159,7 +161,7 @@ void interest_points_helper(    float r_0, float alpha_0,
 
         float initial_r = Shue97(r_0, alpha_0, 1 + cos_theta);
 	    // float final_r = Shue97(12, 1, 1 + cos_theta);
-        float non_bs_final_r = Shue97(5.0f*r_0, 1, 1 + cos_theta);
+        float non_bs_final_r = Shue97(10.0f*r_0, 1, 1 + cos_theta);
 
         float phi = -PI;
 
@@ -172,7 +174,7 @@ void interest_points_helper(    float r_0, float alpha_0,
             float final_r;
 
             if (bs == Point()) final_r = non_bs_final_r;
-            else final_r = bs.z -1.0f;  //  get radius of the bowshock at (theta,phi) and add a bit of extra space to be sure not to get the bowshock
+            else final_r = bs.z - 1.0f;  //  get radius of the bowshock at (theta,phi) and add a bit of extra space to be sure not to get the bowshock
             //                                                                            -> NOT SURE THIS IS A GOOD IDEA
 
             float max_value = 0;

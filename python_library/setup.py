@@ -21,196 +21,196 @@ class get_pybind_include(object):
         return pybind11.get_cmake_dir() + "/../../../include"
     
 
-def find_vtk():
-    """Find VTK installation"""
-    vtk_dirs = []
-    vtk_libs = []
+# def find_vtk():
+#     """Find VTK installation"""
+#     vtk_dirs = []
+#     vtk_libs = []
     
-    # Try pkg-config first
-    try:
-        result = subprocess.run(['pkg-config', '--cflags', '--libs', 'vtk'], 
-                              capture_output=True, text=True)
-        if result.returncode == 0:
-            flags = result.stdout.strip().split()
-            includes = [f[2:] for f in flags if f.startswith('-I')]
-            libs = [f[2:] for f in flags if f.startswith('-l')]
-            return includes, libs
-    except FileNotFoundError:
-        pass
+#     # Try pkg-config first
+#     try:
+#         result = subprocess.run(['pkg-config', '--cflags', '--libs', 'vtk'], 
+#                               capture_output=True, text=True)
+#         if result.returncode == 0:
+#             flags = result.stdout.strip().split()
+#             includes = [f[2:] for f in flags if f.startswith('-I')]
+#             libs = [f[2:] for f in flags if f.startswith('-l')]
+#             return includes, libs
+#     except FileNotFoundError:
+#         pass
     
-    # Common VTK paths (adjust for your HPC system)
-    vtk_search_paths = [
-        '/usr/include/vtk*',
-        '/usr/local/include/vtk*',
-        '/opt/vtk*/include',
-        '/sw-eb/software/VTK/*/include/vtk*',  # HPC path
-        '/sw-eb/software/*/VTK/*/include/vtk*',
-    ]
+#     # Common VTK paths (adjust for your HPC system)
+#     vtk_search_paths = [
+#         '/usr/include/vtk*',
+#         '/usr/local/include/vtk*',
+#         '/opt/vtk*/include',
+#         '/sw-eb/software/VTK/*/include/vtk*',  # HPC path
+#         '/sw-eb/software/*/VTK/*/include/vtk*',
+#     ]
     
-    for pattern in vtk_search_paths:
-        paths = glob.glob(pattern)
-        if paths:
-            vtk_dir = paths[-1]  # Use latest version
-            vtk_dirs.append(vtk_dir)
+#     for pattern in vtk_search_paths:
+#         paths = glob.glob(pattern)
+#         if paths:
+#             vtk_dir = paths[-1]  # Use latest version
+#             vtk_dirs.append(vtk_dir)
             
-            # Common VTK libraries
-            vtk_libs = [
-                'vtkCommonCore', 'vtkCommonDataModel', 'vtkCommonExecutionModel',
-                'vtkIOCore', 'vtkIOXML', 'vtkFiltersCore', 'vtkFiltersGeneral'
-            ]
-            break
+#             # Common VTK libraries
+#             vtk_libs = [
+#                 'vtkCommonCore', 'vtkCommonDataModel', 'vtkCommonExecutionModel',
+#                 'vtkIOCore', 'vtkIOXML', 'vtkFiltersCore', 'vtkFiltersGeneral'
+#             ]
+#             break
     
-    return vtk_dirs, vtk_libs
+#     return vtk_dirs, vtk_libs
 
-def find_eigen():
-    """Find Eigen installation"""
-    # Try pkg-config first
-    try:
-        result = subprocess.run(['pkg-config', '--cflags', 'eigen3'], 
-                              capture_output=True, text=True)
-        if result.returncode == 0:
-            flags = result.stdout.strip().split()
-            includes = [f[2:] for f in flags if f.startswith('-I')]
-            return includes
-    except FileNotFoundError:
-        pass
+# def find_eigen():
+#     """Find Eigen installation"""
+#     # Try pkg-config first
+#     try:
+#         result = subprocess.run(['pkg-config', '--cflags', 'eigen3'], 
+#                               capture_output=True, text=True)
+#         if result.returncode == 0:
+#             flags = result.stdout.strip().split()
+#             includes = [f[2:] for f in flags if f.startswith('-I')]
+#             return includes
+#     except FileNotFoundError:
+#         pass
     
-    # Common Eigen paths
-    eigen_search_paths = [
-        '/usr/include/eigen3',
-        '/usr/local/include/eigen3',
-        '/opt/eigen*/include/eigen3',
-        '/sw-eb/software/Eigen/*/include/eigen3',  # HPC path
-        '/usr/include/Eigen',
-        '/usr/local/include/Eigen',
-        '/opt/eigen*/include/Eigen',
-        '/sw-eb/software/Eigen/*/include/Eigen',  # HPC path
-        '/sw-eb/software/*/Eigen/*/include/Eigen',  # HPC path
-    ]
+#     # Common Eigen paths
+#     eigen_search_paths = [
+#         '/usr/include/eigen3',
+#         '/usr/local/include/eigen3',
+#         '/opt/eigen*/include/eigen3',
+#         '/sw-eb/software/Eigen/*/include/eigen3',  # HPC path
+#         '/usr/include/Eigen',
+#         '/usr/local/include/Eigen',
+#         '/opt/eigen*/include/Eigen',
+#         '/sw-eb/software/Eigen/*/include/Eigen',  # HPC path
+#         '/sw-eb/software/*/Eigen/*/include/Eigen',  # HPC path
+#     ]
     
-    for path in eigen_search_paths:
-        expanded_paths = glob.glob(path)
-        if expanded_paths:
-            return expanded_paths
+#     for path in eigen_search_paths:
+#         expanded_paths = glob.glob(path)
+#         if expanded_paths:
+#             return expanded_paths
     
-    return []
+#     return []
 
-def find_ceres():
-    """Find Ceres installation"""
-    ceres_dirs = []
-    ceres_libs = []
+# def find_ceres():
+#     """Find Ceres installation"""
+#     ceres_dirs = []
+#     ceres_libs = []
     
-    # Try pkg-config first
-    try:
-        result = subprocess.run(['pkg-config', '--cflags', '--libs', 'ceres'], 
-                              capture_output=True, text=True)
-        if result.returncode == 0:
-            flags = result.stdout.strip().split()
-            includes = [f[2:] for f in flags if f.startswith('-I')]
-            libs = [f[2:] for f in flags if f.startswith('-l')]
-            return includes, libs
-    except FileNotFoundError:
-        pass
+#     # Try pkg-config first
+#     try:
+#         result = subprocess.run(['pkg-config', '--cflags', '--libs', 'ceres'], 
+#                               capture_output=True, text=True)
+#         if result.returncode == 0:
+#             flags = result.stdout.strip().split()
+#             includes = [f[2:] for f in flags if f.startswith('-I')]
+#             libs = [f[2:] for f in flags if f.startswith('-l')]
+#             return includes, libs
+#     except FileNotFoundError:
+#         pass
     
-    # Common Ceres paths
-    ceres_search_paths = [
-        '/usr/include/ceres*',
-        '/usr/local/include/ceres*', 
-        '~/local/include/ceres*',
-        '/opt/ceres*/include/ceres*',
-        '/sw-eb/software/Ceres-Solver/*/include/ceres*',  # HPC path
-    ]
+#     # Common Ceres paths
+#     ceres_search_paths = [
+#         '/usr/include/ceres*',
+#         '/usr/local/include/ceres*', 
+#         '~/local/include/ceres*',
+#         '/opt/ceres*/include/ceres*',
+#         '/sw-eb/software/Ceres-Solver/*/include/ceres*',  # HPC path
+#     ]
     
-    for path in ceres_search_paths:
-        expanded_paths = glob.glob(path)
-        for expanded_path in expanded_paths:
-            if expanded_path:
-                ceres_dirs.append(expanded_path)
-                ceres_libs = ['ceres', 'glog', 'gflags']
-                break
-        if ceres_dirs:
-            break
+#     for path in ceres_search_paths:
+#         expanded_paths = glob.glob(path)
+#         for expanded_path in expanded_paths:
+#             if expanded_path:
+#                 ceres_dirs.append(expanded_path)
+#                 ceres_libs = ['ceres', 'glog', 'gflags']
+#                 break
+#         if ceres_dirs:
+#             break
     
-    return ceres_dirs, ceres_libs
+#     return ceres_dirs, ceres_libs
 
-def find_abseil():
-    """Find Abseil installation"""
-    abseil_dirs = []
-    abseil_libs = []
+# def find_abseil():
+#     """Find Abseil installation"""
+#     abseil_dirs = []
+#     abseil_libs = []
     
-    # Try pkg-config first
-    try:
-        result = subprocess.run(['pkg-config', '--cflags', '--libs', 'absl_base'], 
-                              capture_output=True, text=True)
-        if result.returncode == 0:
-            flags = result.stdout.strip().split()
-            includes = [f[2:] for f in flags if f.startswith('-I')]
-            libs = [f[2:] for f in flags if f.startswith('-l') and f.startswith('-labsl')]
-            return includes, libs
-    except FileNotFoundError:
-        pass
+#     # Try pkg-config first
+#     try:
+#         result = subprocess.run(['pkg-config', '--cflags', '--libs', 'absl_base'], 
+#                               capture_output=True, text=True)
+#         if result.returncode == 0:
+#             flags = result.stdout.strip().split()
+#             includes = [f[2:] for f in flags if f.startswith('-I')]
+#             libs = [f[2:] for f in flags if f.startswith('-l') and f.startswith('-labsl')]
+#             return includes, libs
+#     except FileNotFoundError:
+#         pass
     
-    # Common Abseil paths
-    abseil_search_paths = [
-        '/usr/include',
-        '/usr/local/include',
-        '/opt/abseil*/include', 
-        '/sw-eb/software/Abseil/*/include',  # HPC path
-        '/sw-eb/software/*/Abseil/*/include',
-    ]
+#     # Common Abseil paths
+#     abseil_search_paths = [
+#         '/usr/include',
+#         '/usr/local/include',
+#         '/opt/abseil*/include', 
+#         '/sw-eb/software/Abseil/*/include',  # HPC path
+#         '/sw-eb/software/*/Abseil/*/include',
+#     ]
     
-    for path in abseil_search_paths:
-        expanded_paths = glob.glob(path)
-        for expanded_path in expanded_paths:
-            if os.path.exists(os.path.join(expanded_path, 'absl')):
-                abseil_dirs.append(expanded_path)
-                # Common Abseil libraries
-                abseil_libs = [
-                    'absl_base', 'absl_strings', 'absl_str_format', 'absl_time',
-                    'absl_synchronization', 'absl_stacktrace', 'absl_symbolize'
-                ]
-                break
-        if abseil_dirs:
-            break
+#     for path in abseil_search_paths:
+#         expanded_paths = glob.glob(path)
+#         for expanded_path in expanded_paths:
+#             if os.path.exists(os.path.join(expanded_path, 'absl')):
+#                 abseil_dirs.append(expanded_path)
+#                 # Common Abseil libraries
+#                 abseil_libs = [
+#                     'absl_base', 'absl_strings', 'absl_str_format', 'absl_time',
+#                     'absl_synchronization', 'absl_stacktrace', 'absl_symbolize'
+#                 ]
+#                 break
+#         if abseil_dirs:
+#             break
     
-    return abseil_dirs, abseil_libs
+#     return abseil_dirs, abseil_libs
 
-# Find all dependencies
-print("Searching for dependencies...")
-vtk_includes, vtk_libs = find_vtk()
-eigen_includes = find_eigen()
-ceres_includes, ceres_libs = find_ceres()
-abseil_includes, abseil_libs = find_abseil()
+# # Find all dependencies
+# print("Searching for dependencies...")
+# vtk_includes, vtk_libs = find_vtk()
+# eigen_includes = find_eigen()
+# ceres_includes, ceres_libs = find_ceres()
+# abseil_includes, abseil_libs = find_abseil()
 
-# Print what was found
-print(f"VTK includes: {vtk_includes}")
-print(f"VTK libraries: {vtk_libs}")
-print(f"Eigen includes: {eigen_includes}")
-print(f"Ceres includes: {ceres_includes}")
-print(f"Ceres libraries: {ceres_libs}")
-print(f"Abseil includes: {abseil_includes}")
-print(f"Abseil libraries: {abseil_libs}")
+# # Print what was found
+# print(f"VTK includes: {vtk_includes}")
+# print(f"VTK libraries: {vtk_libs}")
+# print(f"Eigen includes: {eigen_includes}")
+# print(f"Ceres includes: {ceres_includes}")
+# print(f"Ceres libraries: {ceres_libs}")
+# print(f"Abseil includes: {abseil_includes}")
+# print(f"Abseil libraries: {abseil_libs}")
 
 # Collect all include directories
 all_includes = [
     get_pybind_include(),
     numpy.get_include(),
     '../headers_cpp',
-] + vtk_includes + eigen_includes + ceres_includes + abseil_includes
+] #+ vtk_includes + eigen_includes + ceres_includes + abseil_includes
 
-# Collect all libraries
-all_libs = vtk_libs + ceres_libs + abseil_libs
+# # Collect all libraries
+# all_libs = vtk_libs + ceres_libs + abseil_libs
 
-# Define compile-time macros for optional features
-compile_macros = []
-if vtk_includes:
-    compile_macros.append(('USE_VTK', '1'))
-if eigen_includes:
-    compile_macros.append(('USE_EIGEN', '1'))
-if ceres_includes:
-    compile_macros.append(('USE_CERES', '1'))
-if abseil_includes:
-    compile_macros.append(('USE_ABSEIL', '1'))    
+# # Define compile-time macros for optional features
+# compile_macros = []
+# if vtk_includes:
+#     compile_macros.append(('USE_VTK', '1'))
+# if eigen_includes:
+#     compile_macros.append(('USE_EIGEN', '1'))
+# if ceres_includes:
+#     compile_macros.append(('USE_CERES', '1'))
+# if abseil_includes:
+#     compile_macros.append(('USE_ABSEIL', '1'))    
 
 
 
@@ -225,17 +225,17 @@ ext_modules = [
             '../src_cpp/streamlines.cpp',
             '../src_cpp/magnetopause.cpp',
             '../src_cpp/read_file.cpp',
-            '../src_cpp/read_pvtr.cpp',
-            '../src_cpp/reader_writer.cpp',
+            # '../src_cpp/read_pvtr.cpp',
+            # '../src_cpp/reader_writer.cpp',
             '../src_cpp/preprocessing.cpp',
             '../src_cpp/raycast.cpp',
-            '../src_cpp/fit_to_analytical.cpp',
+            # '../src_cpp/fit_to_analytical.cpp',
             '../src_cpp/analysis.cpp',
         ],
         include_dirs=all_includes,
-        libraries=all_libs,
+        # libraries=all_libs,
         language='c++',
-        define_macros=compile_macros,
+        # define_macros=compile_macros,
     ),
 ]
 
