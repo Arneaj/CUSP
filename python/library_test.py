@@ -62,7 +62,7 @@ if axis == "xz":
     Z_MP_plot = Z_MP[is_in_plane_MP]
 
     # plt.imshow( Rho[:,58,:], cmap="inferno", norm="log" )
-    J_xy = plt.imshow( J_norm[:,58,:], cmap="inferno", vmin=0, vmax=3e-9)
+    J_xy = plt.imshow( J_norm[:,58,:], cmap="inferno", vmin=0, vmax=1e-9)
     plt.colorbar()
     plt.scatter( Z_BS_plot, X_BS_plot, s=1.0 )
     plt.scatter( Z_MP_plot, X_MP_plot, s=1.0, c=MP[is_in_plane_MP,3] )
@@ -78,7 +78,7 @@ else:
     Y_MP_plot = Y_MP[is_in_plane_MP]
 
     # plt.imshow( Rho[:,58,:], cmap="inferno", norm="log" )
-    J_xy = plt.imshow( J_norm[:,:,58], cmap="inferno", vmin=0, vmax=3e-9)
+    J_xy = plt.imshow( J_norm[:,:,58], cmap="inferno", vmin=0, vmax=1e-9)
     plt.colorbar()
     plt.scatter( Y_BS_plot, X_BS_plot, s=1.0 )
     plt.scatter( Y_MP_plot, X_MP_plot, s=1.0, c=MP[is_in_plane_MP,3] )
