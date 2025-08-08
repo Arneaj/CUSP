@@ -26,6 +26,9 @@ int main()
     Matrix J;
     reader_writer.read(filepath + std::string("/x00_jvec-21000.pvtr"), J);
 
+    Matrix Rho;
+    reader_writer.read(filepath + std::string("/x00_rho-21000.pvtr"), J);
+
     Matrix X;
     Matrix Y;
     Matrix Z;
@@ -51,6 +54,8 @@ int main()
 
     Matrix J_processed_sim = orthonormalise(J, X, Y, Z, &new_shape_sim);
     Matrix J_norm_sim = J_processed_sim.norm();
+
+    Matrix Rho_processed_sim = orthonormalise(Rho, X, Y, Z, &new_shape_sim);
     
     t1 = Time::now();
     std::cout << "Preprocessing files done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
@@ -78,6 +83,7 @@ int main()
 
     InterestPoint* interest_points = get_interest_points(
         J_norm_sim, earth_pos_sim,
+        Rho,
         theta_min, theta_max,
         nb_theta, nb_phi, 
         dx, dr,
@@ -95,5 +101,6 @@ int main()
     std::cout << "Interest point saving done. Time taken: " << fsec((t1-t0)).count() << 's' << std::endl;
 
     J.del(); J_processed_sim.del(); J_norm_sim.del();
+    Rho.del(); Rho_processed_sim.del();
     X.del(); Y.del(); Z.del();
 }

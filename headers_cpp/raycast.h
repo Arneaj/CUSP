@@ -12,6 +12,8 @@
 #include "streamlines.h"
 
 
+inline void squeeze_vector( std::vector<Point>& points );
+
 
 float get_bowshock_radius(  const Point& projection,
                             const Matrix& Rho, const Point& earth_pos,

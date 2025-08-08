@@ -36,6 +36,7 @@ int main(int argc, char* argv[])
     bool save_Y(true);
     bool save_Z(true);
 
+    bool save_bow_shock(true);
     bool save_ip(true);
     bool save_params(true);
     bool save_analysis(true);
@@ -124,6 +125,12 @@ int main(int argc, char* argv[])
             else { std::cout << "ERROR: unknown parameter for flag --save_Z\n"; exit(1); }
         }
 
+        else if( std::string(argv[i]) == "--save_bow_shock" )
+        {
+            if (std::string(argv[i+1]) == "true") save_bow_shock = true;
+            else if (std::string(argv[i+1]) == "false") save_bow_shock = false;
+            else { std::cout << "ERROR: unknown parameter for flag --save_bow_shock\n"; exit(1); }
+        }
         else if( std::string(argv[i]) == "--save_interest_points" )
         {
             if (std::string(argv[i+1]) == "true") save_ip = true;
@@ -266,9 +273,11 @@ int main(int argc, char* argv[])
 
     float avg_std_dev;
 
+    std::vector<Point> bow_shock = get_bowshock( Rho, earth_pos_sim, dr, nb_phi, nb_theta, false );
+
     InterestPoint* interest_points = get_interest_points(
         J_norm_sim, earth_pos_sim,
-        Rho_processed_sim,
+        bow_shock.data(),
         theta_min, theta_max,
         nb_theta, nb_phi, 
         dx, dr,
@@ -277,6 +286,7 @@ int main(int argc, char* argv[])
         &avg_std_dev
     );
 
+    process_points( bow_shock, new_shape_sim, new_shape_real, earth_pos_sim, earth_pos_real );    
     process_interest_points( interest_points, nb_theta, nb_phi, new_shape_sim, new_shape_real, earth_pos_sim, earth_pos_real );
 
     t1 = Time::now();
@@ -393,6 +403,7 @@ int main(int argc, char* argv[])
 
     if (save_J_norm) save_file_bin( savepath + std::string("/J_norm_processed_real.") + file_save_format, J_norm_real );
 
+    if (save_bow_shock) save_points( savepath + std::string("/bow_shock.csv"), bow_shock );
     if (save_ip) save_interest_points( savepath + std::string("/interest_points_cpp.csv"), interest_points, nb_theta, nb_phi );
 
     if (save_params) save_parameters( savepath + std::string("/params_cpp.csv"), result.params );
@@ -422,6 +433,10 @@ int main(int argc, char* argv[])
     if (save_V) V_processed_real.del();
     if (save_Rho) Rho_processed_real.del();
     
+    Rho_processed_sim.del();
+
+    T.del();
+    T_processed_real.del();
 
     delete[] interest_points;
 }
