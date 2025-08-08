@@ -258,7 +258,7 @@ int main(int argc, char* argv[])
     int nb_theta = 40;
     int nb_phi = 90;
     float theta_min = 0.0f;
-    float theta_max = PI*0.85f;
+    float theta_max = PI*0.95f;
 
     float dx = 0.1f;
     float dr = 0.1f;
@@ -273,7 +273,7 @@ int main(int argc, char* argv[])
 
     float avg_std_dev;
 
-    std::vector<Point> bow_shock = get_bowshock( Rho, earth_pos_sim, dr, nb_phi, nb_theta, false );
+    std::vector<Point> bow_shock = get_bowshock( Rho_processed_sim, earth_pos_sim, dr, nb_phi, nb_theta, false );
 
     InterestPoint* interest_points = get_interest_points(
         J_norm_sim, earth_pos_sim,

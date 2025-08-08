@@ -159,7 +159,7 @@ void interest_points_helper(    float r_0, float alpha_0,
 
         float initial_r = Shue97(r_0, alpha_0, 1 + cos_theta);
 	    // float final_r = Shue97(12, 1, 1 + cos_theta);
-        // float final_r = Shue97(20, 1, 1 + cos_theta);
+        float non_bs_final_r = Shue97(5.0f*r_0, 1, 1 + cos_theta);
 
         float phi = -PI;
 
@@ -171,10 +171,10 @@ void interest_points_helper(    float r_0, float alpha_0,
 
             float final_r;
 
-            if (bs == Point()) final_r = Shue97(r_0, alpha_0, 1 + cos_theta);
-            else final_r = bs.z -1.0f;  // get radius of the bowshock at (theta,phi)  //    add a bit of extra space to be sure not to get the bowshock
-            //                      -> NOT SURE THIS IS A GOOD IDEA
-            
+            if (bs == Point()) final_r = non_bs_final_r;
+            else final_r = bs.z -1.0f;  //  get radius of the bowshock at (theta,phi) and add a bit of extra space to be sure not to get the bowshock
+            //                                                                            -> NOT SURE THIS IS A GOOD IDEA
+
             float max_value = 0;
             float max_r = initial_r;
             float r = max_r;
