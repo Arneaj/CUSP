@@ -232,6 +232,7 @@ int main(int argc, char* argv[])
 
     Matrix Rho_processed_real;
     if (save_Rho) Rho_processed_real = orthonormalise(Rho, X, Y, Z, &new_shape_real);
+    Matrix Rho_processed_sim = orthonormalise(Rho, X, Y, Z, &new_shape_sim);
 
     Matrix T_processed_real;
     T_processed_real = orthonormalise(T, X, Y, Z, &new_shape_real);
@@ -267,6 +268,7 @@ int main(int argc, char* argv[])
 
     InterestPoint* interest_points = get_interest_points(
         J_norm_sim, earth_pos_sim,
+        Rho_processed_sim,
         theta_min, theta_max,
         nb_theta, nb_phi, 
         dx, dr,

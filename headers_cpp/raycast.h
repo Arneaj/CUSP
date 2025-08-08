@@ -23,7 +23,7 @@ float get_bowshock_radius(  float theta, float phi,
                             float dr,
                             bool* is_at_bounds=nullptr );
 
-std::vector<Point> get_bowshock( const Matrix& Rho, const Point& earth_pos, float dr, int nb_phi, int max_nb_theta );
+std::vector<Point> get_bowshock( const Matrix& Rho, const Point& earth_pos, float dr, int nb_phi, int max_nb_theta, bool is_squeezed=true );
 
 
 class InterestPoint
@@ -45,13 +45,22 @@ public:
 
 
 InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos,
+                                    const Point* const unsqueezed_bow_shock,
                                     float theta_min, float theta_max, 
                                     int nb_theta, int nb_phi, 
                                     float dx, float dr,
                                     float alpha_0_min, float alpha_0_max, float nb_alpha_0,
                                     float r_0_mult_min, float r_0_mult_max, float nb_r_0,
-                                    float* avg_std_dev );
+                                    float* p_avg_std_dev=nullptr );
 
+InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos,
+                                    const Matrix& Rho,
+                                    float theta_min, float theta_max, 
+                                    int nb_theta, int nb_phi, 
+                                    float dx, float dr,
+                                    float alpha_0_min, float alpha_0_max, float nb_alpha_0,
+                                    float r_0_mult_min, float r_0_mult_max, float nb_r_0,
+                                    float* p_avg_std_dev=nullptr );
 
 
 

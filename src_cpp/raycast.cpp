@@ -77,7 +77,7 @@ inline void squeeze_vector( std::vector<Point>& points )
 }
 
 
-std::vector<Point> get_bowshock( const Matrix& Rho, const Point& earth_pos, float dr, int nb_phi, int max_nb_theta )
+std::vector<Point> get_bowshock( const Matrix& Rho, const Point& earth_pos, float dr, int nb_phi, int max_nb_theta, bool is_squeezed )
 {
     std::vector<Point> bs_points( nb_phi*max_nb_theta );
 
@@ -126,7 +126,7 @@ std::vector<Point> get_bowshock( const Matrix& Rho, const Point& earth_pos, floa
         }
     }
 
-    squeeze_vector(bs_points);
+    if (is_squeezed) squeeze_vector(bs_points);
 
     return bs_points;
 }
@@ -227,18 +227,19 @@ float get_std_dev( std::vector<float>& vec )
 
 
 InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos,
+                                    const Point* const unsqueezed_bow_shock,
                                     float theta_min, float theta_max, 
                                     int nb_theta, int nb_phi, 
                                     float dx, float dr,
                                     float alpha_0_min, float alpha_0_max, float nb_alpha_0,
                                     float r_0_mult_min, float r_0_mult_max, float nb_r_0,
-                                    float* avg_std_dev )
+                                    float* p_avg_std_dev )
 {
     std::vector<float>* interest_radii_candidates = new std::vector<float>[ nb_theta*nb_phi ];
 
     float x = earth_pos.x;
 
-    if (avg_std_dev) *avg_std_dev = 0;
+    if (p_avg_std_dev) *p_avg_std_dev = 0;
     
 
     while ( x>0 and x<J_norm.get_shape().x )
@@ -256,7 +257,8 @@ InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos
 
     for (float r_0_mult=r_0_mult_min; r_0_mult<=r_0_mult_max; r_0_mult+=dr_0_mult) for (float alpha_0=alpha_0_min; alpha_0<=alpha_0_max; alpha_0+=dalpha_0)
         interest_points_helper( r_0_mult * r_inner, alpha_0,
-                                interest_radii_candidates, 
+                                interest_radii_candidates,
+                                // unsqueezed_bow_shock,
                                 J_norm, earth_pos,
                                 theta_min,
                                 nb_theta, nb_phi, 
@@ -286,7 +288,7 @@ InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos
             float interest_radius = get_median( interest_radii_candidates[ itheta*nb_phi + iphi ] );
             float std_dev = get_std_dev( interest_radii_candidates[ itheta*nb_phi + iphi ] );
 
-            if (avg_std_dev) *avg_std_dev += std_dev;
+            if (p_avg_std_dev) *p_avg_std_dev += std_dev;
 
             // float weight = std::exp( -std_dev );  // TODO: change weights
             float weight = 1.0f / (1.0f + std_dev);
@@ -297,14 +299,26 @@ InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos
         }
     }
 
-    if (avg_std_dev) *avg_std_dev /= nb_theta*nb_phi;
+    if (p_avg_std_dev) *p_avg_std_dev /= nb_theta*nb_phi;
 
     delete[] interest_radii_candidates;
 
     return interest_points;
 }
 
+InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos,
+                                    const Matrix& Rho,
+                                    float theta_min, float theta_max, 
+                                    int nb_theta, int nb_phi, 
+                                    float dx, float dr,
+                                    float alpha_0_min, float alpha_0_max, float nb_alpha_0,
+                                    float r_0_mult_min, float r_0_mult_max, float nb_r_0,
+                                    float* p_avg_std_dev )
+{
+    std::vector<Point> bow_shock = get_bowshock( Rho, earth_pos, dr, nb_phi, nb_theta, false );
 
+    return get_interest_points( J_norm, earth_pos, bow_shock.data(), theta_min, theta_max, nb_theta, nb_phi, dx, dr, alpha_0_min, alpha_0_max, nb_alpha_0, r_0_mult_min, r_0_mult_max, nb_r_0, p_avg_std_dev);
+}
 
 
 
