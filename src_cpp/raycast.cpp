@@ -167,10 +167,14 @@ void interest_points_helper(    float r_0, float alpha_0,
         {
             phi += dphi;
 
-            float final_r = unsqueezed_bow_shock[itheta*nb_phi+iphi].z;  // get radius of the bowshock at (theta,phi)
-            final_r -= 1.0f;  //    add a bit of extra space to be sure not to get the bowshock
-            //                      -> NOT SURE THIS IS A GOOD IDEA
+            const Point& bs = unsqueezed_bow_shock[itheta*nb_phi+iphi];
 
+            float final_r;
+
+            if (bs == Point()) final_r = Shue97(r_0, alpha_0, 1 + cos_theta);
+            else final_r = bs.z -1.0f;  // get radius of the bowshock at (theta,phi)  //    add a bit of extra space to be sure not to get the bowshock
+            //                      -> NOT SURE THIS IS A GOOD IDEA
+            
             float max_value = 0;
             float max_r = initial_r;
             float r = max_r;
