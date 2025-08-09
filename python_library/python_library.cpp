@@ -129,6 +129,82 @@ namespace casters
 }
 
 
+namespace preprocessing
+{
+    pybind11::array_t<float> orthonormalise( 
+        const pybind11::array_t<float>& mat, 
+        const pybind11::array_t<float>& X, const pybind11::array_t<float>& Y, const pybind11::array_t<float>& Z, 
+        const pybind11::array_t<float>& new_shape )
+    {
+        Shape _shape = casters::shape_from_array( new_shape );
+        Matrix _mat = casters::matrix_from_array( mat );
+        Matrix _X = casters::matrix_from_array( X );
+        Matrix _Y = casters::matrix_from_array( Y );
+        Matrix _Z = casters::matrix_from_array( Z );
+
+        _shape.i = _mat.get_shape().i;
+
+        Matrix new_mat( _shape );
+
+        float X_max = _X.max(0), X_min = _X.min(0), inv_dX = 1.0f / (X_max - X_min);
+        float Y_max = _Y.max(0), Y_min = _Y.min(0), inv_dY = 1.0f / (Y_max - Y_min);
+        float Z_max = _Z.max(0), Z_min = _Z.min(0), inv_dZ = 1.0f / (Z_max - Z_min);
+
+        _X -= X_min; _X *= inv_dX; _X *= _shape.x;
+        _Y -= Y_min; _Y *= inv_dY; _Y *= _shape.y;
+        _Z -= Z_min; _Z *= inv_dZ; _Z *= _shape.z;
+
+        std::vector<int> iX(_shape.x);
+        std::vector<int> iY(_shape.y);
+        std::vector<int> iZ(_shape.z);
+
+        std::vector<float> dX(_shape.x);
+        std::vector<float> dY(_shape.y);
+        std::vector<float> dZ(_shape.z);
+
+        #pragma omp parallel for
+        for (int sx=0; sx<_shape.x; sx++) for (int i=0; i<_X.get_shape().x-1; i++)
+        {
+            if ( sx > _X[i+1] ) continue;
+            iX[sx] = i;
+            dX[sx] = (sx - _X[i]) / (_X[i+1] - _X[i]);
+            break;
+        }
+
+        #pragma omp parallel for
+        for (int sy=0; sy<_shape.y; sy++) for (int i=0; i<_Y.get_shape().x-1; i++)
+        {
+            if ( sy > _Y[i+1] ) continue;
+            iY[sy] = i;
+            dY[sy] = (sy - _Y[i]) / (_Y[i+1] - _Y[i]);
+            break;
+        }
+
+        #pragma omp parallel for
+        for (int sz=0; sz<_shape.z; sz++) for (int i=0; i<_Z.get_shape().x-1; i++)
+        {
+            if ( sz > _Z[i+1] ) continue;
+            iZ[sz] = i;
+            dZ[sz] = (sz - _Z[i]) / (_Z[i+1] - _Z[i]);
+            break;
+        }
+
+        #pragma omp parallel for
+        for (int sx=0; sx<_shape.x; sx++) for (int sy=0; sy<_shape.y; sy++)
+            for (int sz=0; sz<_shape.z; sz++) for (int i=0; i<_shape.i; i++)
+                new_mat(sx,sy,sz,i) =   ( _mat(iX[sx],iY[sy],iZ[sz],i)*(1-dX[sx]) + _mat(iX[sx]+1,iY[sy],iZ[sz],i)*dX[sx] )*(1-dY[sy])*(1-dZ[sz])
+                                    +   ( _mat(iX[sx],iY[sy]+1,iZ[sz],i)*(1-dX[sx]) + _mat(iX[sx]+1,iY[sy]+1,iZ[sz],i)*dX[sx] )*dY[sy]*(1-dZ[sz])
+                                    +   ( _mat(iX[sx],iY[sy],iZ[sz]+1,i)*(1-dX[sx]) + _mat(iX[sx]+1,iY[sy],iZ[sz]+1,i)*dX[sx] )*(1-dY[sy])*dZ[sz]
+                                    +   ( _mat(iX[sx],iY[sy]+1,iZ[sz]+1,i)*(1-dX[sx]) + _mat(iX[sx]+1,iY[sy]+1,iZ[sz]+1,i)*dX[sx] )*dY[sy]*dZ[sz];   
+        
+        _X.del(); _Y.del(); _Z.del();
+        _mat.del();
+
+        return casters::array_from_matrix( new_mat );
+    }
+}
+
+
 namespace raycasting
 {
     float get_bowshock_radius_numpy(  
@@ -136,20 +212,28 @@ namespace raycasting
         const pybind11::array_t<float>& Rho, const pybind11::array_t<float>& earth_pos,
         float dr )
     {
-        Matrix rho = casters::matrix_from_array( Rho );
+        Matrix _Rho = casters::matrix_from_array( Rho );
         Point _earth_pos = casters::point_from_array( earth_pos );
 
-        return get_bowshock_radius(theta, phi, rho, _earth_pos, dr);
+        float rad = get_bowshock_radius(theta, phi, _Rho, _earth_pos, dr);
+
+        _Rho.del();
+
+        return rad;
     }
 
     pybind11::array_t<float> get_bowshock_numpy( 
         const pybind11::array_t<float>& Rho, const pybind11::array_t<float>& earth_pos, 
         float dr, int nb_phi, int max_nb_theta )
     {
-        Matrix rho = casters::matrix_from_array( Rho );
+        Matrix _Rho = casters::matrix_from_array( Rho );
         Point _earth_pos = casters::point_from_array( earth_pos );
 
-        return casters::array_from_point_vec( get_bowshock(rho, _earth_pos, dr, nb_phi, max_nb_theta) );
+        pybind11::array_t<float> ret = casters::array_from_point_vec( get_bowshock(_Rho, _earth_pos, dr, nb_phi, max_nb_theta) );
+
+        _Rho.del();
+
+        return ret;
     }
 
 
@@ -168,7 +252,7 @@ namespace raycasting
         Matrix _J_norm = casters::matrix_from_array( J_norm );
         Point _earth_pos = casters::point_from_array( earth_pos );
 
-        return casters::array_from_interest_point_vec( get_interest_points(
+        pybind11::array_t<float> ret = casters::array_from_interest_point_vec( get_interest_points(
             _J_norm, _earth_pos, 
             _Rho,
             theta_min, theta_max,
@@ -177,6 +261,11 @@ namespace raycasting
             r_0_mult_min, r_0_mult_max, nb_r_0,
             &avg_std_dev
         ), nb_theta*nb_phi);
+
+        _Rho.del();
+        _J_norm.del();
+
+        return ret;
     }
 
     pybind11::array_t<float> get_interest_points_numpy_no_std_dev( 
@@ -192,7 +281,7 @@ namespace raycasting
         Matrix _Rho = casters::matrix_from_array( Rho );
         Point _earth_pos = casters::point_from_array( earth_pos );
 
-        return casters::array_from_interest_point_vec( get_interest_points(
+        pybind11::array_t<float> ret = casters::array_from_interest_point_vec( get_interest_points(
             _J_norm, _earth_pos, 
             _Rho,
             theta_min, theta_max,
@@ -201,6 +290,11 @@ namespace raycasting
             r_0_mult_min, r_0_mult_max, nb_r_0,
             nullptr
         ), nb_theta*nb_phi);
+
+        _Rho.del();
+        _J_norm.del();
+
+        return ret;
     }
 
 
@@ -241,13 +335,6 @@ namespace raycasting
 PYBIND11_MODULE(topology_analysis, m)
 {
     m.doc() = "Topology analysis module for magnetic field data";
-    
-    // Bind classes first
-    // pybind11::class_<Point>(m, "Point")
-    //     .def(pybind11::init<float, float, float>())
-    //     .def_readwrite("x", &Point::x)
-    //     .def_readwrite("y", &Point::y)
-    //     .def_readwrite("z", &Point::z);
 
     m.def("get_bowshock_radius", &raycasting::get_bowshock_radius_numpy);
     m.def("get_bowshock", &raycasting::get_bowshock_numpy);

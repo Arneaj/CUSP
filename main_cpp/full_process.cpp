@@ -221,11 +221,12 @@ int main(int argc, char* argv[])
     Point p_range = p_max - p_min;
 
     float hyper_sampling = 1.2;
+    float extra_precision = 2.0f;
 
-    Shape new_shape_real(std::round(p_range.x), std::round(p_range.y), std::round(p_range.z), J.get_shape().i);
+    Shape new_shape_real(std::round(extra_precision*p_range.x), std::round(extra_precision*p_range.y), std::round(extra_precision*p_range.z), J.get_shape().i);
     Shape new_shape_sim(J.get_shape().x*hyper_sampling, J.get_shape().y*hyper_sampling, J.get_shape().z*hyper_sampling, J.get_shape().i);
 
-    Point earth_pos_real = find_real_earth_pos( X, Y, Z );
+    Point earth_pos_real = extra_precision * find_real_earth_pos( X, Y, Z );
     Point earth_pos_sim = find_sim_earth_pos( earth_pos_real, new_shape_real, new_shape_sim );
 
     Matrix J_processed_sim = orthonormalise(J, X, Y, Z, &new_shape_sim);

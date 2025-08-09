@@ -20,7 +20,7 @@ else:
     print( "Please provide xy or xz" )
 
 Rho = gorgon.import_from_bin( filepath + "/Rho_processed_real.bin" )
-earth_pos = np.array( [30, 58, 58], dtype=np.float32 )
+earth_pos = 2.0*np.array( [30, 58, 58], dtype=np.float32 )
 
 t0 = time.time()
 bs_radius = ta.get_bowshock_radius( 0.0, 0.0, Rho, earth_pos, 0.1 )
@@ -51,37 +51,44 @@ X_BS, Y_BS, Z_BS = gorgon.spherical_to_cartesian( BS[:,2], BS[:,0], BS[:,1], ear
 X_MP, Y_MP, Z_MP = gorgon.spherical_to_cartesian( MP[:,2], MP[:,0], MP[:,1], earth_pos )
 
 if axis == "xz":
-    is_in_plane_BS = np.abs(Y_BS-58) < 1
+    is_in_plane_BS = np.abs(Y_BS-int(earth_pos[1])) < 1
 
     X_BS_plot = X_BS[is_in_plane_BS]
     Z_BS_plot = Z_BS[is_in_plane_BS]
 
-    is_in_plane_MP = np.abs(Y_MP-58) < 1
+    is_in_plane_MP = np.abs(Y_MP-int(earth_pos[1])) < 1
 
     X_MP_plot = X_MP[is_in_plane_MP]
     Z_MP_plot = Z_MP[is_in_plane_MP]
 
-    # plt.imshow( Rho[:,58,:], cmap="inferno", norm="log" )
-    J_xy = plt.imshow( J_norm[:,58,:], cmap="inferno", vmin=0, vmax=1e-9)
+    # plt.imshow( np.moveaxis(Rho[:,int(earth_pos[1]),:], [0,1], [1,0] ), cmap="inferno", norm="log" )
+    plt.imshow( np.moveaxis(J_norm[:,int(earth_pos[1]),:], [0,1], [1,0] ), cmap="inferno", vmin=0, vmax=1e-9, interpolation="none")
     plt.colorbar()
-    plt.scatter( Z_BS_plot, X_BS_plot, s=1.0 )
-    plt.scatter( Z_MP_plot, X_MP_plot, s=1.0, c=MP[is_in_plane_MP,3] )
+    plt.scatter( X_BS_plot, Z_BS_plot, s=1.0 )
+    plt.scatter( X_MP_plot, Z_MP_plot, s=1.0, c=MP[is_in_plane_MP,3] )
+    
+    plt.ylabel(r"$z \in [-58; 58] R_E$")
+    
 else:
-    is_in_plane_BS = np.abs(Z_BS-58) < 1
+    is_in_plane_BS = np.abs(Z_BS-int(earth_pos[2])) < 1
 
     X_BS_plot = X_BS[is_in_plane_BS]
     Y_BS_plot = Y_BS[is_in_plane_BS]
 
-    is_in_plane_MP = np.abs(Z_MP-58) < 1
+    is_in_plane_MP = np.abs(Z_MP-int(earth_pos[2])) < 1
 
     X_MP_plot = X_MP[is_in_plane_MP]
     Y_MP_plot = Y_MP[is_in_plane_MP]
 
-    # plt.imshow( Rho[:,58,:], cmap="inferno", norm="log" )
-    J_xy = plt.imshow( J_norm[:,:,58], cmap="inferno", vmin=0, vmax=1e-9)
+    # plt.imshow( np.moveaxis(Rho[:,int(earth_pos[2]),:], [0,1], [1,0] ), cmap="inferno", norm="log" )
+    plt.imshow( np.moveaxis(J_norm[:,:,int(earth_pos[2])], [0,1], [1,0] ), cmap="inferno", vmin=0, vmax=1e-9, interpolation="none")
     plt.colorbar()
-    plt.scatter( Y_BS_plot, X_BS_plot, s=1.0 )
-    plt.scatter( Y_MP_plot, X_MP_plot, s=1.0, c=MP[is_in_plane_MP,3] )
+    plt.scatter( X_BS_plot, Y_BS_plot, s=1.0 )
+    plt.scatter( X_MP_plot, Y_MP_plot, s=1.0, c=MP[is_in_plane_MP,3] )
+    
+    plt.ylabel(r"$y \in [-58; 58] R_E$")
+
+plt.xlabel(r"$x \in [-30; 128] R_E$")
 
 
 plt.savefig( "../images/bowshock.svg" )
