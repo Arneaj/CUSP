@@ -25,11 +25,11 @@ namespace casters
             {sh.x, sh.y, sh.z, sh.i},                                                                       // shape
             {sizeof(float), sizeof(float)*sh.x, sizeof(float)*sh.x*sh.y, sizeof(float)*sh.x*sh.y*sh.z},     // strides
             matrix.get_array(),                                                                             // data pointer
-            pybind11::cast(matrix)                                                                          // parent object (keeps data alive)
+            pybind11::cast(matrix.get_array())                                                                          // parent object (keeps data alive)
         );
     }
 
-    pybind11::array_t<float> array_from_point_vec( std::vector<Point> points )
+    pybind11::array_t<float> array_from_point_vec( const std::vector<Point>& points )
     {
         int length = points.size();
         float* arr = new float[length*3];
@@ -72,7 +72,7 @@ namespace casters
     }
 
 
-    Matrix matrix_from_array( pybind11::array_t<float> arr )
+    Matrix matrix_from_array( const pybind11::array_t<float>& arr )
     {
         int nb_dim = arr.ndim();
         Shape sh;
@@ -90,7 +90,7 @@ namespace casters
         return Matrix( sh, mat );
     }
 
-    std::vector<InterestPoint> ip_vec_from_array( pybind11::array_t<float> arr )
+    std::vector<InterestPoint> ip_vec_from_array( const pybind11::array_t<float>& arr )
     {
         std::vector<InterestPoint> ip(arr.shape(0));
         
@@ -100,7 +100,7 @@ namespace casters
         return ip;
     }
 
-    std::vector<Point> point_vec_from_array( pybind11::array_t<float> arr )
+    std::vector<Point> point_vec_from_array( const pybind11::array_t<float>& arr )
     {
         std::vector<Point> points(arr.shape(0));
         
@@ -110,7 +110,7 @@ namespace casters
         return points;
     }
 
-    Point point_from_array( pybind11::array_t<float> point )
+    Point point_from_array( const pybind11::array_t<float>& point )
     {
         pybind11::ssize_t nb_dims = point.ndim();
         if ( nb_dims > 1 || point.shape(0) != 3 )
@@ -121,12 +121,12 @@ namespace casters
         return Point( *point.data(0), *point.data(1), *point.data(2) );
     }
 
-    Shape shape_from_array( pybind11::array_t<float> shape )
+    Shape shape_from_array( const pybind11::array_t<float>& shape )
     {
         pybind11::ssize_t nb_dims = shape.ndim();
         if ( nb_dims > 1 || shape.shape(0) != 4 )
         {
-            throw pybind11::index_error("Point needs to be an array of shape (4)");
+            throw pybind11::index_error("Shape needs to be an array of shape (4)");
         }
 
         return Shape( *shape.data(0), *shape.data(1), *shape.data(2), *shape.data(3) );
@@ -149,63 +149,14 @@ namespace preprocessing
 
         _shape.i = _mat.get_shape().i;
 
-        Matrix new_mat( _shape );
+        Matrix new_mat = orthonormalise( _mat, _X, _Y, _Z, &_shape ); 
 
-        float X_max = _X.max(0), X_min = _X.min(0), inv_dX = 1.0f / (X_max - X_min);
-        float Y_max = _Y.max(0), Y_min = _Y.min(0), inv_dY = 1.0f / (Y_max - Y_min);
-        float Z_max = _Z.max(0), Z_min = _Z.min(0), inv_dZ = 1.0f / (Z_max - Z_min);
-
-        _X -= X_min; _X *= inv_dX; _X *= _shape.x;
-        _Y -= Y_min; _Y *= inv_dY; _Y *= _shape.y;
-        _Z -= Z_min; _Z *= inv_dZ; _Z *= _shape.z;
-
-        std::vector<int> iX(_shape.x);
-        std::vector<int> iY(_shape.y);
-        std::vector<int> iZ(_shape.z);
-
-        std::vector<float> dX(_shape.x);
-        std::vector<float> dY(_shape.y);
-        std::vector<float> dZ(_shape.z);
-
-        #pragma omp parallel for
-        for (int sx=0; sx<_shape.x; sx++) for (int i=0; i<_X.get_shape().x-1; i++)
-        {
-            if ( sx > _X[i+1] ) continue;
-            iX[sx] = i;
-            dX[sx] = (sx - _X[i]) / (_X[i+1] - _X[i]);
-            break;
-        }
-
-        #pragma omp parallel for
-        for (int sy=0; sy<_shape.y; sy++) for (int i=0; i<_Y.get_shape().x-1; i++)
-        {
-            if ( sy > _Y[i+1] ) continue;
-            iY[sy] = i;
-            dY[sy] = (sy - _Y[i]) / (_Y[i+1] - _Y[i]);
-            break;
-        }
-
-        #pragma omp parallel for
-        for (int sz=0; sz<_shape.z; sz++) for (int i=0; i<_Z.get_shape().x-1; i++)
-        {
-            if ( sz > _Z[i+1] ) continue;
-            iZ[sz] = i;
-            dZ[sz] = (sz - _Z[i]) / (_Z[i+1] - _Z[i]);
-            break;
-        }
-
-        #pragma omp parallel for
-        for (int sx=0; sx<_shape.x; sx++) for (int sy=0; sy<_shape.y; sy++)
-            for (int sz=0; sz<_shape.z; sz++) for (int i=0; i<_shape.i; i++)
-                new_mat(sx,sy,sz,i) =   ( _mat(iX[sx],iY[sy],iZ[sz],i)*(1-dX[sx]) + _mat(iX[sx]+1,iY[sy],iZ[sz],i)*dX[sx] )*(1-dY[sy])*(1-dZ[sz])
-                                    +   ( _mat(iX[sx],iY[sy]+1,iZ[sz],i)*(1-dX[sx]) + _mat(iX[sx]+1,iY[sy]+1,iZ[sz],i)*dX[sx] )*dY[sy]*(1-dZ[sz])
-                                    +   ( _mat(iX[sx],iY[sy],iZ[sz]+1,i)*(1-dX[sx]) + _mat(iX[sx]+1,iY[sy],iZ[sz]+1,i)*dX[sx] )*(1-dY[sy])*dZ[sz]
-                                    +   ( _mat(iX[sx],iY[sy]+1,iZ[sz]+1,i)*(1-dX[sx]) + _mat(iX[sx]+1,iY[sy]+1,iZ[sz]+1,i)*dX[sx] )*dY[sy]*dZ[sz];   
+        pybind11::array_t<float> ret = casters::array_from_matrix( new_mat );
         
         _X.del(); _Y.del(); _Z.del();
         _mat.del();
 
-        return casters::array_from_matrix( new_mat );
+        return ret;
     }
 }
 
@@ -340,6 +291,10 @@ namespace raycasting
 PYBIND11_MODULE(topology_analysis, m)
 {
     m.doc() = "Topology analysis module for magnetic field data";
+
+    // pybind11::class_<Matrix>(m, "Matrix").
+    //     .def(py::init<>());
+        // .def("myFunction");
 
     m.def("preprocess", &preprocessing::orthonormalise_numpy);
 

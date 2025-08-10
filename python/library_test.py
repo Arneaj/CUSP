@@ -11,6 +11,7 @@ if len(sys.argv) < 2:
     print("No Run path given!")
     exit(1)
 
+# /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run1
 filepath = sys.argv[1]
 
 if len(sys.argv) < 3:
@@ -37,31 +38,32 @@ else:
 Rho: np.ndarray = sim.arr["rho"]
 J_norm: np.ndarray = sim.arr["jvec"]
 
+print( Rho.shape )
+
 X: np.ndarray = sim.xc; Y: np.ndarray = sim.yc; Z: np.ndarray = sim.zc
 
-extra_precision = 2.0
+extra_precision = 2
 
-shape_realx2 = extra_precision * np.array([
-    int(X[-1]-X[0]), 
-    int(Y[-1]-Y[0]), 
-    int(Z[-1]-Z[0]),
+shape_realx2 = np.array([
+    extra_precision * int(X[-1]-X[0]), 
+    extra_precision * int(Y[-1]-Y[0]), 
+    extra_precision * int(Z[-1]-Z[0]),
     3
 ], dtype=np.int16)
 
-Rho_realx2: np.ndarray = ta.preprocess( Rho, X, Y, Z, shape_realx2 )
-J_norm_realx2: np.ndarray = ta.preprocess( J_norm, X, Y, Z, shape_realx2 )
+Rho_processed: np.ndarray = ta.preprocess( Rho, X, Y, Z, shape_realx2 )
+J_norm_processed: np.ndarray = ta.preprocess( J_norm, X, Y, Z, shape_realx2 )
 
 earth_pos = extra_precision * np.array( [30, 58, 58], dtype=np.float32 )
 
 
-
 t0 = time.time()
-bs_radius = ta.get_bowshock_radius( 0.0, 0.0, Rho_realx2, earth_pos, 0.1 )
+bs_radius = ta.get_bowshock_radius( 0.0, 0.0, Rho_processed, earth_pos, 0.1 )
 t1 = time.time()
 print(f"Finished in {t1-t0}s -> Bowshock radius for (theta,phi) = (0.0, 0.0):", bs_radius)
 
 t0 = time.time()
-BS = ta.get_bowshock( Rho_realx2, earth_pos, 0.1, 4, 50 )
+BS = ta.get_bowshock( Rho_processed, earth_pos, 0.1, 4, 50 )
 t1 = time.time()
 print(f"Finished in {t1-t0}s -> Found entire Bowshock")
 
@@ -70,8 +72,8 @@ print(f"Finished in {t1-t0}s -> Found entire Bowshock")
 
 t0 = time.time()
 MP = ta.get_interest_points(
-    J_norm_realx2, earth_pos, 
-    Rho_realx2,
+    J_norm_processed, earth_pos, 
+    Rho_processed,
     0.0, np.pi*0.9,  
     50, 4,
     0.1, 0.1,
@@ -95,8 +97,8 @@ if axis == "xz":
     X_MP_plot = X_MP[is_in_plane_MP]
     Z_MP_plot = Z_MP[is_in_plane_MP]
 
-    # plt.imshow( np.moveaxis(Rho[:,int(earth_pos[1]),:], [0,1], [1,0] ), cmap="inferno", norm="log" )
-    plt.imshow( np.moveaxis(J_norm[:,int(earth_pos[1]),:], [0,1], [1,0] ), cmap="inferno", vmin=0, vmax=1e-9, interpolation="none")
+    # plt.imshow( np.moveaxis(Rho_processed[:,int(earth_pos[1]),:], [0,1], [1,0] ), cmap="inferno", norm="log" )
+    plt.imshow( np.moveaxis(J_norm_processed[:,int(earth_pos[1]),:], [0,1], [1,0] ), cmap="inferno", vmin=0, vmax=1e-9, interpolation="none")
     plt.colorbar()
     plt.scatter( X_BS_plot, Z_BS_plot, s=1.0 )
     plt.scatter( X_MP_plot, Z_MP_plot, s=1.0, c=MP[is_in_plane_MP,3] )
@@ -114,8 +116,8 @@ else:
     X_MP_plot = X_MP[is_in_plane_MP]
     Y_MP_plot = Y_MP[is_in_plane_MP]
 
-    # plt.imshow( np.moveaxis(Rho[:,int(earth_pos[2]),:], [0,1], [1,0] ), cmap="inferno", norm="log" )
-    plt.imshow( np.moveaxis(J_norm[:,:,int(earth_pos[2])], [0,1], [1,0] ), cmap="inferno", vmin=0, vmax=1e-9, interpolation="none")
+    # plt.imshow( np.moveaxis(Rho_processed[:,int(earth_pos[2]),:], [0,1], [1,0] ), cmap="inferno", norm="log" )
+    plt.imshow( np.moveaxis(J_norm_processed[:,:,int(earth_pos[2])], [0,1], [1,0] ), cmap="inferno", vmin=0, vmax=1e-9, interpolation="none")
     plt.colorbar()
     plt.scatter( X_BS_plot, Y_BS_plot, s=1.0 )
     plt.scatter( X_MP_plot, Y_MP_plot, s=1.0, c=MP[is_in_plane_MP,3] )
