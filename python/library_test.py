@@ -49,10 +49,12 @@ shape_realx2 = np.array([
     3
 ], dtype=np.int16)
 
-Rho_processed: np.ndarray = ta.preprocess( Rho, X, Y, Z, shape_realx2 )
-J_processed: np.ndarray = ta.preprocess( J, X, Y, Z, shape_realx2 )
+J_norm = np.linalg.norm( J, axis=3 )
 
-J_norm_processed = np.linalg.norm( J_processed, axis=3 )
+Rho_processed: np.ndarray = ta.preprocess( Rho, X, Y, Z, shape_realx2 )
+J_norm_processed: np.ndarray = ta.preprocess( J_norm, X, Y, Z, shape_realx2 )
+
+# J_norm_processed = np.linalg.norm( J_processed, axis=3 )
 
 earth_pos = extra_precision * np.array( [30, 58, 58], dtype=np.float32 )
 
