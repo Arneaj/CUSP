@@ -21,10 +21,21 @@ if len(sys.argv) < 3:
 timestep = sys.argv[2]
 
 
+
+
+t0 = time.time()
 sim = gorgon_import.gorgon_sim(data_dir=filepath)
 index_of_timestep = np.where( sim.times == float(timestep) )[0][0]
 sim.import_timestep(index_of_timestep)
 sim.import_space( filepath + "/MS/x00_Bvec_c-" + timestep + ".pvtr")
+
+Rho: np.ndarray = sim.arr["rho"]
+J: np.ndarray = sim.arr["jvec"]
+
+X: np.ndarray = sim.xc; Y: np.ndarray = sim.yc; Z: np.ndarray = sim.zc
+t1 = time.time()
+print(f"Finished in {t1-t0:.4f}s -> Files read")
+
 
 
 if len(sys.argv) < 4 or sys.argv[3] == "xz":
@@ -35,11 +46,11 @@ else:
     print( "Please provide xy or xz" )
     
 
-Rho: np.ndarray = sim.arr["rho"]
-J: np.ndarray = sim.arr["jvec"]
 
-X: np.ndarray = sim.xc; Y: np.ndarray = sim.yc; Z: np.ndarray = sim.zc
 
+
+
+t0 = time.time()
 extra_precision = 2.0
 
 shape_realx2 = np.array([
@@ -57,17 +68,27 @@ J_norm_processed: np.ndarray = ta.preprocess( J_norm, X, Y, Z, shape_realx2 )
 # J_norm_processed = np.linalg.norm( J_processed, axis=3 )
 
 earth_pos = extra_precision * np.array( [30, 58, 58], dtype=np.float32 )
+t1 = time.time()
+print(f"Finished in {t1-t0:.4f}s -> Preprocessing done")
+
+
+
+
 
 
 t0 = time.time()
 bs_radius = ta.get_bowshock_radius( 0.0, 0.0, Rho_processed, earth_pos, 0.1 )
 t1 = time.time()
-print(f"Finished in {t1-t0}s -> Bowshock radius for (theta,phi) = (0.0, 0.0):", bs_radius)
+print(f"Finished in {t1-t0:.4f}s -> Bowshock radius for (theta,phi) = (0.0, 0.0):", bs_radius)
+
+
+
+
 
 t0 = time.time()
 BS = ta.get_bowshock( Rho_processed, earth_pos, 0.1, 4, 50 )
 t1 = time.time()
-print(f"Finished in {t1-t0}s -> Found entire Bowshock")
+print(f"Finished in {t1-t0:.4f}s -> Found entire Bowshock")
 
 
 
@@ -83,7 +104,13 @@ MP = ta.get_interest_points(
     1.5, 3.0, 20
 )
 t1 = time.time()
-print(f"Finished in {t1-t0}s -> Found entire Magnetopause")
+print(f"Finished in {t1-t0:.4f}s -> Found entire Magnetopause")
+
+
+
+
+
+
 
 X_BS, Y_BS, Z_BS = gorgon.spherical_to_cartesian( BS[:,2], BS[:,0], BS[:,1], earth_pos )
 X_MP, Y_MP, Z_MP = gorgon.spherical_to_cartesian( MP[:,2], MP[:,0], MP[:,1], earth_pos )
