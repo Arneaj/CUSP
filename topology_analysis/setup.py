@@ -219,7 +219,7 @@ ext_modules = [
     Extension(
         'topology_analysis',
         [
-            'python_library.cpp',
+            'library.cpp',
             '../src_cpp/points.cpp',
             '../src_cpp/matrix.cpp',
             '../src_cpp/streamlines.cpp',

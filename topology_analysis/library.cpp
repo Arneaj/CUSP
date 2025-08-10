@@ -74,10 +74,15 @@ namespace casters
 
     Matrix matrix_from_array( pybind11::array_t<float> arr )
     {
-        auto buf = arr.unchecked<4>();
-        Shape sh( buf.shape(0), buf.shape(1), buf.shape(2), buf.shape(3) );
+        int nb_dim = arr.ndim();
+        Shape sh;
 
-        int total_size = buf.shape(0)*buf.shape(1)*buf.shape(2)*buf.shape(3);
+        if (nb_dim==4) { sh = Shape( arr.shape(0), arr.shape(1), arr.shape(2), arr.shape(3) ); }
+        else if (nb_dim==3) { sh = Shape( arr.shape(0), arr.shape(1), arr.shape(2), 1 ); }
+        else if (nb_dim==2) { sh = Shape( arr.shape(0), arr.shape(1), 1, 1 ); }
+        else if (nb_dim==1) { sh = Shape( arr.shape(0), 1, 1, 1 ); }
+
+        int total_size = sh.x*sh.y*sh.z*sh.i;
 
         float* mat = new float[total_size];
         std::memcpy( mat, arr.data(), sizeof(float)*total_size );
@@ -121,7 +126,7 @@ namespace casters
         pybind11::ssize_t nb_dims = shape.ndim();
         if ( nb_dims > 1 || shape.shape(0) != 4 )
         {
-            throw pybind11::index_error("Point needs to be an array of shape (3)");
+            throw pybind11::index_error("Point needs to be an array of shape (4)");
         }
 
         return Shape( *shape.data(0), *shape.data(1), *shape.data(2), *shape.data(3) );
@@ -131,7 +136,7 @@ namespace casters
 
 namespace preprocessing
 {
-    pybind11::array_t<float> orthonormalise( 
+    pybind11::array_t<float> orthonormalise_numpy( 
         const pybind11::array_t<float>& mat, 
         const pybind11::array_t<float>& X, const pybind11::array_t<float>& Y, const pybind11::array_t<float>& Z, 
         const pybind11::array_t<float>& new_shape )
@@ -335,6 +340,8 @@ namespace raycasting
 PYBIND11_MODULE(topology_analysis, m)
 {
     m.doc() = "Topology analysis module for magnetic field data";
+
+    m.def("preprocess", &preprocessing::orthonormalise_numpy);
 
     m.def("get_bowshock_radius", &raycasting::get_bowshock_radius_numpy);
     m.def("get_bowshock", &raycasting::get_bowshock_numpy);

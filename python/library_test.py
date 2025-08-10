@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import topology_analysis as ta
+from gorgon_tools.magnetosphere import gorgon_import
 import gorgon
 import time
 
@@ -12,32 +13,65 @@ if len(sys.argv) < 2:
 
 filepath = sys.argv[1]
 
-if len(sys.argv) < 3 or sys.argv[2] == "xz":
+if len(sys.argv) < 3:
+    print("No Timestep path given!")
+    exit(1)
+
+timestep = sys.argv[2]
+
+
+sim = gorgon_import.gorgon_sim(data_dir=filepath)
+index_of_timestep = np.where( sim.times == float(timestep) )[0][0]
+sim.import_timestep(index_of_timestep)
+sim.import_space( filepath + "/MS/x00_Bvec_c-" + timestep + ".pvtr")
+
+
+if len(sys.argv) < 4 or sys.argv[3] == "xz":
     axis = 'xz'
-elif sys.argv[2] == "xy":
+elif sys.argv[3] == "xy":
     axis = 'xy'
 else:
     print( "Please provide xy or xz" )
+    
 
-Rho = gorgon.import_from_bin( filepath + "/Rho_processed_real.bin" )
-earth_pos = 2.0*np.array( [30, 58, 58], dtype=np.float32 )
+Rho: np.ndarray = sim.arr["rho"]
+J_norm: np.ndarray = sim.arr["jvec"]
+
+X: np.ndarray = sim.xc; Y: np.ndarray = sim.yc; Z: np.ndarray = sim.zc
+
+extra_precision = 2.0
+
+shape_realx2 = extra_precision * np.array([
+    int(X[-1]-X[0]), 
+    int(Y[-1]-Y[0]), 
+    int(Z[-1]-Z[0]),
+    3
+], dtype=np.int16)
+
+Rho_realx2: np.ndarray = ta.preprocess( Rho, X, Y, Z, shape_realx2 )
+J_norm_realx2: np.ndarray = ta.preprocess( J_norm, X, Y, Z, shape_realx2 )
+
+earth_pos = extra_precision * np.array( [30, 58, 58], dtype=np.float32 )
+
+
 
 t0 = time.time()
-bs_radius = ta.get_bowshock_radius( 0.0, 0.0, Rho, earth_pos, 0.1 )
+bs_radius = ta.get_bowshock_radius( 0.0, 0.0, Rho_realx2, earth_pos, 0.1 )
 t1 = time.time()
 print(f"Finished in {t1-t0}s -> Bowshock radius for (theta,phi) = (0.0, 0.0):", bs_radius)
 
 t0 = time.time()
-BS = ta.get_bowshock( Rho, earth_pos, 0.1, 4, 50 )
+BS = ta.get_bowshock( Rho_realx2, earth_pos, 0.1, 4, 50 )
 t1 = time.time()
 print(f"Finished in {t1-t0}s -> Found entire Bowshock")
 
-J_norm = gorgon.import_from_bin( filepath + "/J_norm_processed_real.bin" )
+
+
 
 t0 = time.time()
 MP = ta.get_interest_points(
-    J_norm, earth_pos, 
-    Rho,
+    J_norm_realx2, earth_pos, 
+    Rho_realx2,
     0.0, np.pi*0.9,  
     50, 4,
     0.1, 0.1,
