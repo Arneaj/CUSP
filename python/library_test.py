@@ -36,23 +36,23 @@ else:
     
 
 Rho: np.ndarray = sim.arr["rho"]
-J_norm: np.ndarray = sim.arr["jvec"]
-
-print( Rho.shape )
+J: np.ndarray = sim.arr["jvec"]
 
 X: np.ndarray = sim.xc; Y: np.ndarray = sim.yc; Z: np.ndarray = sim.zc
 
-extra_precision = 2
+extra_precision = 2.0
 
 shape_realx2 = np.array([
-    extra_precision * int(X[-1]-X[0]), 
-    extra_precision * int(Y[-1]-Y[0]), 
-    extra_precision * int(Z[-1]-Z[0]),
+    int( extra_precision * (X[-1]-X[0]) ), 
+    int( extra_precision * (Y[-1]-Y[0]) ), 
+    int( extra_precision * (Z[-1]-Z[0]) ),
     3
 ], dtype=np.int16)
 
 Rho_processed: np.ndarray = ta.preprocess( Rho, X, Y, Z, shape_realx2 )
-J_norm_processed: np.ndarray = ta.preprocess( J_norm, X, Y, Z, shape_realx2 )
+J_processed: np.ndarray = ta.preprocess( J, X, Y, Z, shape_realx2 )
+
+J_norm_processed = np.linalg.norm( J_processed, axis=3 )
 
 earth_pos = extra_precision * np.array( [30, 58, 58], dtype=np.float32 )
 
