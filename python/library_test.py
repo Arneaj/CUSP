@@ -62,7 +62,7 @@ shape_realx2 = np.array([
     int( extra_precision * (Y[-1]-Y[0]) ), 
     int( extra_precision * (Z[-1]-Z[0]) ),
     3
-], dtype=np.int16)
+], dtype=np.int32)
 
 # J_norm = np.linalg.norm( J, axis=3 )
 

@@ -51,8 +51,8 @@ InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos
                                     double theta_min, double theta_max, 
                                     int nb_theta, int nb_phi, 
                                     double dx, double dr,
-                                    double alpha_0_min, double alpha_0_max, double nb_alpha_0,
-                                    double r_0_mult_min, double r_0_mult_max, double nb_r_0,
+                                    double alpha_0_min, double alpha_0_max, int nb_alpha_0,
+                                    double r_0_mult_min, double r_0_mult_max, int nb_r_0,
                                     double* p_avg_std_dev=nullptr );
 
 InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos,
@@ -60,8 +60,8 @@ InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos
                                     double theta_min, double theta_max, 
                                     int nb_theta, int nb_phi, 
                                     double dx, double dr,
-                                    double alpha_0_min, double alpha_0_max, double nb_alpha_0,
-                                    double r_0_mult_min, double r_0_mult_max, double nb_r_0,
+                                    double alpha_0_min, double alpha_0_max, int nb_alpha_0,
+                                    double r_0_mult_min, double r_0_mult_max, int nb_r_0,
                                     double* p_avg_std_dev=nullptr );
 
 

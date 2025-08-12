@@ -139,7 +139,7 @@ namespace casters
         return Point( *point.data(0), *point.data(1), *point.data(2) );
     }
 
-    Shape shape_from_array( const pybind11::array_t<double>& shape )
+    Shape shape_from_array( const pybind11::array_t<int>& shape )
     {
         pybind11::ssize_t nb_dims = shape.ndim();
         if ( nb_dims > 1 || shape.shape(0) != 4 )
@@ -157,7 +157,7 @@ namespace preprocessing
     pybind11::array_t<double> orthonormalise_numpy( 
         const pybind11::array_t<double>& mat, 
         const pybind11::array_t<double>& X, const pybind11::array_t<double>& Y, const pybind11::array_t<double>& Z, 
-        const pybind11::array_t<double>& new_shape )
+        const pybind11::array_t<int>& new_shape )
     {
         Shape _shape = casters::shape_from_array( new_shape );
         Matrix _mat = casters::matrix_from_array( mat );
@@ -218,8 +218,8 @@ namespace raycasting
         double theta_min, double theta_max, 
         int nb_theta, int nb_phi, 
         double dx, double dr,
-        double alpha_0_min, double alpha_0_max, double nb_alpha_0,
-        double r_0_mult_min, double r_0_mult_max, double nb_r_0,
+        double alpha_0_min, double alpha_0_max, int nb_alpha_0,
+        double r_0_mult_min, double r_0_mult_max, int nb_r_0,
         double& avg_std_dev )
     {
         Matrix _Rho = casters::matrix_from_array( Rho );
@@ -275,7 +275,7 @@ namespace raycasting
     pybind11::array_t<double> process_interest_points_numpy(   
         const pybind11::array_t<double>& interest_points, 
         int nb_theta, int nb_phi, 
-        const pybind11::array_t<double>& shape_sim, const pybind11::array_t<double>& shape_real,
+        const pybind11::array_t<int>& shape_sim, const pybind11::array_t<int>& shape_real,
         const pybind11::array_t<double>& earth_pos_sim, const pybind11::array_t<double>& earth_pos_real )
     {
         std::vector<InterestPoint> _interest_points = casters::ip_vec_from_array(interest_points);
@@ -289,7 +289,7 @@ namespace raycasting
 
     pybind11::array_t<double> process_points_numpy(    
         const pybind11::array_t<double>& points, 
-        const pybind11::array_t<double>& shape_sim, const pybind11::array_t<double>& shape_real,
+        const pybind11::array_t<int>& shape_sim, const pybind11::array_t<int>& shape_real,
         const pybind11::array_t<double>& earth_pos_sim, const pybind11::array_t<double>& earth_pos_real )
     {
         std::vector<Point> _points = casters::point_vec_from_array( points );

@@ -4,7 +4,7 @@ from gorgon import import_from
 
 
 
-def get_earth_pos( B_norm: np.ndarray ) -> tuple[float]:
+def get_earth_pos( B_norm: np.ndarray ) -> tuple:
     return np.unravel_index(np.argmax(B_norm, axis=None), B_norm.shape)
 
 

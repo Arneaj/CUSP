@@ -6,6 +6,7 @@ gorgon_tools
 build
 ceres
 .vscode
+.venv
 images
 output_cpp
 mp_topology.* 
