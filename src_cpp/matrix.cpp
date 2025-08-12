@@ -24,7 +24,7 @@ bool Matrix::is_point_OOB(const Point& p) const
 }
 
 
-float Matrix::operator()(const Point& p, int i) const
+double Matrix::operator()(const Point& p, int i) const
 {
     // if ( is_point_OOB(p) ) throw exception_OOB("Point is out of bounds!");
 
@@ -32,9 +32,9 @@ float Matrix::operator()(const Point& p, int i) const
     int ym = (int) (p.y);
     int zm = (int) (p.z);
 
-    float xd = p.x - xm;
-    float yd = p.y - ym;
-    float zd = p.z - zm;
+    double xd = p.x - xm;
+    double yd = p.y - ym;
+    double zd = p.z - zm;
 
     return  ( (*this)(xm,ym,zm,i)*(1-xd) + (*this)(xm+1,ym,zm,i)*xd )*(1-yd)*(1-zd)
         +   ( (*this)(xm,ym+1,zm,i)*(1-xd) + (*this)(xm+1,ym+1,zm,i)*xd )*yd*(1-zd)
@@ -56,7 +56,7 @@ Point Matrix::operator()(const Point& p) const
 
 
 
-float& Matrix::operator()(int ix, int iy, int iz, int i)
+double& Matrix::operator()(int ix, int iy, int iz, int i)
 {
     if (ix<0 || ix>=shape.x) { throw exception_OOB("x out of range"); }
     if (iy<0 || iy>=shape.y) { throw exception_OOB("y out of range"); }
@@ -67,7 +67,7 @@ float& Matrix::operator()(int ix, int iy, int iz, int i)
     // return mat[ ix*shape.y*shape.z*shape.i + iy*shape.z*shape.i + iz*shape.i + (i+i_offset) ];
 }
 
-const float& Matrix::operator()(int ix, int iy, int iz, int i) const
+const double& Matrix::operator()(int ix, int iy, int iz, int i) const
 {
     if (ix<0 || ix>=shape.x) { throw exception_OOB("x out of range"); }
     if (iy<0 || iy>=shape.y) { throw exception_OOB("y out of range"); }
@@ -82,14 +82,14 @@ const float& Matrix::operator()(int ix, int iy, int iz, int i) const
 
 
 
-float& Matrix::operator[](int id)
+double& Matrix::operator[](int id)
 {
     if (id<0 || id >= shape.x*shape.y*shape.z*shape.i) { throw exception_OOB("index out of range"); }
 
     return mat[ id ];
 }
 
-const float& Matrix::operator[](int id) const
+const double& Matrix::operator[](int id) const
 {
     if (id<0 || id >= shape.x*shape.y*shape.z*shape.i) { throw exception_OOB("index out of range"); }
 
@@ -114,12 +114,12 @@ Matrix Matrix::operator()(int i)
 
 Point Matrix::index_max() const
 {
-    float max_norm = 0;
+    double max_norm = 0;
     Point max_index;
 
     for (int ix=0; ix<shape.x; ix++) for (int iy=0; iy<shape.y; iy++) for (int iz=0; iz<shape.z; iz++)
     {
-        float norm = Point( (*this)(ix,iy,iz,0), (*this)(ix,iy,iz,1), (*this)(ix,iy,iz,2) ).norm();
+        double norm = Point( (*this)(ix,iy,iz,0), (*this)(ix,iy,iz,1), (*this)(ix,iy,iz,2) ).norm();
 
         if ( norm > max_norm ) 
         {
@@ -133,12 +133,12 @@ Point Matrix::index_max() const
 
 Point Matrix::index_max(int i) const
 {
-    float max_val = 0;
+    double max_val = 0;
     Point max_index;
 
     for (int ix=0; ix<shape.x; ix++) for (int iy=0; iy<shape.y; iy++) for (int iz=0; iz<shape.z; iz++)
     {
-        float val = (*this)(ix,iy,iz,i);
+        double val = (*this)(ix,iy,iz,i);
 
         if ( val > max_val ) 
         {
@@ -151,13 +151,13 @@ Point Matrix::index_max(int i) const
 }
 
 
-float Matrix::max() const
+double Matrix::max() const
 {
-    float max_norm = -INFINITY;
+    double max_norm = -INFINITY;
 
     for (int ix=0; ix<shape.x; ix++) for (int iy=0; iy<shape.y; iy++) for (int iz=0; iz<shape.z; iz++)
     {
-        float norm = Point( (*this)(ix,iy,iz,0), (*this)(ix,iy,iz,1), (*this)(ix,iy,iz,2) ).norm();
+        double norm = Point( (*this)(ix,iy,iz,0), (*this)(ix,iy,iz,1), (*this)(ix,iy,iz,2) ).norm();
 
         if ( norm > max_norm ) max_norm = norm;
     }
@@ -165,13 +165,13 @@ float Matrix::max() const
     return max_norm;
 }
 
-float Matrix::min() const
+double Matrix::min() const
 {
-    float min_norm = INFINITY;
+    double min_norm = INFINITY;
 
     for (int ix=0; ix<shape.x; ix++) for (int iy=0; iy<shape.y; iy++) for (int iz=0; iz<shape.z; iz++)
     {
-        float norm = Point( (*this)(ix,iy,iz,0), (*this)(ix,iy,iz,1), (*this)(ix,iy,iz,2) ).norm();
+        double norm = Point( (*this)(ix,iy,iz,0), (*this)(ix,iy,iz,1), (*this)(ix,iy,iz,2) ).norm();
 
         if ( norm < min_norm ) min_norm = norm;
     }
@@ -180,13 +180,13 @@ float Matrix::min() const
 }
 
 
-float Matrix::max(int i) const
+double Matrix::max(int i) const
 {
-    float max_norm = -INFINITY;
+    double max_norm = -INFINITY;
 
     for (int ix=0; ix<shape.x; ix++) for (int iy=0; iy<shape.y; iy++) for (int iz=0; iz<shape.z; iz++)
     {
-        float norm = (*this)(ix,iy,iz,i);
+        double norm = (*this)(ix,iy,iz,i);
 
         if ( norm > max_norm ) max_norm = norm;
     }
@@ -194,13 +194,13 @@ float Matrix::max(int i) const
     return max_norm;
 }
 
-float Matrix::min(int i) const
+double Matrix::min(int i) const
 {
-    float min_norm = INFINITY;
+    double min_norm = INFINITY;
 
     for (int ix=0; ix<shape.x; ix++) for (int iy=0; iy<shape.y; iy++) for (int iz=0; iz<shape.z; iz++)
     {
-        float norm = (*this)(ix,iy,iz,i);
+        double norm = (*this)(ix,iy,iz,i);
 
         if ( norm < min_norm ) min_norm = norm;
     }
@@ -226,7 +226,7 @@ Matrix Matrix::norm() const
 
 
 
-void Matrix::operator+=(float val)
+void Matrix::operator+=(double val)
 {
     for (int ix=0; ix<shape.x; ix++) for (int iy=0; iy<shape.y; iy++) for (int iz=0; iz<shape.z; iz++)
         for (int i=0; i<shape.i; i++)
@@ -234,7 +234,7 @@ void Matrix::operator+=(float val)
 }
 
 
-void Matrix::operator-=(float val)
+void Matrix::operator-=(double val)
 {
     for (int ix=0; ix<shape.x; ix++) for (int iy=0; iy<shape.y; iy++) for (int iz=0; iz<shape.z; iz++)
         for (int i=0; i<shape.i; i++)
@@ -242,7 +242,7 @@ void Matrix::operator-=(float val)
 }
 
 
-void Matrix::operator*=(float val)
+void Matrix::operator*=(double val)
 {
     for (int ix=0; ix<shape.x; ix++) for (int iy=0; iy<shape.y; iy++) for (int iz=0; iz<shape.z; iz++)
         for (int i=0; i<shape.i; i++)
@@ -250,7 +250,7 @@ void Matrix::operator*=(float val)
 }
 
 
-void Matrix::operator/=(float val)
+void Matrix::operator/=(double val)
 {
     for (int ix=0; ix<shape.x; ix++) for (int iy=0; iy<shape.y; iy++) for (int iz=0; iz<shape.z; iz++)
         for (int i=0; i<shape.i; i++)

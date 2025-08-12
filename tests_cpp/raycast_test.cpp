@@ -9,11 +9,11 @@
 
 #ifndef CUSTOM_PI
 #define CUSTOM_PI
-const float PI = 3.141592653589793238462643383279502884f;
+const double PI = 3.141592653589793238462643383279502884f;
 #endif
 
 typedef std::chrono::high_resolution_clock Time;
-typedef std::chrono::duration<float> fsec;
+typedef std::chrono::duration<double> fsec;
 
 
 int main()
@@ -44,7 +44,7 @@ int main()
     Point p_max( X[ X.get_shape().x-1 ], Y[ Y.get_shape().x-1 ], Z[ Z.get_shape().x-1 ] );
     Point p_range = p_max - p_min;
 
-    float hyper_sampling = 1.2;
+    double hyper_sampling = 1.2;
 
     Shape new_shape_real(std::round(p_range.x), std::round(p_range.y), std::round(p_range.z), J.get_shape().i);
     Shape new_shape_sim(J.get_shape().x*hyper_sampling, J.get_shape().y*hyper_sampling, J.get_shape().z*hyper_sampling, J.get_shape().i);
@@ -65,21 +65,21 @@ int main()
 
     int nb_theta = 40;
     int nb_phi = 90;
-    float theta_min = 0.0f;
-    float theta_max = PI*0.85f;
+    double theta_min = 0.0f;
+    double theta_max = PI*0.85f;
 
-    float dx = 0.1f;
-    float dr = 0.1f;
+    double dx = 0.1f;
+    double dr = 0.1f;
 
-    float alpha_0_min = 0.3f;
-    float alpha_0_max = 0.6f;
+    double alpha_0_min = 0.3f;
+    double alpha_0_max = 0.6f;
     int nb_alpha_0 = 4;
 
-    float r_0_mult_min = 1.15f;
-    float r_0_mult_max = 2.1f;
+    double r_0_mult_min = 1.15f;
+    double r_0_mult_max = 2.1f;
     int nb_r_0 = 20;
 
-    float avg_std_dev;
+    double avg_std_dev;
 
     InterestPoint* interest_points = get_interest_points(
         J_norm_sim, earth_pos_sim,

@@ -9,15 +9,15 @@
 
 
 
-// float interpolate(Point P, const Matrix& B, int i)
+// double interpolate(Point P, const Matrix& B, int i)
 // {
 //     int xm = (int) (P.x);
 //     int ym = (int) (P.y);
 //     int zm = (int) (P.z);
 
-//     float xd = P.x - xm;
-//     float yd = P.y - ym;
-//     float zd = P.z - zm;
+//     double xd = P.x - xm;
+//     double yd = P.y - ym;
+//     double zd = P.z - zm;
 
 //     return  ( B(xm,ym,zm,i)*(1-xd) + B(xm+1,ym,zm,i)*xd )*(1-yd)*(1-zd)
 //         +   ( B(xm,ym+1,zm,i)*(1-xd) + B(xm+1,ym+1,zm,i)*xd )*yd*(1-zd)
@@ -25,14 +25,14 @@
 //         +   ( B(xm,ym+1,zm+1,i)*(1-xd) + B(xm+1,ym+1,zm+1,i)*xd )*yd*zd;
 // }
 
-Point norm_RK4(Point P_init, const Matrix& B, float step, float sign)
+Point norm_RK4(Point P_init, const Matrix& B, double step, double sign)
 {
     Point P = P_init;
 
     if ( B.is_point_OOB(P) ) throw std::exception();
     
     Point k1 = B(P);
-    float k1_norm = k1.norm();
+    double k1_norm = k1.norm();
     k1 /= k1_norm * sign;
 
     P = P_init + 0.5*step*k1;
@@ -67,7 +67,7 @@ Point norm_RK4(Point P_init, const Matrix& B, float step, float sign)
 
 
 
-std::vector<Point> find_streamline(const Matrix& B, Point P_i, float step, int max_length, bool both_sides, const Point* earth_pos)
+std::vector<Point> find_streamline(const Matrix& B, Point P_i, double step, int max_length, bool both_sides, const Point* earth_pos)
 {
     Point P(P_i);
 
@@ -97,7 +97,7 @@ std::vector<Point> find_streamline(const Matrix& B, Point P_i, float step, int m
 
     while (t < max_length)
     {
-        try { P = norm_RK4(P, B, step, -1.0f); }
+        try { P = norm_RK4(P, B, step, -1.0); }
         catch(const std::exception& e) { break; }
         
         points.emplace(points.begin(), P);
@@ -132,7 +132,7 @@ std::vector<Point> smooth_interpolation(const std::vector<Point>& points, int ke
     return avg_points;
 }
 
-std::vector<Point> find_smooth_streamline(const Matrix& B, Point P_i, float step, int kernel_radius, int max_length)
+std::vector<Point> find_smooth_streamline(const Matrix& B, Point P_i, double step, int kernel_radius, int max_length)
 {
     return smooth_interpolation(
         find_streamline(B, P_i, step, max_length), 
@@ -145,7 +145,7 @@ std::vector<Point> find_smooth_streamline(const Matrix& B, Point P_i, float step
 
 
 
-std::vector<std::vector<Point>> get_streamlines_singlethreaded(const Matrix& B, const std::vector<Point>& points, float step, int kernel_radius, int max_length)
+std::vector<std::vector<Point>> get_streamlines_singlethreaded(const Matrix& B, const std::vector<Point>& points, double step, int kernel_radius, int max_length)
 {
     std::vector<std::vector<Point>> streamlines;
 
@@ -162,7 +162,7 @@ std::vector<std::vector<Point>> get_streamlines_singlethreaded(const Matrix& B, 
 
 
 void get_streamlines__mutithreaded_helper(  const Matrix& B, const std::vector<Point>& points, 
-                                            float step, int max_length, 
+                                            double step, int max_length, 
                                             int start_index, int end_index,
                                             std::vector<std::vector<Point>>& streamlines, const Point* earth_pos  )
 {
@@ -177,7 +177,7 @@ void get_streamlines__mutithreaded_helper(  const Matrix& B, const std::vector<P
 
 
 std::vector<std::vector<Point>> get_streamlines(const Matrix& B, const std::vector<Point>& points, 
-                                                float step, int max_length, const Point* earth_pos )
+                                                double step, int max_length, const Point* earth_pos )
 {
     int nb_threads = std::thread::hardware_concurrency();
 

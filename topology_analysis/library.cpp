@@ -17,22 +17,34 @@
 
 namespace casters
 {
-    pybind11::array_t<float> array_from_matrix( Matrix& matrix )
+    double* rearrange_data( double* vec, const Shape& shape )
+    {
+        // #pragma omp parallel for
+        // for (int ix = 0; ix < shape.x; ix++) for (int iy = 0; iy < shape.y; iy++) 
+        //     for (int iz = 0; iz < shape.z; iz++) for (int i = 0; i < shape.i; i++) {
+        //         int srcIndex = ((iz*shape.y + iy)*shape.x + ix)*shape.i + i;
+        //         int dstIndex = ((i*shape.z + iz)*shape.y + iy)*shape.x + ix;
+                
+        //         finalData[dstIndex] = extractedData[srcIndex];
+        //     }
+    }
+
+    pybind11::array_t<double> array_from_matrix( Matrix& matrix )
     {
         const Shape& sh = matrix.get_shape();
 
-        return pybind11::array_t<float>(
+        return pybind11::array_t<double>(
             {sh.x, sh.y, sh.z, sh.i},                                                                       // shape
-            {sizeof(float), sizeof(float)*sh.x, sizeof(float)*sh.x*sh.y, sizeof(float)*sh.x*sh.y*sh.z},     // strides
+            {sizeof(double), sizeof(double)*sh.x, sizeof(double)*sh.x*sh.y, sizeof(double)*sh.x*sh.y*sh.z},     // strides
             matrix.get_array(),                                                                             // data pointer
             pybind11::cast(matrix.get_array())                                                              // parent object (keeps data alive)
         );
     }
 
-    pybind11::array_t<float> array_from_point_vec( const std::vector<Point>& points )
+    pybind11::array_t<double> array_from_point_vec( const std::vector<Point>& points )
     {
         int length = points.size();
-        float* arr = new float[length*3];
+        double* arr = new double[length*3];
 
         for (int i=0; i<length; i++)
         {
@@ -41,17 +53,17 @@ namespace casters
             arr[3*i+2] = points[i].z;
         }
 
-        return pybind11::array_t<float>(
+        return pybind11::array_t<double>(
             {length, 3},                        // shape
-            {sizeof(float)*3, sizeof(float)},   // strides
+            {sizeof(double)*3, sizeof(double)},   // strides
             arr,                                // data pointer
             pybind11::cast(arr)                 // parent object (keeps data alive)
         );
     }
 
-    pybind11::array_t<float> array_from_interest_point_vec( InterestPoint* interest_points, int nb_interest_points )
+    pybind11::array_t<double> array_from_interest_point_vec( InterestPoint* interest_points, int nb_interest_points )
     {
-        float* arr = new float[nb_interest_points*4];
+        double* arr = new double[nb_interest_points*4];
 
         for (int i=0; i<nb_interest_points; i++)
         {
@@ -63,16 +75,16 @@ namespace casters
 
         delete[] interest_points;
 
-        return pybind11::array_t<float>(
+        return pybind11::array_t<double>(
             {nb_interest_points, 4},            // shape
-            {sizeof(float)*4, sizeof(float)},   // strides
+            {sizeof(double)*4, sizeof(double)},   // strides
             arr,                                // data pointer
             pybind11::cast(arr)                 // parent object (keeps data alive)
         );
     }
 
 
-    Matrix matrix_from_array( const pybind11::array_t<float>& arr )
+    Matrix matrix_from_array( const pybind11::array_t<double>& arr )
     {
         int nb_dim = arr.ndim();
         Shape sh;
@@ -84,13 +96,13 @@ namespace casters
 
         int total_size = sh.x*sh.y*sh.z*sh.i;
 
-        float* mat = new float[total_size];
-        std::memcpy( mat, arr.data(), sizeof(float)*total_size );
+        double* mat = new double[total_size];
+        std::memcpy( mat, arr.data(), sizeof(double)*total_size );
 
         return Matrix( sh, mat );
     }
 
-    std::vector<InterestPoint> ip_vec_from_array( const pybind11::array_t<float>& arr )
+    std::vector<InterestPoint> ip_vec_from_array( const pybind11::array_t<double>& arr )
     {
         std::vector<InterestPoint> ip(arr.shape(0));
         
@@ -100,7 +112,7 @@ namespace casters
         return ip;
     }
 
-    std::vector<Point> point_vec_from_array( const pybind11::array_t<float>& arr )
+    std::vector<Point> point_vec_from_array( const pybind11::array_t<double>& arr )
     {
         std::vector<Point> points(arr.shape(0));
         
@@ -110,7 +122,7 @@ namespace casters
         return points;
     }
 
-    Point point_from_array( const pybind11::array_t<float>& point )
+    Point point_from_array( const pybind11::array_t<double>& point )
     {
         pybind11::ssize_t nb_dims = point.ndim();
         if ( nb_dims > 1 || point.shape(0) != 3 )
@@ -121,7 +133,7 @@ namespace casters
         return Point( *point.data(0), *point.data(1), *point.data(2) );
     }
 
-    Shape shape_from_array( const pybind11::array_t<float>& shape )
+    Shape shape_from_array( const pybind11::array_t<double>& shape )
     {
         pybind11::ssize_t nb_dims = shape.ndim();
         if ( nb_dims > 1 || shape.shape(0) != 4 )
@@ -136,10 +148,10 @@ namespace casters
 
 namespace preprocessing
 {
-    pybind11::array_t<float> orthonormalise_numpy( 
-        const pybind11::array_t<float>& mat, 
-        const pybind11::array_t<float>& X, const pybind11::array_t<float>& Y, const pybind11::array_t<float>& Z, 
-        const pybind11::array_t<float>& new_shape )
+    pybind11::array_t<double> orthonormalise_numpy( 
+        const pybind11::array_t<double>& mat, 
+        const pybind11::array_t<double>& X, const pybind11::array_t<double>& Y, const pybind11::array_t<double>& Z, 
+        const pybind11::array_t<double>& new_shape )
     {
         Shape _shape = casters::shape_from_array( new_shape );
         Matrix _mat = casters::matrix_from_array( mat );
@@ -151,7 +163,7 @@ namespace preprocessing
 
         Matrix new_mat = orthonormalise( _mat, _X, _Y, _Z, &_shape ); 
 
-        pybind11::array_t<float> ret = casters::array_from_matrix( new_mat );
+        pybind11::array_t<double> ret = casters::array_from_matrix( new_mat );
         
         _X.del(); _Y.del(); _Z.del();
         _mat.del();
@@ -163,29 +175,29 @@ namespace preprocessing
 
 namespace raycasting
 {
-    float get_bowshock_radius_numpy(  
-        float theta, float phi,
-        const pybind11::array_t<float>& Rho, const pybind11::array_t<float>& earth_pos,
-        float dr )
+    double get_bowshock_radius_numpy(  
+        double theta, double phi,
+        const pybind11::array_t<double>& Rho, const pybind11::array_t<double>& earth_pos,
+        double dr )
     {
         Matrix _Rho = casters::matrix_from_array( Rho );
         Point _earth_pos = casters::point_from_array( earth_pos );
 
-        float rad = get_bowshock_radius(theta, phi, _Rho, _earth_pos, dr);
+        double rad = get_bowshock_radius(theta, phi, _Rho, _earth_pos, dr);
 
         _Rho.del();
 
         return rad;
     }
 
-    pybind11::array_t<float> get_bowshock_numpy( 
-        const pybind11::array_t<float>& Rho, const pybind11::array_t<float>& earth_pos, 
-        float dr, int nb_phi, int max_nb_theta )
+    pybind11::array_t<double> get_bowshock_numpy( 
+        const pybind11::array_t<double>& Rho, const pybind11::array_t<double>& earth_pos, 
+        double dr, int nb_phi, int max_nb_theta )
     {
         Matrix _Rho = casters::matrix_from_array( Rho );
         Point _earth_pos = casters::point_from_array( earth_pos );
 
-        pybind11::array_t<float> ret = casters::array_from_point_vec( get_bowshock(_Rho, _earth_pos, dr, nb_phi, max_nb_theta) );
+        pybind11::array_t<double> ret = casters::array_from_point_vec( get_bowshock(_Rho, _earth_pos, dr, nb_phi, max_nb_theta) );
 
         _Rho.del();
 
@@ -194,21 +206,21 @@ namespace raycasting
 
 
 
-    pybind11::array_t<float> get_interest_points_numpy( 
-        const pybind11::array_t<float>& J_norm, const pybind11::array_t<float>& earth_pos,
-        const pybind11::array_t<float>& Rho,
-        float theta_min, float theta_max, 
+    pybind11::array_t<double> get_interest_points_numpy( 
+        const pybind11::array_t<double>& J_norm, const pybind11::array_t<double>& earth_pos,
+        const pybind11::array_t<double>& Rho,
+        double theta_min, double theta_max, 
         int nb_theta, int nb_phi, 
-        float dx, float dr,
-        float alpha_0_min, float alpha_0_max, float nb_alpha_0,
-        float r_0_mult_min, float r_0_mult_max, float nb_r_0,
-        float& avg_std_dev )
+        double dx, double dr,
+        double alpha_0_min, double alpha_0_max, double nb_alpha_0,
+        double r_0_mult_min, double r_0_mult_max, double nb_r_0,
+        double& avg_std_dev )
     {
         Matrix _Rho = casters::matrix_from_array( Rho );
         Matrix _J_norm = casters::matrix_from_array( J_norm );
         Point _earth_pos = casters::point_from_array( earth_pos );
 
-        pybind11::array_t<float> ret = casters::array_from_interest_point_vec( get_interest_points(
+        pybind11::array_t<double> ret = casters::array_from_interest_point_vec( get_interest_points(
             _J_norm, _earth_pos, 
             _Rho,
             theta_min, theta_max,
@@ -224,20 +236,20 @@ namespace raycasting
         return ret;
     }
 
-    pybind11::array_t<float> get_interest_points_numpy_no_std_dev( 
-        const pybind11::array_t<float>& J_norm, const pybind11::array_t<float>& earth_pos,
-        const pybind11::array_t<float>& Rho,
-        float theta_min, float theta_max, 
+    pybind11::array_t<double> get_interest_points_numpy_no_std_dev( 
+        const pybind11::array_t<double>& J_norm, const pybind11::array_t<double>& earth_pos,
+        const pybind11::array_t<double>& Rho,
+        double theta_min, double theta_max, 
         int nb_theta, int nb_phi, 
-        float dx, float dr,
-        float alpha_0_min, float alpha_0_max, float nb_alpha_0,
-        float r_0_mult_min, float r_0_mult_max, float nb_r_0 )
+        double dx, double dr,
+        double alpha_0_min, double alpha_0_max, double nb_alpha_0,
+        double r_0_mult_min, double r_0_mult_max, double nb_r_0 )
     {
         Matrix _J_norm = casters::matrix_from_array( J_norm );
         Matrix _Rho = casters::matrix_from_array( Rho );
         Point _earth_pos = casters::point_from_array( earth_pos );
 
-        pybind11::array_t<float> ret = casters::array_from_interest_point_vec( get_interest_points(
+        pybind11::array_t<double> ret = casters::array_from_interest_point_vec( get_interest_points(
             _J_norm, _earth_pos, 
             _Rho,
             theta_min, theta_max,
@@ -254,11 +266,11 @@ namespace raycasting
     }
 
 
-    pybind11::array_t<float> process_interest_points_numpy(   
-        const pybind11::array_t<float>& interest_points, 
+    pybind11::array_t<double> process_interest_points_numpy(   
+        const pybind11::array_t<double>& interest_points, 
         int nb_theta, int nb_phi, 
-        const pybind11::array_t<float>& shape_sim, const pybind11::array_t<float>& shape_real,
-        const pybind11::array_t<float>& earth_pos_sim, const pybind11::array_t<float>& earth_pos_real )
+        const pybind11::array_t<double>& shape_sim, const pybind11::array_t<double>& shape_real,
+        const pybind11::array_t<double>& earth_pos_sim, const pybind11::array_t<double>& earth_pos_real )
     {
         std::vector<InterestPoint> _interest_points = casters::ip_vec_from_array(interest_points);
         Shape _shape_sim = casters::shape_from_array(shape_sim), _shape_real = casters::shape_from_array(shape_real);
@@ -269,10 +281,10 @@ namespace raycasting
         return casters::array_from_interest_point_vec( _interest_points.data(), _interest_points.size() );
     }
 
-    pybind11::array_t<float> process_points_numpy(    
-        const pybind11::array_t<float>& points, 
-        const pybind11::array_t<float>& shape_sim, const pybind11::array_t<float>& shape_real,
-        const pybind11::array_t<float>& earth_pos_sim, const pybind11::array_t<float>& earth_pos_real )
+    pybind11::array_t<double> process_points_numpy(    
+        const pybind11::array_t<double>& points, 
+        const pybind11::array_t<double>& shape_sim, const pybind11::array_t<double>& shape_real,
+        const pybind11::array_t<double>& earth_pos_sim, const pybind11::array_t<double>& earth_pos_real )
     {
         std::vector<Point> _points = casters::point_vec_from_array( points );
         Shape _shape_sim = casters::shape_from_array(shape_sim), _shape_real = casters::shape_from_array(shape_real);

@@ -3,30 +3,30 @@
 
 #ifndef CUSTOM_PI
 #define CUSTOM_PI
-const float PI = 3.141592653589793238462643383279502884f;
+const double PI = 3.141592653589793238462643383279502884;
 #endif
 
 
-Point local_grad_of_normed_matrix(const Matrix& M_norm, const Point& p, DerivativeAccuracy accuracy, float dx, float dy, float dz)
+Point local_grad_of_normed_matrix(const Matrix& M_norm, const Point& p, DerivativeAccuracy accuracy, double dx, double dy, double dz)
 {
     if (M_norm.get_shape().i > 1) { std::cout << "ERROR: please provide a matrix of component dim shape.i = 1\n"; exit(1); }
 
-    Point p_dx = Point(dx, 0.0f, 0.0f);
-    Point p_dy = Point(0.0f, dy, 0.0f);
-    Point p_dz = Point(0.0f, 0.0f, dz);
+    Point p_dx = Point(dx, 0.0, 0.0);
+    Point p_dy = Point(0.0, dy, 0.0);
+    Point p_dz = Point(0.0, 0.0, dz);
 
     if (accuracy == DerivativeAccuracy::normal)
     {
-        float grad_x = ( M_norm(p + p_dx, 0) - M_norm(p - p_dx, 0) ) / (2.0f*dx);
-        float grad_y = ( M_norm(p + p_dy, 0) - M_norm(p - p_dy, 0) ) / (2.0f*dy);
-        float grad_z = ( M_norm(p + p_dz, 0) - M_norm(p - p_dz, 0) ) / (2.0f*dz);
+        double grad_x = ( M_norm(p + p_dx, 0) - M_norm(p - p_dx, 0) ) / (2.0*dx);
+        double grad_y = ( M_norm(p + p_dy, 0) - M_norm(p - p_dy, 0) ) / (2.0*dy);
+        double grad_z = ( M_norm(p + p_dz, 0) - M_norm(p - p_dz, 0) ) / (2.0*dz);
 
         return Point( grad_x, grad_y, grad_z );
     }
 
-    float grad_x = ( -M_norm(p + 2.0f*p_dx, 0) + 8.0f*M_norm(p + p_dx, 0) - 8.0f*M_norm(p - p_dx, 0) + M_norm(p - 2.0f*p_dx, 0) ) / (12.0f*dx);
-    float grad_y = ( -M_norm(p + 2.0f*p_dy, 0) + 8.0f*M_norm(p + p_dy, 0) - 8.0f*M_norm(p - p_dy, 0) + M_norm(p - 2.0f*p_dy, 0) ) / (12.0f*dy);
-    float grad_z = ( -M_norm(p + 2.0f*p_dz, 0) + 8.0f*M_norm(p + p_dz, 0) - 8.0f*M_norm(p - p_dz, 0) + M_norm(p - 2.0f*p_dz, 0) ) / (12.0f*dz);
+    double grad_x = ( -M_norm(p + 2.0*p_dx, 0) + 8.0*M_norm(p + p_dx, 0) - 8.0*M_norm(p - p_dx, 0) + M_norm(p - 2.0*p_dx, 0) ) / (12.0*dx);
+    double grad_y = ( -M_norm(p + 2.0*p_dy, 0) + 8.0*M_norm(p + p_dy, 0) - 8.0*M_norm(p - p_dy, 0) + M_norm(p - 2.0*p_dy, 0) ) / (12.0*dy);
+    double grad_z = ( -M_norm(p + 2.0*p_dz, 0) + 8.0*M_norm(p + p_dz, 0) - 8.0*M_norm(p - p_dz, 0) + M_norm(p - 2.0*p_dz, 0) ) / (12.0*dz);
 
     return Point( grad_x, grad_y, grad_z );
 }
@@ -35,14 +35,14 @@ Point local_grad_of_normed_matrix(const Matrix& M_norm, const Point& p, Derivati
 
 
 
-float get_grad_J_fit_over_interest_points( double (*fn)(const double* const, double, double), const std::vector<double>& params, 
+double get_grad_J_fit_over_interest_points( double (*fn)(const double* const, double, double), const std::vector<double>& params, 
                             const InterestPoint* const interest_points, int nb_interest_points,
                             const Matrix& J_norm,
                             const Point& earth_pos,
-                            float dx, float dy, float dz )
+                            double dx, double dy, double dz )
 {
-    float total_grad_norm = 0.0f;
-    float total_grad_norm_ip = 0.0f;
+    double total_grad_norm = 0.0;
+    double total_grad_norm_ip = 0.0;
 
     Point dp(dx, dy, dz);
 
@@ -50,8 +50,8 @@ float get_grad_J_fit_over_interest_points( double (*fn)(const double* const, dou
     {
         const InterestPoint& ip = interest_points[i];
 
-        float sin_theta = std::sin(ip.theta);
-        float radius = fn(params.data(), ip.theta, ip.phi);
+        double sin_theta = std::sin(ip.theta);
+        double radius = fn(params.data(), ip.theta, ip.phi);
         Point proj = Point(
             -std::cos(ip.theta),
             sin_theta*std::sin(ip.phi),
@@ -61,8 +61,8 @@ float get_grad_J_fit_over_interest_points( double (*fn)(const double* const, dou
         Point p_ip = ip.radius * proj + earth_pos;
         Point p = radius * proj + earth_pos;
 
-        if ( J_norm.is_point_OOB(p+2.0f*dp) || J_norm.is_point_OOB(p-2.0f*dp) ||
-             J_norm.is_point_OOB(p_ip+2.0f*dp) || J_norm.is_point_OOB(p_ip-2.0f*dp) ) continue;
+        if ( J_norm.is_point_OOB(p+2.0*dp) || J_norm.is_point_OOB(p-2.0*dp) ||
+             J_norm.is_point_OOB(p_ip+2.0*dp) || J_norm.is_point_OOB(p_ip-2.0*dp) ) continue;
 
         
 
@@ -79,7 +79,7 @@ float get_grad_J_fit_over_interest_points( double (*fn)(const double* const, dou
 
 
 
-float get_delta_l( float l_n, float l_s ) { return l_n + l_s; }
+double get_delta_l( double l_n, double l_s ) { return l_n + l_s; }
 
 
 
@@ -99,15 +99,15 @@ int get_params_at_boundaries( double* params, double* lowerbound, double* upperb
 
 
 
-float interest_point_flatness_checker( const InterestPoint* const interest_points, int nb_theta, int nb_phi, bool* p_is_concave, float threshold, float phi_radius )
+double interest_point_flatness_checker( const InterestPoint* const interest_points, int nb_theta, int nb_phi, bool* p_is_concave, double threshold, double phi_radius )
 {
-    float avg_X[nb_theta] = {0.0f};
-    float max_X = 0.0f;
+    double avg_X[nb_theta] = {0.0};
+    double max_X = 0.0;
 
     for (int itheta=0; itheta<nb_theta; itheta++) 
     {
-        // avg_X[itheta] = 0.0f;
-        float sum_weights = 0.0f;
+        // avg_X[itheta] = 0.0;
+        double sum_weights = 0.0;
 
         for (int iphi=0; iphi<nb_phi; iphi++) 
         {
@@ -127,7 +127,7 @@ float interest_point_flatness_checker( const InterestPoint* const interest_point
         if (sum_weights/nb_theta > 0.7 && avg_X[itheta] > max_X) max_X = avg_X[itheta];
     }
 
-    float max_theta_in_threshold = 0.0f;
+    double max_theta_in_threshold = 0.0;
 
     if (p_is_concave) *p_is_concave = (avg_X[0] < max_X) && (avg_X[1] < max_X) && (avg_X[2] < max_X);
 
@@ -139,10 +139,10 @@ float interest_point_flatness_checker( const InterestPoint* const interest_point
 
 
 
-float get_delta_r_0( float r_0, const InterestPoint* const interest_points, int nb_theta, int nb_phi, float theta_used )
+double get_delta_r_0( double r_0, const InterestPoint* const interest_points, int nb_theta, int nb_phi, double theta_used )
 {
-    float avg_r = 0.0f;
-    float sum_weights = 0.0f;
+    double avg_r = 0.0;
+    double sum_weights = 0.0;
 
     for (int iphi=0; iphi<nb_phi; iphi++) for (int itheta=0; itheta<nb_theta; itheta++)
     {
@@ -163,9 +163,9 @@ float get_delta_r_0( float r_0, const InterestPoint* const interest_points, int 
 
 
 void save_analysis_csv( std::string filepath, 
-                        const std::vector<float>& inputs, const std::vector<std::string>& inputs_names,
+                        const std::vector<double>& inputs, const std::vector<std::string>& inputs_names,
                         const std::vector<double>& params, const std::vector<std::string>& params_names, 
-                        const std::vector<float>& metrics, const std::vector<std::string>& metrics_names )
+                        const std::vector<double>& metrics, const std::vector<std::string>& metrics_names )
 {
     std::ofstream fs;
     fs.open(filepath);
@@ -180,13 +180,13 @@ void save_analysis_csv( std::string filepath,
 
     fs << '\n';
 
-    for (float input: inputs) 
+    for (double input: inputs) 
     {
         if (input == inputs.front()) fs << input;
         else fs << ',' << input;
     }
     for (double param: params) fs << ',' << param;
-    for (float metric: metrics) fs << ',' << metric;
+    for (double metric: metrics) fs << ',' << metric;
 
     fs.close();
 }

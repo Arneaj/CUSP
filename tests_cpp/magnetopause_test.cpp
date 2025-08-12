@@ -9,7 +9,7 @@
 #include <chrono>
 
 typedef std::chrono::high_resolution_clock Time;
-typedef std::chrono::duration<float> fsec;
+typedef std::chrono::duration<double> fsec;
 
 
 int main()
@@ -26,9 +26,9 @@ int main()
 
     std::vector<Point> points;
 
-    float STEP = 0.1;
+    double STEP = 0.1;
 
-    for (float ix=B.get_shape().x-1-5; ix<B.get_shape().x-1; ix++) for (float iy=1; iy<B.get_shape().y-1; iy += STEP)
+    for (double ix=B.get_shape().x-1-5; ix<B.get_shape().x-1; ix++) for (double iy=1; iy<B.get_shape().y-1; iy += STEP)
     {
         points.push_back( Point(ix, iy, 1) );
         points.push_back( Point(ix, iy, B.get_shape().z-2) );

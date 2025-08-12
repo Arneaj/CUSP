@@ -62,7 +62,7 @@ Point Point::operator-=(const Point& p)
 
 
 
-Point Point::operator/(float v)
+Point Point::operator/(double v)
 {
     return Point(
         x / v,
@@ -71,7 +71,7 @@ Point Point::operator/(float v)
     );
 }
 
-Point Point::operator/=(float v)
+Point Point::operator/=(double v)
 {
     x /= v;
     y /= v;
@@ -80,7 +80,7 @@ Point Point::operator/=(float v)
     return *this;
 }
 
-Point Point::operator*=(float v)
+Point Point::operator*=(double v)
 {
     x *= v;
     y *= v;
@@ -91,7 +91,7 @@ Point Point::operator*=(float v)
 
 
 
-Point Point::operator*(float v)
+Point Point::operator*(double v)
 {
     return Point(
         x * v,
@@ -119,7 +119,7 @@ Point Point::operator/(const Point& p)
 }
 
 
-Point operator*(float v, const Point& p)
+Point operator*(double v, const Point& p)
 {
     return Point(
         p.x * v,
@@ -130,7 +130,7 @@ Point operator*(float v, const Point& p)
 
 
 
-float Point::norm()
+double Point::norm()
 {
     return std::sqrt(x*x+y*y+z*z);
 }

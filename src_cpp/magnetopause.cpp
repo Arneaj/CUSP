@@ -7,7 +7,7 @@
 
 #ifndef CUSTOM_PI
 #define CUSTOM_PI
-const float PI = 3.141592653589793238462643383279502884f;
+const double PI = 3.141592653589793238462643383279502884;
 #endif
 
 
@@ -18,7 +18,7 @@ void remove_outliers( std::vector<std::vector<Point>>& streamlines, Shape shape 
     for (const std::vector<Point>& streamline: streamlines) avg_start_point += streamline[0];
     avg_start_point /= streamlines.size();
 
-    float valid_radius = std::sqrt( shape.y*shape.y + shape.z*shape.z ) * 0.1;
+    double valid_radius = std::sqrt( shape.y*shape.y + shape.z*shape.z ) * 0.1;
 
     int i = 0;
     while (true)
@@ -46,22 +46,22 @@ Point find_sim_earth_pos( Point real_earth_pos, Shape real_shape, Shape sim_shap
 
 void get_close_streamlines__mutithreaded_helper(  
     const Matrix& B, const Point* earth_pos, 
-    float r_step, float angle_step, float streamline_step, 
-    int max_length, float theta_start, 
+    double r_step, double angle_step, double streamline_step, 
+    int max_length, double theta_start, 
     int start_index, int end_index,  
     std::vector<std::vector<Point>>& streamlines    )
 {
-    float earth_radius = 2;                             // TODO: FIX MAGIC NUMBER
+    double earth_radius = 2;                             // TODO: FIX MAGIC NUMBER
 
     for (int i=start_index; i<end_index; i++)     
     {
-        float theta = theta_start + angle_step*i;
+        double theta = theta_start + angle_step*i;
         std::vector<Point> furthest_streamline;
 
-        for (float r=2*earth_radius; ; r+=r_step)
+        for (double r=2*earth_radius; ; r+=r_step)
         {
-            float x = - r * std::cos(theta);
-            float y = r * std::sin(theta);
+            double x = - r * std::cos(theta);
+            double y = r * std::sin(theta);
 
             Point starting_point = Point(x, y, 0) + *earth_pos;
 
@@ -83,11 +83,11 @@ void get_close_streamlines__mutithreaded_helper(
 
 
 
-std::vector<std::vector<Point>> get_close_streamlines( const Matrix& B, const Point* earth_pos, float r_step, float angle_step, float streamline_step, int max_length )
+std::vector<std::vector<Point>> get_close_streamlines( const Matrix& B, const Point* earth_pos, double r_step, double angle_step, double streamline_step, int max_length )
 {
     int nb_threads = std::thread::hardware_concurrency();
-    float theta_end = PI*0.66;                          // TODO: FIX MAGIC NUMBER
-    float theta_start = -theta_end;
+    double theta_end = PI*0.66;                          // TODO: FIX MAGIC NUMBER
+    double theta_start = -theta_end;
 
     int length = (int) ( (theta_end - theta_start) / angle_step );
 

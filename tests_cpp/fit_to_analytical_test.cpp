@@ -4,7 +4,7 @@
 #include <chrono>
 
 typedef std::chrono::high_resolution_clock Time;
-typedef std::chrono::duration<float> fsec;
+typedef std::chrono::duration<double> fsec;
 
 
 int main(int argc, char* argv[])

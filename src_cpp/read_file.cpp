@@ -103,7 +103,7 @@ void save_file( const std::string& filename, const Matrix& mat )
 
 struct DataHeader {
     uint32_t magic_number = 0x12345678;  // File validity check
-    uint32_t type_size;                  // sizeof(float) or sizeof(double)
+    uint32_t type_size;                  // sizeof(double) or sizeof(double)
     uint32_t x_dim;
     uint32_t y_dim;
     uint32_t z_dim;
@@ -124,10 +124,10 @@ void save_file_bin( const std::string& filename, Matrix& mat )
     std::ofstream fs;
     fs.open(filename, std::ios::binary);
 
-    DataHeader header(sizeof(float), mat.get_shape());
+    DataHeader header(sizeof(double), mat.get_shape());
 
     fs.write(reinterpret_cast<const char*>(&header), sizeof(header));
-    fs.write(reinterpret_cast<const char*>(mat.get_array()), mat.get_shape().x*mat.get_shape().y*mat.get_shape().z*mat.get_shape().i * sizeof(float));
+    fs.write(reinterpret_cast<const char*>(mat.get_array()), mat.get_shape().x*mat.get_shape().y*mat.get_shape().z*mat.get_shape().i * sizeof(double));
 
     fs.close();
 }
@@ -139,7 +139,7 @@ SolarWindInputs read_Gorgon_inputs( const std::string& filepath, const std::stri
 {
     const int MAX_SIZE = 512;
     char s[MAX_SIZE] = "";
-    float timestep_f = std::stof(timestep);
+    double timestep_f = std::stof(timestep);
 
     std::ifstream fs;
     fs.open(filepath);
@@ -148,22 +148,22 @@ SolarWindInputs read_Gorgon_inputs( const std::string& filepath, const std::stri
     fs.getline( s, MAX_SIZE, ',' );
     if (fs.fail() || fs.eof()) { std::cout << "ERROR: couldn't read the solar wind inputs file\n"; fs.close(); exit(1); }
 
-    while ( std::abs( std::stof(s) - timestep_f ) > 1.0f )
+    while ( std::abs( std::stof(s) - timestep_f ) > 1.0 )
     {
         fs.getline( s, MAX_SIZE );
         fs.getline( s, MAX_SIZE, ',' );
         if (fs.fail() || fs.eof()) { std::cout << "ERROR: couldn't find the provided timestep in the solar wind inputs file\n"; fs.close(); exit(1); }
     }
 
-    fs.getline( s, MAX_SIZE, ',' ); float rho = std::stof(s);
-    fs.getline( s, MAX_SIZE, ',' ); float Ti = std::stof(s);
-    fs.getline( s, MAX_SIZE, ',' ); float Te = std::stof(s);
-    fs.getline( s, MAX_SIZE, ',' ); float Vx = std::stof(s);
-    fs.getline( s, MAX_SIZE, ',' ); float Vy = std::stof(s);
-    fs.getline( s, MAX_SIZE, ',' ); float Vz = std::stof(s);
-    fs.getline( s, MAX_SIZE, ',' ); float Bx = std::stof(s);
-    fs.getline( s, MAX_SIZE, ',' ); float By = std::stof(s);
-    fs.getline( s, MAX_SIZE, ',' ); float Bz = std::stof(s);
+    fs.getline( s, MAX_SIZE, ',' ); double rho = std::stof(s);
+    fs.getline( s, MAX_SIZE, ',' ); double Ti = std::stof(s);
+    fs.getline( s, MAX_SIZE, ',' ); double Te = std::stof(s);
+    fs.getline( s, MAX_SIZE, ',' ); double Vx = std::stof(s);
+    fs.getline( s, MAX_SIZE, ',' ); double Vy = std::stof(s);
+    fs.getline( s, MAX_SIZE, ',' ); double Vz = std::stof(s);
+    fs.getline( s, MAX_SIZE, ',' ); double Bx = std::stof(s);
+    fs.getline( s, MAX_SIZE, ',' ); double By = std::stof(s);
+    fs.getline( s, MAX_SIZE, ',' ); double Bz = std::stof(s);
     
     fs.close();
 

@@ -15,9 +15,9 @@ struct SolarWindInputs
 {
     Point B;
     Point V;
-    float rho;
-    float Ti;
-    float Te;  
+    double rho;
+    double Ti;
+    double Te;  
 };
 
 /// @brief reads the solar wind input written in the format of the Gorgon benchmark outputs. 

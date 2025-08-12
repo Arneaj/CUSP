@@ -12,9 +12,9 @@ int main()
 
     std::vector<Point> points;
 
-    float STEP = 1;
+    double STEP = 1;
 
-    for (float ix=1; ix<B.get_shape().x-1; ix += STEP) for (float iy=1; iy<B.get_shape().y-1; iy += STEP)
+    for (double ix=1; ix<B.get_shape().x-1; ix += STEP) for (double iy=1; iy<B.get_shape().y-1; iy += STEP)
     {
         points.push_back( Point(ix, iy, 1) );
         points.push_back( Point(ix, iy, B.get_shape().z-2) );
@@ -23,7 +23,7 @@ int main()
     std::vector<std::vector<Point>> streamlines = get_streamlines(B, points, 0.5, 1000);
 
 
-    float x_min = 30, x_max = B.get_shape().x, step = 4;
+    double x_min = 30, x_max = B.get_shape().x, step = 4;
     int length = x_to_index(x_max, x_min, step);
 
 

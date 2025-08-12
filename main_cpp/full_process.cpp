@@ -13,11 +13,11 @@
 #include <chrono>
 
 typedef std::chrono::high_resolution_clock Time;
-typedef std::chrono::duration<float> fsec;
+typedef std::chrono::duration<double> fsec;
 
 #ifndef CUSTOM_PI
 #define CUSTOM_PI
-const float PI = 3.141592653589793238462643383279502884f;
+const double PI = 3.141592653589793238462643383279502884f;
 #endif
 
 
@@ -220,8 +220,8 @@ int main(int argc, char* argv[])
     Point p_max( X[ X.get_shape().x-1 ], Y[ Y.get_shape().x-1 ], Z[ Z.get_shape().x-1 ] );
     Point p_range = p_max - p_min;
 
-    float hyper_sampling = 1.2;
-    float extra_precision = 2.0f;
+    double hyper_sampling = 1.2;
+    double extra_precision = 2.0f;
 
     Shape new_shape_real(std::round(extra_precision*p_range.x), std::round(extra_precision*p_range.y), std::round(extra_precision*p_range.z), J.get_shape().i);
     Shape new_shape_sim(J.get_shape().x*hyper_sampling, J.get_shape().y*hyper_sampling, J.get_shape().z*hyper_sampling, J.get_shape().i);
@@ -258,21 +258,21 @@ int main(int argc, char* argv[])
 
     int nb_theta = 40;
     int nb_phi = 90;
-    float theta_min = 0.0f;
-    float theta_max = PI*0.85f;
+    double theta_min = 0.0f;
+    double theta_max = PI*0.85f;
 
-    float dx = 0.1f;
-    float dr = 0.1f;
+    double dx = 0.1f;
+    double dr = 0.1f;
 
-    float alpha_0_min = 0.3f;
-    float alpha_0_max = 0.6f;
+    double alpha_0_min = 0.3f;
+    double alpha_0_max = 0.6f;
     int nb_alpha_0 = 4;
 
-    float r_0_mult_min = 1.15f;
-    float r_0_mult_max = 2.1f;
+    double r_0_mult_min = 1.15f;
+    double r_0_mult_max = 2.1f;
     int nb_r_0 = 20;
 
-    float avg_std_dev;
+    double avg_std_dev;
 
     std::vector<Point> bow_shock = get_bowshock( Rho_processed_sim, earth_pos_sim, dr, nb_phi, nb_theta, false );
 
@@ -326,20 +326,20 @@ int main(int argc, char* argv[])
     
     t0 = Time::now();
 
-    const float threshold = 2.0f;
+    const double threshold = 2.0f;
 
     bool is_concave;
 
-    float grad_J_fit_over_ip = get_grad_J_fit_over_interest_points( EllipsisPoly, result.params, interest_points, nb_interest_points, J_norm_real, earth_pos_real );
-    float delta_l = get_delta_l( result.params[5], result.params[8] );
-    float delta_r_0 = get_delta_r_0(result.params[0], interest_points, nb_theta, nb_theta);
+    double grad_J_fit_over_ip = get_grad_J_fit_over_interest_points( EllipsisPoly, result.params, interest_points, nb_interest_points, J_norm_real, earth_pos_real );
+    double delta_l = get_delta_l( result.params[5], result.params[8] );
+    double delta_r_0 = get_delta_r_0(result.params[0], interest_points, nb_theta, nb_theta);
     int nb_params_at_boundaries = get_params_at_boundaries( result.params.data(), lowerbound, upperbound, nb_params );
-    float max_theta_in_threshold = interest_point_flatness_checker( interest_points, nb_theta, nb_phi, &is_concave, threshold );
+    double max_theta_in_threshold = interest_point_flatness_checker( interest_points, nb_theta, nb_phi, &is_concave, threshold );
 
-    const float delta_l_lowerbound = 1.0f;
-    const float delta_r_0_lowerbound = 3.0f;
-    const float r_0_lowerbound = 8.0f;
-    const float avg_std_dev_upperbound = 1.5f;
+    const double delta_l_lowerbound = 1.0f;
+    const double delta_r_0_lowerbound = 3.0f;
+    const double r_0_lowerbound = 8.0f;
+    const double avg_std_dev_upperbound = 1.5f;
 
     if (logging) std::cout << "Average standard deviation of the interest points is " << avg_std_dev << std::endl;
     if (warnings && avg_std_dev > avg_std_dev_upperbound) std::cout << "\t--> WARNING: high average interest point standard deviation\n";
@@ -379,9 +379,9 @@ int main(int argc, char* argv[])
     std::vector<std::string> params_names = { "r_0", "alpha_0", "alpha_1", "alpha_2", "d_n", "l_n", "s_n", "d_s", "l_s", "s_s", "e" };
     std::vector<std::string> metrics_names = { "ip_avg_std_dev", "fit_cost", "grad_J_fit_over_ip", "delta_l", "delta_r_0", "nb_params_at_bounds", "max_theta_flat", "is_concave" };
 
-    std::vector<float> inputs = { solar_wind.B.x, solar_wind.B.y, solar_wind.B.z, solar_wind.V.x, solar_wind.V.y, solar_wind.V.z, solar_wind.rho, solar_wind.Ti, solar_wind.Te };
+    std::vector<double> inputs = { solar_wind.B.x, solar_wind.B.y, solar_wind.B.z, solar_wind.V.x, solar_wind.V.y, solar_wind.V.z, solar_wind.rho, solar_wind.Ti, solar_wind.Te };
     std::vector<double> params = result.params;
-    std::vector<float> metrics = { avg_std_dev, float(result.cost/nb_interest_points), grad_J_fit_over_ip, delta_l, delta_r_0, float(nb_params_at_boundaries), max_theta_in_threshold, float(is_concave) };
+    std::vector<double> metrics = { avg_std_dev, double(result.cost/nb_interest_points), grad_J_fit_over_ip, delta_l, delta_r_0, double(nb_params_at_boundaries), max_theta_in_threshold, double(is_concave) };
 
 
     t1 = Time::now();

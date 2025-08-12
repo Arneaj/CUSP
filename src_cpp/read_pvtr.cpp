@@ -37,20 +37,20 @@ Matrix read_pvtr( const std::string& filename )
     // std::cout << "Total size: " << totalSize << std::endl;
     
     // Allocate memory for the extracted data
-    float* extractedData(new float[totalSize]);
+    double* extractedData(new double[totalSize]);
     
     // Method 1: Direct pointer access (fastest, but type-dependent)
-    if (firstArray->GetDataType() == VTK_FLOAT) 
-    {
-        float* vtkData = static_cast<vtkFloatArray*>(firstArray)->GetPointer(0);
-        std::memcpy(extractedData, vtkData, totalSize * sizeof(float));
-    }
-    else if (firstArray->GetDataType() == VTK_DOUBLE) 
+    if (firstArray->GetDataType() == VTK_DOUBLE) 
     {
         double* vtkData = static_cast<vtkDoubleArray*>(firstArray)->GetPointer(0);
-        // Convert from double to float
+        std::memcpy(extractedData, vtkData, totalSize * sizeof(double));
+    }
+    else if (firstArray->GetDataType() == VTK_FLOAT) 
+    {
+        double* vtkData = static_cast<vtkDoubleArray*>(firstArray)->GetPointer(0);
+        // Convert from float to double
         for (vtkIdType j = 0; j < totalSize; j++) {
-            extractedData[j] = static_cast<float>(vtkData[j]);
+            extractedData[j] = static_cast<double>(vtkData[j]);
         }
     }
     else 
@@ -60,7 +60,7 @@ Matrix read_pvtr( const std::string& filename )
         for (vtkIdType tupleIdx = 0; tupleIdx < numTuples; tupleIdx++) {
             firstArray->GetTuple(tupleIdx, tuple.data());
             for (int comp = 0; comp < numComponents; comp++) {
-                extractedData[tupleIdx * numComponents + comp] = static_cast<float>(tuple[comp]);
+                extractedData[tupleIdx * numComponents + comp] = static_cast<double>(tuple[comp]);
             }
         }
     }
@@ -69,7 +69,7 @@ Matrix read_pvtr( const std::string& filename )
     int cellDimY = dims[1]-1; 
     int cellDimZ = dims[2]-1; 
 
-    float* finalData(new float[totalSize]);
+    double* finalData(new double[totalSize]);
     
     #pragma omp parallel for
     for (int ix = 0; ix < cellDimX; ix++) {
@@ -114,32 +114,32 @@ void get_coord(Matrix& X, Matrix& Y, Matrix& Z, const std::string& filename)
     vtkDataArray* yCoords = grid->GetYCoordinates();
     vtkDataArray* zCoords = grid->GetZCoordinates();
 
-    // Extract coordinate arrays to float*
-    auto extractCoordinates = [](vtkDataArray* coordArray) -> float* {
+    // Extract coordinate arrays to double*
+    auto extractCoordinates = [](vtkDataArray* coordArray) -> double* {
         vtkIdType numValues = coordArray->GetNumberOfTuples();
-        float* coords(new float[numValues]);
+        double* coords(new double[numValues]);
         
-        if (coordArray->GetDataType() == VTK_FLOAT) 
+        if (coordArray->GetDataType() == VTK_DOUBLE) 
         {
-            float* vtkData = static_cast<vtkFloatArray*>(coordArray)->GetPointer(0);
-            std::memcpy(coords, vtkData, numValues * sizeof(float));
+            double* vtkData = static_cast<vtkDoubleArray*>(coordArray)->GetPointer(0);
+            std::memcpy(coords, vtkData, numValues * sizeof(double));
         }
-        else if (coordArray->GetDataType() == VTK_DOUBLE) 
+        else if (coordArray->GetDataType() == VTK_FLOAT) 
         {
             double* vtkData = static_cast<vtkDoubleArray*>(coordArray)->GetPointer(0);
             for (vtkIdType i = 0; i < numValues; i++) {
-                coords[i] = static_cast<float>(vtkData[i]);
+                coords[i] = static_cast<double>(vtkData[i]);
             }
         }
         else 
         {
             // Generic method
             for (vtkIdType i = 0; i < numValues; i++) {
-                coords[i] = static_cast<float>(coordArray->GetTuple1(i));
+                coords[i] = static_cast<double>(coordArray->GetTuple1(i));
             }
         }
 
-        float* cell_coords(new float[numValues-1]);
+        double* cell_coords(new double[numValues-1]);
 
         for (int i=0; i<numValues-1; i++) cell_coords[i] = (coords[i]+coords[i+1])*0.5;
 
@@ -148,9 +148,9 @@ void get_coord(Matrix& X, Matrix& Y, Matrix& Z, const std::string& filename)
         return cell_coords;
     };
     
-    float* xArray = extractCoordinates(xCoords);
-    float* yArray = extractCoordinates(yCoords);
-    float* zArray = extractCoordinates(zCoords);
+    double* xArray = extractCoordinates(xCoords);
+    double* yArray = extractCoordinates(yCoords);
+    double* zArray = extractCoordinates(zCoords);
 
     Shape sh_x( dims[0]-1, 1, 1, 1 );
     Shape sh_y( dims[1]-1, 1, 1, 1 );

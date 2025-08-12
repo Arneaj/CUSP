@@ -11,9 +11,9 @@ Matrix orthonormalise( const Matrix& mat, Matrix& X, Matrix& Y, Matrix& Z, const
 
     Matrix new_mat( shape );
 
-    float X_max = X.max(0), X_min = X.min(0), inv_dX = 1.0f / (X_max - X_min);
-    float Y_max = Y.max(0), Y_min = Y.min(0), inv_dY = 1.0f / (Y_max - Y_min);
-    float Z_max = Z.max(0), Z_min = Z.min(0), inv_dZ = 1.0f / (Z_max - Z_min);
+    double X_max = X.max(0), X_min = X.min(0), inv_dX = 1.0 / (X_max - X_min);
+    double Y_max = Y.max(0), Y_min = Y.min(0), inv_dY = 1.0 / (Y_max - Y_min);
+    double Z_max = Z.max(0), Z_min = Z.min(0), inv_dZ = 1.0 / (Z_max - Z_min);
 
     X -= X_min; X *= inv_dX; X *= shape.x;
     Y -= Y_min; Y *= inv_dY; Y *= shape.y;
@@ -23,9 +23,9 @@ Matrix orthonormalise( const Matrix& mat, Matrix& X, Matrix& Y, Matrix& Z, const
     std::vector<int> iY(shape.y);
     std::vector<int> iZ(shape.z);
 
-    std::vector<float> dX(shape.x);
-    std::vector<float> dY(shape.y);
-    std::vector<float> dZ(shape.z);
+    std::vector<double> dX(shape.x);
+    std::vector<double> dY(shape.y);
+    std::vector<double> dZ(shape.z);
 
     #pragma omp parallel for
     for (int sx=0; sx<shape.x; sx++) for (int i=0; i<X.get_shape().x-1; i++)

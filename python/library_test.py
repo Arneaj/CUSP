@@ -1,11 +1,14 @@
+import time
+
+t0 = time.time()
 import numpy as np
 import matplotlib.pyplot as plt
 import topology_analysis as ta
 from gorgon_tools.magnetosphere import gorgon_import
 import gorgon
-import time
-
 import sys
+t1 = time.time()
+print(f"Finished in {t1-t0:.4f}s -> Modules loaded")
 
 if len(sys.argv) < 2:
     print("No Run path given!")
@@ -19,6 +22,14 @@ if len(sys.argv) < 3:
     exit(1)
 
 timestep = sys.argv[2]
+
+
+if len(sys.argv) < 4 or sys.argv[3] == "xz":
+    axis = 'xz'
+elif sys.argv[3] == "xy":
+    axis = 'xy'
+else:
+    print( "Please provide xy or xz" )
 
 
 
@@ -41,14 +52,6 @@ print( "J dtype: ", J.dtype )
 print( "J shape: ", J.shape )
 print( "J strides: ", J.strides )
 
-
-
-if len(sys.argv) < 4 or sys.argv[3] == "xz":
-    axis = 'xz'
-elif sys.argv[3] == "xy":
-    axis = 'xy'
-else:
-    print( "Please provide xy or xz" )
     
 
 
@@ -67,6 +70,7 @@ shape_realx2 = np.array([
 
 J_norm = np.linalg.norm( J, axis=3 )
 
+J_processed: np.ndarray = ta.preprocess( J, X, Y, Z, shape_realx2 )
 Rho_processed: np.ndarray = ta.preprocess( Rho, X, Y, Z, shape_realx2 )
 J_norm_processed: np.ndarray = ta.preprocess( J_norm, X, Y, Z, shape_realx2 )
 
@@ -77,7 +81,9 @@ t1 = time.time()
 print(f"Finished in {t1-t0:.4f}s -> Preprocessing done")
 
 
-
+print( "J_processed dtype: ", J_processed.dtype )
+print( "J_processed shape: ", J_processed.shape )
+print( "J_processed strides: ", J_processed.strides )
 
 
 

@@ -15,31 +15,31 @@
 inline void squeeze_vector( std::vector<Point>& points );
 
 
-float get_bowshock_radius(  const Point& projection,
+double get_bowshock_radius(  const Point& projection,
                             const Matrix& Rho, const Point& earth_pos,
-                            float dr,
+                            double dr,
                             bool* is_at_bounds=nullptr );
 
-float get_bowshock_radius(  float theta, float phi,
+double get_bowshock_radius(  double theta, double phi,
                             const Matrix& Rho, const Point& earth_pos,
-                            float dr,
+                            double dr,
                             bool* is_at_bounds=nullptr );
 
-std::vector<Point> get_bowshock( const Matrix& Rho, const Point& earth_pos, float dr, int nb_phi, int max_nb_theta, bool is_squeezed=true );
+std::vector<Point> get_bowshock( const Matrix& Rho, const Point& earth_pos, double dr, int nb_phi, int max_nb_theta, bool is_squeezed=true );
 
 
 class InterestPoint
 {
 public:
-    float theta, phi, radius, weight;
+    double theta, phi, radius, weight;
 
     InterestPoint()
         : theta(0.0), phi(0.0), radius(0.0), weight(0.0) {;}
 
-    InterestPoint(float _theta, float _phi)
+    InterestPoint(double _theta, double _phi)
         : theta(_theta), phi(_phi), radius(0.0), weight(0.0) {;}
 
-    InterestPoint(float _theta, float _phi, float _radius, float _weight)
+    InterestPoint(double _theta, double _phi, double _radius, double _weight)
         : theta(_theta), phi(_phi), radius(_radius), weight(_weight) {;}
 };
 
@@ -48,21 +48,21 @@ public:
 
 InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos,
                                     const Point* const unsqueezed_bow_shock,
-                                    float theta_min, float theta_max, 
+                                    double theta_min, double theta_max, 
                                     int nb_theta, int nb_phi, 
-                                    float dx, float dr,
-                                    float alpha_0_min, float alpha_0_max, float nb_alpha_0,
-                                    float r_0_mult_min, float r_0_mult_max, float nb_r_0,
-                                    float* p_avg_std_dev=nullptr );
+                                    double dx, double dr,
+                                    double alpha_0_min, double alpha_0_max, double nb_alpha_0,
+                                    double r_0_mult_min, double r_0_mult_max, double nb_r_0,
+                                    double* p_avg_std_dev=nullptr );
 
 InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos,
                                     const Matrix& Rho,
-                                    float theta_min, float theta_max, 
+                                    double theta_min, double theta_max, 
                                     int nb_theta, int nb_phi, 
-                                    float dx, float dr,
-                                    float alpha_0_min, float alpha_0_max, float nb_alpha_0,
-                                    float r_0_mult_min, float r_0_mult_max, float nb_r_0,
-                                    float* p_avg_std_dev=nullptr );
+                                    double dx, double dr,
+                                    double alpha_0_min, double alpha_0_max, double nb_alpha_0,
+                                    double r_0_mult_min, double r_0_mult_max, double nb_r_0,
+                                    double* p_avg_std_dev=nullptr );
 
 
 

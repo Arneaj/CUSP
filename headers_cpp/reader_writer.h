@@ -15,7 +15,7 @@ public:
 
     /// @brief function that needs to read the file at the given filepath and write it to M
     /// @param filepath path to the file containing your data
-    /// @param M Matrix containing a Shape and a float* containing the data.
+    /// @param M Matrix containing a Shape and a double* containing the data.
     ///          The array given to the matrix should be Fortran indexed, i.e.: 
     ///          M(ix,iy,iz,i) = M.mat[ix + iy*shape.x + iz*shape.x*shape.y + i*shape.x*shape.y*shape.z] 
     virtual void read( std::string filepath, Matrix& M ) = 0;
@@ -31,7 +31,7 @@ public:
 
     /// @brief function that needs to write the Matrix M to the file format of your choice
     /// @param savepath path to the file that will contain the data
-    /// @param M Matrix containing a Shape and a float* containing the data
+    /// @param M Matrix containing a Shape and a double* containing the data
     virtual void write( std::string savepath, Matrix& M ) = 0;
 };
 

@@ -9,7 +9,7 @@
 #include <chrono>
 
 typedef std::chrono::high_resolution_clock Time;
-typedef std::chrono::duration<float> fsec;
+typedef std::chrono::duration<double> fsec;
 
 
 int main(int argc, char* argv[])
@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
     int nb_theta = 100;
     int nb_phi = 50;
 
-    std::array<float, 4>* interest_points = get_interest_points(
+    std::array<double, 4>* interest_points = get_interest_points(
         J_norm_sim, earth_pos,
         nb_theta, nb_phi,
         0.2, 0.1,

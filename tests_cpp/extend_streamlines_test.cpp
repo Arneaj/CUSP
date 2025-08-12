@@ -14,9 +14,9 @@ int main()
 
     std::vector<Point> points;
 
-    float STEP = 1;
+    double STEP = 1;
 
-    for (float ix=B.get_shape().x-1-STEP*5; ix<B.get_shape().x-1; ix += STEP) for (float iy=1; iy<B.get_shape().y-1; iy += STEP)
+    for (double ix=B.get_shape().x-1-STEP*5; ix<B.get_shape().x-1; ix += STEP) for (double iy=1; iy<B.get_shape().y-1; iy += STEP)
     {
         points.push_back( Point(ix, iy, 1) );
         points.push_back( Point(ix, iy, B.get_shape().z-2) );

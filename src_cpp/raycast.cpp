@@ -4,36 +4,36 @@
 
 #ifndef CUSTOM_PI
 #define CUSTOM_PI
-const float PI = 3.141592653589793238462643383279502884f;
+const double PI = 3.141592653589793238462643383279502884;
 #endif
 
 
 
-float Shue97(float r_0, float alpha_0, float one_plus_cos_theta)
+double Shue97(double r_0, double alpha_0, double one_plus_cos_theta)
 {
     return r_0 * std::pow( 2.0/one_plus_cos_theta, alpha_0 );
 }
 
 
-float get_bowshock_radius(  const Point& projection,
+double get_bowshock_radius(  const Point& projection,
                             const Matrix& Rho, const Point& earth_pos,
-                            float dr,
+                            double dr,
                             bool* is_at_bounds )
 {
-    float bow_r = 0.0f;
-    float r = 0.0f;
+    double bow_r = 0.0;
+    double r = 0.0;
     Point p = r * projection + earth_pos;
 
-    float min_value = 0.0f;
-    float previous_rho = Rho(p, 0);
+    double min_value = 0.0;
+    double previous_rho = Rho(p, 0);
 
     r += dr;
     p = r * projection + earth_pos;
 
     while ( !Rho.is_point_OOB(p) )
     {
-        float rho = Rho(p, 0);
-        float value = (rho - previous_rho) * r*r*r; 
+        double rho = Rho(p, 0);
+        double value = (rho - previous_rho) * r*r*r; 
         // bit horrifying, but this is to try and ignore things near the earth
 
         if ( value < min_value )
@@ -48,18 +48,18 @@ float get_bowshock_radius(  const Point& projection,
         previous_rho = rho;
     }
 
-    if ( is_at_bounds != nullptr && std::abs( r-dr-bow_r ) < 0.1f*dr ) *is_at_bounds = true;
+    if ( is_at_bounds != nullptr && std::abs( r-dr-bow_r ) < 0.1*dr ) *is_at_bounds = true;
     
     return bow_r;
 }
 
 
-float get_bowshock_radius(  float theta, float phi,
+double get_bowshock_radius(  double theta, double phi,
                             const Matrix& Rho, const Point& earth_pos,
-                            float dr,
+                            double dr,
                             bool* is_at_bounds )
 {
-    float sin_theta = std::sin(theta);
+    double sin_theta = std::sin(theta);
 
     Point proj = Point(
         -std::cos(theta),
@@ -78,38 +78,38 @@ inline void squeeze_vector( std::vector<Point>& points )
 }
 
 
-std::vector<Point> get_bowshock( const Matrix& Rho, const Point& earth_pos, float dr, int nb_phi, int max_nb_theta, bool is_squeezed )
+std::vector<Point> get_bowshock( const Matrix& Rho, const Point& earth_pos, double dr, int nb_phi, int max_nb_theta, bool is_squeezed )
 {
     std::vector<Point> bs_points( nb_phi*max_nb_theta );
 
-    float shue97_radii[max_nb_theta];
+    double shue97_radii[max_nb_theta];
 
-    float dphi = 2.0f*PI / nb_phi;
-    float dtheta = PI / max_nb_theta;
+    double dphi = 2.0*PI / nb_phi;
+    double dtheta = PI / max_nb_theta;
 
-    float theta = 0.0f;
+    double theta = 0.0;
 
     #pragma omp parallel for
     for (int itheta=0; itheta<max_nb_theta; itheta++)
     {
-        shue97_radii[itheta] = Shue97(5.0f, 0.5f, 1.0f+std::cos(theta));
+        shue97_radii[itheta] = Shue97(5.0, 0.5, 1.0+std::cos(theta));
         theta += dtheta;
     }
 
     #pragma omp parallel for
     for (int iphi=0; iphi<nb_phi; iphi++)
     {
-        float phi = iphi*dphi - PI;
-        float sin_phi = std::sin(phi);
-        float cos_phi = std::cos(phi);
+        double phi = iphi*dphi - PI;
+        double sin_phi = std::sin(phi);
+        double cos_phi = std::cos(phi);
 
-        theta = 0.0f;
+        theta = 0.0;
 
         bool is_at_bounds = false;
 
         for (int itheta=0; itheta<max_nb_theta; itheta++)
         {
-            float sin_theta = std::sin(theta);
+            double sin_theta = std::sin(theta);
 
             Point proj = Point(
                 -std::cos(theta),
@@ -117,7 +117,7 @@ std::vector<Point> get_bowshock( const Matrix& Rho, const Point& earth_pos, floa
                 sin_theta*cos_phi
             );
 
-            float r = get_bowshock_radius(proj, Rho, earth_pos, dr, &is_at_bounds);
+            double r = get_bowshock_radius(proj, Rho, earth_pos, dr, &is_at_bounds);
 
             if ( is_at_bounds ) break;
 
@@ -137,15 +137,15 @@ std::vector<Point> get_bowshock( const Matrix& Rho, const Point& earth_pos, floa
 
 
 
-void interest_points_helper(    float r_0, float alpha_0, 
-                                std::vector<float>* interest_points,
+void interest_points_helper(    double r_0, double alpha_0, 
+                                std::vector<double>* interest_points,
                                 const Point* const unsqueezed_bow_shock,
                                 const Matrix& J_norm, const Point& earth_pos, 
-                                float theta_min,
+                                double theta_min,
                                 int nb_theta, int nb_phi, 
-                                float dr, float dtheta, float dphi )
+                                double dr, double dtheta, double dphi )
 {
-    float theta = theta_min;
+    double theta = theta_min;
 
     #pragma omp parallel for
     for (int itheta=0; itheta<nb_theta; itheta++)
@@ -154,16 +154,16 @@ void interest_points_helper(    float r_0, float alpha_0,
 
 	    // if (std::abs(theta) < 0.05) continue;
 
-        float sin_theta = std::sin(theta);
-        float cos_theta = std::cos(theta);
+        double sin_theta = std::sin(theta);
+        double cos_theta = std::cos(theta);
 
         if ( 1 + cos_theta < 1e-3 ) continue;
 
-        float initial_r = Shue97(r_0, alpha_0, 1 + cos_theta);
-	    // float final_r = Shue97(12, 1, 1 + cos_theta);
-        float non_bs_final_r = Shue97(10.0f*r_0, 1, 1 + cos_theta);
+        double initial_r = Shue97(r_0, alpha_0, 1 + cos_theta);
+	    // double final_r = Shue97(12, 1, 1 + cos_theta);
+        double non_bs_final_r = Shue97(10.0*r_0, 1, 1 + cos_theta);
 
-        float phi = -PI;
+        double phi = -PI;
 
         for (int iphi=0; iphi<nb_phi; iphi++)
         {
@@ -171,15 +171,15 @@ void interest_points_helper(    float r_0, float alpha_0,
 
             const Point& bs = unsqueezed_bow_shock[itheta*nb_phi+iphi];
 
-            float final_r;
+            double final_r;
 
             if (bs == Point()) final_r = non_bs_final_r;
-            else final_r = bs.z - 1.0f;  //  get radius of the bowshock at (theta,phi) and add a bit of extra space to be sure not to get the bowshock
+            else final_r = bs.z - 1.0;  //  get radius of the bowshock at (theta,phi) and add a bit of extra space to be sure not to get the bowshock
             //                                                                            -> NOT SURE THIS IS A GOOD IDEA
 
-            float max_value = 0;
-            float max_r = initial_r;
-            float r = max_r;
+            double max_value = 0;
+            double max_r = initial_r;
+            double r = max_r;
 
             Point proj = Point(
                 -cos_theta,
@@ -191,7 +191,7 @@ void interest_points_helper(    float r_0, float alpha_0,
 
             while ( r <= final_r && !J_norm.is_point_OOB(p) )
             {
-                float value = J_norm(p, 0); // interpolate( p, J_norm, 0 );
+                double value = J_norm(p, 0); // interpolate( p, J_norm, 0 );
 
                 if ( value > max_value )
                 {
@@ -214,7 +214,7 @@ void interest_points_helper(    float r_0, float alpha_0,
 
 
 
-float get_median( std::vector<float>& vec )
+double get_median( std::vector<double>& vec )
 {
     std::sort( vec.begin(), vec.end() );
 
@@ -222,13 +222,13 @@ float get_median( std::vector<float>& vec )
 }
 
 
-float get_std_dev( std::vector<float>& vec )
+double get_std_dev( std::vector<double>& vec )
 {
-    float avg = std::accumulate( vec.begin(), vec.end(), 0.0f ) / vec.size();
+    double avg = std::accumulate( vec.begin(), vec.end(), 0.0 ) / vec.size();
 
-    for (float& val: vec) val = (val-avg)*(val-avg);
+    for (double& val: vec) val = (val-avg)*(val-avg);
     
-    return std::sqrt( std::accumulate( vec.begin(), vec.end(), 0.0f ) / vec.size() );
+    return std::sqrt( std::accumulate( vec.begin(), vec.end(), 0.0 ) / vec.size() );
 }
 
 
@@ -239,16 +239,16 @@ float get_std_dev( std::vector<float>& vec )
 
 InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos,
                                     const Point* const unsqueezed_bow_shock,
-                                    float theta_min, float theta_max, 
+                                    double theta_min, double theta_max, 
                                     int nb_theta, int nb_phi, 
-                                    float dx, float dr,
-                                    float alpha_0_min, float alpha_0_max, float nb_alpha_0,
-                                    float r_0_mult_min, float r_0_mult_max, float nb_r_0,
-                                    float* p_avg_std_dev )
+                                    double dx, double dr,
+                                    double alpha_0_min, double alpha_0_max, double nb_alpha_0,
+                                    double r_0_mult_min, double r_0_mult_max, double nb_r_0,
+                                    double* p_avg_std_dev )
 {
-    std::vector<float>* interest_radii_candidates = new std::vector<float>[ nb_theta*nb_phi ];
+    std::vector<double>* interest_radii_candidates = new std::vector<double>[ nb_theta*nb_phi ];
 
-    float x = earth_pos.x;
+    double x = earth_pos.x;
 
     if (p_avg_std_dev) *p_avg_std_dev = 0;
     
@@ -259,14 +259,14 @@ InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos
         x += dx;
     }
 
-    float r_inner = x - earth_pos.x;       
-    float dr_0_mult = (r_0_mult_max - r_0_mult_min) / nb_r_0;
-    float dalpha_0 = (alpha_0_max - alpha_0_min) / nb_alpha_0;
+    double r_inner = x - earth_pos.x;       
+    double dr_0_mult = (r_0_mult_max - r_0_mult_min) / nb_r_0;
+    double dalpha_0 = (alpha_0_max - alpha_0_min) / nb_alpha_0;
 
-    float dtheta = (theta_max - theta_min) / nb_theta;
-    float dphi = 2.0*PI / nb_phi;
+    double dtheta = (theta_max - theta_min) / nb_theta;
+    double dphi = 2.0*PI / nb_phi;
 
-    for (float r_0_mult=r_0_mult_min; r_0_mult<=r_0_mult_max; r_0_mult+=dr_0_mult) for (float alpha_0=alpha_0_min; alpha_0<=alpha_0_max; alpha_0+=dalpha_0)
+    for (double r_0_mult=r_0_mult_min; r_0_mult<=r_0_mult_max; r_0_mult+=dr_0_mult) for (double alpha_0=alpha_0_min; alpha_0<=alpha_0_max; alpha_0+=dalpha_0)
         interest_points_helper( r_0_mult * r_inner, alpha_0,
                                 interest_radii_candidates,
                                 unsqueezed_bow_shock,
@@ -277,14 +277,14 @@ InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos
 
 
     InterestPoint* interest_points = new InterestPoint[ nb_theta*nb_phi ];
-    float theta = theta_min;
+    double theta = theta_min;
 
     for (int itheta=0; itheta<nb_theta; itheta++)
     {
         theta += dtheta;
-        float phi = -PI;
+        double phi = -PI;
 
-//        float sin_theta = std::abs( std::sin(theta) );
+//        double sin_theta = std::abs( std::sin(theta) );
 
         for (int iphi=0; iphi<nb_phi; iphi++)
         {
@@ -296,14 +296,14 @@ InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos
                 continue;
             }
 
-            float interest_radius = get_median( interest_radii_candidates[ itheta*nb_phi + iphi ] );
-            float std_dev = get_std_dev( interest_radii_candidates[ itheta*nb_phi + iphi ] );
+            double interest_radius = get_median( interest_radii_candidates[ itheta*nb_phi + iphi ] );
+            double std_dev = get_std_dev( interest_radii_candidates[ itheta*nb_phi + iphi ] );
 
             if (p_avg_std_dev) *p_avg_std_dev += std_dev;
 
-            // float weight = std::exp( -std_dev );  // TODO: change weights
-            float weight = 1.0f / (1.0f + std_dev);
-            // float weight = 5.0f / (5.0f + std_dev*std_dev);
+            // double weight = std::exp( -std_dev );  // TODO: change weights
+            double weight = 1.0 / (1.0 + std_dev);
+            // double weight = 5.0 / (5.0 + std_dev*std_dev);
             // if (std::abs(theta) < 0.5*PI) weight *= sin_theta;
 
             interest_points[ itheta*nb_phi + iphi ] = InterestPoint( theta, phi, interest_radius, weight ); 
@@ -319,12 +319,12 @@ InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos
 
 InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos,
                                     const Matrix& Rho,
-                                    float theta_min, float theta_max, 
+                                    double theta_min, double theta_max, 
                                     int nb_theta, int nb_phi, 
-                                    float dx, float dr,
-                                    float alpha_0_min, float alpha_0_max, float nb_alpha_0,
-                                    float r_0_mult_min, float r_0_mult_max, float nb_r_0,
-                                    float* p_avg_std_dev )
+                                    double dx, double dr,
+                                    double alpha_0_min, double alpha_0_max, double nb_alpha_0,
+                                    double r_0_mult_min, double r_0_mult_max, double nb_r_0,
+                                    double* p_avg_std_dev )
 {
     std::vector<Point> bow_shock = get_bowshock( Rho, earth_pos, dr, nb_phi, nb_theta, false );
 
@@ -349,7 +349,7 @@ void process_interest_points(   InterestPoint* interest_points,
     {
         Point point;
 
-        float sin_theta = std::sin(interest_points[itheta*nb_phi + iphi].theta);
+        double sin_theta = std::sin(interest_points[itheta*nb_phi + iphi].theta);
 
         point.x = std::cos(interest_points[itheta*nb_phi + iphi].theta);
         point.y = sin_theta * std::sin(interest_points[itheta*nb_phi + iphi].phi);
@@ -358,17 +358,17 @@ void process_interest_points(   InterestPoint* interest_points,
         point *= interest_points[itheta*nb_phi + iphi].radius;
         point += earth_pos_sim;
 
-        point.x *= float(shape_real.x) / float(shape_sim.x);
-        point.y *= float(shape_real.y) / float(shape_sim.y);
-        point.z *= float(shape_real.z) / float(shape_sim.z);
+        point.x *= double(shape_real.x) / double(shape_sim.x);
+        point.y *= double(shape_real.y) / double(shape_sim.y);
+        point.z *= double(shape_real.z) / double(shape_sim.z);
 
         // std::cout << point << std::endl;
 
         point -= earth_pos_real;
 
         interest_points[itheta*nb_phi + iphi].radius = point.norm();
-        interest_points[itheta*nb_phi + iphi].theta = std::acos( point.x / std::max(0.1f, interest_points[itheta*nb_phi + iphi].radius) );
-        interest_points[itheta*nb_phi + iphi].phi = std::acos( point.z / std::max(0.1f, std::sqrt( point.y*point.y + point.z*point.z )) );
+        interest_points[itheta*nb_phi + iphi].theta = std::acos( point.x / std::max(0.1, interest_points[itheta*nb_phi + iphi].radius) );
+        interest_points[itheta*nb_phi + iphi].phi = std::acos( point.z / std::max(0.1, std::sqrt( point.y*point.y + point.z*point.z )) );
         interest_points[itheta*nb_phi + iphi].phi *= (point.y>0) - (point.y<=0);
     }
 }
@@ -405,7 +405,7 @@ void process_points(    std::vector<Point>& points,
     {
         Point point;
 
-        float sin_theta = std::sin(p.x);
+        double sin_theta = std::sin(p.x);
 
         point.x = std::cos(p.x);
         point.y = sin_theta * std::sin(p.y);
@@ -414,17 +414,17 @@ void process_points(    std::vector<Point>& points,
         point *= p.z;
         point += earth_pos_sim;
 
-        point.x *= float(shape_real.x) / float(shape_sim.x);
-        point.y *= float(shape_real.y) / float(shape_sim.y);
-        point.z *= float(shape_real.z) / float(shape_sim.z);
+        point.x *= double(shape_real.x) / double(shape_sim.x);
+        point.y *= double(shape_real.y) / double(shape_sim.y);
+        point.z *= double(shape_real.z) / double(shape_sim.z);
 
         // std::cout << point << std::endl;
 
         point -= earth_pos_real;
 
         p.z = point.norm();
-        p.x = std::acos( point.x / std::max(0.1f, p.z) );
-        p.y = std::acos( point.z / std::max(0.1f, std::sqrt( point.y*point.y + point.z*point.z )) );
+        p.x = std::acos( point.x / std::max(0.1, p.z) );
+        p.y = std::acos( point.z / std::max(0.1, std::sqrt( point.y*point.y + point.z*point.z )) );
         p.y *= (point.y>0) - (point.y<=0);
     }
 }

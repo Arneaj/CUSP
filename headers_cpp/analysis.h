@@ -11,18 +11,18 @@
 
 enum class DerivativeAccuracy { normal, high };
 
-Point local_grad_of_normed_matrix(const Matrix& M_norm, const Point& p, DerivativeAccuracy accuracy, float dx=1.0f, float dy=1.0f, float dz=1.0f);
+Point local_grad_of_normed_matrix(const Matrix& M_norm, const Point& p, DerivativeAccuracy accuracy, double dx=1.0, double dy=1.0, double dz=1.0);
 
 
-float get_grad_J_fit_over_interest_points( double (*fn)(const double* const, double, double), const std::vector<double>& params, 
+double get_grad_J_fit_over_interest_points( double (*fn)(const double* const, double, double), const std::vector<double>& params, 
                             const InterestPoint* const interest_points, int nb_interest_points,
                             const Matrix& J_norm,
                             const Point& earth_pos,
-                            float dx=0.5f, float dy=0.5f, float dz=0.5f  );
+                            double dx=0.5, double dy=0.5, double dz=0.5  );
 
 
 /// @brief returns l_n + l_s
-float get_delta_l( float l_n, float l_s );
+double get_delta_l( double l_n, double l_s );
 
 
 /// @brief returns `r_0 - avg_r` of the interest points where `theta < theta_used`
@@ -31,7 +31,7 @@ float get_delta_l( float l_n, float l_s );
 /// @param nb_theta 
 /// @param nb_phi 
 /// @param theta_used 
-float get_delta_r_0( float r_0, const InterestPoint* const interest_points, int nb_theta, int nb_phi, float theta_used=0.2f );
+double get_delta_r_0( double r_0, const InterestPoint* const interest_points, int nb_theta, int nb_phi, double theta_used=0.2 );
 
 
 /// @brief returns the number of parameters in params that have reached their lower or upper bounds after fitting
@@ -49,13 +49,13 @@ int get_params_at_boundaries( double* params, double* lowerbound, double* upperb
 /// @param threshold 
 /// @param phi_radius the `phi` value inside which the interest points will be considered for the check
 /// @return 
-float interest_point_flatness_checker( const InterestPoint* const interest_points, int nb_theta, int nb_phi, bool* p_is_concave=nullptr, float threshold=2.0f, float phi_radius=0.3f );
+double interest_point_flatness_checker( const InterestPoint* const interest_points, int nb_theta, int nb_phi, bool* p_is_concave=nullptr, double threshold=2.0, double phi_radius=0.3 );
 
 
 void save_analysis_csv( std::string filepath, 
-                        const std::vector<float>& inputs, const std::vector<std::string>& inputs_names,
+                        const std::vector<double>& inputs, const std::vector<std::string>& inputs_names,
                         const std::vector<double>& params, const std::vector<std::string>& params_names, 
-                        const std::vector<float>& metrics, const std::vector<std::string>& metrics_names );
+                        const std::vector<double>& metrics, const std::vector<std::string>& metrics_names );
 
 
 

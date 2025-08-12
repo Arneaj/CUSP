@@ -7,7 +7,7 @@
 
 
 
-inline int x_to_index( float x, float x_min, float step ) { return (int) ( (x-x_min) / step ); }
+inline int x_to_index( double x, double x_min, double step ) { return (int) ( (x-x_min) / step ); }
 
 
 
@@ -43,9 +43,9 @@ void fill_in_nulls( Point_array points, int length )
 
 Point_array get_interpolated_streamline(    const std::vector<Point>& streamline, 
                                             int length, 
-                                            float step, float x_min, float x_max    )
+                                            double step, double x_min, double x_max    )
 {
-    float hits[length];
+    double hits[length];
     Point_array interpolated_streamline = Point_array( new Point[length] );
     for (int i=0; i<length; i++)
     {
@@ -53,7 +53,7 @@ Point_array get_interpolated_streamline(    const std::vector<Point>& streamline
         hits[i] = 0;
     }
 
-    float X[length];
+    double X[length];
     X[0] = x_min;
     for (int i=1; i<length; i++) X[i] = X[i-1] + step;
 
@@ -115,7 +115,7 @@ Point_array get_centerline( std::shared_ptr<Point_array[]> interpolated_streamli
 
 
 // Point_array get_multilayered_centerline(    const std::vector<std::vector<Point>>& streamlines, 
-//                                             float step, float x_min, float x_max,
+//                                             double step, double x_min, double x_max,
 //                                             int nb_sl_min, int nb_sl_max, int nb_layers    )
 // {
 //     ;
@@ -126,7 +126,7 @@ Point_array get_centerline( std::shared_ptr<Point_array[]> interpolated_streamli
 
 
 // Point_array thing(  const std::vector<std::vector<Point>>& streamlines, 
-//                     float step, float x_min, float x_max    )
+//                     double step, double x_min, double x_max    )
 // {
 //     int length = x_to_index(x_max, x_min, step);
 

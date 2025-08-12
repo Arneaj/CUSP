@@ -44,19 +44,19 @@ class Matrix
 {
 private:
     Shape shape;
-    float* mat;
+    double* mat;
     int i_offset;
 
 public:
     Matrix(): shape(), mat(nullptr), i_offset(0) {;}
-    Matrix(Shape sh): shape(sh), mat(new float[ shape.x * shape.y * shape.z * shape.i]), i_offset(0) {;}
-    Matrix(Shape sh, float* m): shape(sh), mat(m), i_offset(0) {;}
-    Matrix(Shape sh, float* m, int _i_offset): shape(sh), mat(m), i_offset(_i_offset) {;}
+    Matrix(Shape sh): shape(sh), mat(new double[ shape.x * shape.y * shape.z * shape.i]), i_offset(0) {;}
+    Matrix(Shape sh, double* m): shape(sh), mat(m), i_offset(0) {;}
+    Matrix(Shape sh, double* m, int _i_offset): shape(sh), mat(m), i_offset(_i_offset) {;}
 
     void del() { delete[] mat; }
 
     Shape get_shape() { return shape; }
-    float* get_array() { return mat; }
+    double* get_array() { return mat; }
     Shape get_shape() const { return shape; }
 
     void flatten();
@@ -64,32 +64,32 @@ public:
     Point index_max() const;
     Point index_max(int i) const;
 
-    float max() const;
-    float min() const;
+    double max() const;
+    double min() const;
 
-    float max(int i) const;
-    float min(int i) const;
+    double max(int i) const;
+    double min(int i) const;
 
     Matrix norm() const;
 
     bool is_point_OOB(const Point& p) const;
 
 
-    float& operator()(int ix, int iy, int iz, int i);
-    const float& operator()(int ix, int iy, int iz, int i) const;
+    double& operator()(int ix, int iy, int iz, int i);
+    const double& operator()(int ix, int iy, int iz, int i) const;
 
-    float operator()(const Point& p, int i) const;
+    double operator()(const Point& p, int i) const;
     Point operator()(const Point& p) const;
 
     Matrix operator()(int i);
 
-    float& operator[](int id);
-    const float& operator[](int id) const;
+    double& operator[](int id);
+    const double& operator[](int id) const;
 
-    void operator+=(float val);
-    void operator-=(float val);
-    void operator*=(float val);
-    void operator/=(float val);
+    void operator+=(double val);
+    void operator-=(double val);
+    void operator*=(double val);
+    void operator/=(double val);
 };
 
 
