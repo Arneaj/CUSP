@@ -25,7 +25,7 @@ namespace casters
             {sh.x, sh.y, sh.z, sh.i},                                                                       // shape
             {sizeof(float), sizeof(float)*sh.x, sizeof(float)*sh.x*sh.y, sizeof(float)*sh.x*sh.y*sh.z},     // strides
             matrix.get_array(),                                                                             // data pointer
-            pybind11::cast(matrix.get_array())                                                                          // parent object (keeps data alive)
+            pybind11::cast(matrix.get_array())                                                              // parent object (keeps data alive)
         );
     }
 

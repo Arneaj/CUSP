@@ -37,6 +37,11 @@ t1 = time.time()
 print(f"Finished in {t1-t0:.4f}s -> Files read")
 
 
+print( "J dtype: ", J.dtype )
+print( "J shape: ", J.shape )
+print( "J strides: ", J.strides )
+
+
 
 if len(sys.argv) < 4 or sys.argv[3] == "xz":
     axis = 'xz'
