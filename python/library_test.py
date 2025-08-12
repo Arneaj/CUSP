@@ -48,10 +48,6 @@ t1 = time.time()
 print(f"Finished in {t1-t0:.4f}s -> Files read")
 
 
-print( "J dtype: ", J.dtype )
-print( "J shape: ", J.shape )
-print( "J strides: ", J.strides )
-
     
 
 
@@ -59,7 +55,7 @@ print( "J strides: ", J.strides )
 
 
 t0 = time.time()
-extra_precision = 2.0
+extra_precision = 3.0
 
 shape_realx2 = np.array([
     int( extra_precision * (X[-1]-X[0]) ), 
@@ -68,22 +64,18 @@ shape_realx2 = np.array([
     3
 ], dtype=np.int16)
 
-J_norm = np.linalg.norm( J, axis=3 )
+# J_norm = np.linalg.norm( J, axis=3 )
 
 J_processed: np.ndarray = ta.preprocess( J, X, Y, Z, shape_realx2 )
 Rho_processed: np.ndarray = ta.preprocess( Rho, X, Y, Z, shape_realx2 )
-J_norm_processed: np.ndarray = ta.preprocess( J_norm, X, Y, Z, shape_realx2 )
 
-# J_norm_processed = np.linalg.norm( J_processed, axis=3 )
+J_norm_processed: np.ndarray = np.linalg.norm( J_processed, axis=3 )
 
-earth_pos = extra_precision * np.array( [30, 58, 58], dtype=np.float32 )
+earth_pos = extra_precision * np.array( [30, 58, 58], dtype=np.float64 )
 t1 = time.time()
 print(f"Finished in {t1-t0:.4f}s -> Preprocessing done")
 
 
-print( "J_processed dtype: ", J_processed.dtype )
-print( "J_processed shape: ", J_processed.shape )
-print( "J_processed strides: ", J_processed.strides )
 
 
 
@@ -122,7 +114,7 @@ print(f"Finished in {t1-t0:.4f}s -> Found entire Magnetopause")
 
 
 
-
+t0 = time.time()
 X_BS, Y_BS, Z_BS = gorgon.spherical_to_cartesian( BS[:,2], BS[:,0], BS[:,1], earth_pos )
 X_MP, Y_MP, Z_MP = gorgon.spherical_to_cartesian( MP[:,2], MP[:,0], MP[:,1], earth_pos )
 
@@ -168,3 +160,5 @@ plt.xlabel(r"$x \in [-30; 128] R_E$")
 
 
 plt.savefig( "../images/bowshock.svg" )
+t1 = time.time()
+print(f"Finished in {t1-t0:.4f}s -> Saved the plot")

@@ -17,25 +17,14 @@
 
 namespace casters
 {
-    double* rearrange_data( double* vec, const Shape& shape )
-    {
-        // #pragma omp parallel for
-        // for (int ix = 0; ix < shape.x; ix++) for (int iy = 0; iy < shape.y; iy++) 
-        //     for (int iz = 0; iz < shape.z; iz++) for (int i = 0; i < shape.i; i++) {
-        //         int srcIndex = ((iz*shape.y + iy)*shape.x + ix)*shape.i + i;
-        //         int dstIndex = ((i*shape.z + iz)*shape.y + iy)*shape.x + ix;
-                
-        //         finalData[dstIndex] = extractedData[srcIndex];
-        //     }
-    }
-
     pybind11::array_t<double> array_from_matrix( Matrix& matrix )
     {
         const Shape& sh = matrix.get_shape();
+        const Shape& st = matrix.get_strides();
 
         return pybind11::array_t<double>(
             {sh.x, sh.y, sh.z, sh.i},                                                                       // shape
-            {sizeof(double), sizeof(double)*sh.x, sizeof(double)*sh.x*sh.y, sizeof(double)*sh.x*sh.y*sh.z},     // strides
+            {sizeof(double)*st.x, sizeof(double)*st.y, sizeof(double)*st.z, sizeof(double)*st.i},           // strides
             matrix.get_array(),                                                                             // data pointer
             pybind11::cast(matrix.get_array())                                                              // parent object (keeps data alive)
         );
@@ -88,18 +77,35 @@ namespace casters
     {
         int nb_dim = arr.ndim();
         Shape sh;
+        Shape strides;
 
-        if (nb_dim==4) { sh = Shape( arr.shape(0), arr.shape(1), arr.shape(2), arr.shape(3) ); }
-        else if (nb_dim==3) { sh = Shape( arr.shape(0), arr.shape(1), arr.shape(2), 1 ); }
-        else if (nb_dim==2) { sh = Shape( arr.shape(0), arr.shape(1), 1, 1 ); }
-        else if (nb_dim==1) { sh = Shape( arr.shape(0), 1, 1, 1 ); }
+        if (nb_dim==4) 
+        { 
+            sh = Shape( arr.shape(0), arr.shape(1), arr.shape(2), arr.shape(3) ); 
+            strides = Shape( arr.strides(0)/sizeof(double), arr.strides(1)/sizeof(double), arr.strides(2)/sizeof(double), arr.strides(3)/sizeof(double) );
+        }
+        else if (nb_dim==3) 
+        { 
+            sh = Shape( arr.shape(0), arr.shape(1), arr.shape(2), 1 ); 
+            strides = Shape( arr.strides(0)/sizeof(double), arr.strides(1)/sizeof(double), arr.strides(2)/sizeof(double), 0 );
+        }
+        else if (nb_dim==2) 
+        { 
+            sh = Shape( arr.shape(0), arr.shape(1), 1, 1 ); 
+            strides = Shape( arr.strides(0)/sizeof(double), arr.strides(1)/sizeof(double), 0, 0 );
+        }
+        else if (nb_dim==1) 
+        { 
+            sh = Shape( arr.shape(0), 1, 1, 1 ); 
+            strides = Shape( arr.strides(0)/sizeof(double), 0, 0, 0 );
+        }
 
         int total_size = sh.x*sh.y*sh.z*sh.i;
 
         double* mat = new double[total_size];
         std::memcpy( mat, arr.data(), sizeof(double)*total_size );
 
-        return Matrix( sh, mat );
+        return Matrix( sh, strides, mat );
     }
 
     std::vector<InterestPoint> ip_vec_from_array( const pybind11::array_t<double>& arr )
