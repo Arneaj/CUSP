@@ -8,9 +8,12 @@ Topology Analysis
     :toctree: _generate
     
     preprocess
+    get_bowshock_radius
+    get_bowshock
+    get_interest_points
+    process_interest_points
+    process_points
 """
-
-# __init__.pyi for topology_analysis using nptyping for shapes and dtypes
 
 # __init__.pyi for topology_analysis
 
