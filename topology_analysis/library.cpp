@@ -353,7 +353,6 @@ PYBIND11_MODULE(topology_analysis, m)
     );
     m.def("process_points", &raycasting::process_points_numpy,
         pybind11::arg("points"),
-        pybind11::arg("nb_theta"), pybind11::arg("nb_phi"),
         pybind11::arg("shape_sim"), pybind11::arg("shape_real"),
         pybind11::arg("earth_pos_sim"), pybind11::arg("earth_pos_real")
     );

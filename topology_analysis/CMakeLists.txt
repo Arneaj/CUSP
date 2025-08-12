@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.31 FATAL_ERROR)
 
-project(python_module)
+project(topology_analysis)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_PREFIX_PATH "~/local" ${CMAKE_PREFIX_PATH})
@@ -17,7 +17,7 @@ find_package(VTK COMPONENTS
 )
 
 if (NOT VTK_FOUND)
-  message(FATAL_ERROR "python_module: Unable to find the VTK build folder.")
+  message(FATAL_ERROR "topology_analysis: Unable to find the VTK build folder.")
 endif()
 
 find_package(OpenMP REQUIRED)
@@ -62,10 +62,6 @@ set(HEADERS
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 find_package(pybind11 REQUIRED)
 
-# Find Python and pybind11
-find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
-find_package(pybind11 REQUIRED)
-
 # Find NumPy with error handling
 execute_process(
     COMMAND "${Python3_EXECUTABLE}" -c "import numpy; print(numpy.get_include())"
@@ -98,9 +94,7 @@ endif()
 message(STATUS "NumPy include directory: ${NUMPY_INCLUDE_DIR}")
 
 # Create the module
-pybind11_add_module(topology_analysis 
-    python_library.cpp
-)
+pybind11_add_module(topology_analysis library.cpp)
 
 
 target_link_libraries(topology_analysis PRIVATE ${VTK_LIBRARIES} ${CERES_LIBRARIES} OpenMP::OpenMP_CXX)
@@ -139,6 +133,6 @@ vtk_module_autoinit(
 #     OUTPUT_STRIP_TRAILING_WHITESPACE
 # )
 
-# install(TARGETS topology_analysis
-#     LIBRARY DESTINATION ${PYTHON_SITE_PACKAGES}
-# )
+install(TARGETS topology_analysis
+    LIBRARY DESTINATION topology_analysis
+)
