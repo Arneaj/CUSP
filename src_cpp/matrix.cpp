@@ -13,6 +13,11 @@ void Matrix::flatten()
     shape.y = 1;
     shape.z = 1;
     shape.i = 1;
+
+    strides.x = 1;
+    strides.y = 0;
+    strides.z = 0;
+    strides.i = 0;
 }
 
 
@@ -63,7 +68,7 @@ double& Matrix::operator()(int ix, int iy, int iz, int i)
     if (iz<0 || iz>=shape.z) { throw exception_OOB("z out of range"); }
     if (i<0 || i>=shape.i) { throw exception_OOB("i out of range"); }
 
-    return mat[ ix + iy*shape.x + iz*shape.x*shape.y + (i+i_offset)*shape.x*shape.y*shape.z ];
+    return mat[ ix*strides.x + iy*strides.y + iz*strides.z + (i+i_offset)*strides.i ];
     // return mat[ ix*shape.y*shape.z*shape.i + iy*shape.z*shape.i + iz*shape.i + (i+i_offset) ];
 }
 
@@ -74,7 +79,7 @@ const double& Matrix::operator()(int ix, int iy, int iz, int i) const
     if (iz<0 || iz>=shape.z) { throw exception_OOB("z out of range"); }
     if (i<0 || i>=shape.i) { throw exception_OOB("i out of range"); }
 
-    return mat[ ix + iy*shape.x + iz*shape.x*shape.y + (i+i_offset)*shape.x*shape.y*shape.z ];
+    return mat[ ix*strides.x + iy*strides.y + iz*strides.z + (i+i_offset)*strides.i ];
     // return mat[ ix*shape.y*shape.z*shape.i + iy*shape.z*shape.i + iz*shape.i + (i+i_offset) ];
 }
 

@@ -44,20 +44,26 @@ class Matrix
 {
 private:
     Shape shape;
+    Shape strides;
     double* mat;
     int i_offset;
 
 public:
-    Matrix(): shape(), mat(nullptr), i_offset(0) {;}
-    Matrix(Shape sh): shape(sh), mat(new double[ shape.x * shape.y * shape.z * shape.i]), i_offset(0) {;}
-    Matrix(Shape sh, double* m): shape(sh), mat(m), i_offset(0) {;}
-    Matrix(Shape sh, double* m, int _i_offset): shape(sh), mat(m), i_offset(_i_offset) {;}
+    Matrix(): shape(), strides(), mat(nullptr), i_offset(0) {;}
+    Matrix(Shape sh): shape(sh), strides(1, sh.x, sh.x*sh.y, sh.x*sh.y*sh.z), mat(new double[shape.x * shape.y * shape.z * shape.i]), i_offset(0) {;}
+    Matrix(Shape sh, double* m): shape(sh), strides(1, sh.x, sh.x*sh.y, sh.x*sh.y*sh.z), mat(m), i_offset(0) {;}
+    Matrix(Shape sh, Shape stride, double* m): shape(sh), strides(stride), mat(m), i_offset(0) {;}
+    Matrix(Shape sh, double* m, int _i_offset): shape(sh), strides(1, sh.x, sh.x*sh.y, sh.x*sh.y*sh.z), mat(m), i_offset(_i_offset) {;}
 
     void del() { delete[] mat; }
 
     Shape get_shape() { return shape; }
-    double* get_array() { return mat; }
     Shape get_shape() const { return shape; }
+
+    Shape get_strides() { return strides; }
+    Shape get_strides() const { return strides; }
+
+    double* get_array() { return mat; }
 
     void flatten();
 
