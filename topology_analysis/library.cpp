@@ -310,19 +310,52 @@ PYBIND11_MODULE(topology_analysis, m)
 {
     m.doc() = "Topology analysis module for magnetic field data";
 
-    // pybind11::class_<Matrix>(m, "Matrix").
-    //     .def(py::init<>());
-        // .def("myFunction");
 
-    m.def("preprocess", &preprocessing::orthonormalise_numpy);
+    m.def("preprocess", &preprocessing::orthonormalise_numpy, 
+        pybind11::arg("mat"), 
+        pybind11::arg("X"), pybind11::arg("Y"), pybind11::arg("Z"),
+        pybind11::arg("new_shape")
+    );
 
-    m.def("get_bowshock_radius", &raycasting::get_bowshock_radius_numpy);
-    m.def("get_bowshock", &raycasting::get_bowshock_numpy);
+    m.def("get_bowshock_radius", &raycasting::get_bowshock_radius_numpy, 
+        pybind11::arg("theta"), pybind11::arg("phi"),
+        pybind11::arg("Rho"), pybind11::arg("earth_pos"), pybind11::arg("dr")
+    );
+    m.def("get_bowshock", &raycasting::get_bowshock_numpy,
+        pybind11::arg("Rho"), pybind11::arg("earth_pos"), pybind11::arg("dr"),
+        pybind11::arg("nb_phi"), pybind11::arg("max_nb_theta")
+    );
 
-    m.def("get_interest_points", &raycasting::get_interest_points_numpy);
-    m.def("get_interest_points", &raycasting::get_interest_points_numpy_no_std_dev);
 
-    m.def("process_interest_points", &raycasting::process_interest_points_numpy);
-    m.def("process_points", &raycasting::process_points_numpy);
+    m.def("get_interest_points", &raycasting::get_interest_points_numpy,
+        pybind11::arg("J_norm"), pybind11::arg("earth_pos"), pybind11::arg("Rho"),
+        pybind11::arg("theta_min"), pybind11::arg("theta_max"),
+        pybind11::arg("nb_theta"), pybind11::arg("nb_phi"),
+        pybind11::arg("dx"), pybind11::arg("dr"),
+        pybind11::arg("alpha_0_min"), pybind11::arg("alpha_0_max"), pybind11::arg("nb_alpha_0"),
+        pybind11::arg("r_0_mult_min"), pybind11::arg("r_0_mult_max"), pybind11::arg("nb_r_0"),
+        pybind11::arg("avg_std_dev")
+    );
+    m.def("get_interest_points", &raycasting::get_interest_points_numpy_no_std_dev,
+        pybind11::arg("J_norm"), pybind11::arg("earth_pos"), pybind11::arg("Rho"),
+        pybind11::arg("theta_min"), pybind11::arg("theta_max"),
+        pybind11::arg("nb_theta"), pybind11::arg("nb_phi"),
+        pybind11::arg("dx"), pybind11::arg("dr"),
+        pybind11::arg("alpha_0_min"), pybind11::arg("alpha_0_max"), pybind11::arg("nb_alpha_0"),
+        pybind11::arg("r_0_mult_min"), pybind11::arg("r_0_mult_max"), pybind11::arg("nb_r_0")
+    );
+
+    m.def("process_interest_points", &raycasting::process_interest_points_numpy,
+        pybind11::arg("interest_points"),
+        pybind11::arg("nb_theta"), pybind11::arg("nb_phi"),
+        pybind11::arg("shape_sim"), pybind11::arg("shape_real"),
+        pybind11::arg("earth_pos_sim"), pybind11::arg("earth_pos_real")
+    );
+    m.def("process_points", &raycasting::process_points_numpy,
+        pybind11::arg("points"),
+        pybind11::arg("nb_theta"), pybind11::arg("nb_phi"),
+        pybind11::arg("shape_sim"), pybind11::arg("shape_real"),
+        pybind11::arg("earth_pos_sim"), pybind11::arg("earth_pos_real")
+    );
 }
 
