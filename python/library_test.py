@@ -112,6 +112,18 @@ print(f"Finished in {t1-t0:.4f}s -> Found entire Magnetopause")
 
 
 
+t0 = time.time()
+MP_params, MP_cost = ta.fit_to_Rolland25( 
+    MP, MP.shape[0], 
+    initial_params = extra_precision * np.array([ 10.0, 0.4, 0, 0, 2, 1, 5, 2, 1, 5, 0 ]),
+    lowerbound = extra_precision * np.array([ 5.0, 0.2, -1.0, -1.0, 0, 0.1, 0.1, 0, 0.1, 0.1, -0.8 ]),
+    upperbound = extra_precision * np.array([ 20.0, 0.8, 1.0, 1.0, 6, 2, 20, 6, 2, 20, 0.8 ]),
+    radii_of_variation = extra_precision * np.array([ 3.0, 0.2, 0.5, 0.5, 2, 0.5, 3, 2, 0.5, 3, 0.5 ]),
+)
+t1 = time.time()
+print(f"Finished in {t1-t0:.4f}s -> Fitted Rolland25 function to the Magnetopause")
+print( MP_params )
+
 
 
 t0 = time.time()

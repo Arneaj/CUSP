@@ -13,6 +13,12 @@ Topology Analysis
     get_interest_points
     process_interest_points
     process_points
+    Shue97
+    Liu12
+    Rolland25
+    fit_to_Shue97
+    fit_to_Liu12
+    fit_to_Rolland25
 """
 
 # __init__.pyi for topology_analysis

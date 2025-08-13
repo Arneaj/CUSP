@@ -474,7 +474,7 @@ PYBIND11_MODULE(topology_analysis, m)
         pybind11::arg("initial_params"),
         pybind11::arg("lowerbound"), pybind11::arg("upperbound"),
         pybind11::arg("radii_of_variation"),
-        pybind11::arg("nb_runs") = 1, pybind11::arg("max_nb_iterations_per_run") = 50
+        pybind11::arg("nb_runs") = 10, pybind11::arg("max_nb_iterations_per_run") = 50
     );
 
     m.def("fit_to_Rolland25", &fitting::fit_MP_numpy<EllipsisPolyResidual, 11>,
