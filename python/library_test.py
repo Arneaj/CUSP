@@ -11,17 +11,17 @@ t1 = time.time()
 print(f"Finished in {t1-t0:.4f}s -> Modules loaded")
 
 if len(sys.argv) < 2:
-    print("No Run path given!")
-    exit(1)
+    print("No Run path given! Defaulting to /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run1")
+    filepath = "/rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run1"
+else:
+    filepath = sys.argv[1]
 
-# /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run1
-filepath = sys.argv[1]
 
 if len(sys.argv) < 3:
-    print("No Timestep path given!")
-    exit(1)
-
-timestep = sys.argv[2]
+    print("No Timestep given! Defaulting to 23100")
+    timestep = "23100"
+else: 
+    timestep = sys.argv[2]
 
 
 if len(sys.argv) < 4 or sys.argv[3] == "xz":
@@ -38,7 +38,7 @@ t0 = time.time()
 sim = gorgon_import.gorgon_sim(data_dir=filepath)
 index_of_timestep = np.where( sim.times == float(timestep) )[0][0]
 sim.import_timestep(index_of_timestep)
-sim.import_space( filepath + "/MS/x00_Bvec_c-" + timestep + ".pvtr")
+sim.import_space( filepath + "/MS/x00_Bvec_c-" + timestep + ".pvtr" )
 
 Rho: np.ndarray = sim.arr["rho"]
 J: np.ndarray = sim.arr["jvec"]
@@ -121,7 +121,7 @@ MP_params, MP_cost = ta.fit_to_Rolland25(
     radii_of_variation = extra_precision * np.array([ 3.0, 0.2, 0.5, 0.5, 2, 0.5, 3, 2, 0.5, 3, 0.5 ]),
 )
 t1 = time.time()
-print(f"Finished in {t1-t0:.4f}s -> Fitted Rolland25 function to the Magnetopause")
+print(f"Finished in {t1-t0:.4f}s -> Fit Rolland25 function to the Magnetopause")
 print( MP_params )
 
 
