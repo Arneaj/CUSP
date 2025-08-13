@@ -6,19 +6,19 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_PREFIX_PATH "~/local" ${CMAKE_PREFIX_PATH})
 find_package(Ceres REQUIRED)
 
-find_package(VTK COMPONENTS 
-  CommonCore
-  CommonDataModel
-  FiltersGeometry
-  IOXML
-  IOParallelXML
-  InteractionStyle
-  REQUIRED
-)
+# find_package(VTK COMPONENTS 
+#   CommonCore
+#   CommonDataModel
+#   FiltersGeometry
+#   IOXML
+#   IOParallelXML
+#   InteractionStyle
+#   REQUIRED
+# )
 
-if (NOT VTK_FOUND)
-  message(FATAL_ERROR "topology_analysis: Unable to find the VTK build folder.")
-endif()
+# if (NOT VTK_FOUND)
+#   message(FATAL_ERROR "topology_analysis: Unable to find the VTK build folder.")
+# endif()
 
 find_package(OpenMP REQUIRED)
 
@@ -32,9 +32,9 @@ set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response
 set(SOURCES
     ../src_cpp/points.cpp
     ../src_cpp/matrix.cpp
-    ../src_cpp/read_pvtr.cpp
+    # ../src_cpp/read_pvtr.cpp
     ../src_cpp/read_file.cpp
-    ../src_cpp/reader_writer.cpp
+    # ../src_cpp/reader_writer.cpp
     ../src_cpp/raycast.cpp
     ../src_cpp/streamlines.cpp
     ../src_cpp/magnetopause.cpp
@@ -50,9 +50,9 @@ set(HEADERS
     ../headers_cpp/streamlines.h
     ../headers_cpp/magnetopause.h
     ../headers_cpp/preprocessing.h  
-    ../headers_cpp/read_pvtr.h
+    # ../headers_cpp/read_pvtr.h
     ../headers_cpp/read_file.h
-    ../headers_cpp/reader_writer.h
+    # ../headers_cpp/reader_writer.h
     ../headers_cpp/fit_to_analytical.h
     ../headers_cpp/analysis.h
 )
@@ -94,22 +94,33 @@ endif()
 message(STATUS "NumPy include directory: ${NUMPY_INCLUDE_DIR}")
 
 # Create the module
-pybind11_add_module(topology_analysis library.cpp)
+pybind11_add_module(
+    topology_analysis 
+    library.cpp
+    ${SOURCES}
+)
 
 
-target_link_libraries(topology_analysis PRIVATE ${VTK_LIBRARIES} ${CERES_LIBRARIES} OpenMP::OpenMP_CXX)
+target_link_libraries(topology_analysis PRIVATE 
+    # ${VTK_LIBRARIES} 
+    ${CERES_LIBRARIES} 
+    OpenMP::OpenMP_CXX
+)
 
 # Include directories
 target_include_directories(topology_analysis PRIVATE 
     ../src_cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${NUMPY_INCLUDE_DIR}
-    ${VTK_INCLUDE_DIRS} 
+    # ${VTK_INCLUDE_DIRS} 
     ${CERES_INCLUDE_DIRS}
 )
 
 # Compiler-specific options
-target_compile_definitions(topology_analysis PRIVATE ${VTK_DEFINITIONS} ${CERES_DEFINITIONS} VERSION_INFO=${EXAMPLE_VERSION_INFO})
+target_compile_definitions(topology_analysis PRIVATE 
+    # ${VTK_DEFINITIONS} 
+    ${CERES_DEFINITIONS} VERSION_INFO=${EXAMPLE_VERSION_INFO}
+)
 
 # Set properties for the module
 set_target_properties(topology_analysis PROPERTIES
@@ -122,10 +133,10 @@ if (UNIX)
 endif()
 
 # vtk_module_autoinit is needed
-vtk_module_autoinit(
-  TARGETS topology_analysis
-  MODULES ${VTK_LIBRARIES}
-)
+# vtk_module_autoinit(
+#   TARGETS topology_analysis
+#   MODULES ${VTK_LIBRARIES}
+# )
 
 # execute_process(
 #     COMMAND "${Python3_EXECUTABLE}" -c "import sysconfig; print(sysconfig.get_path('purelib'))"

@@ -1,6 +1,29 @@
 import time
 
 t0 = time.time()
+import sys
+import importlib.util
+from pathlib import Path
+
+pkg_name = "topology_analysis"
+
+# Check where Python is about to import the package from
+spec = importlib.util.find_spec(pkg_name)
+if spec and spec.origin:
+    pkg_path = Path(spec.origin).resolve()
+    site_packages_path = Path(sys.prefix) / "lib" / f"python{sys.version_info.major}.{sys.version_info.minor}" / "site-packages"
+    
+    # If the package is coming from the source dir instead of site-packages, warn
+    if str(pkg_path).startswith(str(Path.cwd())):
+        raise RuntimeError(
+            f"\n  You're running from inside the {pkg_name} source tree:\n"
+            f"    {pkg_path}\n\n"
+            f"This shadows the installed package in:\n"
+            f"    {site_packages_path / pkg_name}\n\n"
+            "Solution: run your script from outside the package folder "
+            "or remove that path from sys.path."
+        )
+
 import numpy as np
 import matplotlib.pyplot as plt
 import topology_analysis as ta
@@ -9,6 +32,9 @@ import gorgon
 import sys
 t1 = time.time()
 print(f"Finished in {t1-t0:.4f}s -> Modules loaded")
+
+
+
 
 if len(sys.argv) < 2:
     print("No Run path given! Defaulting to /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run1")

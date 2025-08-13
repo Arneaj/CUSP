@@ -169,7 +169,7 @@ void interest_points_helper(    double r_0, double alpha_0,
         {
             phi += dphi;
 
-            const Point& bs = unsqueezed_bow_shock[itheta*nb_phi+iphi];
+            Point bs = unsqueezed_bow_shock[itheta*nb_phi+iphi];
 
             double final_r;
 

@@ -102,18 +102,18 @@ void save_file( const std::string& filename, const Matrix& mat )
 
 
 struct DataHeader {
-    uint32_t magic_number = 0x12345678;  // File validity check
-    uint32_t type_size;                  // sizeof(double) or sizeof(double)
-    uint32_t x_dim;
-    uint32_t y_dim;
-    uint32_t z_dim;
-    uint32_t i_dim;
-    uint32_t separator[4] = {0};
+    int magic_number = 0x12345678;  // File validity check
+    int type_size;                  // sizeof(double) or sizeof(double)
+    int x_dim;
+    int y_dim;
+    int z_dim;
+    int i_dim;
+    int separator[4] = {0};
 
-    DataHeader( uint32_t _type_size, uint32_t _x_dim, uint32_t _y_dim, uint32_t _z_dim, uint32_t _i_dim )
+    DataHeader( int _type_size, int _x_dim, int _y_dim, int _z_dim, int _i_dim )
         : type_size(_type_size), x_dim(_x_dim), y_dim(_y_dim), z_dim(_z_dim), i_dim(_i_dim) {;}
 
-    DataHeader( uint32_t _type_size, const Shape& shape )
+    DataHeader( int _type_size, const Shape& shape )
         : type_size(_type_size), x_dim(shape.x), y_dim(shape.y), z_dim(shape.z), i_dim(shape.i) {;}
 };
 
