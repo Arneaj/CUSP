@@ -11,7 +11,7 @@
 // #include "../headers_cpp/reader_writer.h"
 #include "../headers_cpp/preprocessing.h"
 #include "../headers_cpp/raycast.h"
-// #include "../headers_cpp/fit_to_analytical.h"
+#include "../headers_cpp/fit_to_analytical.h"
 #include "../headers_cpp/analysis.h"
 
 
@@ -303,6 +303,94 @@ namespace raycasting
 }
 
 
+namespace fitting
+{
+    double Shue97( const pybind11::array_t<double>& params, double theta, double phi )
+    {
+        // if (theta<0 || theta>PI) { std::cout << "theta should be in [0; pi]\n"; exit(1); }
+
+        double cos_theta = std::cos(theta);
+
+        return *params.data(0) * std::pow( 2.0 / (1.0+cos_theta), *params.data(1) );
+    }
+
+    double Liu12( const pybind11::array_t<double>& params, double theta, double phi )
+    {
+        // if (theta<0 || theta>PI) { std::cout << "theta should be in [0; pi]\n"; exit(1); }
+        // if (phi<-PI || phi>PI) { std::cout << "phi should be in [-pi; pi)\n"; exit(1); }
+
+        double cos_theta = std::cos(theta);
+        double cos_phi = std::cos(phi);
+
+        double pos_side = is_pos<double>( cos_phi );
+
+        return *params.data(0) * std::pow(
+            2.0 / (1.0+cos_theta), 
+            *params.data(1) + *params.data(2)*cos_phi + *params.data(3)*cos_phi*cos_phi
+        ) - (
+            *params.data(4) * std::exp( std::abs(theta-*params.data(5)) / *params.data(6) ) * pos_side +
+            *params.data(7) * std::exp( std::abs(theta-*params.data(8)) / *params.data(9) ) * (1.0-pos_side)
+        ) * cos_phi*cos_phi;
+    }
+
+    double EllipsisPoly( const pybind11::array_t<double>& params, double theta, double phi )
+    {
+        // if (theta<0 || theta>PI) { std::cout << "theta should be in [0; pi]\n"; exit(1); }
+        // if (phi<-PI || phi>PI) { std::cout << "phi should be in [-pi; pi)\n"; exit(1); }
+
+        double cos_theta = std::cos(theta);
+        double cos_phi = std::cos(phi);
+
+        double sigm_cos_phi = sigmoid<double>(cos_phi);
+
+        double theta_by_ln_to_sn = std::pow( theta / *params.data(5), *params.data(6) );
+        double theta_by_ls_to_ss = std::pow( theta / *params.data(8), *params.data(9) );
+
+        return *params.data(0) * (
+            (1.0+*params.data(10)) / (1.0+*params.data(10)*cos_theta)
+        ) * std::pow(
+            2.0 / (1.0+cos_theta), 
+            *params.data(1) + *params.data(2)*cos_phi + *params.data(3)*cos_phi*cos_phi
+        ) + (
+            *params.data(4) * ( std::abs((1.0-theta_by_ln_to_sn)/(1.0+theta_by_ln_to_sn )) - 1.0 ) * sigm_cos_phi +
+            *params.data(7) * ( std::abs((1.0-theta_by_ls_to_ss)/(1.0+theta_by_ls_to_ss )) - 1.0 ) * (1.0-sigm_cos_phi)
+        ) * cos_phi*cos_phi;
+    }
+
+
+
+    template <typename Residual, int nb_params>
+    pybind11::tuple fit_MP_numpy( 
+        const pybind11::array_t<double>& interest_points, int nb_interest_points,
+        const pybind11::array_t<double>& initial_params, 
+        pybind11::array_t<double>& lowerbound, 
+        pybind11::array_t<double>& upperbound,
+        pybind11::array_t<double>& radii_of_variation, 
+        int nb_runs=1, int max_nb_iterations_per_run=50
+    )
+    {
+        std::vector<InterestPoint> _interest_points = casters::ip_vec_from_array( interest_points );
+
+        OptiResult res = fit_MP<Residual, nb_params>( 
+            _interest_points.data(), nb_interest_points,
+            initial_params.data(), 
+            lowerbound.mutable_data(),
+            upperbound.mutable_data(),
+            radii_of_variation.mutable_data(),
+            nb_runs, max_nb_iterations_per_run
+        );
+
+        return pybind11::make_tuple( 
+            pybind11::array_t<double>(
+                {nb_params},                // shape
+                {sizeof(double)},           // strides
+                res.params.data(),          // data pointer
+                pybind11::cast(res.params)
+            ),
+            res.cost
+        );
+    }
+}
 
 
 
@@ -355,6 +443,46 @@ PYBIND11_MODULE(topology_analysis, m)
         pybind11::arg("points"),
         pybind11::arg("shape_sim"), pybind11::arg("shape_real"),
         pybind11::arg("earth_pos_sim"), pybind11::arg("earth_pos_real")
+    );
+
+
+    m.def("Shue97", &fitting::Shue97,
+        pybind11::arg("params"),
+        pybind11::arg("theta"), pybind11::arg("phi")
+    );
+
+    m.def("Liu12", &fitting::Liu12,
+        pybind11::arg("params"),
+        pybind11::arg("theta"), pybind11::arg("phi")
+    );
+
+    m.def("Rolland25", &fitting::EllipsisPoly,
+        pybind11::arg("params"),
+        pybind11::arg("theta"), pybind11::arg("phi")
+    );
+
+    m.def("fit_to_Shue97", &fitting::fit_MP_numpy<Shue97Residual, 2>,
+        pybind11::arg("interest_points"), pybind11::arg("nb_interest_points"),
+        pybind11::arg("initial_params"),
+        pybind11::arg("lowerbound"), pybind11::arg("upperbound"),
+        pybind11::arg("radii_of_variation"),
+        pybind11::arg("nb_runs") = 1, pybind11::arg("max_nb_iterations_per_run") = 50
+    );
+
+    m.def("fit_to_Liu12", &fitting::fit_MP_numpy<Liu12Residual, 10>,
+        pybind11::arg("interest_points"), pybind11::arg("nb_interest_points"),
+        pybind11::arg("initial_params"),
+        pybind11::arg("lowerbound"), pybind11::arg("upperbound"),
+        pybind11::arg("radii_of_variation"),
+        pybind11::arg("nb_runs") = 1, pybind11::arg("max_nb_iterations_per_run") = 50
+    );
+
+    m.def("fit_to_Rolland25", &fitting::fit_MP_numpy<EllipsisPolyResidual, 11>,
+        pybind11::arg("interest_points"), pybind11::arg("nb_interest_points"),
+        pybind11::arg("initial_params"),
+        pybind11::arg("lowerbound"), pybind11::arg("upperbound"),
+        pybind11::arg("radii_of_variation"),
+        pybind11::arg("nb_runs") = 10, pybind11::arg("max_nb_iterations_per_run") = 50
     );
 }
 

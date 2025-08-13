@@ -47,6 +47,8 @@ def preprocess(
         Orthonormalised matrix as a NumPy array with shape matching `new_shape`.
     """
 
+
+
 def get_bowshock_radius(
     theta: float,
     phi: float,
@@ -105,6 +107,7 @@ def get_bowshock(
     np.ndarray
         Array of points with shape (N, 3) representing bowshock coordinates.
     """
+
 
 def get_interest_points(
     J_norm: NDArray[np.float64],
@@ -212,6 +215,194 @@ def process_points(
         Processed points array of shape (N, 3).
     """
 
+
+
+def Shue97(
+    params: NDArray[np.float64],
+    theta: float, phi: float
+) -> float:
+    """
+    Analytical approximation of the Magnetopause topology as written by Shue in his 1997 paper.
+
+    Parameters
+    ----------
+    params : np.ndarray
+        Parameters array with shape (2,).
+    theta, phi : float
+        Angle at which the radius should be calculated. 
+    
+    Returns
+    -------
+    float
+        Radius at this angle.
+    """
+    
+def Liu12(
+    params: NDArray[np.float64],
+    theta: float, phi: float
+) -> float:
+    """
+    Analytical approximation of the Magnetopause topology as written by Liu in his 2012 paper.
+
+    Parameters
+    ----------
+    params : np.ndarray
+        Parameters array with shape (10,).
+    theta, phi : float
+        Angle at which the radius should be calculated. 
+    
+    Returns
+    -------
+    float
+        Radius at this angle.
+    """
+    
+def Rolland25(
+    params: NDArray[np.float64],
+    theta: float, phi: float
+) -> float:
+    """
+    Analytical approximation of the Magnetopause topology as written by Rolland in his 2025 thesis.
+
+    Parameters
+    ----------
+    params : np.ndarray
+        Parameters array with shape (11,).
+    theta, phi : float
+        Angle at which the radius should be calculated. 
+    
+    Returns
+    -------
+    float
+        Radius at this angle.
+    """
+
+
+def fit_to_Shue97(
+    interest_points: NDArray[np.float64],
+    nb_interest_points: int,
+    initial_params: NDArray[np.float64],
+    lowerbound: NDArray[np.float64],
+    upperbound: NDArray[np.float64],
+    radii_of_variation: NDArray[np.float64],
+    nb_runs: int = 10,
+    max_nb_iterations_per_run: int = 50,
+) -> tuple[float, NDArray[np.float64]]:
+    """
+    Analytical fitting of the Shue97 function to an array of interest points.
+
+    Parameters
+    ----------
+    interest_points : np.ndarray
+        Interest point array to fit to of shape (`nb_interest_points`, 4).
+    nb_interest_points : int
+        Number of interest points to fit to.
+    initial_parameters : np.ndarray
+        Parameters array with shape (11,).
+    lowerbound, upperbound : np.ndarray
+        Parameters array with shape (11,) corresponding to the lower and upper bounds
+        that the parameters can take during fitting.
+    radii_of_variation : np.ndarray
+        Parameters array with shape (11,) corresponding to the maximum distance each 
+        of the parameters will randomly move away for the initial_params at the 
+        beginning of a run.
+    nb_runs : int
+        Number of times the fitting algorithm will start again with other randomly 
+        selected initial parameters.
+    max_nb_iterations_per_run : int
+        Maximum number of iterations the fitting algorithm will do before stopping
+        even if it hasn't converged.
+    
+    Returns
+    -------
+    float
+        Array of the final parameters after fit and the fitting cost of these parameters. 
+    """
+
+def fit_to_Liu12(
+    interest_points: NDArray[np.float64],
+    nb_interest_points: int,
+    initial_params: NDArray[np.float64],
+    lowerbound: NDArray[np.float64],
+    upperbound: NDArray[np.float64],
+    radii_of_variation: NDArray[np.float64],
+    nb_runs: int = 10,
+    max_nb_iterations_per_run: int = 50,
+) -> tuple[float, NDArray[np.float64]]:
+    """
+    Analytical fitting of the Liu12 function to an array of interest points.
+
+    Parameters
+    ----------
+    interest_points : np.ndarray
+        Interest point array to fit to of shape (`nb_interest_points`, 4).
+    nb_interest_points : int
+        Number of interest points to fit to.
+    initial_parameters : np.ndarray
+        Parameters array with shape (11,).
+    lowerbound, upperbound : np.ndarray
+        Parameters array with shape (11,) corresponding to the lower and upper bounds
+        that the parameters can take during fitting.
+    radii_of_variation : np.ndarray
+        Parameters array with shape (11,) corresponding to the maximum distance each 
+        of the parameters will randomly move away for the initial_params at the 
+        beginning of a run.
+    nb_runs : int
+        Number of times the fitting algorithm will start again with other randomly 
+        selected initial parameters.
+    max_nb_iterations_per_run : int
+        Maximum number of iterations the fitting algorithm will do before stopping
+        even if it hasn't converged.
+    
+    Returns
+    -------
+    float
+        Array of the final parameters after fit and the fitting cost of these parameters. 
+    """
+
+def fit_to_Rolland25(
+    interest_points: NDArray[np.float64],
+    nb_interest_points: int,
+    initial_params: NDArray[np.float64],
+    lowerbound: NDArray[np.float64],
+    upperbound: NDArray[np.float64],
+    radii_of_variation: NDArray[np.float64],
+    nb_runs: int = 10,
+    max_nb_iterations_per_run: int = 50,
+) -> tuple[float, NDArray[np.float64]]:
+    """
+    Analytical fitting of the Rolland25 function to an array of interest points.
+
+    Parameters
+    ----------
+    interest_points : np.ndarray
+        Interest point array to fit to of shape (`nb_interest_points`, 4).
+    nb_interest_points : int
+        Number of interest points to fit to.
+    initial_parameters : np.ndarray
+        Parameters array with shape (11,).
+    lowerbound, upperbound : np.ndarray
+        Parameters array with shape (11,) corresponding to the lower and upper bounds
+        that the parameters can take during fitting.
+    radii_of_variation : np.ndarray
+        Parameters array with shape (11,) corresponding to the maximum distance each 
+        of the parameters will randomly move away for the initial_params at the 
+        beginning of a run.
+    nb_runs : int
+        Number of times the fitting algorithm will start again with other randomly 
+        selected initial parameters.
+    max_nb_iterations_per_run : int
+        Maximum number of iterations the fitting algorithm will do before stopping
+        even if it hasn't converged.
+    
+    Returns
+    -------
+    float
+        Array of the final parameters after fit and the fitting cost of these parameters. 
+    """
+
+
+
 __all__ = [
     "preprocess",
     "get_bowshock_radius",
@@ -219,4 +410,10 @@ __all__ = [
     "get_interest_points",
     "process_interest_points",
     "process_points",
+    "Shue97",
+    "Liu12",
+    "Rolland25",
+    "fit_to_Shue97",
+    "fit_to_Liu12",
+    "fit_to_Rolland25",
 ]

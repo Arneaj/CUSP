@@ -43,6 +43,23 @@ T sigmoid( T v ) { return T(1.0) / ( T(1.0) + ceres::exp(-v * T(5.0)) ); }
 // *** Analytical functions ***
 
 
+/// @brief analytical approximation of the Magnetopause topology as written by Shue in his 1997 paper
+/// @param theta rotation around the \hat{y} axis in [0; \pi]
+/// @param phi rotation around the \hat{x} axis in [-\pi; \pi)
+/// @param params [r_0, alpha]
+/// @return the radius at angle (theta, phi)
+template <typename T>
+T Shue97( const T* const params, T theta, T phi )
+{
+    // if (theta<0 || theta>PI) { std::cout << "theta should be in [0; pi]\n"; exit(1); }
+    // if (phi<-PI || phi>PI) { std::cout << "phi should be in [-pi; pi)\n"; exit(1); }
+
+    T cos_theta = ceres::cos(theta);
+
+    return params[0] * ceres::pow( T(2.0) / (T(1.0)+cos_theta), params[1] );
+}
+
+
 /// @brief analytical approximation of the Magnetopause topology as written by Liu in his 2012 paper
 /// @param theta rotation around the \hat{y} axis in [0; \pi]
 /// @param phi rotation around the \hat{x} axis in [-\pi; \pi)
@@ -157,6 +174,20 @@ public:
 };
 
 
+class Shue97Residual : public Residual
+{
+public:
+    using Residual::Residual;
+
+    template <typename T>
+    bool operator()(const T* const params, T* residual) const 
+    {
+        T predicted_radius = Shue97<T>(params, T(m_theta), T(m_phi));
+        residual[0] = (m_observed_radius - predicted_radius)*m_weight;
+        return true;
+    }
+};
+
 
 class Liu12Residual : public Residual
 {
@@ -204,8 +235,6 @@ public:
         return true;
     }
 };
-
-
 
 
 
