@@ -337,7 +337,7 @@ def Me25_fix(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -
 
 
 
-def Me25_poly(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -> np.ndarray | float:
+def Me25_poly(params: np.ndarray, theta: np.ndarray | float, phi: np.ndarray | float) -> np.ndarray | float:
     """
     Expects theta in [0;pi] and phi in [-pi;pi)
     

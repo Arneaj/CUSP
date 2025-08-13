@@ -293,7 +293,7 @@ def fit_to_Shue97(
     radii_of_variation: NDArray[np.float64],
     nb_runs: int = 10,
     max_nb_iterations_per_run: int = 50,
-) -> tuple[float, NDArray[np.float64]]:
+) -> tuple[NDArray[np.float64], float]:
     """
     Analytical fitting of the Shue97 function to an array of interest points.
 
@@ -334,7 +334,7 @@ def fit_to_Liu12(
     radii_of_variation: NDArray[np.float64],
     nb_runs: int = 10,
     max_nb_iterations_per_run: int = 50,
-) -> tuple[float, NDArray[np.float64]]:
+) -> tuple[NDArray[np.float64], float]:
     """
     Analytical fitting of the Liu12 function to an array of interest points.
 
@@ -375,7 +375,7 @@ def fit_to_Rolland25(
     radii_of_variation: NDArray[np.float64],
     nb_runs: int = 10,
     max_nb_iterations_per_run: int = 50,
-) -> tuple[float, NDArray[np.float64]]:
+) -> tuple[NDArray[np.float64], float]:
     """
     Analytical fitting of the Rolland25 function to an array of interest points.
 

@@ -111,9 +111,11 @@ namespace casters
     std::vector<InterestPoint> ip_vec_from_array( const pybind11::array_t<double>& arr )
     {
         std::vector<InterestPoint> ip(arr.shape(0));
+
+        const double* p_arr = arr.data();
         
         for (int i=0; i<arr.shape(0); i++)
-            ip[i] = { *arr.data(4*i), *arr.data(4*i+1), *arr.data(4*i+2), *arr.data(4*i+3) };
+            ip[i] = { p_arr[4*i], p_arr[4*i+1], p_arr[4*i+2], p_arr[4*i+3] };
 
         return ip;
     }
@@ -122,8 +124,10 @@ namespace casters
     {
         std::vector<Point> points(arr.shape(0));
         
+        const double* p_arr = arr.data();
+        
         for (int i=0; i<arr.shape(0); i++)
-            points[i] = { *arr.data(3*i), *arr.data(3*i+1), *arr.data(3*i+2) };
+            points[i] = { p_arr[3*i], p_arr[3*i+1], p_arr[3*i+2] };
 
         return points;
     }
@@ -381,12 +385,7 @@ namespace fitting
         );
 
         return pybind11::make_tuple( 
-            pybind11::array_t<double>(
-                {nb_params},                // shape
-                {sizeof(double)},           // strides
-                res.params.data(),          // data pointer
-                pybind11::cast(res.params)
-            ),
+            pybind11::cast(res.params),
             res.cost
         );
     }
