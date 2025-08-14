@@ -6,13 +6,13 @@ module load tools/prod > /dev/null 2>&1
 # module load VTK > /dev/null 2>&1		
 
 # dependency of the Ceres least squares solver
-module load Eigen 	
-module load Abseil/20230125.3-GCCcore-12.3.0				
-module load googletest 
+# module load Eigen 	
+# module load Abseil/20230125.3-GCCcore-12.3.0				
+# module load googletest 
 
-module load FlexiBLAS
+# module load FlexiBLAS
 
 module load CMake
 
 # to create the library 
-module load pybind11
+# module load pybind11

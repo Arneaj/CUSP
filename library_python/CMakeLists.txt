@@ -8,8 +8,63 @@ set(CMAKE_PREFIX_PATH "~/local" ${CMAKE_PREFIX_PATH})
 include(FetchContent)
 
 
+find_package(LAPACK QUIET)
+if(NOT LAPACK_FOUND)
+    message(STATUS "LAPACK not found. Fetching...")
+    FetchContent_Declare(
+        lapack
+        GIT_REPOSITORY https://github.com/Reference-LAPACK/lapack.git
+        GIT_TAG v3.12.1
+    )
 
-find_package(Ceres REQUIRED)
+    FetchContent_MakeAvailable(lapack)
+endif()
+
+find_package(Eigen3 QUIET)
+if(NOT Eigen3_FOUND)
+    message(STATUS "Eigen not found. Fetching...")
+    FetchContent_Declare(
+        eigen
+        GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
+        GIT_TAG 3.4.0
+    )
+    FetchContent_MakeAvailable(eigen)
+endif()
+
+find_package(absl QUIET)
+if(NOT absl_FOUND)
+    message(STATUS "Abseil not found. Fetching...")
+    FetchContent_Declare(
+        abseil
+        GIT_REPOSITORY https://github.com/abseil/abseil-cpp.git
+        GIT_TAG 20240116.2
+    )
+    FetchContent_MakeAvailable(abseil)
+endif()
+
+
+# find_package(gflags QUIET)
+# if(NOT gflags_FOUND)
+#     FetchContent_Declare(
+#         gflags
+#         GIT_REPOSITORY https://github.com/gflags/gflags.git
+#         GIT_TAG v2.2.2
+#     )
+#     FetchContent_MakeAvailable(gflags)
+# endif()
+
+# find_package(glog QUIET)
+# if(NOT glog_FOUND)
+#     FetchContent_Declare(
+#         glog
+#         GIT_REPOSITORY https://github.com/google/glog.git
+#         GIT_TAG v0.7.1
+#     )
+#     FetchContent_MakeAvailable(glog)
+#     set(glog_DIR "${glog_BINARY_DIR}" CACHE PATH "Path to glog build")
+# endif()
+
+find_package(Ceres QUIET)
 if(NOT Ceres_FOUND)
     message(STATUS "Ceres not found. Fetching...")
     FetchContent_Declare(
@@ -17,12 +72,15 @@ if(NOT Ceres_FOUND)
         GIT_REPOSITORY https://ceres-solver.googlesource.com/ceres-solver.git
         GIT_TAG 2.2.0
     )
+    set(MINIGLOG ON CACHE BOOL "Use Ceres' minimal logging" FORCE)
+    set(BUILD_TESTING OFF CACHE BOOL "Disable Ceres tests" FORCE)
+    set(BUILD_EXAMPLES OFF CACHE BOOL "Disable Ceres examples" FORCE)
     FetchContent_MakeAvailable(ceres)
 endif()
 
-find_package(OpenMP)
+find_package(OpenMP QUIET)
 
-find_package(pybind11 REQUIRED)
+find_package(pybind11 QUIET)
 if(NOT pybind11_FOUND)
     message(STATUS "pybind11 not found. Fetching...")
     FetchContent_Declare(
