@@ -40,7 +40,7 @@ make
 ### Python library
 
 ```bash
-mkdir build && cd build
+mkdir topology_analysis/build && cd topology_analysis/build
 cmake .. -DCMAKE_BUILD_TYPE=Release
 make -j
 pip install ..
