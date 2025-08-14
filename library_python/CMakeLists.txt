@@ -4,23 +4,36 @@ project(mag_cusp)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_PREFIX_PATH "~/local" ${CMAKE_PREFIX_PATH})
+
+include(FetchContent)
+
+
+
 find_package(Ceres REQUIRED)
+if(NOT Ceres_FOUND)
+    message(STATUS "Ceres not found. Fetching...")
+    FetchContent_Declare(
+        ceres
+        GIT_REPOSITORY https://ceres-solver.googlesource.com/ceres-solver.git
+        GIT_TAG 2.2.0
+    )
+    FetchContent_MakeAvailable(ceres)
+endif()
 
-# find_package(VTK COMPONENTS 
-#   CommonCore
-#   CommonDataModel
-#   FiltersGeometry
-#   IOXML
-#   IOParallelXML
-#   InteractionStyle
-#   REQUIRED
-# )
+find_package(OpenMP)
 
-# if (NOT VTK_FOUND)
-#   message(FATAL_ERROR "mag_cusp: Unable to find the VTK build folder.")
-# endif()
+find_package(pybind11 REQUIRED)
+if(NOT pybind11_FOUND)
+    message(STATUS "pybind11 not found. Fetching...")
+    FetchContent_Declare(
+        pybind11
+        GIT_REPOSITORY https://github.com/pybind/pybind11.git
+        GIT_TAG v3.0.0
+    )
+    FetchContent_MakeAvailable(pybind11)
+endif()
 
-find_package(OpenMP REQUIRED)
+
 
 
 set(CMAKE_CXX_FLAGS "-O3 -Wall -Wextra")   # is this a good idea
@@ -60,7 +73,6 @@ set(HEADERS
 
 # Find Python and pybind11
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
-find_package(pybind11 REQUIRED)
 
 # Find NumPy with error handling
 execute_process(
