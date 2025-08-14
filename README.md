@@ -1,4 +1,4 @@
-# MagCUSP — Magnetopause Continuous Unsupervised Simulation Profiling
+# MagnetoCUSPS — Magnetopause Continuous Unsupervised Simulation Profiling & Synthesis
 
 ## Map of content
 
