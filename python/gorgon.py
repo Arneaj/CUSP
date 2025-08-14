@@ -32,7 +32,7 @@ def delete_last_line():
 
 
 
-def import_from(file: str, step: int = None):
+def import_from(file: str, step: int | None = None):
     with open(file) as f:
         lines = f.readlines()
         shape = np.array( lines[0].split(","), dtype=np.int16 )
