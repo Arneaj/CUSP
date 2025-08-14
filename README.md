@@ -1,4 +1,4 @@
-# MP Topology Analysis
+# MagCUSP — Magnetopause Continuous Unsupervised Simulation Profiling
 
 ## Map of content
 
