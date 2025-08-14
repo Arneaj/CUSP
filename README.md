@@ -21,7 +21,7 @@ Though this library has been created with the Gorgon model in mind, it should be
 
 The library provides an example implementation of a `.pvtr` to `.bin` ReaderWriter used for all of the tests. 
 In the case that the user wants to test their installation with the provided tests or wants to use the `.pvtr` reader provided, they will need to have a installation of the C++ library: 
-- **VTK**: can be obtained from [gitlab](https://gitlab.kitware.com/vtk/vtk)
+- **VTK**: can be obtained from [gitlab](https://gitlab.kitware.com/vtk/vtk) (only for the C++ library)
 
 For the least squares fitting to the analytical models, the user will need to have an installation of the following C++ libraries:
 - **Eigen**: can be obtained from [gitlab](https://gitlab.com/libeigen/eigen)
@@ -29,13 +29,21 @@ For the least squares fitting to the analytical models, the user will need to ha
 - **GoogleTest**: can be obtained from [github](https://github.com/google/googletest)
 - **Ceres**: can be obtained from [github](https://github.com/ceres-solver/ceres-solver)
 
-### Compilation
+### C++ library
 
 ```bash
-mkdir build
-cd build
+mkdir build && cd build
 cmake ..
 make
+```
+
+### Python library
+
+```bash
+mkdir build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+make -j
+pip install ..
 ```
 
 ## How to use
