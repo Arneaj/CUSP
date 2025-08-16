@@ -7,90 +7,101 @@ set(CMAKE_PREFIX_PATH "~/local" ${CMAKE_PREFIX_PATH})
 
 include(FetchContent)
 
-# Set policy to handle target name conflicts
-if(POLICY CMP0002)
-    cmake_policy(SET CMP0002 NEW)
-endif()
-
-
-
-
 
 
 # Declare all dependencies first
-FetchContent_Declare(
-    eigen
-    GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
-    GIT_TAG 3.4.0
-)
+find_package(Eigen3 QUIET)
+if(NOT Eigen3_FOUND)
+    FetchContent_Declare(
+        eigen
+        GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
+        GIT_TAG 3.4.0
+    )
+endif()
 
+find_package(absl QUIET)
+if(NOT absl_FOUND)
 FetchContent_Declare(
     abseil
     GIT_REPOSITORY https://github.com/abseil/abseil-cpp.git
     GIT_TAG 20240116.2
 )
+endif()
 
-FetchContent_Declare(
-    ceres
-    GIT_REPOSITORY https://ceres-solver.googlesource.com/ceres-solver.git
-    GIT_TAG 2.2.0
-)
+find_package(Ceres QUIET)
+if(NOT Ceres_FOUND)
+    FetchContent_Declare(
+        ceres
+        GIT_REPOSITORY https://ceres-solver.googlesource.com/ceres-solver.git
+        GIT_TAG 2.2.0
+    )
+endif()
 
-FetchContent_Declare(
-    pybind11
-    GIT_REPOSITORY https://github.com/pybind/pybind11.git
-    GIT_TAG v3.0.0
-)
-
-
-
-
-
-# Configure Eigen to not build BLAS/LAPACK before making it available
-message(STATUS "Configuring Eigen...")
-set(EIGEN_BUILD_PKGCONFIG OFF CACHE BOOL "Don't build pkg-config" FORCE)
-set(BUILD_TESTING OFF CACHE BOOL "Disable all testing" FORCE)
-
-# Make Eigen available but try to limit what gets built
-FetchContent_MakeAvailable(eigen)
+find_package(pybind11 QUIET)
+if(NOT pybind11_FOUND)
+    FetchContent_Declare(
+        pybind11
+        GIT_REPOSITORY https://github.com/pybind/pybind11.git
+        GIT_TAG v3.0.0
+    )
+endif()
 
 
 
 
-# Configure and fetch Abseil
-message(STATUS "Fetching Abseil...")
-set(ABSL_PROPAGATE_CXX_STD ON CACHE BOOL "Propagate C++ standard" FORCE)
-set(ABSL_ENABLE_INSTALL OFF CACHE BOOL "Disable Abseil install" FORCE)
-FetchContent_MakeAvailable(abseil)
+find_package(Eigen3 QUIET)
+if(NOT Eigen3_FOUND)
+    # Configure Eigen to not build BLAS/LAPACK before making it available
+    message(STATUS "Configuring Eigen...")
+    set(EIGEN_BUILD_PKGCONFIG OFF CACHE BOOL "Don't build pkg-config" FORCE)
+    set(BUILD_TESTING OFF CACHE BOOL "Disable all testing" FORCE)
+
+    # Make Eigen available but try to limit what gets built
+    FetchContent_MakeAvailable(eigen)
+endif()
 
 
 
-
-# Configure Ceres options before making it available
-message(STATUS "Configuring Ceres...")
-set(MINIGLOG ON CACHE BOOL "Use Ceres' minimal logging" FORCE)
-set(BUILD_TESTING OFF CACHE BOOL "Disable Ceres tests" FORCE)
-set(BUILD_EXAMPLES OFF CACHE BOOL "Disable Ceres examples" FORCE)
-set(BUILD_BENCHMARKS OFF CACHE BOOL "Disable Ceres benchmarks" FORCE)
-set(BUILD_DOCUMENTATION OFF CACHE BOOL "Disable Ceres documentation" FORCE)
-set(CERES_ENABLE_INSTALL OFF CACHE BOOL "Disable Ceres install" FORCE)
-
-
-# Tell Ceres where to find Eigen
-FetchContent_GetProperties(eigen SOURCE_DIR eigen_source_dir)
-set(EIGEN3_INCLUDE_DIR ${eigen_source_dir} CACHE PATH "Eigen include directory" FORCE)
-set(Eigen3_FOUND TRUE CACHE BOOL "Eigen found" FORCE)
-
-set(PROVIDE_UNINSTALL_TARGET OFF CACHE BOOL "Disable the ceres uninstall creation" FORCE)
-FetchContent_MakeAvailable(ceres)
+find_package(absl QUIET)
+if(NOT absl_FOUND)
+    # Configure and fetch Abseil
+    message(STATUS "Fetching Abseil...")
+    set(ABSL_PROPAGATE_CXX_STD ON CACHE BOOL "Propagate C++ standard" FORCE)
+    set(ABSL_ENABLE_INSTALL OFF CACHE BOOL "Disable Abseil install" FORCE)
+    FetchContent_MakeAvailable(abseil)
+endif()
 
 
 
+find_package(Ceres QUIET)
+if(NOT Ceres_FOUND)
+    # Configure Ceres options before making it available
+    message(STATUS "Configuring Ceres...")
+    set(MINIGLOG ON CACHE BOOL "Use Ceres' minimal logging" FORCE)
+    set(BUILD_TESTING OFF CACHE BOOL "Disable Ceres tests" FORCE)
+    set(BUILD_EXAMPLES OFF CACHE BOOL "Disable Ceres examples" FORCE)
+    set(BUILD_BENCHMARKS OFF CACHE BOOL "Disable Ceres benchmarks" FORCE)
+    set(BUILD_DOCUMENTATION OFF CACHE BOOL "Disable Ceres documentation" FORCE)
+    set(CERES_ENABLE_INSTALL OFF CACHE BOOL "Disable Ceres install" FORCE)
+
+    # Tell Ceres where to find Eigen
+    FetchContent_GetProperties(eigen SOURCE_DIR eigen_source_dir)
+    set(EIGEN3_INCLUDE_DIR ${eigen_source_dir} CACHE PATH "Eigen include directory" FORCE)
+    set(Eigen3_FOUND TRUE CACHE BOOL "Eigen found" FORCE)
+
+    set(PROVIDE_UNINSTALL_TARGET OFF CACHE BOOL "Disable the ceres uninstall creation" FORCE)
+    FetchContent_MakeAvailable(ceres)
+endif()
 
 
-# Fetch pybind11
-message(STATUS "Fetching pybind11...")
-FetchContent_MakeAvailable(pybind11)
+
+find_package(pybind11 QUIET)
+if(NOT pybind11_FOUND)
+    # Fetch pybind11
+    message(STATUS "Fetching pybind11...")
+    FetchContent_MakeAvailable(pybind11)
+endif()
+
 
 find_package(OpenMP QUIET)
 
@@ -171,10 +182,6 @@ pybind11_add_module(
     library.cpp
     ${SOURCES}
 )
-
-
-
-
 
 
 
