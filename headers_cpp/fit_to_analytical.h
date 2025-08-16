@@ -284,9 +284,10 @@ OptiResult fit_with_params(
 
     for (int i=0; i<nb_interest_points; i++) 
     {
-        ceres::CostFunction* cost_function = new ceres::AutoDiffCostFunction<Residual, 1, nb_params>(
-            new Residual(interest_points[i])
-        );
+        auto residual = new Residual(interest_points[i])
+        if (residual == nullptr) { std::cout << "ERROR: out of memory when allocating residual.\n"; exit(1); };
+        ceres::CostFunction* cost_function = new ceres::AutoDiffCostFunction<Residual, 1, nb_params>(residual);
+        if (cost_function == nullptr) { std::cout << "ERROR: out of memory when allocating cost function.\n"; exit(1); };
         problem.AddResidualBlock( cost_function, nullptr, params );
     }
 
@@ -388,6 +389,7 @@ OptiResult fit_MP(
     for (int run=0; run<nb_runs; run++)
     {
         params_list[run] = new double[nb_params];
+        if (params_list[run] == nullptr) { std::cout << "ERROR: out of memory when allocating params at run " << run << ".\n"; exit(1); };
         for (int i=0; i<nb_params; i++) params_list[run][i] = initial_params[i] + dist(gen) * radii_of_variation[i];
 
         if (futures.size() >= nb_threads) 

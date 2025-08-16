@@ -50,7 +50,10 @@ private:
 
 public:
     Matrix(): shape(), strides(), mat(nullptr), i_offset(0) {;}
-    Matrix(Shape sh): shape(sh), strides(1, sh.x, sh.x*sh.y, sh.x*sh.y*sh.z), mat(new double[shape.x * shape.y * shape.z * shape.i]), i_offset(0) {;}
+    Matrix(Shape sh): shape(sh), strides(1, sh.x, sh.x*sh.y, sh.x*sh.y*sh.z), mat(new double[shape.x * shape.y * shape.z * shape.i]), i_offset(0) 
+    {
+        if (mat == nullptr) { std::cout << "ERROR: out of memory when allocating interest radii candidates.\n"; exit(1); };
+    }
     Matrix(Shape sh, double* m): shape(sh), strides(1, sh.x, sh.x*sh.y, sh.x*sh.y*sh.z), mat(m), i_offset(0) {;}
     Matrix(Shape sh, Shape stride, double* m): shape(sh), strides(stride), mat(m), i_offset(0) {;}
     Matrix(Shape sh, double* m, int _i_offset): shape(sh), strides(1, sh.x, sh.x*sh.y, sh.x*sh.y*sh.z), mat(m), i_offset(_i_offset) {;}

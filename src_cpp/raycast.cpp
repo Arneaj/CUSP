@@ -247,6 +247,7 @@ InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos
                                     double* p_avg_std_dev )
 {
     std::vector<double>* interest_radii_candidates = new std::vector<double>[ nb_theta*nb_phi ];
+    if (interest_radii_candidates == nullptr) { std::cout << "ERROR: out of memory when allocating interest radii candidates.\n"; exit(1); }
 
     double x = earth_pos.x;
 
@@ -277,6 +278,7 @@ InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos
 
 
     InterestPoint* interest_points = new InterestPoint[ nb_theta*nb_phi ];
+    if (interest_points == nullptr) { std::cout << "ERROR: out of memory when allocating interest points.\n"; exit(1); }
     double theta = theta_min;
 
     for (int itheta=0; itheta<nb_theta; itheta++)
