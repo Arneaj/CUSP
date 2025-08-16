@@ -221,7 +221,7 @@ int main(int argc, char* argv[])
     Point p_range = p_max - p_min;
 
     double hyper_sampling = 1.2;
-    double extra_precision = 2.0f;
+    double extra_precision = 1.0f;
 
     Shape new_shape_real(std::round(extra_precision*p_range.x), std::round(extra_precision*p_range.y), std::round(extra_precision*p_range.z), J.get_shape().i);
     Shape new_shape_sim(J.get_shape().x*hyper_sampling, J.get_shape().y*hyper_sampling, J.get_shape().z*hyper_sampling, J.get_shape().i);

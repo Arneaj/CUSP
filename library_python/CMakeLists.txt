@@ -7,105 +7,115 @@ set(CMAKE_PREFIX_PATH "~/local" ${CMAKE_PREFIX_PATH})
 
 include(FetchContent)
 
-
-find_package(LAPACK QUIET)
-if(NOT LAPACK_FOUND)
-    message(STATUS "LAPACK not found. Fetching...")
-    FetchContent_Declare(
-        lapack
-        GIT_REPOSITORY https://github.com/Reference-LAPACK/lapack.git
-        GIT_TAG v3.12.1
-    )
-
-    FetchContent_MakeAvailable(lapack)
-endif()
-
-find_package(Eigen3 QUIET)
-if(NOT Eigen3_FOUND)
-    message(STATUS "Eigen not found. Fetching...")
-    FetchContent_Declare(
-        eigen
-        GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
-        GIT_TAG 3.4.0
-    )
-    FetchContent_MakeAvailable(eigen)
-endif()
-
-find_package(absl QUIET)
-if(NOT absl_FOUND)
-    message(STATUS "Abseil not found. Fetching...")
-    FetchContent_Declare(
-        abseil
-        GIT_REPOSITORY https://github.com/abseil/abseil-cpp.git
-        GIT_TAG 20240116.2
-    )
-    FetchContent_MakeAvailable(abseil)
+# Set policy to handle target name conflicts
+if(POLICY CMP0002)
+    cmake_policy(SET CMP0002 NEW)
 endif()
 
 
-# find_package(gflags QUIET)
-# if(NOT gflags_FOUND)
-#     FetchContent_Declare(
-#         gflags
-#         GIT_REPOSITORY https://github.com/gflags/gflags.git
-#         GIT_TAG v2.2.2
-#     )
-#     FetchContent_MakeAvailable(gflags)
-# endif()
 
-# find_package(glog QUIET)
-# if(NOT glog_FOUND)
-#     FetchContent_Declare(
-#         glog
-#         GIT_REPOSITORY https://github.com/google/glog.git
-#         GIT_TAG v0.7.1
-#     )
-#     FetchContent_MakeAvailable(glog)
-#     set(glog_DIR "${glog_BINARY_DIR}" CACHE PATH "Path to glog build")
-# endif()
 
-find_package(Ceres QUIET)
-if(NOT Ceres_FOUND)
-    message(STATUS "Ceres not found. Fetching...")
-    FetchContent_Declare(
-        ceres
-        GIT_REPOSITORY https://ceres-solver.googlesource.com/ceres-solver.git
-        GIT_TAG 2.2.0
-    )
-    set(MINIGLOG ON CACHE BOOL "Use Ceres' minimal logging" FORCE)
-    set(BUILD_TESTING OFF CACHE BOOL "Disable Ceres tests" FORCE)
-    set(BUILD_EXAMPLES OFF CACHE BOOL "Disable Ceres examples" FORCE)
-    FetchContent_MakeAvailable(ceres)
-endif()
+
+
+# Declare all dependencies first
+FetchContent_Declare(
+    eigen
+    GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
+    GIT_TAG 3.4.0
+)
+
+FetchContent_Declare(
+    abseil
+    GIT_REPOSITORY https://github.com/abseil/abseil-cpp.git
+    GIT_TAG 20240116.2
+)
+
+FetchContent_Declare(
+    ceres
+    GIT_REPOSITORY https://ceres-solver.googlesource.com/ceres-solver.git
+    GIT_TAG 2.2.0
+)
+
+FetchContent_Declare(
+    pybind11
+    GIT_REPOSITORY https://github.com/pybind/pybind11.git
+    GIT_TAG v3.0.0
+)
+
+
+
+
+
+# Configure Eigen to not build BLAS/LAPACK before making it available
+message(STATUS "Configuring Eigen...")
+set(EIGEN_BUILD_PKGCONFIG OFF CACHE BOOL "Don't build pkg-config" FORCE)
+set(BUILD_TESTING OFF CACHE BOOL "Disable all testing" FORCE)
+
+# Make Eigen available but try to limit what gets built
+FetchContent_MakeAvailable(eigen)
+
+
+
+
+# Configure and fetch Abseil
+message(STATUS "Fetching Abseil...")
+set(ABSL_PROPAGATE_CXX_STD ON CACHE BOOL "Propagate C++ standard" FORCE)
+set(ABSL_ENABLE_INSTALL OFF CACHE BOOL "Disable Abseil install" FORCE)
+FetchContent_MakeAvailable(abseil)
+
+
+
+
+# Configure Ceres options before making it available
+message(STATUS "Configuring Ceres...")
+set(MINIGLOG ON CACHE BOOL "Use Ceres' minimal logging" FORCE)
+set(BUILD_TESTING OFF CACHE BOOL "Disable Ceres tests" FORCE)
+set(BUILD_EXAMPLES OFF CACHE BOOL "Disable Ceres examples" FORCE)
+set(BUILD_BENCHMARKS OFF CACHE BOOL "Disable Ceres benchmarks" FORCE)
+set(BUILD_DOCUMENTATION OFF CACHE BOOL "Disable Ceres documentation" FORCE)
+set(CERES_ENABLE_INSTALL OFF CACHE BOOL "Disable Ceres install" FORCE)
+
+
+# Tell Ceres where to find Eigen
+FetchContent_GetProperties(eigen SOURCE_DIR eigen_source_dir)
+set(EIGEN3_INCLUDE_DIR ${eigen_source_dir} CACHE PATH "Eigen include directory" FORCE)
+set(Eigen3_FOUND TRUE CACHE BOOL "Eigen found" FORCE)
+
+set(PROVIDE_UNINSTALL_TARGET OFF CACHE BOOL "Disable the ceres uninstall creation" FORCE)
+FetchContent_MakeAvailable(ceres)
+
+
+
+
+
+# Fetch pybind11
+message(STATUS "Fetching pybind11...")
+FetchContent_MakeAvailable(pybind11)
 
 find_package(OpenMP QUIET)
 
-find_package(pybind11 QUIET)
-if(NOT pybind11_FOUND)
-    message(STATUS "pybind11 not found. Fetching...")
-    FetchContent_Declare(
-        pybind11
-        GIT_REPOSITORY https://github.com/pybind/pybind11.git
-        GIT_TAG v3.0.0
-    )
-    FetchContent_MakeAvailable(pybind11)
+
+
+
+
+# Compiler flags
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
+set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
 endif()
-
-
-
-
-set(CMAKE_CXX_FLAGS "-O3 -Wall -Wextra")   # is this a good idea
 
 # Prevent a "command line is too long" failure in Windows.
 set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response files.")
 
 
+
+
+
 set(SOURCES
     ../src_cpp/points.cpp
     ../src_cpp/matrix.cpp
-    # ../src_cpp/read_pvtr.cpp
     ../src_cpp/read_file.cpp
-    # ../src_cpp/reader_writer.cpp
     ../src_cpp/raycast.cpp
     ../src_cpp/streamlines.cpp
     ../src_cpp/magnetopause.cpp
@@ -114,25 +124,14 @@ set(SOURCES
     ../src_cpp/analysis.cpp
 )
 
-set(HEADERS
-    ../headers_cpp/points.h
-    ../headers_cpp/matrix.h   
-    ../headers_cpp/raycast.h
-    ../headers_cpp/streamlines.h
-    ../headers_cpp/magnetopause.h
-    ../headers_cpp/preprocessing.h  
-    # ../headers_cpp/read_pvtr.h
-    ../headers_cpp/read_file.h
-    # ../headers_cpp/reader_writer.h
-    ../headers_cpp/fit_to_analytical.h
-    ../headers_cpp/analysis.h
-)
 
 
-# Find Python and pybind11
+
+
+
+# Find Python and NumPy
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 
-# Find NumPy with error handling
 execute_process(
     COMMAND "${Python3_EXECUTABLE}" -c "import numpy; print(numpy.get_include())"
     OUTPUT_VARIABLE NUMPY_INCLUDE_DIR
@@ -145,7 +144,6 @@ if(NOT NUMPY_RESULT EQUAL 0)
     message(WARNING "Could not detect NumPy automatically: ${NUMPY_ERROR}")
     message(STATUS "Trying alternative NumPy detection...")
     
-    # Try alternative method
     execute_process(
         COMMAND "${Python3_EXECUTABLE}" -c "import sys; sys.path.append('/sw-eb/software/SciPy-bundle/2023.07-gfbf-2023a/lib/python3.11/site-packages'); import numpy; print(numpy.get_include())"
         OUTPUT_VARIABLE NUMPY_INCLUDE_DIR
@@ -155,13 +153,17 @@ if(NOT NUMPY_RESULT EQUAL 0)
     )
     
     if(NOT NUMPY_ALT_RESULT EQUAL 0)
-        # Fallback to manual path
-        message(STATUS "Using fallback NumPy path...")
         set(NUMPY_INCLUDE_DIR "/sw-eb/software/SciPy-bundle/2023.07-gfbf-2023a/lib/python3.11/site-packages/numpy/core/include")
     endif()
 endif()
 
 message(STATUS "NumPy include directory: ${NUMPY_INCLUDE_DIR}")
+
+
+
+
+
+
 
 # Create the module
 pybind11_add_module(
@@ -171,26 +173,47 @@ pybind11_add_module(
 )
 
 
-target_link_libraries(mag_cusp PRIVATE 
-    # ${VTK_LIBRARIES} 
-    ${CERES_LIBRARIES} 
-    OpenMP::OpenMP_CXX
-)
+
+
+
+
+
+# Link libraries
+set(LINK_LIBRARIES "")
+
+# Link Ceres
+if(TARGET ceres)
+    list(APPEND LINK_LIBRARIES ceres)
+endif()
+
+# Link OpenMP if found
+if(OpenMP_CXX_FOUND)
+    list(APPEND LINK_LIBRARIES OpenMP::OpenMP_CXX)
+endif()
+
+target_link_libraries(mag_cusp PRIVATE ${LINK_LIBRARIES})
+
+# Get source directories for include paths
+FetchContent_GetProperties(eigen SOURCE_DIR eigen_source_dir)
+FetchContent_GetProperties(ceres SOURCE_DIR ceres_source_dir BINARY_DIR ceres_binary_dir)
 
 # Include directories
 target_include_directories(mag_cusp PRIVATE 
     ../src_cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${NUMPY_INCLUDE_DIR}
-    # ${VTK_INCLUDE_DIRS} 
-    ${CERES_INCLUDE_DIRS}
+    ${eigen_source_dir}
+    ${ceres_source_dir}/include
+    ${ceres_binary_dir}/include
 )
 
 # Compiler-specific options
 target_compile_definitions(mag_cusp PRIVATE 
-    # ${VTK_DEFINITIONS} 
-    ${CERES_DEFINITIONS} VERSION_INFO=${EXAMPLE_VERSION_INFO}
+    VERSION_INFO=${EXAMPLE_VERSION_INFO}
 )
+
+# Add warning flags
+target_compile_options(mag_cusp PRIVATE -Wall -Wextra)
 
 # Set properties for the module
 set_target_properties(mag_cusp PROPERTIES
@@ -199,20 +222,8 @@ set_target_properties(mag_cusp PROPERTIES
 )
 
 if (UNIX)
-  target_link_options(mag_cusp PUBLIC -pthread)
+    target_link_options(mag_cusp PUBLIC -pthread)
 endif()
-
-# vtk_module_autoinit is needed
-# vtk_module_autoinit(
-#   TARGETS mag_cusp
-#   MODULES ${VTK_LIBRARIES}
-# )
-
-# execute_process(
-#     COMMAND "${Python3_EXECUTABLE}" -c "import sysconfig; print(sysconfig.get_path('purelib'))"
-#     OUTPUT_VARIABLE PYTHON_SITE_PACKAGES
-#     OUTPUT_STRIP_TRAILING_WHITESPACE
-# )
 
 install(TARGETS mag_cusp
     LIBRARY DESTINATION mag_cusp
