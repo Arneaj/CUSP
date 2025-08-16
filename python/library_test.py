@@ -81,7 +81,7 @@ print(f"Finished in {t1-t0:.4f}s -> Files read")
 
 
 t0 = time.time()
-extra_precision = 2.0
+extra_precision = 3.0
 
 shape_realx2 = np.array([
     int( extra_precision * (X[-1]-X[0]) ), 
@@ -115,7 +115,7 @@ print(f"Finished in {t1-t0:.4f}s -> Bowshock radius for (theta,phi) = (0.0, 0.0)
 
 
 t0 = time.time()
-BS = cusp.get_bowshock( Rho_processed, earth_pos, 0.1, 4, 50 )
+BS = cusp.get_bowshock( Rho_processed, earth_pos, 0.1, 8, 100 )
 t1 = time.time()
 print(f"Finished in {t1-t0:.4f}s -> Found entire Bowshock")
 
@@ -127,7 +127,7 @@ MP = cusp.get_interest_points(
     J_norm_processed, earth_pos, 
     Rho_processed,
     0.0, np.pi*0.85,  
-    30, 30,
+    40, 90,
     0.1, 0.1,
     0.4, 0.6, 4,
     1.5, 3.0, 20
@@ -182,8 +182,8 @@ if axis == "xz":
     X1 = X1[X1_is_in]
     Z1 = Z1[X1_is_in]
 
-    # plt.imshow( np.moveaxis(Rho_processed[:,int(earth_pos[1]),:], [0,1], [1,0] ), cmap="inferno", norm="log" )
-    plt.imshow( np.moveaxis(J_norm_processed[:,int(earth_pos[1]),:], [0,1], [1,0] ), cmap="inferno", vmin=0, vmax=1e-9, interpolation="none")
+    plt.imshow( np.moveaxis(Rho_processed[:,int(earth_pos[1]),:], [0,1], [1,0] ), cmap="inferno", norm="log" )
+    # plt.imshow( np.moveaxis(J_norm_processed[:,int(earth_pos[1]),:], [0,1], [1,0] ), cmap="inferno", vmin=0, vmax=1e-9, interpolation="none")
     plt.colorbar()
     plt.scatter( X_BS_plot, Z_BS_plot, s=1.0 )
     plt.scatter( X_MP_plot, Z_MP_plot, s=1.0, c=MP[is_in_plane_MP,3] )
@@ -217,8 +217,8 @@ else:
     X2 = X2[X2_is_in]
     Y2 = Y2[X2_is_in]
 
-    # plt.imshow( np.moveaxis(Rho_processed[:,int(earth_pos[2]),:], [0,1], [1,0] ), cmap="inferno", norm="log" )
-    plt.imshow( np.moveaxis(J_norm_processed[:,:,int(earth_pos[2])], [0,1], [1,0] ), cmap="inferno", vmin=0, vmax=1e-9, interpolation="none")
+    plt.imshow( np.moveaxis(Rho_processed[:,int(earth_pos[2]),:], [0,1], [1,0] ), cmap="inferno", norm="log" )
+    # plt.imshow( np.moveaxis(J_norm_processed[:,:,int(earth_pos[2])], [0,1], [1,0] ), cmap="inferno", vmin=0, vmax=1e-9, interpolation="none")
     plt.colorbar()
     plt.scatter( X_BS_plot, Y_BS_plot, s=1.0 )
     plt.scatter( X_MP_plot, Y_MP_plot, s=1.0, c=MP[is_in_plane_MP,3] )

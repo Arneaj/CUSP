@@ -79,6 +79,7 @@ print(3)
 
 print(f"Original data shape: {J.shape}")
 print(f"Regridded data shape: {J_regrid.shape}")
+print(f"J[earth_pos]: {J_regrid[int(earth_pos[0]), int(earth_pos[1]), int(earth_pos[2])]}")
 
 import mag_cusp as cusp
 import gorgon
