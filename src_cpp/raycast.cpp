@@ -89,13 +89,13 @@ std::vector<Point> get_bowshock( const Matrix& Rho, const Point& earth_pos, doub
     double dphi = 2.0*PI / nb_phi;
     double dtheta = PI / max_nb_theta;
 
-    double theta = 0.0;
+    double theta1 = 0.0;
 
     #pragma omp parallel for
     for (int itheta=0; itheta<max_nb_theta; itheta++)
     {
-        shue97_radii[itheta] = Shue97(5.0, 0.5, 1.0+std::cos(theta));
-        theta += dtheta;
+        shue97_radii[itheta] = Shue97(5.0, 0.5, 1.0+std::cos(theta1));
+        theta1 += dtheta;
     }
 
     #pragma omp parallel for
@@ -105,16 +105,16 @@ std::vector<Point> get_bowshock( const Matrix& Rho, const Point& earth_pos, doub
         double sin_phi = std::sin(phi);
         double cos_phi = std::cos(phi);
 
-        theta = 0.0;
+        double theta2 = 0.0;
 
         bool is_at_bounds = false;
 
         for (int itheta=0; itheta<max_nb_theta; itheta++)
         {
-            double sin_theta = std::sin(theta);
+            double sin_theta = std::sin(theta2);
 
             Point proj = Point(
-                -std::cos(theta),
+                -std::cos(theta2),
                 sin_theta*sin_phi,
                 sin_theta*cos_phi
             );
@@ -124,9 +124,9 @@ std::vector<Point> get_bowshock( const Matrix& Rho, const Point& earth_pos, doub
             if ( is_at_bounds ) break;
 
             if ( r > shue97_radii[itheta] )
-                bs_points[itheta*nb_phi + iphi] = Point(theta, phi, r);
+                bs_points[itheta*nb_phi + iphi] = Point(theta2, phi, r);
 
-            theta += dtheta;
+            theta2 += dtheta;
         }
     }
 
