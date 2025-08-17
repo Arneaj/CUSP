@@ -50,7 +50,7 @@ x_min, x_max = x.min() // reduce_factor, x.max()
 y_min, y_max = y.min() // (reduce_factor), y.max() // (reduce_factor)
 z_min, z_max = z.min() // (reduce_factor), z.max() // (reduce_factor)
 
-extra_precision = 1.0
+extra_precision = 2.0
 
 # Create regular grid points
 nx, ny, nz = int(extra_precision * (x_max-x_min)), int(extra_precision * (y_max-y_min)), int(extra_precision * (z_max-z_min))  # Adjust resolution as needed
@@ -85,15 +85,15 @@ import mag_cusp as cusp
 import gorgon
 
 
-# MP = cusp.get_interest_points(
-#     J_regrid, earth_pos, 
-#     Rho_regrid,
-#     theta_min=0.0, theta_max=np.pi*0.8,  
-#     nb_theta=30, nb_phi=30,
-#     dx=0.1, dr=0.1,
-#     alpha_0_min=0.4, alpha_0_max=0.6, nb_alpha_0=4,
-#     r_0_mult_min=5.0, r_0_mult_max=10.0, nb_r_0=20
-# )
+MP = cusp.get_interest_points(
+    J_regrid, earth_pos, 
+    Rho_regrid,
+    theta_min=0.0, theta_max=np.pi*0.8,  
+    nb_theta=30, nb_phi=30,
+    dx=0.1, dr=0.1,
+    alpha_0_min=0.4, alpha_0_max=0.6, nb_alpha_0=4,
+    r_0_mult_min=5.0, r_0_mult_max=10.0, nb_r_0=20
+)
 
 # MP_params, MP_cost = cusp.fit_to_Rolland25( 
 #     MP, MP.shape[0],               # r_0                        a_0     a_1     a_2     d_n                     l_n     s_n     d_s                     l_s     s_s     e         

@@ -34,6 +34,7 @@ namespace casters
     {
         int length = points.size();
         double* arr = new double[length*3];
+        if (arr == nullptr) { std::cout << "ERROR: out of memory when allocating array from point vector.\n"; exit(1); };
 
         for (int i=0; i<length; i++)
         {
@@ -53,6 +54,7 @@ namespace casters
     pybind11::array_t<double> array_from_interest_point_vec( InterestPoint* interest_points, int nb_interest_points )
     {
         double* arr = new double[nb_interest_points*4];
+        if (arr == nullptr) { std::cout << "ERROR: out of memory when allocating array from interest point vector.\n"; exit(1); };
 
         for (int i=0; i<nb_interest_points; i++)
         {
@@ -103,6 +105,7 @@ namespace casters
         int total_size = sh.x*sh.y*sh.z*sh.i;
 
         double* mat = new double[total_size];
+        if (mat == nullptr) { std::cout << "ERROR: out of memory when allocating Matrix from array.\n"; exit(1); };
         std::memcpy( mat, arr.data(), sizeof(double)*total_size );
 
         return Matrix( sh, strides, mat );
@@ -309,7 +312,7 @@ namespace raycasting
 
 namespace fitting
 {
-    double Shue97( const pybind11::array_t<double>& params, double theta, double phi )
+    double Shue97( const pybind11::array_t<double>& params, double theta )
     {
         // if (theta<0 || theta>PI) { std::cout << "theta should be in [0; pi]\n"; exit(1); }
 
@@ -447,7 +450,7 @@ PYBIND11_MODULE(mag_cusp, m)
 
     m.def("Shue97", &fitting::Shue97,
         pybind11::arg("params"),
-        pybind11::arg("theta"), pybind11::arg("phi")
+        pybind11::arg("theta")
     );
 
     m.def("Liu12", &fitting::Liu12,

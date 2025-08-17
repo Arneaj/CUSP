@@ -225,7 +225,7 @@ def process_points(
 
 def Shue97(
     params: NDArray[np.float64],
-    theta: float, phi: float
+    theta: float
 ) -> float:
     """
     Analytical approximation of the Magnetopause topology as written by Shue in his 1997 paper.
@@ -234,7 +234,7 @@ def Shue97(
     ----------
     params : np.ndarray
         Parameters array with shape (2,).
-    theta, phi : float
+    theta : float
         Angle at which the radius should be calculated. 
     
     Returns

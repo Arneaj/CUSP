@@ -115,7 +115,7 @@ print(f"Finished in {t1-t0:.4f}s -> Bowshock radius for (theta,phi) = (0.0, 0.0)
 
 
 t0 = time.time()
-BS = cusp.get_bowshock( Rho_processed, earth_pos, 0.1, 8, 100 )
+BS = cusp.get_bowshock( Rho_processed, earth_pos, 0.1, 4, 100 )
 t1 = time.time()
 print(f"Finished in {t1-t0:.4f}s -> Found entire Bowshock")
 
