@@ -210,7 +210,7 @@ namespace raycasting
         Matrix _Rho = casters::matrix_from_array( Rho );
         Point _earth_pos = casters::point_from_array( earth_pos );
 
-        pybind11::array_t<double> ret = casters::array_from_point_vec( get_bowshock(_Rho, _earth_pos, dr, nb_phi, max_nb_theta) );
+        pybind11::array_t<double> ret = casters::array_from_point_vec( get_bowshock(_Rho, _earth_pos, dr, nb_phi, max_nb_theta, true) );
 
         _Rho.del();
 

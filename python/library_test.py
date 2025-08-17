@@ -115,120 +115,123 @@ print(f"Finished in {t1-t0:.4f}s -> Bowshock radius for (theta,phi) = (0.0, 0.0)
 
 
 t0 = time.time()
-BS = cusp.get_bowshock( Rho_processed, earth_pos, 0.1, 32, 100 )
+BS = cusp.get_bowshock( Rho_processed, earth_pos, 0.1, 32, 30 )
 t1 = time.time()
 print(f"Finished in {t1-t0:.4f}s -> Found entire Bowshock")
 
 
-
-
-t0 = time.time()
-MP = cusp.get_interest_points(
-    J_norm_processed, earth_pos, 
-    Rho_processed,
-    0.0, np.pi*0.85,  
-    40, 90,
-    0.1, 0.1,
-    0.4, 0.6, 4,
-    1.5, 3.0, 20
-)
-t1 = time.time()
-print(f"Finished in {t1-t0:.4f}s -> Found entire Magnetopause")
+for i in range( BS.shape[0] ):
+    print( BS[i] )
 
 
 
+# t0 = time.time()
+# MP = cusp.get_interest_points(
+#     J_norm_processed, earth_pos, 
+#     Rho_processed,
+#     0.0, np.pi*0.85,  
+#     40, 90,
+#     0.1, 0.1,
+#     0.4, 0.6, 4,
+#     1.5, 3.0, 20
+# )
+# t1 = time.time()
+# print(f"Finished in {t1-t0:.4f}s -> Found entire Magnetopause")
 
-t0 = time.time()
-MP_params, MP_cost = cusp.fit_to_Rolland25( 
-    MP, MP.shape[0],               # r_0                        a_0     a_1     a_2     d_n                     l_n     s_n     d_s                     l_s     s_s     e         
-    initial_params      = np.array([ extra_precision * 10.0,    0.5,    0,      0,      extra_precision * 3,    0.55,   5,      extra_precision * 3,    0.55,   5,      0 ]),
-    lowerbound          = np.array([ extra_precision * 5.0,     0.2,    -1.0,   -1.0,   extra_precision * 0,    0.1,    0.1,    extra_precision * 0,    0.1,    0.1,    -0.8 ]),
-    upperbound          = np.array([ extra_precision * 15.0,    0.8,    1.0,    1.0,    extra_precision * 6,    2,      10,     extra_precision * 6,    2,      10,     0.8 ]),
-    radii_of_variation  = np.array([ extra_precision * 3.0,     0.2,    0.5,    0.5,    extra_precision * 2,    0.1,    3,      extra_precision * 2,    0.1,    3,      0.5 ]),
-)
-t1 = time.time()
-print(f"Finished in {t1-t0:.4f}s -> Fit Rolland25 function to the Magnetopause")
-print( MP_params )
 
 
 
-t0 = time.time()
-X_BS, Y_BS, Z_BS = gorgon.spherical_to_cartesian( BS[:,2], BS[:,0], BS[:,1], earth_pos )
-X_MP, Y_MP, Z_MP = gorgon.spherical_to_cartesian( MP[:,2], MP[:,0], MP[:,1], earth_pos )
+# t0 = time.time()
+# MP_params, MP_cost = cusp.fit_to_Rolland25( 
+#     MP, MP.shape[0],               # r_0                        a_0     a_1     a_2     d_n                     l_n     s_n     d_s                     l_s     s_s     e         
+#     initial_params      = np.array([ extra_precision * 10.0,    0.5,    0,      0,      extra_precision * 3,    0.55,   5,      extra_precision * 3,    0.55,   5,      0 ]),
+#     lowerbound          = np.array([ extra_precision * 5.0,     0.2,    -1.0,   -1.0,   extra_precision * 0,    0.1,    0.1,    extra_precision * 0,    0.1,    0.1,    -0.8 ]),
+#     upperbound          = np.array([ extra_precision * 15.0,    0.8,    1.0,    1.0,    extra_precision * 6,    2,      10,     extra_precision * 6,    2,      10,     0.8 ]),
+#     radii_of_variation  = np.array([ extra_precision * 3.0,     0.2,    0.5,    0.5,    extra_precision * 2,    0.1,    3,      extra_precision * 2,    0.1,    3,      0.5 ]),
+# )
+# t1 = time.time()
+# print(f"Finished in {t1-t0:.4f}s -> Fit Rolland25 function to the Magnetopause")
+# print( MP_params )
 
-if axis == "xz":
-    is_in_plane_BS = np.abs(Y_BS-int(earth_pos[1])) < 1
 
-    X_BS_plot = X_BS[is_in_plane_BS]
-    Z_BS_plot = Z_BS[is_in_plane_BS]
 
-    is_in_plane_MP = np.abs(Y_MP-int(earth_pos[1])) < 1
+# t0 = time.time()
+# X_BS, Y_BS, Z_BS = gorgon.spherical_to_cartesian( BS[:,2], BS[:,0], BS[:,1], earth_pos )
+# X_MP, Y_MP, Z_MP = gorgon.spherical_to_cartesian( MP[:,2], MP[:,0], MP[:,1], earth_pos )
 
-    X_MP_plot = X_MP[is_in_plane_MP]
-    Z_MP_plot = Z_MP[is_in_plane_MP]
+# if axis == "xz":
+#     is_in_plane_BS = np.abs(Y_BS-int(earth_pos[1])) < 1
+
+#     X_BS_plot = X_BS[is_in_plane_BS]
+#     Z_BS_plot = Z_BS[is_in_plane_BS]
+
+#     is_in_plane_MP = np.abs(Y_MP-int(earth_pos[1])) < 1
+
+#     X_MP_plot = X_MP[is_in_plane_MP]
+#     Z_MP_plot = Z_MP[is_in_plane_MP]
     
-    Theta = np.linspace(0, np.pi*0.99, 200)
-    Phi = 0
-    R1 = gorgon.Me25_poly( MP_params, Theta, Phi )
-    X11, _, Z11 = gorgon.spherical_to_cartesian( R1, Theta, Phi, earth_pos )
-    Phi = np.pi
-    R1 = gorgon.Me25_poly( MP_params, Theta, Phi )
-    X12, _, Z12 = gorgon.spherical_to_cartesian( R1, Theta, Phi, earth_pos )
-    X1 = np.concatenate( [X12[::-1], X11] )
-    Z1 = np.concatenate( [Z12[::-1], Z11] )
+#     Theta = np.linspace(0, np.pi*0.99, 200)
+#     Phi = 0
+#     R1 = gorgon.Me25_poly( MP_params, Theta, Phi )
+#     X11, _, Z11 = gorgon.spherical_to_cartesian( R1, Theta, Phi, earth_pos )
+#     Phi = np.pi
+#     R1 = gorgon.Me25_poly( MP_params, Theta, Phi )
+#     X12, _, Z12 = gorgon.spherical_to_cartesian( R1, Theta, Phi, earth_pos )
+#     X1 = np.concatenate( [X12[::-1], X11] )
+#     Z1 = np.concatenate( [Z12[::-1], Z11] )
     
-    X1_is_in = (X1 >= 0) * (X1 < J_norm_processed.shape[0])
+#     X1_is_in = (X1 >= 0) * (X1 < J_norm_processed.shape[0])
     
-    X1 = X1[X1_is_in]
-    Z1 = Z1[X1_is_in]
+#     X1 = X1[X1_is_in]
+#     Z1 = Z1[X1_is_in]
 
-    plt.imshow( np.moveaxis(Rho_processed[:,int(earth_pos[1]),:], [0,1], [1,0] ), cmap="inferno", norm="log" )
-    # plt.imshow( np.moveaxis(J_norm_processed[:,int(earth_pos[1]),:], [0,1], [1,0] ), cmap="inferno", vmin=0, vmax=1e-9, interpolation="none")
-    plt.colorbar()
-    plt.scatter( X_BS_plot, Z_BS_plot, s=1.0, c="green" )
-    plt.scatter( X_MP_plot, Z_MP_plot, s=1.0, c=MP[is_in_plane_MP,3] )
-    plt.plot(X1, Z1)
+#     plt.imshow( np.moveaxis(Rho_processed[:,int(earth_pos[1]),:], [0,1], [1,0] ), cmap="inferno", norm="log" )
+#     # plt.imshow( np.moveaxis(J_norm_processed[:,int(earth_pos[1]),:], [0,1], [1,0] ), cmap="inferno", vmin=0, vmax=1e-9, interpolation="none")
+#     plt.colorbar()
+#     plt.scatter( X_BS_plot, Z_BS_plot, s=1.0, c="green" )
+#     plt.scatter( X_MP_plot, Z_MP_plot, s=1.0, c=MP[is_in_plane_MP,3] )
+#     plt.plot(X1, Z1)
     
-    plt.ylabel(r"$z \in [-58; 58] R_E$")
+#     plt.ylabel(r"$z \in [-58; 58] R_E$")
     
-else:
-    is_in_plane_BS = np.abs(Z_BS-int(earth_pos[2])) < 1
+# else:
+#     is_in_plane_BS = np.abs(Z_BS-int(earth_pos[2])) < 1
 
-    X_BS_plot = X_BS[is_in_plane_BS]
-    Y_BS_plot = Y_BS[is_in_plane_BS]
+#     X_BS_plot = X_BS[is_in_plane_BS]
+#     Y_BS_plot = Y_BS[is_in_plane_BS]
 
-    is_in_plane_MP = np.abs(Z_MP-int(earth_pos[2])) < 1
+#     is_in_plane_MP = np.abs(Z_MP-int(earth_pos[2])) < 1
 
-    X_MP_plot = X_MP[is_in_plane_MP]
-    Y_MP_plot = Y_MP[is_in_plane_MP]
+#     X_MP_plot = X_MP[is_in_plane_MP]
+#     Y_MP_plot = Y_MP[is_in_plane_MP]
     
-    Theta = np.linspace(0, np.pi*0.99, 200)
-    Phi = np.pi/2
-    R1 = gorgon.Me25_poly( MP_params, Theta, Phi )
-    X21, Y21, _ = gorgon.spherical_to_cartesian( R1, Theta, Phi, earth_pos )
-    Phi = -np.pi/2
-    R1 = gorgon.Me25_poly( MP_params, Theta, Phi )
-    X22, Y22, _ = gorgon.spherical_to_cartesian( R1, Theta, Phi, earth_pos )
-    X2 = np.concatenate( [X22[::-1], X21] )
-    Y2 = np.concatenate( [Y22[::-1], Y21] )
+#     Theta = np.linspace(0, np.pi*0.99, 200)
+#     Phi = np.pi/2
+#     R1 = gorgon.Me25_poly( MP_params, Theta, Phi )
+#     X21, Y21, _ = gorgon.spherical_to_cartesian( R1, Theta, Phi, earth_pos )
+#     Phi = -np.pi/2
+#     R1 = gorgon.Me25_poly( MP_params, Theta, Phi )
+#     X22, Y22, _ = gorgon.spherical_to_cartesian( R1, Theta, Phi, earth_pos )
+#     X2 = np.concatenate( [X22[::-1], X21] )
+#     Y2 = np.concatenate( [Y22[::-1], Y21] )
     
-    X2_is_in = (X2 >= 0) * (X2 < J_norm_processed.shape[0])
+#     X2_is_in = (X2 >= 0) * (X2 < J_norm_processed.shape[0])
     
-    X2 = X2[X2_is_in]
-    Y2 = Y2[X2_is_in]
+#     X2 = X2[X2_is_in]
+#     Y2 = Y2[X2_is_in]
 
-    plt.imshow( np.moveaxis(Rho_processed[:,int(earth_pos[2]),:], [0,1], [1,0] ), cmap="inferno", norm="log" )
-    # plt.imshow( np.moveaxis(J_norm_processed[:,:,int(earth_pos[2])], [0,1], [1,0] ), cmap="inferno", vmin=0, vmax=1e-9, interpolation="none")
-    plt.colorbar()
-    plt.scatter( X_BS_plot, Y_BS_plot, s=1.0, c="green" )
-    plt.scatter( X_MP_plot, Y_MP_plot, s=1.0, c=MP[is_in_plane_MP,3] )
-    plt.plot(X2, Y2)
+#     plt.imshow( np.moveaxis(Rho_processed[:,int(earth_pos[2]),:], [0,1], [1,0] ), cmap="inferno", norm="log" )
+#     # plt.imshow( np.moveaxis(J_norm_processed[:,:,int(earth_pos[2])], [0,1], [1,0] ), cmap="inferno", vmin=0, vmax=1e-9, interpolation="none")
+#     plt.colorbar()
+#     plt.scatter( X_BS_plot, Y_BS_plot, s=1.0, c="green" )
+#     plt.scatter( X_MP_plot, Y_MP_plot, s=1.0, c=MP[is_in_plane_MP,3] )
+#     plt.plot(X2, Y2)
     
-    plt.ylabel(r"$y \in [-58; 58] R_E$")
+#     plt.ylabel(r"$y \in [-58; 58] R_E$")
 
-plt.xlabel(r"$x \in [-30; 128] R_E$")
+# plt.xlabel(r"$x \in [-30; 128] R_E$")
 
 
-plt.savefig( "../images/bowshock.svg" )
-t1 = time.time()
-print(f"Finished in {t1-t0:.4f}s -> Saved the plot")
+# plt.savefig( "../images/bowshock.svg" )
+# t1 = time.time()
+# print(f"Finished in {t1-t0:.4f}s -> Saved the plot")

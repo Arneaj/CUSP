@@ -76,9 +76,7 @@ double get_bowshock_radius(  double theta, double phi,
 inline void squeeze_vector( std::vector<Point>& points )
 {
     Point empty_p{};
-    std::cout << points.size();
     points.erase(std::remove(points.begin(), points.end(), empty_p), points.end());
-    std::cout << points.size();
 }
 
 
