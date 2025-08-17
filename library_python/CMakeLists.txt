@@ -11,7 +11,6 @@ include(FetchContent)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE BOOL "Build with -fPIC" FORCE)
 
-
 # Declare all dependencies first
 find_package(Eigen3 QUIET)
 if(NOT Eigen3_FOUND)
@@ -19,16 +18,18 @@ if(NOT Eigen3_FOUND)
         eigen
         GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
         GIT_TAG 3.4.0
+        GIT_SHALLOW TRUE
     )
 endif()
 
 find_package(absl QUIET)
 if(NOT absl_FOUND)
-FetchContent_Declare(
-    abseil
-    GIT_REPOSITORY https://github.com/abseil/abseil-cpp.git
-    GIT_TAG 20240116.2
-)
+    FetchContent_Declare(
+        abseil
+        GIT_REPOSITORY https://github.com/abseil/abseil-cpp.git
+        GIT_TAG 20240116.2
+        GIT_SHALLOW TRUE
+    )
 endif()
 
 find_package(Ceres QUIET)
@@ -37,6 +38,7 @@ if(NOT Ceres_FOUND)
         ceres
         GIT_REPOSITORY https://ceres-solver.googlesource.com/ceres-solver.git
         GIT_TAG 2.2.0
+        GIT_SHALLOW TRUE
     )
 endif()
 
@@ -58,6 +60,9 @@ if(NOT Eigen3_FOUND)
     message(STATUS "Configuring Eigen...")
     set(EIGEN_BUILD_PKGCONFIG OFF CACHE BOOL "Don't build pkg-config" FORCE)
     set(BUILD_TESTING OFF CACHE BOOL "Disable all testing" FORCE)
+    set(EIGEN_BUILD_TESTING OFF CACHE BOOL "No Eigen tests" FORCE)
+    set(EIGEN_BUILD_DOC OFF CACHE BOOL "No docs" FORCE)
+    set(EIGEN_BUILD_DEMOS OFF CACHE BOOL "No demos" FORCE)
 
     # Make Eigen available but try to limit what gets built
     FetchContent_MakeAvailable(eigen)
@@ -65,14 +70,26 @@ endif()
 
 
 
-find_package(absl QUIET)
-if(NOT absl_FOUND)
-    # Configure and fetch Abseil
-    message(STATUS "Fetching Abseil...")
-    set(ABSL_ENABLE_INSTALL ON CACHE BOOL "Enable Abseil install" FORCE)
-    set(ABSL_BUILD_TEST_HELPERS OFF CACHE BOOL "Disable Abseil tests" FORCE)
-    FetchContent_MakeAvailable(abseil)
-endif()
+# find_package(absl QUIET)
+# if(NOT absl_FOUND)
+#     # Configure and fetch Abseil
+#     message(STATUS "Fetching Abseil...")
+#     set(ABSL_ENABLE_INSTALL ON CACHE BOOL "Enable Abseil install" FORCE)
+#     set(ABSL_BUILD_TEST_HELPERS OFF CACHE BOOL "Disable Abseil tests" FORCE)
+#     set(ABSL_BUILD_TESTING OFF CACHE BOOL "Disable tests" FORCE)
+#     set(ABSL_USE_EXTERNAL_GOOGLETEST OFF CACHE BOOL "No gtest" FORCE)
+#     set(ABSL_FIND_GOOGLETEST OFF CACHE BOOL "No gtest search" FORCE)
+#     set(ABSL_USE_SYSTEM_INCLUDES OFF CACHE BOOL "No system includes" FORCE)
+#     set(ABSL_PROPAGATE_CXX_STD ON CACHE BOOL "Don't propagate C++ std" FORCE)
+
+#     set(ABSL_BUILD_DLL OFF CACHE BOOL "" FORCE)
+#     set(ABSL_USE_SYSTEM_INCLUDES OFF CACHE BOOL "" FORCE)
+    
+#     # Try to disable specific component groups
+#     set(ABSL_BUILD_MONOLITHIC_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+
+#     FetchContent_MakeAvailable(abseil)
+# endif()
 
 
 
@@ -81,18 +98,28 @@ if(NOT Ceres_FOUND)
     # Configure Ceres options before making it available
     message(STATUS "Configuring Ceres...")
     set(MINIGLOG ON CACHE BOOL "Use Ceres' minimal logging" FORCE)
+    set(GLOG OFF CACHE BOOL "No full glog" FORCE)
+    set(GFLAGS OFF CACHE BOOL "No gflags" FORCE)
+
     set(BUILD_TESTING OFF CACHE BOOL "Disable Ceres tests" FORCE)
     set(BUILD_EXAMPLES OFF CACHE BOOL "Disable Ceres examples" FORCE)
     set(BUILD_BENCHMARKS OFF CACHE BOOL "Disable Ceres benchmarks" FORCE)
     set(BUILD_DOCUMENTATION OFF CACHE BOOL "Disable Ceres documentation" FORCE)
-    set(CERES_ENABLE_INSTALL OFF CACHE BOOL "Disable Ceres install" FORCE)
+    set(PROVIDE_UNINSTALL_TARGET OFF CACHE BOOL "Disable the ceres uninstall creation" FORCE)
+
+    # set(CXSPARSE OFF CACHE BOOL "No CXSparse" FORCE)
+    # set(ACCELERATE_SPARSE OFF CACHE BOOL "No Accelerate" FORCE)
+    # set(CUDSS OFF CACHE BOOL "No CUDSS" FORCE)
+    set(CUDA OFF CACHE BOOL "No CUDA" FORCE)
+    set(LAPACK OFF CACHE BOOL "No LAPACK" FORCE)
+    set(SUITESPARSE OFF CACHE BOOL "No SuiteSparse" FORCE)
+    set(EIGENSPARSE OFF CACHE BOOL "No Eigen sparse" FORCE)
 
     # Tell Ceres where to find Eigen
     FetchContent_GetProperties(eigen SOURCE_DIR eigen_source_dir)
     set(EIGEN3_INCLUDE_DIR ${eigen_source_dir} CACHE PATH "Eigen include directory" FORCE)
     set(Eigen3_FOUND TRUE CACHE BOOL "Eigen found" FORCE)
 
-    set(PROVIDE_UNINSTALL_TARGET OFF CACHE BOOL "Disable the ceres uninstall creation" FORCE)
     FetchContent_MakeAvailable(ceres)
 endif()
 
@@ -196,9 +223,9 @@ if(TARGET ceres)
     list(APPEND LINK_LIBRARIES ceres)
 endif()
 
-if(TARGET absl::log)
-    list(APPEND LINK_LIBRARIES absl::log absl::log_initialize absl::log_globals)
-endif()
+# if(TARGET absl::log)
+#     list(APPEND LINK_LIBRARIES absl::log absl::log_initialize absl::log_globals)
+# endif()
 
 # Link OpenMP if found
 if(OpenMP_CXX_FOUND)
@@ -209,7 +236,7 @@ target_link_libraries(mag_cusp PRIVATE ${LINK_LIBRARIES})
 
 # Get source directories for include paths
 FetchContent_GetProperties(eigen SOURCE_DIR eigen_source_dir)
-FetchContent_GetProperties(absl SOURCE_DIR absl_source_dir)
+# FetchContent_GetProperties(absl SOURCE_DIR absl_source_dir)
 FetchContent_GetProperties(ceres SOURCE_DIR ceres_source_dir BINARY_DIR ceres_binary_dir)
 
 # Include directories
@@ -217,8 +244,8 @@ target_include_directories(mag_cusp PRIVATE
     ../headers_cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${NUMPY_INCLUDE_DIR}
-    ${eigen_source_dir}
-    ${absl_source_dir}
+    # ${eigen_source_dir}
+    # ${absl_source_dir}
     ${ceres_source_dir}/include
     ${ceres_binary_dir}/include
 )

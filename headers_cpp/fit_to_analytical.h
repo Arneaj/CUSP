@@ -336,8 +336,8 @@ OptiResult fit_with_params(
 
 
 
-#include <absl/log/initialize.h>
-#include <absl/log/globals.h>
+// #include <absl/log/initialize.h>
+// #include <absl/log/globals.h>
 
 
 
@@ -372,9 +372,9 @@ OptiResult fit_MP(
     bool print_progress=false, bool print_results=false
 )
 {
-    absl::InitializeLog();
-    absl::SetMinLogLevel(absl::LogSeverityAtLeast::kError);
-    absl::SetStderrThreshold(absl::LogSeverityAtLeast::kFatal);
+    // absl::InitializeLog();
+    // absl::SetMinLogLevel(absl::LogSeverityAtLeast::kError);
+    // absl::SetStderrThreshold(absl::LogSeverityAtLeast::kFatal);
 
     if (print_progress)
     {

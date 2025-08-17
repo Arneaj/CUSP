@@ -127,11 +127,11 @@ t0 = time.time()
 MP = cusp.get_interest_points(
     J_norm_processed, earth_pos, 
     Rho_processed,
-    0.0, np.pi*0.85,  
-    40, 90,
-    0.1, 0.1,
-    0.4, 0.6, 4,
-    1.5, 3.0, 20
+    theta_min=0.0, theta_max=np.pi*0.85,  
+    nb_theta=40, nb_phi=90,
+    dx=0.1, dr=0.1,
+    alpha_0_min=0.4, alpha_0_max=0.6, nb_alpha_0=4,
+    r_0_mult_min=1.5, r_0_mult_max=3.0, nb_r_0=20
 )
 t1 = time.time()
 print(f"Finished in {t1-t0:.4f}s -> Found entire Magnetopause")

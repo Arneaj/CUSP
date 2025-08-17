@@ -50,7 +50,7 @@ x_min, x_max = x.min() // reduce_factor, x.max()
 y_min, y_max = y.min() // (reduce_factor), y.max() // (reduce_factor)
 z_min, z_max = z.min() // (reduce_factor), z.max() // (reduce_factor)
 
-extra_precision = 2.0
+extra_precision = 1.0
 
 # Create regular grid points
 nx, ny, nz = int(extra_precision * (x_max-x_min)), int(extra_precision * (y_max-y_min)), int(extra_precision * (z_max-z_min))  # Adjust resolution as needed
@@ -61,24 +61,24 @@ zi = np.linspace(z_min, z_max, nz)
 # Create meshgrid
 Xi, Yi, Zi = np.meshgrid(xi, yi, zi, indexing='ij')
 
-print(1)
-
 # Prepare points for interpolation
 points = np.column_stack((x.ravel(), y.ravel(), z.ravel()))
 values_J = J.ravel()
 values_Rho = Rho.ravel()
 
-print(2)
+print("Finished reading files")
 
 # Interpolate onto regular grid
 J_regrid = griddata(points, values_J, (Xi, Yi, Zi), method='nearest')[::-1,:,:]
 Rho_regrid = griddata(points, values_Rho, (Xi, Yi, Zi), method='nearest')[::-1,:,:]
 earth_pos = extra_precision * np.array([ x_max, y_max, z_max ])
+# earth_pos = extra_precision * np.array([ -x_min, -y_min, -z_min ])
 
-print(3)
+print("Finished processing files")
 
 print(f"Original data shape: {J.shape}")
 print(f"Regridded data shape: {J_regrid.shape}")
+print(f"Earth position: {earth_pos}")
 print(f"J[earth_pos]: {J_regrid[int(earth_pos[0]), int(earth_pos[1]), int(earth_pos[2])]}")
 
 import mag_cusp as cusp
@@ -88,11 +88,11 @@ import gorgon
 MP = cusp.get_interest_points(
     J_regrid, earth_pos, 
     Rho_regrid,
-    theta_min=0.0, theta_max=np.pi*0.8,  
+    theta_min=0.0, theta_max=np.pi*0.85,  
     nb_theta=30, nb_phi=30,
     dx=0.1, dr=0.1,
     alpha_0_min=0.4, alpha_0_max=0.6, nb_alpha_0=4,
-    r_0_mult_min=5.0, r_0_mult_max=10.0, nb_r_0=20
+    r_0_mult_min=1.0, r_0_mult_max=2.5, nb_r_0=20
 )
 
 # MP_params, MP_cost = cusp.fit_to_Rolland25( 
@@ -103,15 +103,18 @@ MP = cusp.get_interest_points(
 #     radii_of_variation  = np.array([ extra_precision * 3.0,     0.2,    0.5,    0.5,    extra_precision * 2,    0.1,    3,      extra_precision * 2,    0.1,    3,      0.5 ]),
 # )
 
-# X_MP, Y_MP, Z_MP = gorgon.spherical_to_cartesian( MP[:,2], MP[:,0], MP[:,1], earth_pos )
 
 
 
+X_MP, Y_MP, Z_MP = gorgon.spherical_to_cartesian( MP[:,2], MP[:,0], MP[:,1], earth_pos )
 
-# is_in_plane_MP = np.abs(Y_MP-int(earth_pos[1])) < 1
+is_in_plane_MP = np.abs(Y_MP-int(earth_pos[1])) < 1
 
-# X_MP_plot = X_MP[is_in_plane_MP]
-# Z_MP_plot = Z_MP[is_in_plane_MP]
+X_MP_plot = X_MP[is_in_plane_MP]
+Z_MP_plot = Z_MP[is_in_plane_MP]
+
+
+
 
 # Theta = np.linspace(0, np.pi*0.99, 200)
 # Phi = 0
@@ -132,12 +135,13 @@ MP = cusp.get_interest_points(
 import matplotlib.pyplot as plt
 
 
-plt.imshow( np.moveaxis( J_regrid[:,ny//2,:], [0,1], [1,0] ), cmap="inferno", vmin=0, vmax=1e-3, interpolation="none" )
+# plt.imshow( np.moveaxis( J_regrid[:,ny//2,:], [0,1], [1,0] ), cmap="inferno", vmin=0, vmax=1e-3, interpolation="none" )
+plt.imshow( np.moveaxis( Rho_regrid[:,ny//2,:], [0,1], [1,0] ), cmap="inferno", norm="log", interpolation="none" )
 plt.colorbar()
 
 # plt.scatter(earth_pos[0], earth_pos[2])
 
-# plt.scatter( X_MP_plot, Z_MP_plot, s=1.0, c=MP[is_in_plane_MP,3] )
+plt.scatter( X_MP_plot, Z_MP_plot, s=1.0, c=MP[is_in_plane_MP,3] )
 # plt.plot(X1, Z1)
 
 plt.savefig("../images/swmf.svg")
