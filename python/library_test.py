@@ -120,8 +120,6 @@ t1 = time.time()
 print(f"Finished in {t1-t0:.4f}s -> Found entire Bowshock")
 
 
-for i in range( BS.shape[0] ):
-    print( BS[i] )
 
 
 
