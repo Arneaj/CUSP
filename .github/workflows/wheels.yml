@@ -55,7 +55,20 @@ jobs:
         env:
           CIBW_BEFORE_BUILD_LINUX: |
             # Install Python development headers for Linux
-            yum install -y python3-devel || (apt-get update && apt-get install -y python3-dev)
+            if command -v yum >/dev/null 2>&1; then
+              # For manylinux2014 (CentOS 7) - use vault.centos.org
+              sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*.repo
+              sed -i 's|mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-*.repo
+              yum install -y python3-devel || yum install -y python38-devel || yum install -y python39-devel
+            elif command -v dnf >/dev/null 2>&1; then
+              # For newer manylinux images using dnf
+              dnf install -y python3-devel
+            elif command -v apt-get >/dev/null 2>&1; then
+              # For Debian-based images
+              apt-get update && apt-get install -y python3-dev
+            else
+              echo "No package manager found, hoping Python dev headers are already installed"
+            fi
             pip install cmake ninja scikit-build-core[pyproject] pybind11[global] numpy
           CIBW_BEFORE_BUILD_WINDOWS: |
             # Windows Python from python.org includes dev headers, but ensure we have build tools
