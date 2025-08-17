@@ -26,7 +26,7 @@ if spec and spec.origin:
 
 import numpy as np
 import matplotlib.pyplot as plt
-import mag_cusp as cusp
+import mag_cusps as cusps
 from gorgon_tools.magnetosphere import gorgon_import
 import gorgon
 import sys
@@ -92,8 +92,8 @@ shape_realx2 = np.array([
 
 # J_norm = np.linalg.norm( J, axis=3 )
 
-J_processed: np.ndarray = cusp.preprocess( J, X, Y, Z, shape_realx2 )
-Rho_processed: np.ndarray = cusp.preprocess( Rho, X, Y, Z, shape_realx2 )
+J_processed: np.ndarray = cusps.preprocess( J, X, Y, Z, shape_realx2 )
+Rho_processed: np.ndarray = cusps.preprocess( Rho, X, Y, Z, shape_realx2 )
 
 J_norm_processed: np.ndarray = np.linalg.norm( J_processed, axis=3 )
 
@@ -106,7 +106,7 @@ print(f"Finished in {t1-t0:.4f}s -> Preprocessing done")
 
 
 t0 = time.time()
-bs_radius = cusp.get_bowshock_radius( 0.0, 0.0, Rho_processed, earth_pos, 0.1 )
+bs_radius = cusps.get_bowshock_radius( 0.0, 0.0, Rho_processed, earth_pos, 0.1 )
 t1 = time.time()
 print(f"Finished in {t1-t0:.4f}s -> Bowshock radius for (theta,phi) = (0.0, 0.0):", bs_radius)
 
@@ -115,7 +115,7 @@ print(f"Finished in {t1-t0:.4f}s -> Bowshock radius for (theta,phi) = (0.0, 0.0)
 
 
 t0 = time.time()
-BS = cusp.get_bowshock( Rho_processed, earth_pos, 0.1, 32, 30 )
+BS = cusps.get_bowshock( Rho_processed, earth_pos, 0.1, 32, 30 )
 t1 = time.time()
 print(f"Finished in {t1-t0:.4f}s -> Found entire Bowshock")
 
@@ -124,7 +124,7 @@ print(f"Finished in {t1-t0:.4f}s -> Found entire Bowshock")
 
 
 t0 = time.time()
-MP = cusp.get_interest_points(
+MP = cusps.get_interest_points(
     J_norm_processed, earth_pos, 
     Rho_processed,
     theta_min=0.0, theta_max=np.pi*0.85,  
@@ -140,7 +140,7 @@ print(f"Finished in {t1-t0:.4f}s -> Found entire Magnetopause")
 
 
 t0 = time.time()
-MP_params, MP_cost = cusp.fit_to_Rolland25( 
+MP_params, MP_cost = cusps.fit_to_Rolland25( 
     MP, MP.shape[0],               # r_0                        a_0     a_1     a_2     d_n                     l_n     s_n     d_s                     l_s     s_s     e         
     initial_params      = np.array([ extra_precision * 10.0,    0.5,    0,      0,      extra_precision * 3,    0.55,   5,      extra_precision * 3,    0.55,   5,      0 ]),
     lowerbound          = np.array([ extra_precision * 5.0,     0.2,    -1.0,   -1.0,   extra_precision * 0,    0.1,    0.1,    extra_precision * 0,    0.1,    0.1,    -0.8 ]),

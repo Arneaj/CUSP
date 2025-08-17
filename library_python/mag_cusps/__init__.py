@@ -1,2 +1,2 @@
 from __future__ import annotations
-from .mag_cusp import *
+from .mag_cusps import *

@@ -1,8 +1,8 @@
 """
-MagCUSP
+MagCUSPS
 -----------------------
 
-.. currentmodule:: mag_cusp
+.. currentmodule:: mag_cusps
 
 .. autosummary::
     :toctree: _generate

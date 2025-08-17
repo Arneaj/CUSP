@@ -396,7 +396,7 @@ namespace fitting
 
 
 
-PYBIND11_MODULE(mag_cusp, m)
+PYBIND11_MODULE(mag_cusps, m)
 {
     m.doc() = "Topology analysis module for magnetic field data";
 

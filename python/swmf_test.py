@@ -81,11 +81,11 @@ print(f"Regridded data shape: {J_regrid.shape}")
 print(f"Earth position: {earth_pos}")
 print(f"J[earth_pos]: {J_regrid[int(earth_pos[0]), int(earth_pos[1]), int(earth_pos[2])]}")
 
-import mag_cusp as cusp
+import mag_cusps as cusps
 import gorgon
 
 
-MP = cusp.get_interest_points(
+MP = cusps.get_interest_points(
     J_regrid, earth_pos, 
     Rho_regrid,
     theta_min=0.0, theta_max=np.pi*0.85,  

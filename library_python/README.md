@@ -1,1 +1,1 @@
-# MagCUSP
+# MagCUSPS

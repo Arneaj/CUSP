@@ -1,0 +1,137 @@
+name: Build Wheels
+
+on:
+  push:
+    branches: [ main, master ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main, master ]
+  release:
+    types: [published]
+
+jobs:
+  build_wheels:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, windows-2022, macos-12, macos-14]  # macos-14 is ARM64
+        
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Change to library_python directory
+        run: cd library_python
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install cibuildwheel==2.16.2
+
+      - name: Install system dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build
+
+      - name: Install system dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install cmake ninja
+
+      - name: Install system dependencies (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          choco install cmake ninja
+
+      - name: Build wheels
+        env:
+          CIBW_BEFORE_BUILD: |
+            pip install cmake ninja scikit-build-core[pyproject] pybind11[global] numpy
+          CIBW_BUILD: "cp39-* cp310-* cp311-* cp312-*"  # Python 3.9-3.12
+          CIBW_SKIP: "*-win32 *-manylinux_i686"  # Skip 32-bit builds
+          CIBW_ARCHS_LINUX: "x86_64"
+          CIBW_ARCHS_WINDOWS: "AMD64"
+          CIBW_ARCHS_MACOS: "x86_64 arm64"
+          # Set CMAKE flags
+          CIBW_ENVIRONMENT_LINUX: >
+            CMAKE_BUILD_PARALLEL_LEVEL=2
+            CMAKE_GENERATOR=Ninja
+          CIBW_ENVIRONMENT_WINDOWS: >
+            CMAKE_BUILD_PARALLEL_LEVEL=2
+            CMAKE_GENERATOR=Ninja
+          CIBW_ENVIRONMENT_MACOS: >
+            CMAKE_BUILD_PARALLEL_LEVEL=2
+            CMAKE_GENERATOR=Ninja
+            MACOSX_DEPLOYMENT_TARGET=10.15
+          # Repair wheels to bundle dependencies
+          CIBW_REPAIR_WHEEL_COMMAND_LINUX: "auditwheel repair -w {dest_dir} {wheel}"
+          CIBW_REPAIR_WHEEL_COMMAND_MACOS: "delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel}"
+          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel}"
+          # Test the built wheels
+          CIBW_TEST_COMMAND: "python -c 'import mag_cusps; print(\"mag_cusps imported successfully\")'"
+        working-directory: library_python
+        run: cibuildwheel --output-dir wheelhouse
+
+      - name: Upload wheels as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: wheels-${{ matrix.os }}
+          path: library_python/wheelhouse/*.whl
+
+  # Optional: Build source distribution
+  build_sdist:
+    name: Build source distribution
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build
+
+      - name: Build sdist
+        working-directory: library_python
+        run: python -m build --sdist
+
+      - name: Upload sdist as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: sdist
+          path: library_python/dist/*.tar.gz
+
+  # Optional: Upload to PyPI on release
+  upload_pypi:
+    name: Upload to PyPI
+    needs: [build_wheels, build_sdist]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'published'
+    environment:
+      name: pypi
+      url: https://pypi.org/p/mag_cusps
+    permissions:
+      id-token: write  # For trusted publishing
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: dist/
+          merge-multiple: true
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.31 FATAL_ERROR)
 
-project(mag_cusp)
+project(mag_cusps)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_PREFIX_PATH "~/local" ${CMAKE_PREFIX_PATH})
@@ -108,8 +108,9 @@ if(NOT Ceres_FOUND)
     set(PROVIDE_UNINSTALL_TARGET OFF CACHE BOOL "Disable the ceres uninstall creation" FORCE)
 
     # set(CXSPARSE OFF CACHE BOOL "No CXSparse" FORCE)
-    # set(ACCELERATE_SPARSE OFF CACHE BOOL "No Accelerate" FORCE)
+    set(ACCELERATESPARSE OFF CACHE BOOL "No Accelerate" FORCE)
     # set(CUDSS OFF CACHE BOOL "No CUDSS" FORCE)
+    set(SCHUR_SPECIALIZATIONS OFF CACHE BOOL "Remove Schur specializations" FORCE)
     set(CUDA OFF CACHE BOOL "No CUDA" FORCE)
     set(LAPACK OFF CACHE BOOL "No LAPACK" FORCE)
     set(SUITESPARSE OFF CACHE BOOL "No SuiteSparse" FORCE)
@@ -208,7 +209,7 @@ message(STATUS "NumPy include directory: ${NUMPY_INCLUDE_DIR}")
 
 # Create the module
 pybind11_add_module(
-    mag_cusp 
+    mag_cusps 
     library.cpp
     ${SOURCES}
 )
@@ -232,7 +233,7 @@ if(OpenMP_CXX_FOUND)
     list(APPEND LINK_LIBRARIES OpenMP::OpenMP_CXX)
 endif()
 
-target_link_libraries(mag_cusp PRIVATE ${LINK_LIBRARIES})
+target_link_libraries(mag_cusps PRIVATE ${LINK_LIBRARIES})
 
 # Get source directories for include paths
 FetchContent_GetProperties(eigen SOURCE_DIR eigen_source_dir)
@@ -240,7 +241,7 @@ FetchContent_GetProperties(eigen SOURCE_DIR eigen_source_dir)
 FetchContent_GetProperties(ceres SOURCE_DIR ceres_source_dir BINARY_DIR ceres_binary_dir)
 
 # Include directories
-target_include_directories(mag_cusp PRIVATE 
+target_include_directories(mag_cusps PRIVATE 
     ../headers_cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${NUMPY_INCLUDE_DIR}
@@ -251,23 +252,23 @@ target_include_directories(mag_cusp PRIVATE
 )
 
 # Compiler-specific options
-target_compile_definitions(mag_cusp PRIVATE 
+target_compile_definitions(mag_cusps PRIVATE 
     VERSION_INFO=${EXAMPLE_VERSION_INFO}
 )
 
 # Add warning flags
-target_compile_options(mag_cusp PRIVATE -Wall -Wextra)
+target_compile_options(mag_cusps PRIVATE -Wall -Wextra)
 
 # Set properties for the module
-set_target_properties(mag_cusp PROPERTIES
+set_target_properties(mag_cusps PROPERTIES
     CXX_VISIBILITY_PRESET "hidden"
     VISIBILITY_INLINES_HIDDEN YES
 )
 
 if (UNIX)
-    target_link_options(mag_cusp PUBLIC -pthread)
+    target_link_options(mag_cusps PUBLIC -pthread)
 endif()
 
-install(TARGETS mag_cusp
-    LIBRARY DESTINATION mag_cusp
+install(TARGETS mag_cusps
+    LIBRARY DESTINATION mag_cusps
 )
