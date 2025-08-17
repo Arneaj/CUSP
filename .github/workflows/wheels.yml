@@ -59,17 +59,21 @@ jobs:
               # For manylinux2014 (CentOS 7) - use vault.centos.org
               sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*.repo
               sed -i 's|mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-*.repo
-              yum install -y python3-devel || yum install -y python38-devel || yum install -y python39-devel
+              yum install -y python3-devel cmake3 || yum install -y python38-devel python38-libs cmake3 || yum install -y python39-devel python39-libs cmake3
+              # Link cmake3 to cmake if needed
+              if command -v cmake3 >/dev/null 2>&1 && ! command -v cmake >/dev/null 2>&1; then
+                ln -sf /usr/bin/cmake3 /usr/local/bin/cmake
+              fi
             elif command -v dnf >/dev/null 2>&1; then
               # For newer manylinux images using dnf
-              dnf install -y python3-devel
+              dnf install -y python3-devel cmake
             elif command -v apt-get >/dev/null 2>&1; then
               # For Debian-based images
-              apt-get update && apt-get install -y python3-dev
+              apt-get update && apt-get install -y python3-dev cmake
             else
               echo "No package manager found, hoping Python dev headers are already installed"
             fi
-            pip install cmake ninja scikit-build-core[pyproject] pybind11[global] numpy
+            pip install ninja scikit-build-core[pyproject] pybind11[global] numpy
           CIBW_BEFORE_BUILD_WINDOWS: |
             # Windows Python from python.org includes dev headers, but ensure we have build tools
             pip install cmake ninja scikit-build-core[pyproject] pybind11[global] numpy
