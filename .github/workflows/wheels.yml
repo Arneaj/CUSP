@@ -81,7 +81,7 @@ jobs:
         run: cibuildwheel --output-dir wheelhouse
 
       - name: Upload wheels as artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: wheels-${{ matrix.os }}
           path: library_python/wheelhouse/*.whl
@@ -110,7 +110,7 @@ jobs:
         run: python -m build --sdist
 
       - name: Upload sdist as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: sdist
           path: library_python/dist/*.tar.gz
@@ -128,7 +128,7 @@ jobs:
       id-token: write  # For trusted publishing
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: dist/
           merge-multiple: true
