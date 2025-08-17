@@ -185,7 +185,7 @@ if axis == "xz":
     plt.imshow( np.moveaxis(Rho_processed[:,int(earth_pos[1]),:], [0,1], [1,0] ), cmap="inferno", norm="log" )
     # plt.imshow( np.moveaxis(J_norm_processed[:,int(earth_pos[1]),:], [0,1], [1,0] ), cmap="inferno", vmin=0, vmax=1e-9, interpolation="none")
     plt.colorbar()
-    plt.scatter( X_BS_plot, Z_BS_plot, s=1.0 )
+    plt.scatter( X_BS_plot, Z_BS_plot, s=1.0, c="green" )
     plt.scatter( X_MP_plot, Z_MP_plot, s=1.0, c=MP[is_in_plane_MP,3] )
     plt.plot(X1, Z1)
     
@@ -220,7 +220,7 @@ else:
     plt.imshow( np.moveaxis(Rho_processed[:,int(earth_pos[2]),:], [0,1], [1,0] ), cmap="inferno", norm="log" )
     # plt.imshow( np.moveaxis(J_norm_processed[:,:,int(earth_pos[2])], [0,1], [1,0] ), cmap="inferno", vmin=0, vmax=1e-9, interpolation="none")
     plt.colorbar()
-    plt.scatter( X_BS_plot, Y_BS_plot, s=1.0 )
+    plt.scatter( X_BS_plot, Y_BS_plot, s=1.0, c="green" )
     plt.scatter( X_MP_plot, Y_MP_plot, s=1.0, c=MP[is_in_plane_MP,3] )
     plt.plot(X2, Y2)
     

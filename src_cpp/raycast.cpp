@@ -25,6 +25,8 @@ double get_bowshock_radius(  const Point& projection,
     Point p = r * projection + earth_pos;
 
     double min_value = 0.0;
+
+    if ( Rho.is_point_OOB(p) ) { std::cout << "ERROR: earth position is OOB in get bowshock radius\n"; exit(1); }
     double previous_rho = Rho(p, 0);
 
     r += dr;
@@ -33,7 +35,7 @@ double get_bowshock_radius(  const Point& projection,
     while ( !Rho.is_point_OOB(p) )
     {
         double rho = Rho(p, 0);
-        double value = (rho - previous_rho) * r*r*r; 
+        double value = (rho - previous_rho) * r*r*r*r; 
         // bit horrifying, but this is to try and ignore things near the earth
 
         if ( value < min_value )
