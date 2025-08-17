@@ -299,7 +299,11 @@ OptiResult fit_with_params(
 
     ceres::Solver::Options options;
     options.max_num_iterations = max_nb_iterations_per_run; // / 4;  // TODO: see if this is ok
-    options.minimizer_progress_to_stdout = print_progress;
+    if (!print_progress) 
+    {
+        options.minimizer_progress_to_stdout = false;
+        options.logging_type = ceres::SILENT;  // This should suppress Ceres-specific logs
+    }
     options.function_tolerance = 1e-8; //1e-4;
 
     options.trust_region_strategy_type = trust_region;
@@ -332,7 +336,8 @@ OptiResult fit_with_params(
 
 
 
-
+#include <absl/log/initialize.h>
+#include <absl/log/globals.h>
 
 
 
@@ -367,6 +372,10 @@ OptiResult fit_MP(
     bool print_progress=false, bool print_results=false
 )
 {
+    absl::InitializeLog();
+    absl::SetMinLogLevel(absl::LogSeverityAtLeast::kError);
+    absl::SetStderrThreshold(absl::LogSeverityAtLeast::kFatal);
+
     if (print_progress)
     {
         std::cout << "Initial parameters:\n{ ";

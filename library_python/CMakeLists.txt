@@ -8,6 +8,9 @@ set(CMAKE_PREFIX_PATH "~/local" ${CMAKE_PREFIX_PATH})
 include(FetchContent)
 
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE BOOL "Build with -fPIC" FORCE)
+
 
 # Declare all dependencies first
 find_package(Eigen3 QUIET)
@@ -66,8 +69,8 @@ find_package(absl QUIET)
 if(NOT absl_FOUND)
     # Configure and fetch Abseil
     message(STATUS "Fetching Abseil...")
-    set(ABSL_PROPAGATE_CXX_STD ON CACHE BOOL "Propagate C++ standard" FORCE)
-    set(ABSL_ENABLE_INSTALL OFF CACHE BOOL "Disable Abseil install" FORCE)
+    set(ABSL_ENABLE_INSTALL ON CACHE BOOL "Enable Abseil install" FORCE)
+    set(ABSL_BUILD_TEST_HELPERS OFF CACHE BOOL "Disable Abseil tests" FORCE)
     FetchContent_MakeAvailable(abseil)
 endif()
 
@@ -193,6 +196,10 @@ if(TARGET ceres)
     list(APPEND LINK_LIBRARIES ceres)
 endif()
 
+if(TARGET absl::log)
+    list(APPEND LINK_LIBRARIES absl::log absl::log_initialize absl::log_globals)
+endif()
+
 # Link OpenMP if found
 if(OpenMP_CXX_FOUND)
     list(APPEND LINK_LIBRARIES OpenMP::OpenMP_CXX)
@@ -202,14 +209,16 @@ target_link_libraries(mag_cusp PRIVATE ${LINK_LIBRARIES})
 
 # Get source directories for include paths
 FetchContent_GetProperties(eigen SOURCE_DIR eigen_source_dir)
+FetchContent_GetProperties(absl SOURCE_DIR absl_source_dir)
 FetchContent_GetProperties(ceres SOURCE_DIR ceres_source_dir BINARY_DIR ceres_binary_dir)
 
 # Include directories
 target_include_directories(mag_cusp PRIVATE 
-    ../src_cpp
+    ../headers_cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${NUMPY_INCLUDE_DIR}
     ${eigen_source_dir}
+    ${absl_source_dir}
     ${ceres_source_dir}/include
     ${ceres_binary_dir}/include
 )
