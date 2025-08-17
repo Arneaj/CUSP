@@ -174,8 +174,7 @@ void interest_points_helper(    double r_0, double alpha_0,
             Point bs = unsqueezed_bow_shock[itheta*nb_phi+iphi];
 
             double final_r;
-
-            if (bs == Point()) final_r = non_bs_final_r;
+            if ( bs.z < initial_r ) final_r = non_bs_final_r;
             else final_r = bs.z - 1.0;  //  get radius of the bowshock at (theta,phi) and add a bit of extra space to be sure not to get the bowshock
             //                                                                            -> NOT SURE THIS IS A GOOD IDEA
 
@@ -255,10 +254,10 @@ InterestPoint* get_interest_points( const Matrix& J_norm, const Point& earth_pos
 
     if (p_avg_std_dev) *p_avg_std_dev = 0;
     
-
+    if ( J_norm.is_point_OOB(earth_pos) ) { std::cout << "ERROR: earth position OOB in get interest points.\n"; exit(1); }
     while ( x>0 and x<J_norm.get_shape().x )
     {
-        if ( J_norm(x, J_norm.get_shape().y/2, J_norm.get_shape().z/2, 0) > 1e-18 ) break;
+        if ( J_norm(x, earth_pos.y, earth_pos.z, 0) > 1e-18 ) break;
         x += dx;
     }
 
