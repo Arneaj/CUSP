@@ -156,6 +156,12 @@ get_filename_component(PROJECT_ROOT "${CMAKE_CURRENT_SOURCE_DIR}" DIRECTORY)
 message(STATUS "PROJECT_ROOT: ${PROJECT_ROOT}")
 
 
+# Check what's in the parent directory
+file(GLOB_RECURSE ALL_CPP_FILES "${PROJECT_ROOT}/*.cpp")
+message(STATUS "Found .cpp files: ${ALL_CPP_FILES}")
+
+
+
 set(SOURCES
     ${PROJECT_ROOT}/src_cpp/points.cpp
     ${PROJECT_ROOT}/src_cpp/matrix.cpp
