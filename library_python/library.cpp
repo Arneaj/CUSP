@@ -2,17 +2,27 @@
 #include <pybind11/numpy.h>
 #include <pybind11/stl.h>
 
+#ifdef USE_CUSP_HEADERS
+#include "points.h"
+#include "matrix.h"
+#include "streamlines.h"
+#include "magnetopause.h"
+#include "read_file.h"
+#include "preprocessing.h"
+#include "raycast.h"
+#include "fit_to_analytical.h"
+#include "analysis.h"
+#else
 #include "../headers_cpp/points.h"
 #include "../headers_cpp/matrix.h"
 #include "../headers_cpp/streamlines.h"
 #include "../headers_cpp/magnetopause.h"
 #include "../headers_cpp/read_file.h"
-// #include "../headers_cpp/read_pvtr.h"
-// #include "../headers_cpp/reader_writer.h"
 #include "../headers_cpp/preprocessing.h"
 #include "../headers_cpp/raycast.h"
 #include "../headers_cpp/fit_to_analytical.h"
 #include "../headers_cpp/analysis.h"
+#endif
 
 
 namespace casters

@@ -157,7 +157,7 @@ message(STATUS "PROJECT_ROOT: ${PROJECT_ROOT}")
 
 
 # Check what's in the parent directory
-file(GLOB_RECURSE ALL_CPP_FILES "${PROJECT_ROOT}/*/MagCUSPS/src_cpp/*.cpp")
+file(GLOB_RECURSE ALL_CPP_FILES "${PROJECT_ROOT}/*/src_cpp/*.cpp")
 message(STATUS "Found .cpp files: ${ALL_CPP_FILES}")
 
 file(GLOB_RECURSE CUSP_POINTS "${PROJECT_ROOT}/*/src_cpp/points.cpp")
@@ -170,6 +170,9 @@ file(GLOB_RECURSE CUSP_PREPROCESSING "${PROJECT_ROOT}/*/src_cpp/preprocessing.cp
 file(GLOB_RECURSE CUSP_FIT_TO_ANALYTICAL "${PROJECT_ROOT}/*/src_cpp/fit_to_analytical.cpp")
 file(GLOB_RECURSE CUSP_ANALYSIS "${PROJECT_ROOT}/*/src_cpp/analysis.cpp")
 
+file(GLOB_RECURSE CUSP_HEADERS "${PROJECT_ROOT}/*/headers_cpp")
+target_compile_definitions(mag_cusps PUBLIC USE_CUSP_HEADERS=1)
+target_include_directories(mag_cusps PUBLIC ${CUSP_HEADERS_DIR})
 
 set(SOURCES
     ${CUSP_POINTS}
