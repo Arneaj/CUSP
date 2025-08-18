@@ -74,6 +74,7 @@ jobs:
             CMAKE_GENERATOR=Ninja
             Python3_FIND_STRATEGY=LOCATION
             Python3_FIND_REGISTRY=NEVER
+            MAGCUSPS_SOURCE_ROOT={project}
           CIBW_ENVIRONMENT_WINDOWS: >
             CMAKE_BUILD_PARALLEL_LEVEL=2
             CMAKE_GENERATOR=Ninja
