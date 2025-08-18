@@ -14,7 +14,7 @@ private:
 public:
     exception_OOB(std::string _e): error_message(_e) {;}
 
-    std::string what() { return error_message; }
+    virtual const char* what() const noexcept override { return error_message.c_str(); }
 };
 
 
