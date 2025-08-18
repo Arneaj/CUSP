@@ -241,6 +241,7 @@ public:
 
 // *** Optimisation related ***
 
+const double MAX_DBL = double(1.79769313486231570814527423731704357e+308L);
 
 /// @brief Struct to allow the fitting function to easily return both the final parameters and cost
 struct OptiResult
@@ -248,8 +249,8 @@ struct OptiResult
     std::vector<double> params;
     double cost;
 
-    OptiResult(): cost(MAXFLOAT) {;}
-    OptiResult(int nb_params): params(nb_params), cost(MAXFLOAT) {;}
+    OptiResult(): cost(MAX_DBL) {;}
+    OptiResult(int nb_params): params(nb_params), cost(MAX_DBL) {;}
 };
 
 
