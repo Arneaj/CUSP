@@ -27,13 +27,6 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Debug working directory
-        working-directory: library_python
-        run: |
-          pwd
-          ls -la
-          ls -la ../
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
