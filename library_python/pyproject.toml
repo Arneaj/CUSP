@@ -2,8 +2,6 @@
 requires = [
   "scikit-build-core[pyproject]", 
   "pybind11[global]",
-  "ninja",
-  "cmake>=3.31",
   "numpy",
 ]
 build-backend = "scikit_build_core.build"

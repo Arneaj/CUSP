@@ -7,14 +7,6 @@ set(CMAKE_PREFIX_PATH "~/local" ${CMAKE_PREFIX_PATH})
 
 include(FetchContent)
 
-if(DEFINED ENV{MAGCUSPS_SOURCE_ROOT})
-    set(PROJECT_ROOT "$ENV{MAGCUSPS_SOURCE_ROOT}")
-    message(STATUS "Using PROJECT_ROOT from environment: ${PROJECT_ROOT}")
-    # Skip the path detection logic
-    set(SKIP_PATH_DETECTION TRUE)
-endif()
-
-
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE BOOL "Build with -fPIC" FORCE)
 
@@ -161,84 +153,82 @@ set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response
 
 
 
-if(!SKIP_PATH_DETECTION)
-    # Handle the fact that cibuildwheel runs in Docker containers on Linux
-    # Don't rely on CMAKE_CURRENT_SOURCE_DIR since it can be unreliable in cibuildwheel
-    message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
-    message(STATUS "CMAKE_CURRENT_LIST_DIR: ${CMAKE_CURRENT_LIST_DIR}")
+# Handle the fact that cibuildwheel runs in Docker containers on Linux
+# Don't rely on CMAKE_CURRENT_SOURCE_DIR since it can be unreliable in cibuildwheel
+message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
+message(STATUS "CMAKE_CURRENT_LIST_DIR: ${CMAKE_CURRENT_LIST_DIR}")
 
-    # In cibuildwheel on Linux, we're in a Docker container where the code is mounted at /project
-    # CMAKE_CURRENT_LIST_DIR should be /project/library_python in this case
-    set(SEARCH_ROOTS)
+# In cibuildwheel on Linux, we're in a Docker container where the code is mounted at /project
+# CMAKE_CURRENT_LIST_DIR should be /project/library_python in this case
+set(SEARCH_ROOTS)
 
-    # Add multiple potential search locations
-    list(APPEND SEARCH_ROOTS "${CMAKE_CURRENT_LIST_DIR}/..")  # Parent of CMakeLists.txt (typical case)
-    list(APPEND SEARCH_ROOTS "${CMAKE_CURRENT_LIST_DIR}")     # Same directory as CMakeLists.txt
+# Add multiple potential search locations
+list(APPEND SEARCH_ROOTS "${CMAKE_CURRENT_LIST_DIR}/..")  # Parent of CMakeLists.txt (typical case)
+list(APPEND SEARCH_ROOTS "${CMAKE_CURRENT_LIST_DIR}")     # Same directory as CMakeLists.txt
 
-    # Special handling for cibuildwheel Docker container
-    if("${CMAKE_CURRENT_LIST_DIR}" MATCHES "^/project")
-        list(APPEND SEARCH_ROOTS "/project")  # Direct path in Docker container
+# Special handling for cibuildwheel Docker container
+if("${CMAKE_CURRENT_LIST_DIR}" MATCHES "^/project")
+    list(APPEND SEARCH_ROOTS "/project")  # Direct path in Docker container
+endif()
+
+# Fallback to CMAKE_CURRENT_SOURCE_DIR variants
+list(APPEND SEARCH_ROOTS "${CMAKE_CURRENT_SOURCE_DIR}/..")
+list(APPEND SEARCH_ROOTS "${CMAKE_CURRENT_SOURCE_DIR}")
+
+set(PROJECT_ROOT "")
+
+# Try each potential root location
+foreach(POTENTIAL_ROOT ${SEARCH_ROOTS})
+    get_filename_component(ABS_ROOT "${POTENTIAL_ROOT}" ABSOLUTE)
+    message(STATUS "Checking potential root: ${ABS_ROOT}")
+    
+    if(EXISTS "${ABS_ROOT}/src_cpp" AND EXISTS "${ABS_ROOT}/headers_cpp")
+        set(PROJECT_ROOT "${ABS_ROOT}")
+        message(STATUS "Found project root at: ${PROJECT_ROOT}")
+        break()
     endif()
+endforeach()
 
-    # Fallback to CMAKE_CURRENT_SOURCE_DIR variants
-    list(APPEND SEARCH_ROOTS "${CMAKE_CURRENT_SOURCE_DIR}/..")
-    list(APPEND SEARCH_ROOTS "${CMAKE_CURRENT_SOURCE_DIR}")
-
-    set(PROJECT_ROOT "")
-
-    # Try each potential root location
-    foreach(POTENTIAL_ROOT ${SEARCH_ROOTS})
-        get_filename_component(ABS_ROOT "${POTENTIAL_ROOT}" ABSOLUTE)
-        message(STATUS "Checking potential root: ${ABS_ROOT}")
-        
-        if(EXISTS "${ABS_ROOT}/src_cpp" AND EXISTS "${ABS_ROOT}/headers_cpp")
-            set(PROJECT_ROOT "${ABS_ROOT}")
-            message(STATUS "Found project root at: ${PROJECT_ROOT}")
-            break()
-        endif()
+# If still not found, do a more extensive search
+if(NOT PROJECT_ROOT)
+    message(STATUS "Standard locations failed, searching more broadly...")
+    
+    # List contents of current directories for debugging
+    message(STATUS "Contents of CMAKE_CURRENT_LIST_DIR (${CMAKE_CURRENT_LIST_DIR}):")
+    file(GLOB LIST_DIR_CONTENTS "${CMAKE_CURRENT_LIST_DIR}/*")
+    foreach(ITEM ${LIST_DIR_CONTENTS})
+        message(STATUS "  ${ITEM}")
     endforeach()
-
-    # If still not found, do a more extensive search
-    if(NOT PROJECT_ROOT)
-        message(STATUS "Standard locations failed, searching more broadly...")
-        
-        # List contents of current directories for debugging
-        message(STATUS "Contents of CMAKE_CURRENT_LIST_DIR (${CMAKE_CURRENT_LIST_DIR}):")
-        file(GLOB LIST_DIR_CONTENTS "${CMAKE_CURRENT_LIST_DIR}/*")
-        foreach(ITEM ${LIST_DIR_CONTENTS})
+    
+    if(NOT "${CMAKE_CURRENT_LIST_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
+        message(STATUS "Contents of CMAKE_CURRENT_SOURCE_DIR (${CMAKE_CURRENT_SOURCE_DIR}):")
+        file(GLOB SOURCE_DIR_CONTENTS "${CMAKE_CURRENT_SOURCE_DIR}/*")
+        foreach(ITEM ${SOURCE_DIR_CONTENTS})
             message(STATUS "  ${ITEM}")
         endforeach()
-        
-        if(NOT "${CMAKE_CURRENT_LIST_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
-            message(STATUS "Contents of CMAKE_CURRENT_SOURCE_DIR (${CMAKE_CURRENT_SOURCE_DIR}):")
-            file(GLOB SOURCE_DIR_CONTENTS "${CMAKE_CURRENT_SOURCE_DIR}/*")
-            foreach(ITEM ${SOURCE_DIR_CONTENTS})
-                message(STATUS "  ${ITEM}")
-            endforeach()
-        endif()
-        
-        # Search starting from CMAKE_CURRENT_LIST_DIR
-        file(GLOB_RECURSE FOUND_SRC_CPP_DIRS "${CMAKE_CURRENT_LIST_DIR}/../../*/src_cpp")
-        if(NOT FOUND_SRC_CPP_DIRS)
-            file(GLOB_RECURSE FOUND_SRC_CPP_DIRS "${CMAKE_CURRENT_LIST_DIR}/../*/src_cpp") 
-        endif()
-        if(NOT FOUND_SRC_CPP_DIRS)
-            file(GLOB_RECURSE FOUND_SRC_CPP_DIRS "${CMAKE_CURRENT_LIST_DIR}/*/src_cpp")
-        endif()
-        
-        if(FOUND_SRC_CPP_DIRS)
-            list(GET FOUND_SRC_CPP_DIRS 0 FIRST_SRC_CPP_DIR)
-            get_filename_component(PROJECT_ROOT "${FIRST_SRC_CPP_DIR}" DIRECTORY)
-            message(STATUS "Found project root via search: ${PROJECT_ROOT}")
-        endif()
     endif()
-
-    if(NOT PROJECT_ROOT)
-        message(FATAL_ERROR "Cannot find project root with src_cpp and headers_cpp directories. Searched: ${SEARCH_ROOTS}")
+    
+    # Search starting from CMAKE_CURRENT_LIST_DIR
+    file(GLOB_RECURSE FOUND_SRC_CPP_DIRS "${CMAKE_CURRENT_LIST_DIR}/../../*/src_cpp")
+    if(NOT FOUND_SRC_CPP_DIRS)
+        file(GLOB_RECURSE FOUND_SRC_CPP_DIRS "${CMAKE_CURRENT_LIST_DIR}/../*/src_cpp") 
     endif()
-
-    message(STATUS "Final PROJECT_ROOT: ${PROJECT_ROOT}")
+    if(NOT FOUND_SRC_CPP_DIRS)
+        file(GLOB_RECURSE FOUND_SRC_CPP_DIRS "${CMAKE_CURRENT_LIST_DIR}/*/src_cpp")
+    endif()
+    
+    if(FOUND_SRC_CPP_DIRS)
+        list(GET FOUND_SRC_CPP_DIRS 0 FIRST_SRC_CPP_DIR)
+        get_filename_component(PROJECT_ROOT "${FIRST_SRC_CPP_DIR}" DIRECTORY)
+        message(STATUS "Found project root via search: ${PROJECT_ROOT}")
+    endif()
 endif()
+
+if(NOT PROJECT_ROOT)
+    message(FATAL_ERROR "Cannot find project root with src_cpp and headers_cpp directories. Searched: ${SEARCH_ROOTS}")
+endif()
+
+message(STATUS "Final PROJECT_ROOT: ${PROJECT_ROOT}")
 
 # get_filename_component(PROJECT_ROOT "${CMAKE_CURRENT_LIST_DIR}" DIRECTORY)
 # message(STATUS "PROJECT_ROOT: ${PROJECT_ROOT}")
