@@ -1,4 +1,4 @@
-# MagnetoCUSPS — Magnetopause Continuous Unsupervised Simulation Profiling & Synthesis
+# MagCUSPS — Magnetopause Continuous Unsupervised Simulation Profiling & Synthesis
 
 ## Map of content
 
@@ -23,11 +23,11 @@ The library provides an example implementation of a `.pvtr` to `.bin` ReaderWrit
 In the case that the user wants to test their installation with the provided tests or wants to use the `.pvtr` reader provided, they will need to have a installation of the C++ library: 
 - **VTK**: can be obtained from [gitlab](https://gitlab.kitware.com/vtk/vtk) (only for the C++ library)
 
-For the least squares fitting to the analytical models, the user will need to have an installation of the following C++ libraries:
-- **Eigen**: can be obtained from [gitlab](https://gitlab.com/libeigen/eigen)
-- **Abseil**: can be obtained from [github](https://github.com/abseil/abseil-cpp)
-- **GoogleTest**: can be obtained from [github](https://github.com/google/googletest)
-- **Ceres**: can be obtained from [github](https://github.com/ceres-solver/ceres-solver)
+For the least squares fitting to the analytical models, the following dependencies will be installed:
+- **Eigen** from [gitlab](https://gitlab.com/libeigen/eigen)
+- **Abseil** from [github](https://github.com/abseil/abseil-cpp)
+- **GoogleTest** from [github](https://github.com/google/googletest)
+- **Ceres** from [github](https://github.com/ceres-solver/ceres-solver)
 
 ### C++ library
 
@@ -40,10 +40,7 @@ make
 ### Python library
 
 ```bash
-mkdir library_python/build && cd library_python/build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-make -j
-pip install ..
+pip install mag_cusps
 ```
 
 ## How to use
@@ -56,7 +53,19 @@ The library provides a ReaderWriter interface in `./headers_cpp/reader_writer.h`
 M(ix,iy,iz,ic) = M.mat[ ix + iy*shape.x + iz*shape.x*shape.y + ic*shape.x*shape.y*shape.z ];
 ```
 
+If the indexing of your data is different, a Shape strides object will need to be passed when constructing the matrix, which will then be indexed like so:
+
+```cpp
+M(ix,iy,iz,ic) = M.mat[ ix*stride.x + iy*strides.y + iz*strides.z + ic*strides.i ];
+```
+
 ### Preprocessing data
 
-The library provides to extrapolate data from different grid types. 
+The library provides functions to extrapolate data from different grid types. 
 It can modify the shape of the grid to increase of decrease resolution through interpolation, but also create a uniform grid from non-uniform data if provided with the X, Y and Z matrices describing the value that corresponds to each cell. 
+
+### Extracting features
+
+The library provides functions to extract features of the simulation:
+- **get_interest_points**: will return a C-style array of `InterestPoint`, containing, for some point on the magnetopause, its angle theta in `InterestPoint::theta`, its angle phi in `InterestPoint::phi`, its radius away from the Earth in `InterestPoint::radius` and finally its *weight*, a number from 0 to 1 in `InterestPoint::weight`, being to the certainty the algorithm gives to that particular point being in the correct place. Do note a weight of 1 doesn't guarantee that the point is indeed 100% correct but simply that the algorithm did not find an alternative.
+- **get_bowshock**: will return a `std::vector<Point>` 

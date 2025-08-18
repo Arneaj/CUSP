@@ -132,7 +132,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published'
     environment:
-      name: pypi
+      name: mag_cusps_py_pi
       url: https://pypi.org/p/mag_cusps
     permissions:
       id-token: write  # For trusted publishing
