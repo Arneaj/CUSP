@@ -155,9 +155,6 @@ set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response
 get_filename_component(PROJECT_ROOT "${CMAKE_CURRENT_SOURCE_DIR}" DIRECTORY)
 message(STATUS "PROJECT_ROOT: ${PROJECT_ROOT}")
 
-# Check what's in the parent directory
-file(GLOB_RECURSE ALL_CPP_FILES "${PROJECT_ROOT}/*.cpp")
-message(STATUS "Found .cpp files: ${ALL_CPP_FILES}")
 
 set(SOURCES
     ${PROJECT_ROOT}/src_cpp/points.cpp
@@ -170,15 +167,6 @@ set(SOURCES
     ${PROJECT_ROOT}/src_cpp/fit_to_analytical.cpp
     ${PROJECT_ROOT}/src_cpp/analysis.cpp
 )
-
-# Debug: Check if these files exist
-foreach(src_file ${SOURCES})
-    if(EXISTS "${src_file}")
-        message(STATUS "Found: ${src_file}")
-    else()
-        message(WARNING "NOT FOUND: ${src_file}")
-    endif()
-endforeach()
 
 
 
@@ -204,9 +192,9 @@ endif()
 # endif()
 
 # Link OpenMP if found
-if(OpenMP_CXX_FOUND)
-    list(APPEND LINK_LIBRARIES OpenMP::OpenMP_CXX)
-endif()
+# if(OpenMP_CXX_FOUND)
+#     list(APPEND LINK_LIBRARIES OpenMP::OpenMP_CXX)
+# endif()
 
 target_link_libraries(mag_cusps PRIVATE ${LINK_LIBRARIES})
 

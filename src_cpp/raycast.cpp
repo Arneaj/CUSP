@@ -1,7 +1,5 @@
 #include "../headers_cpp/raycast.h"
 
-#include <omp.h>
-
 #ifndef CUSTOM_PI
 #define CUSTOM_PI
 const double PI = 3.141592653589793238462643383279502884;
@@ -90,8 +88,6 @@ std::vector<Point> get_bowshock( const Matrix& Rho, const Point& earth_pos, doub
     double dtheta = PI / max_nb_theta;
 
     double theta1 = 0.0;
-
-    #pragma omp parallel for
     for (int itheta=0; itheta<max_nb_theta; itheta++)
     {
         shue97_radii[itheta] = Shue97(5.0, 0.5, 1.0+std::cos(theta1));
@@ -207,7 +203,6 @@ void interest_points_helper(    double r_0, double alpha_0,
             if ( max_r == initial_r ) continue;
 
             interest_points[ itheta*nb_phi + iphi ].push_back( max_r );
-            // interest_points.push_back( max_r * proj + (*earth_pos) );
         }
     }
 }
