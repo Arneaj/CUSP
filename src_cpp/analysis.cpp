@@ -101,7 +101,7 @@ int get_params_at_boundaries( double* params, double* lowerbound, double* upperb
 
 double interest_point_flatness_checker( const InterestPoint* const interest_points, int nb_theta, int nb_phi, bool* p_is_concave, double threshold, double phi_radius )
 {
-    double avg_X[nb_theta] = {0.0};
+    std::vector<double> avg_X(nb_theta);
     double max_X = 0.0;
 
     for (int itheta=0; itheta<nb_theta; itheta++) 
