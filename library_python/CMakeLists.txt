@@ -171,35 +171,35 @@ set(SOURCES
 
 
 
-# Find Python and NumPy
-find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+# # Find Python and NumPy
+# find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 
-execute_process(
-    COMMAND "${Python3_EXECUTABLE}" -c "import numpy; print(numpy.get_include())"
-    OUTPUT_VARIABLE NUMPY_INCLUDE_DIR
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-    ERROR_VARIABLE NUMPY_ERROR
-    RESULT_VARIABLE NUMPY_RESULT
-)
+# execute_process(
+#     COMMAND "${Python3_EXECUTABLE}" -c "import numpy; print(numpy.get_include())"
+#     OUTPUT_VARIABLE NUMPY_INCLUDE_DIR
+#     OUTPUT_STRIP_TRAILING_WHITESPACE
+#     ERROR_VARIABLE NUMPY_ERROR
+#     RESULT_VARIABLE NUMPY_RESULT
+# )
 
-if(NOT NUMPY_RESULT EQUAL 0)
-    message(WARNING "Could not detect NumPy automatically: ${NUMPY_ERROR}")
-    message(STATUS "Trying alternative NumPy detection...")
+# if(NOT NUMPY_RESULT EQUAL 0)
+#     message(WARNING "Could not detect NumPy automatically: ${NUMPY_ERROR}")
+#     message(STATUS "Trying alternative NumPy detection...")
     
-    execute_process(
-        COMMAND "${Python3_EXECUTABLE}" -c "import sys; sys.path.append('/sw-eb/software/SciPy-bundle/2023.07-gfbf-2023a/lib/python3.11/site-packages'); import numpy; print(numpy.get_include())"
-        OUTPUT_VARIABLE NUMPY_INCLUDE_DIR
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-        ERROR_QUIET
-        RESULT_VARIABLE NUMPY_ALT_RESULT
-    )
+#     execute_process(
+#         COMMAND "${Python3_EXECUTABLE}" -c "import sys; sys.path.append('/sw-eb/software/SciPy-bundle/2023.07-gfbf-2023a/lib/python3.11/site-packages'); import numpy; print(numpy.get_include())"
+#         OUTPUT_VARIABLE NUMPY_INCLUDE_DIR
+#         OUTPUT_STRIP_TRAILING_WHITESPACE
+#         ERROR_QUIET
+#         RESULT_VARIABLE NUMPY_ALT_RESULT
+#     )
     
-    if(NOT NUMPY_ALT_RESULT EQUAL 0)
-        set(NUMPY_INCLUDE_DIR "/sw-eb/software/SciPy-bundle/2023.07-gfbf-2023a/lib/python3.11/site-packages/numpy/core/include")
-    endif()
-endif()
+#     if(NOT NUMPY_ALT_RESULT EQUAL 0)
+#         set(NUMPY_INCLUDE_DIR "/sw-eb/software/SciPy-bundle/2023.07-gfbf-2023a/lib/python3.11/site-packages/numpy/core/include")
+#     endif()
+# endif()
 
-message(STATUS "NumPy include directory: ${NUMPY_INCLUDE_DIR}")
+# message(STATUS "NumPy include directory: ${NUMPY_INCLUDE_DIR}")
 
 
 
@@ -244,7 +244,7 @@ FetchContent_GetProperties(ceres SOURCE_DIR ceres_source_dir BINARY_DIR ceres_bi
 target_include_directories(mag_cusps PRIVATE 
     ../headers_cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${NUMPY_INCLUDE_DIR}
+    # ${NUMPY_INCLUDE_DIR}
     # ${eigen_source_dir}
     # ${absl_source_dir}
     ${ceres_source_dir}/include

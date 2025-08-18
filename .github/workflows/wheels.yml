@@ -54,18 +54,6 @@ jobs:
       - name: Build wheels
         env:
           CIBW_BEFORE_BUILD_LINUX: |
-            # Install Python development headers for Linux
-            if command -v dnf >/dev/null 2>&1; then
-              dnf install -y cmake python3-devel
-            elif command -v yum >/dev/null 2>&1; then
-              # Fallback for older images
-              sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*.repo
-              sed -i 's|mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-*.repo
-              yum install -y cmake3 python36-devel python38-devel python39-devel || yum install -y cmake3 python3-devel
-              if command -v cmake3 >/dev/null 2>&1 && ! command -v cmake >/dev/null 2>&1; then
-                ln -sf /usr/bin/cmake3 /usr/local/bin/cmake
-              fi
-            fi
             pip install ninja scikit-build-core[pyproject] pybind11[global] numpy
           CIBW_BEFORE_BUILD_WINDOWS: |
             pip install cmake ninja scikit-build-core[pyproject] pybind11[global] numpy
@@ -80,7 +68,6 @@ jobs:
           CIBW_ENVIRONMENT_LINUX: >
             CMAKE_BUILD_PARALLEL_LEVEL=2
             CMAKE_GENERATOR=Ninja
-            PATH=/usr/local/bin:/usr/bin:$PATH
             Python3_FIND_STRATEGY=LOCATION
             Python3_FIND_REGISTRY=NEVER
           CIBW_ENVIRONMENT_WINDOWS: >
