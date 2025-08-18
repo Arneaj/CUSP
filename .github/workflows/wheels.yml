@@ -80,6 +80,9 @@ jobs:
           CIBW_ENVIRONMENT_LINUX: >
             CMAKE_BUILD_PARALLEL_LEVEL=2
             CMAKE_GENERATOR=Ninja
+            PATH=/usr/local/bin:/usr/bin:$PATH
+            Python3_FIND_STRATEGY=LOCATION
+            Python3_FIND_REGISTRY=NEVER
           CIBW_ENVIRONMENT_WINDOWS: >
             CMAKE_BUILD_PARALLEL_LEVEL=2
             CMAKE_GENERATOR=Ninja
