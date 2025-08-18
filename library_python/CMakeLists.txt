@@ -195,9 +195,6 @@ pybind11_add_module(
     ${SOURCES}
 )
 
-target_compile_definitions(mag_cusps PUBLIC USE_CUSP_HEADERS=1)
-target_include_directories(mag_cusps PUBLIC ${CUSP_HEADERS})
-
 
 
 # Link libraries
@@ -224,9 +221,10 @@ FetchContent_GetProperties(eigen SOURCE_DIR eigen_source_dir)
 # FetchContent_GetProperties(absl SOURCE_DIR absl_source_dir)
 FetchContent_GetProperties(ceres SOURCE_DIR ceres_source_dir BINARY_DIR ceres_binary_dir)
 
+target_compile_definitions(mag_cusps PUBLIC USE_CUSP_HEADERS=1)
 # Include directories
-target_include_directories(mag_cusps PRIVATE 
-    ../headers_cpp
+target_include_directories(mag_cusps PRIVATE
+    ${CUSP_HEADERS}
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     # ${NUMPY_INCLUDE_DIR}
     # ${eigen_source_dir}

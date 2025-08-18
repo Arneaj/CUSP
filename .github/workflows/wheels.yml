@@ -22,13 +22,17 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Change to library_python directory
-        run: cd library_python
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
+
+      - name: Debug working directory
+        working-directory: library_python
+        run: |
+          pwd
+          ls -la
+          ls -la ../
 
       - name: Install dependencies
         run: |
