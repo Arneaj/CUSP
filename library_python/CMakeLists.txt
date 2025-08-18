@@ -155,55 +155,16 @@ set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response
 
 
 set(SOURCES
-    ../src_cpp/points.cpp
-    ../src_cpp/matrix.cpp
-    ../src_cpp/read_file.cpp
-    ../src_cpp/raycast.cpp
-    ../src_cpp/streamlines.cpp
-    ../src_cpp/magnetopause.cpp
-    ../src_cpp/preprocessing.cpp
-    ../src_cpp/fit_to_analytical.cpp
-    ../src_cpp/analysis.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src_cpp/points.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src_cpp/matrix.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src_cpp/read_file.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src_cpp/raycast.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src_cpp/streamlines.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src_cpp/magnetopause.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src_cpp/preprocessing.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src_cpp/fit_to_analytical.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src_cpp/analysis.cpp
 )
-
-
-
-
-
-
-# # Find Python and NumPy
-# find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
-
-# execute_process(
-#     COMMAND "${Python3_EXECUTABLE}" -c "import numpy; print(numpy.get_include())"
-#     OUTPUT_VARIABLE NUMPY_INCLUDE_DIR
-#     OUTPUT_STRIP_TRAILING_WHITESPACE
-#     ERROR_VARIABLE NUMPY_ERROR
-#     RESULT_VARIABLE NUMPY_RESULT
-# )
-
-# if(NOT NUMPY_RESULT EQUAL 0)
-#     message(WARNING "Could not detect NumPy automatically: ${NUMPY_ERROR}")
-#     message(STATUS "Trying alternative NumPy detection...")
-    
-#     execute_process(
-#         COMMAND "${Python3_EXECUTABLE}" -c "import sys; sys.path.append('/sw-eb/software/SciPy-bundle/2023.07-gfbf-2023a/lib/python3.11/site-packages'); import numpy; print(numpy.get_include())"
-#         OUTPUT_VARIABLE NUMPY_INCLUDE_DIR
-#         OUTPUT_STRIP_TRAILING_WHITESPACE
-#         ERROR_QUIET
-#         RESULT_VARIABLE NUMPY_ALT_RESULT
-#     )
-    
-#     if(NOT NUMPY_ALT_RESULT EQUAL 0)
-#         set(NUMPY_INCLUDE_DIR "/sw-eb/software/SciPy-bundle/2023.07-gfbf-2023a/lib/python3.11/site-packages/numpy/core/include")
-#     endif()
-# endif()
-
-# message(STATUS "NumPy include directory: ${NUMPY_INCLUDE_DIR}")
-
-
-
-
 
 
 
