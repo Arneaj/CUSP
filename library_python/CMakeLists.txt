@@ -152,26 +152,26 @@ set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response
 
 
 
-get_filename_component(PROJECT_ROOT "${CMAKE_CURRENT_SOURCE_DIR}" DIRECTORY)
+get_filename_component(PROJECT_ROOT "${CMAKE_CURRENT_LIST_DIR}/.." DIRECTORY)
 message(STATUS "PROJECT_ROOT: ${PROJECT_ROOT}")
 
 
 # Check what's in the parent directory
-file(GLOB_RECURSE ALL_CPP_FILES "${PROJECT_ROOT}*/src_cpp/*.cpp")
+file(GLOB_RECURSE ALL_CPP_FILES "${PROJECT_ROOT}/src_cpp/*.cpp")
 message(STATUS "Found .cpp files: ${ALL_CPP_FILES}")
 
 
-file(GLOB_RECURSE CUSP_POINTS "${PROJECT_ROOT}*/src_cpp/points.cpp")
-file(GLOB_RECURSE CUSP_MATRIX "${PROJECT_ROOT}*/src_cpp/matrix.cpp")
-file(GLOB_RECURSE CUSP_READ_FILE "${PROJECT_ROOT}*/src_cpp/read_file.cpp")
-file(GLOB_RECURSE CUSP_RAYCAST "${PROJECT_ROOT}*/src_cpp/raycast.cpp")
-file(GLOB_RECURSE CUSP_STREAMLINES "${PROJECT_ROOT}*/src_cpp/streamlines.cpp")
-file(GLOB_RECURSE CUSP_MAGNETOPAUSE "${PROJECT_ROOT}*/src_cpp/magnetopause.cpp")
-file(GLOB_RECURSE CUSP_PREPROCESSING "${PROJECT_ROOT}*/src_cpp/preprocessing.cpp")
-file(GLOB_RECURSE CUSP_FIT_TO_ANALYTICAL "${PROJECT_ROOT}*/src_cpp/fit_to_analytical.cpp")
-file(GLOB_RECURSE CUSP_ANALYSIS "${PROJECT_ROOT}*/src_cpp/analysis.cpp")
+file(GLOB_RECURSE CUSP_POINTS "${PROJECT_ROOT}/src_cpp/points.cpp")
+file(GLOB_RECURSE CUSP_MATRIX "${PROJECT_ROOT}/src_cpp/matrix.cpp")
+file(GLOB_RECURSE CUSP_READ_FILE "${PROJECT_ROOT}/src_cpp/read_file.cpp")
+file(GLOB_RECURSE CUSP_RAYCAST "${PROJECT_ROOT}/src_cpp/raycast.cpp")
+file(GLOB_RECURSE CUSP_STREAMLINES "${PROJECT_ROOT}/src_cpp/streamlines.cpp")
+file(GLOB_RECURSE CUSP_MAGNETOPAUSE "${PROJECT_ROOT}/src_cpp/magnetopause.cpp")
+file(GLOB_RECURSE CUSP_PREPROCESSING "${PROJECT_ROOT}/src_cpp/preprocessing.cpp")
+file(GLOB_RECURSE CUSP_FIT_TO_ANALYTICAL "${PROJECT_ROOT}/src_cpp/fit_to_analytical.cpp")
+file(GLOB_RECURSE CUSP_ANALYSIS "${PROJECT_ROOT}/src_cpp/analysis.cpp")
 
-file(GLOB_RECURSE CUSP_HEADERS "${PROJECT_ROOT}*/headers_cpp")
+file(GLOB_RECURSE CUSP_HEADERS "${PROJECT_ROOT}/headers_cpp")
 message(STATUS "Found header directory: ${CUSP_HEADERS}")
 
 set(SOURCES
