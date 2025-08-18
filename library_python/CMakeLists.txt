@@ -152,19 +152,33 @@ set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response
 
 
 
+get_filename_component(PROJECT_ROOT "${CMAKE_CURRENT_SOURCE_DIR}" DIRECTORY)
+message(STATUS "PROJECT_ROOT: ${PROJECT_ROOT}")
 
+# Check what's in the parent directory
+file(GLOB_RECURSE ALL_CPP_FILES "${PROJECT_ROOT}/*.cpp")
+message(STATUS "Found .cpp files: ${ALL_CPP_FILES}")
 
 set(SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/../src_cpp/points.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/../src_cpp/matrix.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/../src_cpp/read_file.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/../src_cpp/raycast.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/../src_cpp/streamlines.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/../src_cpp/magnetopause.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/../src_cpp/preprocessing.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/../src_cpp/fit_to_analytical.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/../src_cpp/analysis.cpp
+    ${PROJECT_ROOT}/src_cpp/points.cpp
+    ${PROJECT_ROOT}/src_cpp/matrix.cpp
+    ${PROJECT_ROOT}/src_cpp/read_file.cpp
+    ${PROJECT_ROOT}/src_cpp/raycast.cpp
+    ${PROJECT_ROOT}/src_cpp/streamlines.cpp
+    ${PROJECT_ROOT}/src_cpp/magnetopause.cpp
+    ${PROJECT_ROOT}/src_cpp/preprocessing.cpp
+    ${PROJECT_ROOT}/src_cpp/fit_to_analytical.cpp
+    ${PROJECT_ROOT}/src_cpp/analysis.cpp
 )
+
+# Debug: Check if these files exist
+foreach(src_file ${SOURCES})
+    if(EXISTS "${src_file}")
+        message(STATUS "Found: ${src_file}")
+    else()
+        message(WARNING "NOT FOUND: ${src_file}")
+    endif()
+endforeach()
 
 
 
