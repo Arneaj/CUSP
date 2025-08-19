@@ -69,28 +69,6 @@ endif()
 
 
 
-# find_package(absl QUIET)
-# if(NOT absl_FOUND)
-#     # Configure and fetch Abseil
-#     message(STATUS "Fetching Abseil...")
-#     set(ABSL_ENABLE_INSTALL ON CACHE BOOL "Enable Abseil install" FORCE)
-#     set(ABSL_BUILD_TEST_HELPERS OFF CACHE BOOL "Disable Abseil tests" FORCE)
-#     set(ABSL_BUILD_TESTING OFF CACHE BOOL "Disable tests" FORCE)
-#     set(ABSL_USE_EXTERNAL_GOOGLETEST OFF CACHE BOOL "No gtest" FORCE)
-#     set(ABSL_FIND_GOOGLETEST OFF CACHE BOOL "No gtest search" FORCE)
-#     set(ABSL_USE_SYSTEM_INCLUDES OFF CACHE BOOL "No system includes" FORCE)
-#     set(ABSL_PROPAGATE_CXX_STD ON CACHE BOOL "Don't propagate C++ std" FORCE)
-
-#     set(ABSL_BUILD_DLL OFF CACHE BOOL "" FORCE)
-#     set(ABSL_USE_SYSTEM_INCLUDES OFF CACHE BOOL "" FORCE)
-    
-#     # Try to disable specific component groups
-#     set(ABSL_BUILD_MONOLITHIC_SHARED_LIBS OFF CACHE BOOL "" FORCE)
-
-#     FetchContent_MakeAvailable(abseil)
-# endif()
-
-
 
 find_package(Ceres QUIET)
 if(NOT Ceres_FOUND)
