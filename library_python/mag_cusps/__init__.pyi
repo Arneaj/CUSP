@@ -3,9 +3,6 @@ MagCUSPS
 -----------------------
 
 .. currentmodule:: mag_cusps
-
-.. autosummary::
-    :toctree: _generate
     
     preprocess
     get_bowshock_radius
