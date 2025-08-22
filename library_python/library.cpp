@@ -379,62 +379,89 @@ namespace fitting
 
     ndarray<double> Shue97_numpy_arr( const ndarray<double>& params, const ndarray<double>& theta )
     {
-        double* theta_ptr = theta.data();
+        const double* theta_ptr = theta.data();
         size_t size = theta.size();
 
         double* ret = new double[size];
 
-        for (int i=0; i<size; i++) ret[i] = Shue97_numpy(params, theta_ptr[i]);
+        for (size_t i=0; i<size; i++) ret[i] = Shue97_numpy(params, theta_ptr[i]);
 
-        return ndarray<double>( 
-            theta.shape(),           // shape
-            theta.strides(),         // strides
-            ret,                     // data pointer
-            pybind11::cast(ret) 
+        std::vector<size_t> sh(theta.ndim());
+        std::vector<size_t> st(theta.ndim());
+
+        for (size_t i=0; i<theta.ndim(); i++)
+        {
+            sh[i] = theta.shape(i);
+            st[i] = theta.strides(i);
+        }
+
+        return ndarray<double>(
+            sh,
+            st,
+            ret,
+            pybind11::cast(ret)
         );
     }
 
     ndarray<double> Liu12_numpy_arr( const ndarray<double>& params, const ndarray<double>& theta, const ndarray<double>& phi )
     {
         if ( theta.ndim() != phi.ndim() ) throw pybind11::attribute_error("theta and phi should have the same number of dimensions");
-        for (int i=0; i<theta.ndim(); i++) if ( theta.shape(i) != phi.shape(i) ) throw pybind11::attribute_error("theta and phi should have the same shape");
+        for (size_t i=0; i<theta.ndim(); i++) if ( theta.shape(i) != phi.shape(i) ) throw pybind11::attribute_error("theta and phi should have the same shape");
 
-        double* theta_ptr = theta.data();
-        double* phi_ptr = phi.data();
+        const double* theta_ptr = theta.data();
+        const double* phi_ptr = phi.data();
 
         size_t size = theta.size();
 
         double* ret = new double[size];
 
-        for (int i=0; i<size; i++) ret[i] = Liu12_numpy(params, theta_ptr[i], phi_ptr[i]);
+        for (size_t i=0; i<size; i++) ret[i] = Liu12_numpy(params, theta_ptr[i], phi_ptr[i]);
 
-        return ndarray<double>( 
-            theta.shape(),           // shape
-            theta.strides(),         // strides
-            ret,                     // data pointer
-            pybind11::cast(ret) 
+        std::vector<size_t> sh(theta.ndim());
+        std::vector<size_t> st(theta.ndim());
+
+        for (size_t i=0; i<theta.ndim(); i++)
+        {
+            sh[i] = theta.shape(i);
+            st[i] = theta.strides(i);
+        }
+
+        return ndarray<double>(
+            sh,
+            st,
+            ret,
+            pybind11::cast(ret)
         );
     }
 
     ndarray<double> EllipsisPoly_numpy_arr( const ndarray<double>& params, const ndarray<double>& theta, const ndarray<double>& phi )
     {
         if ( theta.ndim() != phi.ndim() ) throw pybind11::attribute_error("theta and phi should have the same number of dimensions");
-        for (int i=0; i<theta.ndim(); i++) if ( theta.shape(i) != phi.shape(i) ) throw pybind11::attribute_error("theta and phi should have the same shape");
+        for (size_t i=0; i<theta.ndim(); i++) if ( theta.shape(i) != phi.shape(i) ) throw pybind11::attribute_error("theta and phi should have the same shape");
 
-        double* theta_ptr = theta.data();
-        double* phi_ptr = phi.data();
+        const double* theta_ptr = theta.data();
+        const double* phi_ptr = phi.data();
 
         size_t size = theta.size();
 
         double* ret = new double[size];
 
-        for (int i=0; i<size; i++) ret[i] = EllipsisPoly_numpy(params, theta_ptr[i], phi_ptr[i]);
+        for (size_t i=0; i<size; i++) ret[i] = EllipsisPoly_numpy(params, theta_ptr[i], phi_ptr[i]);
 
-        return ndarray<double>( 
-            theta.shape(),           // shape
-            theta.strides(),         // strides
-            ret,                     // data pointer
-            pybind11::cast(ret) 
+        std::vector<size_t> sh(theta.ndim());
+        std::vector<size_t> st(theta.ndim());
+
+        for (size_t i=0; i<theta.ndim(); i++)
+        {
+            sh[i] = theta.shape(i);
+            st[i] = theta.strides(i);
+        }
+
+        return ndarray<double>(
+            sh,
+            st,
+            ret,
+            pybind11::cast(ret)
         );
     }
 
