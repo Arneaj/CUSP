@@ -141,7 +141,7 @@ print(f"Finished in {t1-t0:.4f}s -> Found entire Magnetopause")
 
 t0 = time.time()
 MP_params, MP_cost = cusps.fit_to_Rolland25( 
-    MP, MP.shape[0],               # r_0                        a_0     a_1     a_2     d_n                     l_n     s_n     d_s                     l_s     s_s     e         
+    MP,                            # r_0                        a_0     a_1     a_2     d_n                     l_n     s_n     d_s                     l_s     s_s     e         
     initial_params      = np.array([ extra_precision * 10.0,    0.5,    0,      0,      extra_precision * 3,    0.55,   5,      extra_precision * 3,    0.55,   5,      0 ]),
     lowerbound          = np.array([ extra_precision * 5.0,     0.2,    -1.0,   -1.0,   extra_precision * 0,    0.1,    0.1,    extra_precision * 0,    0.1,    0.1,    -0.8 ]),
     upperbound          = np.array([ extra_precision * 15.0,    0.8,    1.0,    1.0,    extra_precision * 6,    2,      10,     extra_precision * 6,    2,      10,     0.8 ]),
@@ -150,6 +150,25 @@ MP_params, MP_cost = cusps.fit_to_Rolland25(
 t1 = time.time()
 print(f"Finished in {t1-t0:.4f}s -> Fit Rolland25 function to the Magnetopause")
 print( MP_params )
+
+
+t0 = time.time()
+grad_J_ratio = cusps.get_grad_J_fit_over_ip_Rolland25(
+    params = MP_params, 
+    interest_points = MP, 
+    J_norm = J_norm_processed, earth_pos = earth_pos
+)
+
+theta_angle, is_concave = cusps.interest_point_flatness_checker(
+    interest_points = MP,
+    nb_theta = 40, nb_phi = 90,
+    threshold = extra_precision * 2.0
+)
+t1 = time.time()
+print(f"Finished in {t1-t0:.4f}s -> Analysis done:")
+print("grad_J_ratio =", grad_J_ratio)
+print("theta_angle =", theta_angle)
+print("is_concave =", is_concave)
 
 
 
