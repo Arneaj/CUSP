@@ -2,7 +2,7 @@ data
 *frames
 *html
 gorgon_tools
-*/__pycache__
+__pycache__
 build
 ceres
 .vscode
