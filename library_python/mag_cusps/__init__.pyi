@@ -348,7 +348,6 @@ def Rolland25(
 
 def fit_to_Shue97(
     interest_points: NDArray[np.float64],
-    nb_interest_points: int,
     initial_params: NDArray[np.float64],
     lowerbound: NDArray[np.float64],
     upperbound: NDArray[np.float64],
@@ -363,8 +362,6 @@ def fit_to_Shue97(
     ----------
     interest_points : np.ndarray
         Interest point array to fit to of shape (`nb_interest_points`, 4).
-    nb_interest_points : int
-        Number of interest points to fit to.
     initial_parameters : np.ndarray
         Parameters array with shape (2,).
     lowerbound, upperbound : np.ndarray
@@ -389,7 +386,6 @@ def fit_to_Shue97(
 
 def fit_to_Liu12(
     interest_points: NDArray[np.float64],
-    nb_interest_points: int,
     initial_params: NDArray[np.float64],
     lowerbound: NDArray[np.float64],
     upperbound: NDArray[np.float64],
@@ -404,8 +400,6 @@ def fit_to_Liu12(
     ----------
     interest_points : np.ndarray
         Interest point array to fit to of shape (`nb_interest_points`, 4).
-    nb_interest_points : int
-        Number of interest points to fit to.
     initial_parameters : np.ndarray
         Parameters array with shape (10,).
     lowerbound, upperbound : np.ndarray
@@ -430,7 +424,6 @@ def fit_to_Liu12(
 
 def fit_to_Rolland25(
     interest_points: NDArray[np.float64],
-    nb_interest_points: int,
     initial_params: NDArray[np.float64],
     lowerbound: NDArray[np.float64],
     upperbound: NDArray[np.float64],
@@ -445,8 +438,6 @@ def fit_to_Rolland25(
     ----------
     interest_points : np.ndarray
         Interest point array to fit to of shape (`nb_interest_points`, 4).
-    nb_interest_points : int
-        Number of interest points to fit to.
     initial_parameters : np.ndarray
         Parameters array with shape (11,).
     lowerbound, upperbound : np.ndarray
