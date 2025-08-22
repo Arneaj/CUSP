@@ -367,3 +367,48 @@ vtk_module_autoinit(
     TARGETS full_process
     MODULES ${VTK_LIBRARIES}
 )
+
+
+
+# ********************************* great_analysis: evaluation of functions
+
+
+add_executable(great_analysis main_cpp/great_analysis.cpp
+    src_cpp/points.cpp
+    src_cpp/matrix.cpp
+    src_cpp/read_pvtr.cpp
+    src_cpp/read_file.cpp
+    src_cpp/reader_writer.cpp
+    src_cpp/raycast.cpp
+    src_cpp/streamlines.cpp
+    src_cpp/magnetopause.cpp
+    src_cpp/preprocessing.cpp
+    src_cpp/fit_to_analytical.cpp
+    src_cpp/analysis.cpp)
+
+
+
+if (OpenMP_CXX_FOUND)
+    target_link_libraries(great_analysis PRIVATE ${VTK_LIBRARIES} ceres OpenMP::OpenMP_CXX)
+else()
+    target_link_libraries(great_analysis PRIVATE ${VTK_LIBRARIES} ceres)
+endif()
+
+
+target_include_directories(great_analysis PRIVATE 
+    ${VTK_INCLUDE_DIRS} 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${ceres_source_dir}/include
+    ${ceres_binary_dir}/include
+)
+
+target_compile_definitions(great_analysis PRIVATE ${VTK_DEFINITIONS} ${CERES_DEFINITIONS})
+
+if (UNIX)
+  target_link_options(great_analysis PUBLIC -pthread)
+endif()
+
+vtk_module_autoinit(
+    TARGETS great_analysis
+    MODULES ${VTK_LIBRARIES}
+)

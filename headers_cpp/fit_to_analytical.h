@@ -49,7 +49,7 @@ T sigmoid( T v ) { return T(1.0) / ( T(1.0) + ceres::exp(-v * T(5.0)) ); }
 /// @param params [r_0, alpha]
 /// @return the radius at angle (theta, phi)
 template <typename T>
-T Shue97( const T* const params, T theta )
+T Shue97( const T* const params, T theta, T phi )
 {
     // if (theta<0 || theta>PI) { std::cout << "theta should be in [0; pi]\n"; exit(1); }
     // if (phi<-PI || phi>PI) { std::cout << "phi should be in [-pi; pi)\n"; exit(1); }
@@ -182,7 +182,7 @@ public:
     template <typename T>
     bool operator()(const T* const params, T* residual) const 
     {
-        T predicted_radius = Shue97<T>(params, T(m_theta));
+        T predicted_radius = Shue97<T>(params, T(m_theta), T(0.0));
         residual[0] = (m_observed_radius - predicted_radius)*m_weight;
         return true;
     }
