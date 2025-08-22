@@ -9,8 +9,10 @@ from sklearn.decomposition import PCA
 import pandas as pd
 import seaborn as sns
 
+import joblib
 
-db = pd.read_csv( "../result_data.csv" )
+
+db = pd.read_csv( "../.result_folder/result_data.csv" )
 db.replace( "Perfect", 1.0, inplace=True )
 db.replace( "Ok", 0.66, inplace=True )
 db.replace( "Eh", 0.33, inplace=True )
@@ -86,7 +88,7 @@ def comprehensive_regression_analysis(X, y, feature_names):
         
         print(f"{name:<20} {r2:.3f}      {rmse:.3f}      {mae:.3f}")
     
-    return results, X_train, X_test, y_train, y_test, X_train_scaled, X_test_scaled, scaler
+    return results, X_train, X_test, y_train, y_test, X_train_scaled, X_test_scaled, scaler, models
 
 def analyze_feature_importance(results, feature_names, X_train, X_train_scaled):
     """
@@ -229,7 +231,7 @@ print("🔬 PHYSICS SIMULATION QUALITY PREDICTION ANALYSIS")
 print("=" * 60)
 
 # Main regression analysis
-results, X_train, X_test, y_train, y_test, X_train_scaled, X_test_scaled, scaler = \
+results, X_train, X_test, y_train, y_test, X_train_scaled, X_test_scaled, scaler, models = \
     comprehensive_regression_analysis(inputs, outputs, input_names)
 
 # Feature importance analysis
@@ -259,3 +261,6 @@ print(f"\n💡 NEXT STEPS:")
 print(f"   • Focus on improving the top {len(importance_df[importance_df['Average'] > 0.1])} most important features")
 print(f"   • Consider feature engineering (interactions between top features)")
 print(f"   • Collect more data if R² < 0.8 for your application needs")
+
+print( input_names.size )
+joblib.dump(models[best_model], 'evaluation_prediction_model.pkl')
