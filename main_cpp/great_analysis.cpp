@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
             << "Rolland25_r_0,Rolland25_a_0,Rolland25_a_1,Rolland25_a_2,Rolland25_d_n,Rolland25_l_n,Rolland25_s_n,Rolland25_d_s,Rolland25_l_s,Rolland25_s_s,Rolland25_e,"
             << "Rolland25_fit_loss,Rolland25_grad_J_fit_over_ip,Rolland25_delta_r_0,Rolland25_time_taken_s,"
 
-            << "max_theta_in_threshold, is_concave"
+            << "max_theta_in_threshold,is_concave"
             << std::endl;
 
     std::string J_format("jvec-");
