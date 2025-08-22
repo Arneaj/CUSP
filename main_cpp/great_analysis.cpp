@@ -35,7 +35,9 @@ int main(int argc, char* argv[])
             << "Liu12_fit_loss,Liu12_grad_J_fit_over_ip,Liu12_delta_r_0,Liu12_time_taken_s,"
 
             << "Rolland25_r_0,Rolland25_a_0,Rolland25_a_1,Rolland25_a_2,Rolland25_d_n,Rolland25_l_n,Rolland25_s_n,Rolland25_d_s,Rolland25_l_s,Rolland25_s_s,Rolland25_e,"
-            << "Rolland25_fit_loss,Rolland25_grad_J_fit_over_ip,Rolland25_delta_r_0,Rolland25_time_taken_s"
+            << "Rolland25_fit_loss,Rolland25_grad_J_fit_over_ip,Rolland25_delta_r_0,Rolland25_time_taken_s,"
+
+            << "max_theta_in_threshold, is_concave"
             << std::endl;
 
     std::string J_format("jvec-");
@@ -215,9 +217,16 @@ int main(int argc, char* argv[])
         output  << result.cost / nb_interest_points << ','
                 << grad_J_fit_over_ip << ','
                 << delta_r_0 << ','
-                << fsec((t1-t0)).count()
-                << std::endl;
+                << fsec((t1-t0)).count() << ',';
         }
+
+        const double threshold = 2.0f;
+        bool is_concave;
+
+        double max_theta_in_threshold = interest_point_flatness_checker( interest_points, nb_theta, nb_phi, &is_concave, threshold );
+
+        output  << max_theta_in_threshold << ','
+                << 1 * is_concave << std::endl;
 
         J.del();
         Rho.del();
