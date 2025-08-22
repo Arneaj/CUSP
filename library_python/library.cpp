@@ -24,15 +24,17 @@
 #include "../headers_cpp/analysis.h"
 #endif
 
+template<class T> using ndarray = pybind11::array_t<T>;
+
 
 namespace casters
 {
-    pybind11::array_t<double> array_from_matrix( Matrix& matrix )
+    ndarray<double> array_from_matrix( Matrix& matrix )
     {
         const Shape& sh = matrix.get_shape();
         const Shape& st = matrix.get_strides();
 
-        return pybind11::array_t<double>(
+        return ndarray<double>(
             {sh.x, sh.y, sh.z, sh.i},                                                                       // shape
             {sizeof(double)*st.x, sizeof(double)*st.y, sizeof(double)*st.z, sizeof(double)*st.i},           // strides
             matrix.get_array(),                                                                             // data pointer
@@ -40,7 +42,7 @@ namespace casters
         );
     }
 
-    pybind11::array_t<double> array_from_point_vec( const std::vector<Point>& points )
+    ndarray<double> array_from_point_vec( const std::vector<Point>& points )
     {
         int length = points.size();
         double* arr = new double[length*3];
@@ -53,7 +55,7 @@ namespace casters
             arr[3*i+2] = points[i].z;
         }
 
-        return pybind11::array_t<double>(
+        return ndarray<double>(
             {length, 3},                        // shape
             {sizeof(double)*3, sizeof(double)},   // strides
             arr,                                // data pointer
@@ -61,7 +63,7 @@ namespace casters
         );
     }
 
-    pybind11::array_t<double> array_from_interest_point_vec( InterestPoint* interest_points, int nb_interest_points )
+    ndarray<double> array_from_interest_point_vec( InterestPoint* interest_points, int nb_interest_points )
     {
         double* arr = new double[nb_interest_points*4];
         if (arr == nullptr) { std::cout << "ERROR: out of memory when allocating array from interest point vector.\n"; exit(1); };
@@ -76,7 +78,7 @@ namespace casters
 
         delete[] interest_points;
 
-        return pybind11::array_t<double>(
+        return ndarray<double>(
             {nb_interest_points, 4},            // shape
             {sizeof(double)*4, sizeof(double)},   // strides
             arr,                                // data pointer
@@ -85,7 +87,7 @@ namespace casters
     }
 
 
-    Matrix matrix_from_array( const pybind11::array_t<double>& arr )
+    Matrix matrix_from_array( const ndarray<double>& arr )
     {
         int nb_dim = arr.ndim();
         Shape sh;
@@ -121,7 +123,7 @@ namespace casters
         return Matrix( sh, strides, mat );
     }
 
-    std::vector<InterestPoint> ip_vec_from_array( const pybind11::array_t<double>& arr )
+    std::vector<InterestPoint> ip_vec_from_array( const ndarray<double>& arr )
     {
         std::vector<InterestPoint> ip(arr.shape(0));
 
@@ -133,7 +135,7 @@ namespace casters
         return ip;
     }
 
-    std::vector<Point> point_vec_from_array( const pybind11::array_t<double>& arr )
+    std::vector<Point> point_vec_from_array( const ndarray<double>& arr )
     {
         std::vector<Point> points(arr.shape(0));
         
@@ -145,7 +147,7 @@ namespace casters
         return points;
     }
 
-    Point point_from_array( const pybind11::array_t<double>& point )
+    Point point_from_array( const ndarray<double>& point )
     {
         pybind11::ssize_t nb_dims = point.ndim();
         if ( nb_dims > 1 || point.shape(0) != 3 )
@@ -156,7 +158,7 @@ namespace casters
         return Point( *point.data(0), *point.data(1), *point.data(2) );
     }
 
-    Shape shape_from_array( const pybind11::array_t<int>& shape )
+    Shape shape_from_array( const ndarray<int>& shape )
     {
         pybind11::ssize_t nb_dims = shape.ndim();
         if ( nb_dims > 1 || shape.shape(0) != 4 )
@@ -171,10 +173,10 @@ namespace casters
 
 namespace preprocessing
 {
-    pybind11::array_t<double> orthonormalise_numpy( 
-        const pybind11::array_t<double>& mat, 
-        const pybind11::array_t<double>& X, const pybind11::array_t<double>& Y, const pybind11::array_t<double>& Z, 
-        const pybind11::array_t<int>& new_shape )
+    ndarray<double> orthonormalise_numpy( 
+        const ndarray<double>& mat, 
+        const ndarray<double>& X, const ndarray<double>& Y, const ndarray<double>& Z, 
+        const ndarray<int>& new_shape )
     {
         Shape _shape = casters::shape_from_array( new_shape );
         Matrix _mat = casters::matrix_from_array( mat );
@@ -186,7 +188,7 @@ namespace preprocessing
 
         Matrix new_mat = orthonormalise( _mat, _X, _Y, _Z, &_shape ); 
 
-        pybind11::array_t<double> ret = casters::array_from_matrix( new_mat );
+        ndarray<double> ret = casters::array_from_matrix( new_mat );
         
         _X.del(); _Y.del(); _Z.del();
         _mat.del();
@@ -200,7 +202,7 @@ namespace raycasting
 {
     double get_bowshock_radius_numpy(  
         double theta, double phi,
-        const pybind11::array_t<double>& Rho, const pybind11::array_t<double>& earth_pos,
+        const ndarray<double>& Rho, const ndarray<double>& earth_pos,
         double dr )
     {
         Matrix _Rho = casters::matrix_from_array( Rho );
@@ -213,14 +215,14 @@ namespace raycasting
         return rad;
     }
 
-    pybind11::array_t<double> get_bowshock_numpy( 
-        const pybind11::array_t<double>& Rho, const pybind11::array_t<double>& earth_pos, 
+    ndarray<double> get_bowshock_numpy( 
+        const ndarray<double>& Rho, const ndarray<double>& earth_pos, 
         double dr, int nb_phi, int max_nb_theta )
     {
         Matrix _Rho = casters::matrix_from_array( Rho );
         Point _earth_pos = casters::point_from_array( earth_pos );
 
-        pybind11::array_t<double> ret = casters::array_from_point_vec( get_bowshock(_Rho, _earth_pos, dr, nb_phi, max_nb_theta, true) );
+        ndarray<double> ret = casters::array_from_point_vec( get_bowshock(_Rho, _earth_pos, dr, nb_phi, max_nb_theta, true) );
 
         _Rho.del();
 
@@ -229,9 +231,9 @@ namespace raycasting
 
 
 
-    pybind11::array_t<double> get_interest_points_numpy( 
-        const pybind11::array_t<double>& J_norm, const pybind11::array_t<double>& earth_pos,
-        const pybind11::array_t<double>& Rho,
+    ndarray<double> get_interest_points_numpy( 
+        const ndarray<double>& J_norm, const ndarray<double>& earth_pos,
+        const ndarray<double>& Rho,
         double theta_min, double theta_max, 
         int nb_theta, int nb_phi, 
         double dx, double dr,
@@ -243,7 +245,7 @@ namespace raycasting
         Matrix _J_norm = casters::matrix_from_array( J_norm );
         Point _earth_pos = casters::point_from_array( earth_pos );
 
-        pybind11::array_t<double> ret = casters::array_from_interest_point_vec( get_interest_points(
+        ndarray<double> ret = casters::array_from_interest_point_vec( get_interest_points(
             _J_norm, _earth_pos, 
             _Rho,
             theta_min, theta_max,
@@ -259,9 +261,9 @@ namespace raycasting
         return ret;
     }
 
-    pybind11::array_t<double> get_interest_points_numpy_no_std_dev( 
-        const pybind11::array_t<double>& J_norm, const pybind11::array_t<double>& earth_pos,
-        const pybind11::array_t<double>& Rho,
+    ndarray<double> get_interest_points_numpy_no_std_dev( 
+        const ndarray<double>& J_norm, const ndarray<double>& earth_pos,
+        const ndarray<double>& Rho,
         double theta_min, double theta_max, 
         int nb_theta, int nb_phi, 
         double dx, double dr,
@@ -272,7 +274,7 @@ namespace raycasting
         Matrix _Rho = casters::matrix_from_array( Rho );
         Point _earth_pos = casters::point_from_array( earth_pos );
 
-        pybind11::array_t<double> ret = casters::array_from_interest_point_vec( get_interest_points(
+        ndarray<double> ret = casters::array_from_interest_point_vec( get_interest_points(
             _J_norm, _earth_pos, 
             _Rho,
             theta_min, theta_max,
@@ -289,11 +291,11 @@ namespace raycasting
     }
 
 
-    pybind11::array_t<double> process_interest_points_numpy(   
-        const pybind11::array_t<double>& interest_points, 
+    ndarray<double> process_interest_points_numpy(   
+        const ndarray<double>& interest_points, 
         int nb_theta, int nb_phi, 
-        const pybind11::array_t<int>& shape_sim, const pybind11::array_t<int>& shape_real,
-        const pybind11::array_t<double>& earth_pos_sim, const pybind11::array_t<double>& earth_pos_real )
+        const ndarray<int>& shape_sim, const ndarray<int>& shape_real,
+        const ndarray<double>& earth_pos_sim, const ndarray<double>& earth_pos_real )
     {
         std::vector<InterestPoint> _interest_points = casters::ip_vec_from_array(interest_points);
         Shape _shape_sim = casters::shape_from_array(shape_sim), _shape_real = casters::shape_from_array(shape_real);
@@ -304,10 +306,10 @@ namespace raycasting
         return casters::array_from_interest_point_vec( _interest_points.data(), _interest_points.size() );
     }
 
-    pybind11::array_t<double> process_points_numpy(    
-        const pybind11::array_t<double>& points, 
-        const pybind11::array_t<int>& shape_sim, const pybind11::array_t<int>& shape_real,
-        const pybind11::array_t<double>& earth_pos_sim, const pybind11::array_t<double>& earth_pos_real )
+    ndarray<double> process_points_numpy(    
+        const ndarray<double>& points, 
+        const ndarray<int>& shape_sim, const ndarray<int>& shape_real,
+        const ndarray<double>& earth_pos_sim, const ndarray<double>& earth_pos_real )
     {
         std::vector<Point> _points = casters::point_vec_from_array( points );
         Shape _shape_sim = casters::shape_from_array(shape_sim), _shape_real = casters::shape_from_array(shape_real);
@@ -322,7 +324,7 @@ namespace raycasting
 
 namespace fitting
 {
-    double Shue97( const pybind11::array_t<double>& params, double theta )
+    double Shue97_numpy( const ndarray<double>& params, double theta )
     {
         // if (theta<0 || theta>PI) { std::cout << "theta should be in [0; pi]\n"; exit(1); }
 
@@ -331,7 +333,7 @@ namespace fitting
         return *params.data(0) * std::pow( 2.0 / (1.0+cos_theta), *params.data(1) );
     }
 
-    double Liu12( const pybind11::array_t<double>& params, double theta, double phi )
+    double Liu12_numpy( const ndarray<double>& params, double theta, double phi )
     {
         // if (theta<0 || theta>PI) { std::cout << "theta should be in [0; pi]\n"; exit(1); }
         // if (phi<-PI || phi>PI) { std::cout << "phi should be in [-pi; pi)\n"; exit(1); }
@@ -350,7 +352,7 @@ namespace fitting
         ) * cos_phi*cos_phi;
     }
 
-    double EllipsisPoly( const pybind11::array_t<double>& params, double theta, double phi )
+    double EllipsisPoly_numpy( const ndarray<double>& params, double theta, double phi )
     {
         // if (theta<0 || theta>PI) { std::cout << "theta should be in [0; pi]\n"; exit(1); }
         // if (phi<-PI || phi>PI) { std::cout << "phi should be in [-pi; pi)\n"; exit(1); }
@@ -375,14 +377,103 @@ namespace fitting
     }
 
 
+    ndarray<double> Shue97_numpy_arr( const ndarray<double>& params, const ndarray<double>& theta )
+    {
+        const double* theta_ptr = theta.data();
+        size_t size = theta.size();
+
+        double* ret = new double[size];
+
+        for (size_t i=0; i<size; i++) ret[i] = Shue97_numpy(params, theta_ptr[i]);
+
+        std::vector<size_t> sh(theta.ndim());
+        std::vector<size_t> st(theta.ndim());
+
+        for (int i=0; i<theta.ndim(); i++)
+        {
+            sh[i] = theta.shape(i);
+            st[i] = theta.strides(i);
+        }
+
+        return ndarray<double>(
+            sh,
+            st,
+            ret,
+            pybind11::cast(ret)
+        );
+    }
+
+    ndarray<double> Liu12_numpy_arr( const ndarray<double>& params, const ndarray<double>& theta, const ndarray<double>& phi )
+    {
+        if ( theta.ndim() != phi.ndim() ) throw pybind11::attribute_error("theta and phi should have the same number of dimensions");
+        for (int i=0; i<theta.ndim(); i++) if ( theta.shape(i) != phi.shape(i) ) throw pybind11::attribute_error("theta and phi should have the same shape");
+
+        const double* theta_ptr = theta.data();
+        const double* phi_ptr = phi.data();
+
+        size_t size = theta.size();
+
+        double* ret = new double[size];
+
+        for (size_t i=0; i<size; i++) ret[i] = Liu12_numpy(params, theta_ptr[i], phi_ptr[i]);
+
+        std::vector<size_t> sh(theta.ndim());
+        std::vector<size_t> st(theta.ndim());
+
+        for (int i=0; i<theta.ndim(); i++)
+        {
+            sh[i] = theta.shape(i);
+            st[i] = theta.strides(i);
+        }
+
+        return ndarray<double>(
+            sh,
+            st,
+            ret,
+            pybind11::cast(ret)
+        );
+    }
+
+    ndarray<double> EllipsisPoly_numpy_arr( const ndarray<double>& params, const ndarray<double>& theta, const ndarray<double>& phi )
+    {
+        if ( theta.ndim() != phi.ndim() ) throw pybind11::attribute_error("theta and phi should have the same number of dimensions");
+        for (int i=0; i<theta.ndim(); i++) if ( theta.shape(i) != phi.shape(i) ) throw pybind11::attribute_error("theta and phi should have the same shape");
+
+        const double* theta_ptr = theta.data();
+        const double* phi_ptr = phi.data();
+
+        size_t size = theta.size();
+
+        double* ret = new double[size];
+
+        for (size_t i=0; i<size; i++) ret[i] = EllipsisPoly_numpy(params, theta_ptr[i], phi_ptr[i]);
+
+        std::vector<size_t> sh(theta.ndim());
+        std::vector<size_t> st(theta.ndim());
+
+        for (int i=0; i<theta.ndim(); i++)
+        {
+            sh[i] = theta.shape(i);
+            st[i] = theta.strides(i);
+        }
+
+        return ndarray<double>(
+            sh,
+            st,
+            ret,
+            pybind11::cast(ret)
+        );
+    }
+
+
 
     template <typename Residual, int nb_params>
     pybind11::tuple fit_MP_numpy( 
-        const pybind11::array_t<double>& interest_points, int nb_interest_points,
-        const pybind11::array_t<double>& initial_params, 
-        pybind11::array_t<double>& lowerbound, 
-        pybind11::array_t<double>& upperbound,
-        pybind11::array_t<double>& radii_of_variation, 
+        const ndarray<double>& interest_points, int nb_interest_points,
+        const ndarray<double>& initial_params, 
+        ndarray<double>& lowerbound, 
+        ndarray<double>& upperbound,
+        ndarray<double>& radii_of_variation, 
         int nb_runs=1, int max_nb_iterations_per_run=50
     )
     {
@@ -405,6 +496,11 @@ namespace fitting
 }
 
 
+namespace postprocessing
+{
+
+}
+
 
 PYBIND11_MODULE(mag_cusps, m)
 {
@@ -412,22 +508,100 @@ PYBIND11_MODULE(mag_cusps, m)
 
 
     m.def("preprocess", &preprocessing::orthonormalise_numpy, 
+        "Transform a matrix from a non uniform grid to a uniform grid, of shape `new_shape`\n"
+        "using X, Y and Z containing the actual position of the center of each grid of each matrix indices.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "mat : np.ndarray\n"
+        "    Input matrix array of doubles, shape (x, y, z, i).\n"
+        "X, Y, Z : np.ndarray\n"
+        "    Input matrices used in orthonormalisation.\n"
+        "new_shape : np.ndarray\n"
+        "    Integer array of shape (4,) specifying new shape dimensions.\n\n"
+        "Returns\n"
+        "-------\n"
+        "np.ndarray\n"
+        "    Orthonormalised matrix as a NumPy array with shape matching `new_shape",
         pybind11::arg("mat"), 
         pybind11::arg("X"), pybind11::arg("Y"), pybind11::arg("Z"),
         pybind11::arg("new_shape")
     );
 
     m.def("get_bowshock_radius", &raycasting::get_bowshock_radius_numpy, 
+        "Calculate bowshock radius given angles and input data.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "theta : float\n"
+        "    Polar angle in radians.\n"
+        "phi : float\n"
+        "    Azimuthal angle in radians.\n"
+        "Rho : np.ndarray\n"
+        "    Density matrix array.\n"
+        "earth_pos : np.ndarray\n"
+        "    Earth position vector of shape (3,).\n"
+        "dr : float\n"
+        "    Step size for radius calculation.\n\n"
+        "Returns\n"
+        "-------\n"
+        "float\n"
+        "    Computed bowshock radius.",
         pybind11::arg("theta"), pybind11::arg("phi"),
         pybind11::arg("Rho"), pybind11::arg("earth_pos"), pybind11::arg("dr")
     );
     m.def("get_bowshock", &raycasting::get_bowshock_numpy,
+        "Find the bow shock by finding the radius at which dRho_dr * r**3 is minimum,\n"
+        "casting rays from the earth_pos at angles (theta, phi)\n\n"
+        "Parameters\n"
+        "----------\n"
+        "Rho : np.ndarray\n"
+        "    Density matrix array of shape (x,y,z,).\n"
+        "earth_pos : np.ndarray\n"
+        "    Earth position vector of shape (3,).\n"
+        "dr : float\n"
+        "    Step size for radius calculation.\n"
+        "nb_phi : int\n"
+        "    Number of divisions in phi.\n"
+        "max_nb_theta : int\n"
+        "    Maximum number of divisions in theta.\n\n"
+        "Returns\n"
+        "-------\n"
+        "np.ndarray\n"
+        "    Array of points with shape (N, 3) representing bowshock coordinates.",
         pybind11::arg("Rho"), pybind11::arg("earth_pos"), pybind11::arg("dr"),
         pybind11::arg("nb_phi"), pybind11::arg("max_nb_theta")
     );
 
 
     m.def("get_interest_points", &raycasting::get_interest_points_numpy,
+        "Calculate interest points from inputs.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "J_norm : np.ndarray\n"
+        "    Normalized current density matrix of shape (x,y,z,i,).\n"
+        "earth_pos : np.ndarray\n"
+        "    Earth position vector of shape (3,).\n"
+        "Rho : np.ndarray\n"
+        "    Density matrix array of shape (x,y,z,).\n"
+        "theta_min, theta_max : float\n"
+        "    Angle bounds for theta.\n"
+        "nb_theta, nb_phi : int\n"
+        "    Number of divisions for theta and phi.\n"
+        "dx, dr : float\n"
+        "    Step sizes.\n"
+        "alpha_0_min, alpha_0_max : float\n"
+        "    Bounds for alpha_0.\n"
+        "nb_alpha_0 : int\n"
+        "    Number of alpha_0 divisions.\n"
+        "r_0_mult_min, r_0_mult_max : float\n"
+        "    Multiplicative range for r_0 where r_0 = r_0_mult * r_I with r_I the inner radius in the simulation.\n"
+        "nb_r_0 : int\n"
+        "    Number of r_0 divisions.\n"
+        "avg_std_dev : float\n"
+        "    Optional output parameter for average standard deviation.\n\n"
+        "Returns\n"
+        "-------\n"
+        "np.ndarray\n"
+        "    Interest points array with shape (nb_theta*nb_phi, 4).",
         pybind11::arg("J_norm"), pybind11::arg("earth_pos"), pybind11::arg("Rho"),
         pybind11::arg("theta_min"), pybind11::arg("theta_max"),
         pybind11::arg("nb_theta"), pybind11::arg("nb_phi"),
@@ -437,6 +611,33 @@ PYBIND11_MODULE(mag_cusps, m)
         pybind11::arg("avg_std_dev")
     );
     m.def("get_interest_points", &raycasting::get_interest_points_numpy_no_std_dev,
+        "Calculate interest points from inputs.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "J_norm : np.ndarray\n"
+        "    Normalized current density matrix of shape (x,y,z,i,).\n"
+        "earth_pos : np.ndarray\n"
+        "    Earth position vector of shape (3,).\n"
+        "Rho : np.ndarray\n"
+        "    Density matrix array of shape (x,y,z,).\n"
+        "theta_min, theta_max : float\n"
+        "    Angle bounds for theta.\n"
+        "nb_theta, nb_phi : int\n"
+        "    Number of divisions for theta and phi.\n"
+        "dx, dr : float\n"
+        "    Step sizes.\n"
+        "alpha_0_min, alpha_0_max : float\n"
+        "    Bounds for alpha_0.\n"
+        "nb_alpha_0 : int\n"
+        "    Number of alpha_0 divisions.\n"
+        "r_0_mult_min, r_0_mult_max : float\n"
+        "    Multiplicative range for r_0 where r_0 = r_0_mult * r_I with r_I the inner radius in the simulation.\n"
+        "nb_r_0 : int\n"
+        "    Number of r_0 divisions.\n"
+        "Returns\n"
+        "-------\n"
+        "np.ndarray\n"
+        "    Interest points array with shape (nb_theta*nb_phi, 4).",
         pybind11::arg("J_norm"), pybind11::arg("earth_pos"), pybind11::arg("Rho"),
         pybind11::arg("theta_min"), pybind11::arg("theta_max"),
         pybind11::arg("nb_theta"), pybind11::arg("nb_phi"),
@@ -446,34 +647,169 @@ PYBIND11_MODULE(mag_cusps, m)
     );
 
     m.def("process_interest_points", &raycasting::process_interest_points_numpy,
+        "Transform interest points from simulation coordinates to real coordinates.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "interest_points : np.ndarray\n"
+        "    Interest points array with shape (N, 4).\n"
+        "nb_theta, nb_phi : int\n"
+        "    Number of divisions in theta and phi.\n"
+        "shape_sim, shape_real : np.ndarray\n"
+        "    Shape arrays of shape (4,) describing simulation and real data shapes.\n"
+        "earth_pos_sim, earth_pos_real : np.ndarray\n"
+        "    Earth position vectors of shape (3,) for simulation and real.\n\n"
+        "Returns\n"
+        "-------\n"
+        "np.ndarray\n"
+        "    Processed interest points array of shape (N, 4).",
         pybind11::arg("interest_points"),
         pybind11::arg("nb_theta"), pybind11::arg("nb_phi"),
         pybind11::arg("shape_sim"), pybind11::arg("shape_real"),
         pybind11::arg("earth_pos_sim"), pybind11::arg("earth_pos_real")
     );
     m.def("process_points", &raycasting::process_points_numpy,
+        "Transform points from simulation coordinates to real coordinates.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "points : np.ndarray\n"
+        "    Points array with shape (N, 3).\n"
+        "shape_sim, shape_real : np.ndarray\n"
+        "    Shape arrays of shape (4,) describing simulation and real data shapes.\n"
+        "earth_pos_sim, earth_pos_real : np.ndarray\n"
+        "    Earth position vectors of shape (3,) for simulation and real.\n\n"
+        "Returns\n"
+        "-------\n"
+        "np.ndarray\n"
+        "    Processed points array of shape (N, 4).",
         pybind11::arg("points"),
         pybind11::arg("shape_sim"), pybind11::arg("shape_real"),
         pybind11::arg("earth_pos_sim"), pybind11::arg("earth_pos_real")
     );
 
 
-    m.def("Shue97", &fitting::Shue97,
+    m.def("Shue97", &fitting::Shue97_numpy,
+        "Analytical approximation of the Magnetopause topology as written by Shue in his 1997 paper.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "params : np.ndarray\n"
+        "    Parameters array with shape (2,).\n"
+        "theta : float\n"
+        "    Angle at which the radius should be calculated.\n\n"
+        "Returns\n"
+        "-------\n"
+        "float\n"
+        "    Radius at this angle.",
         pybind11::arg("params"),
         pybind11::arg("theta")
     );
 
-    m.def("Liu12", &fitting::Liu12,
+    m.def("Liu12", &fitting::Liu12_numpy,
+        "Analytical approximation of the Magnetopause topology as written by Liu in his 2012 paper.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "params : np.ndarray\n"
+        "    Parameters array with shape (10,).\n"
+        "theta, phi : float\n"
+        "    Angle at which the radius should be calculated.\n\n"
+        "Returns\n"
+        "-------\n"
+        "float\n"
+        "    Radius at this angle.",
         pybind11::arg("params"),
         pybind11::arg("theta"), pybind11::arg("phi")
     );
 
-    m.def("Rolland25", &fitting::EllipsisPoly,
+    m.def("Rolland25", &fitting::EllipsisPoly_numpy,
+        "Analytical approximation of the Magnetopause topology as written by Rolland in his 2025 thesis.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "params : np.ndarray\n"
+        "    Parameters array with shape (10,).\n"
+        "theta, phi : float\n"
+        "    Angle at which the radius should be calculated.\n\n"
+        "Returns\n"
+        "-------\n"
+        "float\n"
+        "    Radius at this angle.",
+        pybind11::arg("params"),
+        pybind11::arg("theta"), pybind11::arg("phi")
+    );
+
+    m.def("Shue97", &fitting::Shue97_numpy_arr,
+        "Analytical approximation of the Magnetopause topology as written by Shue in his 1997 paper.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "params : np.ndarray\n"
+        "    Parameters array with shape (2,).\n"
+        "theta : np.ndarray\n"
+        "    Angles at which the radius should be calculated.\n\n"
+        "Returns\n"
+        "-------\n"
+        "np.ndarray\n"
+        "    Radii at this angle.",
+        pybind11::arg("params"),
+        pybind11::arg("theta")
+    );
+
+    m.def("Liu12", &fitting::Liu12_numpy_arr,
+        "Analytical approximation of the Magnetopause topology as written by Liu in his 2012 paper.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "params : np.ndarray\n"
+        "    Parameters array with shape (2,).\n"
+        "theta, phi : np.ndarray\n"
+        "    Angles at which the radius should be calculated.\n\n"
+        "Returns\n"
+        "-------\n"
+        "np.ndarray\n"
+        "    Radii at this angle.",
+        pybind11::arg("params"),
+        pybind11::arg("theta"), pybind11::arg("phi")
+    );
+
+    m.def("Rolland25", &fitting::EllipsisPoly_numpy_arr,
+        "Analytical approximation of the Magnetopause topology as written by Rolland in his 2025 thesis.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "params : np.ndarray\n"
+        "    Parameters array with shape (2,).\n"
+        "theta, phi : np.ndarray\n"
+        "    Angles at which the radius should be calculated.\n\n"
+        "Returns\n"
+        "-------\n"
+        "np.ndarray\n"
+        "    Radii at this angle.",
         pybind11::arg("params"),
         pybind11::arg("theta"), pybind11::arg("phi")
     );
 
     m.def("fit_to_Shue97", &fitting::fit_MP_numpy<Shue97Residual, 2>,
+        "Analytical fitting of the Shue97 function to an array of interest points.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "interest_points : np.ndarray\n"
+        "    Interest point array to fit to of shape (`nb_interest_points`, 4).\n"
+        "nb_interest_points : int\n"
+        "    Number of interest points to fit to.\n"
+        "initial_parameters : np.ndarray\n"
+        "    Parameters array with shape (2,).\n"
+        "lowerbound, upperbound : np.ndarray\n"
+        "    Parameters array with shape (2,) corresponding to the lower and upper bounds\n"
+        "    that the parameters can take during fitting.\n"
+        "radii_of_variation : np.ndarray\n"
+        "    Parameters array with shape (2,) corresponding to the maximum distance each \n"
+        "    of the parameters will randomly move away for the initial_params at the \n"
+        "    beginning of a run.\n"
+        "nb_runs : int\n"
+        "    Number of times the fitting algorithm will start again with other randomly \n"
+        "    selected initial parameters.\n"
+        "max_nb_iterations_per_run : int\n"
+        "    Maximum number of iterations the fitting algorithm will do before stopping\n"
+        "    even if it hasn't converged.\n\n"
+        "Returns\n"
+        "-------\n"
+        "(np.ndarray, float)\n"
+        "    Array of the final parameters after fit and the fitting cost of these parameters.", 
         pybind11::arg("interest_points"), pybind11::arg("nb_interest_points"),
         pybind11::arg("initial_params"),
         pybind11::arg("lowerbound"), pybind11::arg("upperbound"),
@@ -482,6 +818,32 @@ PYBIND11_MODULE(mag_cusps, m)
     );
 
     m.def("fit_to_Liu12", &fitting::fit_MP_numpy<Liu12Residual, 10>,
+        "Analytical fitting of the Liu12 function to an array of interest points.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "interest_points : np.ndarray\n"
+        "    Interest point array to fit to of shape (`nb_interest_points`, 4).\n"
+        "nb_interest_points : int\n"
+        "    Number of interest points to fit to.\n"
+        "initial_parameters : np.ndarray\n"
+        "    Parameters array with shape (10,).\n"
+        "lowerbound, upperbound : np.ndarray\n"
+        "    Parameters array with shape (10,) corresponding to the lower and upper bounds\n"
+        "    that the parameters can take during fitting.\n"
+        "radii_of_variation : np.ndarray\n"
+        "    Parameters array with shape (10,) corresponding to the maximum distance each \n"
+        "    of the parameters will randomly move away for the initial_params at the \n"
+        "    beginning of a run.\n"
+        "nb_runs : int\n"
+        "    Number of times the fitting algorithm will start again with other randomly \n"
+        "    selected initial parameters.\n"
+        "max_nb_iterations_per_run : int\n"
+        "    Maximum number of iterations the fitting algorithm will do before stopping\n"
+        "    even if it hasn't converged.\n\n"
+        "Returns\n"
+        "-------\n"
+        "(np.ndarray, float)\n"
+        "    Array of the final parameters after fit and the fitting cost of these parameters.", 
         pybind11::arg("interest_points"), pybind11::arg("nb_interest_points"),
         pybind11::arg("initial_params"),
         pybind11::arg("lowerbound"), pybind11::arg("upperbound"),
@@ -490,6 +852,32 @@ PYBIND11_MODULE(mag_cusps, m)
     );
 
     m.def("fit_to_Rolland25", &fitting::fit_MP_numpy<EllipsisPolyResidual, 11>,
+        "Analytical fitting of the Liu12 function to an array of interest points.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "interest_points : np.ndarray\n"
+        "    Interest point array to fit to of shape (`nb_interest_points`, 4).\n"
+        "nb_interest_points : int\n"
+        "    Number of interest points to fit to.\n"
+        "initial_parameters : np.ndarray\n"
+        "    Parameters array with shape (11,).\n"
+        "lowerbound, upperbound : np.ndarray\n"
+        "    Parameters array with shape (11,) corresponding to the lower and upper bounds\n"
+        "    that the parameters can take during fitting.\n"
+        "radii_of_variation : np.ndarray\n"
+        "    Parameters array with shape (11,) corresponding to the maximum distance each \n"
+        "    of the parameters will randomly move away for the initial_params at the \n"
+        "    beginning of a run.\n"
+        "nb_runs : int\n"
+        "    Number of times the fitting algorithm will start again with other randomly \n"
+        "    selected initial parameters.\n"
+        "max_nb_iterations_per_run : int\n"
+        "    Maximum number of iterations the fitting algorithm will do before stopping\n"
+        "    even if it hasn't converged.\n\n"
+        "Returns\n"
+        "-------\n"
+        "(np.ndarray, float)\n"
+        "    Array of the final parameters after fit and the fitting cost of these parameters.", 
         pybind11::arg("interest_points"), pybind11::arg("nb_interest_points"),
         pybind11::arg("initial_params"),
         pybind11::arg("lowerbound"), pybind11::arg("upperbound"),

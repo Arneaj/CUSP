@@ -20,7 +20,7 @@ MagCUSPS
 
 # __init__.pyi for topology_analysis
 
-from typing import Optional
+from typing import Optional, overload
 import numpy as np
 from numpy.typing import NDArray
 
@@ -219,7 +219,7 @@ def process_points(
     """
 
 
-
+@overload
 def Shue97(
     params: NDArray[np.float64],
     theta: float
@@ -239,7 +239,29 @@ def Shue97(
     float
         Radius at this angle.
     """
+  
+@overload
+def Shue97(
+    params: NDArray[np.float64],
+    theta: NDArray[np.float64]
+) -> NDArray[np.float64]:
+    """
+    Analytical approximation of the Magnetopause topology as written by Shue in his 1997 paper.
+
+    Parameters
+    ----------
+    params : np.ndarray
+        Parameters array with shape (2,).
+    theta : np.ndarray
+        Angles at which the radii should be calculated. 
     
+    Returns
+    -------
+    np.ndarray
+        Radii at these angles.
+    """
+  
+@overload
 def Liu12(
     params: NDArray[np.float64],
     theta: float, phi: float
@@ -259,7 +281,29 @@ def Liu12(
     float
         Radius at this angle.
     """
+
+@overload
+def Liu12(
+    params: NDArray[np.float64],
+    theta: NDArray[np.float64], phi: NDArray[np.float64]
+) -> NDArray[np.float64]:
+    """
+    Analytical approximation of the Magnetopause topology as written by Liu in his 2012 paper.
+
+    Parameters
+    ----------
+    params : np.ndarray
+        Parameters array with shape (10,).
+    theta, phi : np.nbarray
+        Angles at which the radii should be calculated. 
     
+    Returns
+    -------
+    float
+        Radii at these angles.
+    """
+    
+@overload
 def Rolland25(
     params: NDArray[np.float64],
     theta: float, phi: float
@@ -278,6 +322,27 @@ def Rolland25(
     -------
     float
         Radius at this angle.
+    """
+    
+@overload
+def Rolland25(
+    params: NDArray[np.float64],
+    theta: NDArray[np.float64], phi: NDArray[np.float64]
+) -> NDArray[np.float64]:
+    """
+    Analytical approximation of the Magnetopause topology as written by Rolland in his 2025 thesis.
+
+    Parameters
+    ----------
+    params : np.ndarray
+        Parameters array with shape (11,).
+    theta, phi : np.ndarray
+        Angles at which the radii should be calculated. 
+    
+    Returns
+    -------
+    np.ndarray
+        Radii at these angles.
     """
 
 
@@ -301,12 +366,12 @@ def fit_to_Shue97(
     nb_interest_points : int
         Number of interest points to fit to.
     initial_parameters : np.ndarray
-        Parameters array with shape (11,).
+        Parameters array with shape (2,).
     lowerbound, upperbound : np.ndarray
-        Parameters array with shape (11,) corresponding to the lower and upper bounds
+        Parameters array with shape (2,) corresponding to the lower and upper bounds
         that the parameters can take during fitting.
     radii_of_variation : np.ndarray
-        Parameters array with shape (11,) corresponding to the maximum distance each 
+        Parameters array with shape (2,) corresponding to the maximum distance each 
         of the parameters will randomly move away for the initial_params at the 
         beginning of a run.
     nb_runs : int
@@ -318,7 +383,7 @@ def fit_to_Shue97(
     
     Returns
     -------
-    float
+    (np.ndarray, float)
         Array of the final parameters after fit and the fitting cost of these parameters. 
     """
 
@@ -342,12 +407,12 @@ def fit_to_Liu12(
     nb_interest_points : int
         Number of interest points to fit to.
     initial_parameters : np.ndarray
-        Parameters array with shape (11,).
+        Parameters array with shape (10,).
     lowerbound, upperbound : np.ndarray
-        Parameters array with shape (11,) corresponding to the lower and upper bounds
+        Parameters array with shape (10,) corresponding to the lower and upper bounds
         that the parameters can take during fitting.
     radii_of_variation : np.ndarray
-        Parameters array with shape (11,) corresponding to the maximum distance each 
+        Parameters array with shape (10,) corresponding to the maximum distance each 
         of the parameters will randomly move away for the initial_params at the 
         beginning of a run.
     nb_runs : int
