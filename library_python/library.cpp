@@ -469,7 +469,7 @@ namespace fitting
 
     template <typename Residual, int nb_params>
     pybind11::tuple fit_MP_numpy( 
-        const ndarray<double>& interest_points, int nb_interest_points,
+        const ndarray<double>& interest_points,
         const ndarray<double>& initial_params, 
         ndarray<double>& lowerbound, 
         ndarray<double>& upperbound,
@@ -480,7 +480,7 @@ namespace fitting
         std::vector<InterestPoint> _interest_points = casters::ip_vec_from_array( interest_points );
 
         OptiResult res = fit_MP<Residual, nb_params>( 
-            _interest_points.data(), nb_interest_points,
+            _interest_points.data(), _interest_points.size(),
             initial_params.data(), 
             lowerbound.mutable_data(),
             upperbound.mutable_data(),
@@ -498,7 +498,88 @@ namespace fitting
 
 namespace postprocessing
 {
+    double get_grad_J_fit_over_ip_Shue97_numpy( 
+        const ndarray<double>& params, 
+        const ndarray<double>& interest_points,
+        const ndarray<double>& J_norm,
+        const ndarray<double>& earth_pos,
+        double dx, double dy, double dz )
+    {
+        std::vector<InterestPoint> _interest_points = casters::ip_vec_from_array(interest_points);
+        Matrix _J_norm = casters::matrix_from_array(J_norm);
+        Point _earth_pos = casters::point_from_array(earth_pos);
 
+        double ret = get_grad_J_fit_over_interest_points( 
+            Shue97, params, 
+            _interest_points.data(), _interest_points.size(), 
+            _J_norm, _eath_pos, dx, dy, dz );
+
+        _J_norm.del();
+
+        return ret;
+    }
+
+    double get_grad_J_fit_over_ip_Liu12_numpy( 
+        const ndarray<double>& params, 
+        const ndarray<double>& interest_points,
+        const ndarray<double>& J_norm,
+        const ndarray<double>& earth_pos,
+        double dx, double dy, double dz )
+    {
+        std::vector<InterestPoint> _interest_points = casters::ip_vec_from_array(interest_points);
+        Matrix _J_norm = casters::matrix_from_array(J_norm);
+        Point _earth_pos = casters::point_from_array(earth_pos);
+
+        double ret = get_grad_J_fit_over_interest_points( 
+            Liu12, params, 
+            _interest_points.data(), _interest_points.size(), 
+            _J_norm, _eath_pos, dx, dy, dz );
+
+        _J_norm.del();
+
+        return ret;
+    }
+
+    double get_grad_J_fit_over_ip_Rolland25_numpy( 
+        const ndarray<double>& params, 
+        const ndarray<double>& interest_points,
+        const ndarray<double>& J_norm,
+        const ndarray<double>& earth_pos,
+        double dx, double dy, double dz )
+    {
+        std::vector<InterestPoint> _interest_points = casters::ip_vec_from_array(interest_points);
+        Matrix _J_norm = casters::matrix_from_array(J_norm);
+        Point _earth_pos = casters::point_from_array(earth_pos);
+
+        double ret = get_grad_J_fit_over_interest_points( 
+            EllipsisPoly, params, 
+            _interest_points.data(), _interest_points.size(), 
+            _J_norm, _eath_pos, dx, dy, dz );
+
+        _J_norm.del();
+
+        return ret;
+    }
+
+    pybind11::tuple interest_point_flatness_checker_numpy( 
+        const ndarray<double>& const interest_points, 
+        int nb_theta, int nb_phi, 
+        double threshold, double phi_radius )
+    {
+        std::vector<InterestPoint> _interest_points = casters::ip_vec_from_array(interest_points);
+
+        bool is_concave = false;
+
+        double ret = interest_point_flatness_checker( 
+            _interest_points.data(),
+            nb_theta, nb_phi,
+            &is_concave, threshold, phi_radius );
+
+        return pybind11::make_tuple(
+            ret,
+            is_concave
+        );
+    }
 }
 
 
@@ -789,8 +870,6 @@ PYBIND11_MODULE(mag_cusps, m)
         "----------\n"
         "interest_points : np.ndarray\n"
         "    Interest point array to fit to of shape (`nb_interest_points`, 4).\n"
-        "nb_interest_points : int\n"
-        "    Number of interest points to fit to.\n"
         "initial_parameters : np.ndarray\n"
         "    Parameters array with shape (2,).\n"
         "lowerbound, upperbound : np.ndarray\n"
@@ -823,8 +902,6 @@ PYBIND11_MODULE(mag_cusps, m)
         "----------\n"
         "interest_points : np.ndarray\n"
         "    Interest point array to fit to of shape (`nb_interest_points`, 4).\n"
-        "nb_interest_points : int\n"
-        "    Number of interest points to fit to.\n"
         "initial_parameters : np.ndarray\n"
         "    Parameters array with shape (10,).\n"
         "lowerbound, upperbound : np.ndarray\n"
@@ -857,8 +934,6 @@ PYBIND11_MODULE(mag_cusps, m)
         "----------\n"
         "interest_points : np.ndarray\n"
         "    Interest point array to fit to of shape (`nb_interest_points`, 4).\n"
-        "nb_interest_points : int\n"
-        "    Number of interest points to fit to.\n"
         "initial_parameters : np.ndarray\n"
         "    Parameters array with shape (11,).\n"
         "lowerbound, upperbound : np.ndarray\n"
@@ -883,6 +958,105 @@ PYBIND11_MODULE(mag_cusps, m)
         pybind11::arg("lowerbound"), pybind11::arg("upperbound"),
         pybind11::arg("radii_of_variation"),
         pybind11::arg("nb_runs") = 10, pybind11::arg("max_nb_iterations_per_run") = 50
+    );
+
+
+
+    m.def("get_grad_J_fit_over_ip_Shue97", &postprocessing::get_grad_J_fit_over_ip_Shue97_numpy,
+        "Ratio of the current density gradient along the magnetopause between the analytical\n"
+        "function Shue97 and the interest points.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "params : np.ndarray\n"
+        "    Parameters for the Shue97 function of shape (2,).\n"
+        "interest_points : np.ndarray\n"
+        "    Interest point array of shape (`nb_interest_points`, 4).\n"
+        "J_norm : np.ndarray\n"
+        "    Normalised current density matrix of shape (X, Y, Z).\n"
+        "earth_pos : np.ndarray\n"
+        "    Position of the Earth of shape (3,).\n"
+        "dx, dy, dz : Optional[int]\n"
+        "    Used to calculate the gradient. Default value is 0.5.\n"
+        "Returns\n"
+        "-------\n"
+        "float\n"
+        "    ||grad(||J_fit||)|| / ||grad(||J_ip||)||.", 
+        pybind11::arg("params"), pybind11::arg("interest_points"),
+        pybind11::arg("J_norm"), pybind11::arg("earth_pos"),
+        pybind11::arg("dx") = 0.5, pybind11::arg("dy") = 0.5, pybind11::arg("dz") = 0.5
+    );
+
+    m.def("get_grad_J_fit_over_ip_Liu12", &postprocessing::get_grad_J_fit_over_ip_Liu12_numpy,
+        "Ratio of the current density gradient along the magnetopause between the analytical\n"
+        "function Liu12 and the interest points.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "params : np.ndarray\n"
+        "    Parameters for the Liu12 function of shape (10,).\n"
+        "interest_points : np.ndarray\n"
+        "    Interest point array of shape (`nb_interest_points`, 4).\n"
+        "J_norm : np.ndarray\n"
+        "    Normalised current density matrix of shape (X, Y, Z).\n"
+        "earth_pos : np.ndarray\n"
+        "    Position of the Earth of shape (3,).\n"
+        "dx, dy, dz : Optional[int]\n"
+        "    Used to calculate the gradient. Default value is 0.5.\n"
+        "Returns\n"
+        "-------\n"
+        "float\n"
+        "    ||grad(||J_fit||)|| / ||grad(||J_ip||)||.", 
+        pybind11::arg("params"), pybind11::arg("interest_points"),
+        pybind11::arg("J_norm"), pybind11::arg("earth_pos"),
+        pybind11::arg("dx") = 0.5, pybind11::arg("dy") = 0.5, pybind11::arg("dz") = 0.5
+    );
+
+    m.def("get_grad_J_fit_over_ip_Rolland25", &postprocessing::get_grad_J_fit_over_ip_Rolland25_numpy,
+        "Ratio of the current density gradient along the magnetopause between the analytical\n"
+        "function Rolland25 and the interest points.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "params : np.ndarray\n"
+        "    Parameters for the Rolland25 function of shape (11,).\n"
+        "interest_points : np.ndarray\n"
+        "    Interest point array of shape (`nb_interest_points`, 4).\n"
+        "J_norm : np.ndarray\n"
+        "    Normalised current density matrix of shape (X, Y, Z).\n"
+        "earth_pos : np.ndarray\n"
+        "    Position of the Earth of shape (3,).\n"
+        "dx, dy, dz : Optional[int]\n"
+        "    Used to calculate the gradient. Default value is 0.5.\n"
+        "Returns\n"
+        "-------\n"
+        "float\n"
+        "    ||grad(||J_fit||)|| / ||grad(||J_ip||)||.", 
+        pybind11::arg("params"), pybind11::arg("interest_points"),
+        pybind11::arg("J_norm"), pybind11::arg("earth_pos"),
+        pybind11::arg("dx") = 0.5, pybind11::arg("dy") = 0.5, pybind11::arg("dz") = 0.5
+    );
+
+
+    m.def("interest_point_flatness_checker", &postprocessing::interest_point_flatness_checker_numpy,
+        "Checks in the (earth_pos,x,z) plane at what angle the interest points recede towards +x\n"
+        "past a given threshold. Will also say if the interest points are concave, as an extreme case\n\n"
+        "Parameters\n"
+        "----------\n"
+        "interest_points : np.ndarray\n"
+        "    Interest point array of shape (`nb_interest_points`, 4).\n"
+        "nb_theta, nb_phi : int\n"
+        "    Number of phi and theta.\n"
+        "threshold : Optional[float]\n"
+        "    How many grid cells before the dayside is considered to have receded.\n"
+        "    Default value is 2.0.\n"
+        "phi_radius : Optional[float]\n"
+        "    The angle phi to consider both sides of the (earth_pos,x,z) plane to average.\n"
+        "    out any possible outliers in the plane. Default value is 0.3.\n"
+        "Returns\n"
+        "-------\n"
+        "(float, bool)\n"
+        "    Returns the angle at which the day-side stops being considered flat, and whether it was concave.", 
+        pybind11::arg("interest_points"),
+        pybind11::arg("nb_theta"), pybind11::arg("nb_phi"),
+        pybind11::arg("threshold") = 2.0, pybind11::arg("phi_radius") = 0.3
     );
 }
 
