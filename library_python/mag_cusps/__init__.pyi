@@ -260,7 +260,8 @@ def Shue97(
     np.ndarray
         Radii at these angles.
     """
-  
+
+
 @overload
 def Liu12(
     params: NDArray[np.float64],
@@ -294,7 +295,7 @@ def Liu12(
     ----------
     params : np.ndarray
         Parameters array with shape (10,).
-    theta, phi : np.nbarray
+    theta, phi : np.ndarray
         Angles at which the radii should be calculated. 
     
     Returns
@@ -302,6 +303,53 @@ def Liu12(
     float
         Radii at these angles.
     """
+
+@overload
+def Liu12(
+    params: NDArray[np.float64],
+    theta: NDArray[np.float64], phi: float
+) -> NDArray[np.float64]:
+    """
+    Analytical approximation of the Magnetopause topology as written by Liu in his 2012 paper.
+
+    Parameters
+    ----------
+    params : np.ndarray
+        Parameters array with shape (10,).
+    theta : np.ndarray
+        Angles at which the radii should be calculated. 
+    phi : float
+        Angle at which the radii should be calculated. 
+    
+    Returns
+    -------
+    float
+        Radii at these angles.
+    """
+    
+@overload
+def Liu12(
+    params: NDArray[np.float64],
+    theta: float, phi: NDArray[np.float64]
+) -> NDArray[np.float64]:
+    """
+    Analytical approximation of the Magnetopause topology as written by Liu in his 2012 paper.
+
+    Parameters
+    ----------
+    params : np.ndarray
+        Parameters array with shape (10,).
+    theta : float
+        Angle at which the radii should be calculated. 
+    phi : np.ndarray
+        Angles at which the radii should be calculated. 
+    
+    Returns
+    -------
+    float
+        Radii at these angles.
+    """
+  
     
 @overload
 def Rolland25(
@@ -337,6 +385,52 @@ def Rolland25(
     params : np.ndarray
         Parameters array with shape (11,).
     theta, phi : np.ndarray
+        Angles at which the radii should be calculated. 
+    
+    Returns
+    -------
+    np.ndarray
+        Radii at these angles.
+    """
+ 
+@overload
+def Rolland25(
+    params: NDArray[np.float64],
+    theta: NDArray[np.float64], phi: float
+) -> NDArray[np.float64]:
+    """
+    Analytical approximation of the Magnetopause topology as written by Rolland in his 2025 thesis.
+
+    Parameters
+    ----------
+    params : np.ndarray
+        Parameters array with shape (11,).
+    theta : np.ndarray
+        Angles at which the radii should be calculated. 
+    phi : float
+        Angle at which the radii should be calculated. 
+    
+    Returns
+    -------
+    np.ndarray
+        Radii at these angles.
+    """
+
+@overload
+def Rolland25(
+    params: NDArray[np.float64],
+    theta: float, phi: NDArray[np.float64]
+) -> NDArray[np.float64]:
+    """
+    Analytical approximation of the Magnetopause topology as written by Rolland in his 2025 thesis.
+
+    Parameters
+    ----------
+    params : np.ndarray
+        Parameters array with shape (11,).
+    theta : float
+        Angle at which the radii should be calculated. 
+    phi : np.ndarray
         Angles at which the radii should be calculated. 
     
     Returns

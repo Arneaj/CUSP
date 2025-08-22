@@ -466,6 +466,116 @@ namespace fitting
     }
 
 
+    ndarray<double> Liu12_numpy_arr2( const ndarray<double>& params, double theta, const ndarray<double>& phi )
+    {
+        const double* phi_ptr = phi.data();
+
+        size_t size = phi.size();
+
+        double* ret = new double[size];
+
+        for (size_t i=0; i<size; i++) ret[i] = Liu12_numpy(params, theta, phi_ptr[i]);
+
+        std::vector<size_t> sh(phi.ndim());
+        std::vector<size_t> st(phi.ndim());
+
+        for (int i=0; i<phi.ndim(); i++)
+        {
+            sh[i] = phi.shape(i);
+            st[i] = phi.strides(i);
+        }
+
+        return ndarray<double>(
+            sh,
+            st,
+            ret,
+            pybind11::cast(ret)
+        );
+    }
+
+    ndarray<double> EllipsisPoly_numpy_arr2( const ndarray<double>& params, double theta, const ndarray<double>& phi )
+    {
+        const double* phi_ptr = phi.data();
+
+        size_t size = phi.size();
+
+        double* ret = new double[size];
+
+        for (size_t i=0; i<size; i++) ret[i] = EllipsisPoly_numpy(params, theta, phi_ptr[i]);
+
+        std::vector<size_t> sh(phi.ndim());
+        std::vector<size_t> st(phi.ndim());
+
+        for (int i=0; i<phi.ndim(); i++)
+        {
+            sh[i] = phi.shape(i);
+            st[i] = phi.strides(i);
+        }
+
+        return ndarray<double>(
+            sh,
+            st,
+            ret,
+            pybind11::cast(ret)
+        );
+    }
+
+
+    ndarray<double> Liu12_numpy_arr3( const ndarray<double>& params, const ndarray<double>& theta, double phi )
+    {
+        const double* theta_ptr = theta.data();
+
+        size_t size = theta.size();
+
+        double* ret = new double[size];
+
+        for (size_t i=0; i<size; i++) ret[i] = Liu12_numpy(params, theta_ptr[i], phi);
+
+        std::vector<size_t> sh(theta.ndim());
+        std::vector<size_t> st(theta.ndim());
+
+        for (int i=0; i<theta.ndim(); i++)
+        {
+            sh[i] = theta.shape(i);
+            st[i] = theta.strides(i);
+        }
+
+        return ndarray<double>(
+            sh,
+            st,
+            ret,
+            pybind11::cast(ret)
+        );
+    }
+
+    ndarray<double> EllipsisPoly_numpy_arr3( const ndarray<double>& params, const ndarray<double>& theta, double phi )
+    {
+        const double* theta_ptr = theta.data();
+
+        size_t size = theta.size();
+
+        double* ret = new double[size];
+
+        for (size_t i=0; i<size; i++) ret[i] = EllipsisPoly_numpy(params, theta_ptr[i], phi);
+
+        std::vector<size_t> sh(theta.ndim());
+        std::vector<size_t> st(theta.ndim());
+
+        for (int i=0; i<theta.ndim(); i++)
+        {
+            sh[i] = theta.shape(i);
+            st[i] = theta.strides(i);
+        }
+
+        return ndarray<double>(
+            sh,
+            st,
+            ret,
+            pybind11::cast(ret)
+        );
+    }
+
+
 
     template <typename Residual, int nb_params>
     pybind11::tuple fit_MP_numpy( 
@@ -822,6 +932,78 @@ PYBIND11_MODULE(mag_cusps, m)
         pybind11::arg("theta"), pybind11::arg("phi")
     );
 
+    m.def("Liu12", &fitting::Liu12_numpy_arr2,
+        "Analytical approximation of the Magnetopause topology as written by Liu in his 2012 paper.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "params : np.ndarray\n"
+        "    Parameters array with shape (10,).\n"
+        "theta : float\n"
+        "    Angle at chich the radius should be calculated"
+        "phi : np.ndarray\n"
+        "    Angles at which the radii should be calculated.\n\n"
+        "Returns\n"
+        "-------\n"
+        "np.ndarray\n"
+        "    Radii at this angle.",
+        pybind11::arg("params"),
+        pybind11::arg("theta"), pybind11::arg("phi")
+    );
+
+    m.def("Rolland25", &fitting::EllipsisPoly_numpy_arr2,
+        "Analytical approximation of the Magnetopause topology as written by Rolland in his 2025 thesis.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "params : np.ndarray\n"
+        "    Parameters array with shape (11,).\n"
+        "theta : float\n"
+        "    Angle at chich the radii should be calculated"
+        "phi : np.ndarray\n"
+        "    Angles at which the radii should be calculated.\n\n"
+        "Returns\n"
+        "-------\n"
+        "np.ndarray\n"
+        "    Radii at this angle.",
+        pybind11::arg("params"),
+        pybind11::arg("theta"), pybind11::arg("phi")
+    );
+
+    m.def("Liu12", &fitting::Liu12_numpy_arr3,
+        "Analytical approximation of the Magnetopause topology as written by Liu in his 2012 paper.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "params : np.ndarray\n"
+        "    Parameters array with shape (10,).\n"
+        "theta : np.ndarray\n"
+        "    Angles at which the radii should be calculated"
+        "phi : float\n"
+        "    Angle at which the radii should be calculated.\n\n"
+        "Returns\n"
+        "-------\n"
+        "np.ndarray\n"
+        "    Radii at this angle.",
+        pybind11::arg("params"),
+        pybind11::arg("theta"), pybind11::arg("phi")
+    );
+
+    m.def("Rolland25", &fitting::EllipsisPoly_numpy_arr3,
+        "Analytical approximation of the Magnetopause topology as written by Rolland in his 2025 thesis.\n\n"
+        "Parameters\n"
+        "----------\n"
+        "params : np.ndarray\n"
+        "    Parameters array with shape (11,).\n"
+        "theta : np.ndarray\n"
+        "    Angles at which the radii should be calculated"
+        "phi : float\n"
+        "    Angle at which the radii should be calculated.\n\n"
+        "Returns\n"
+        "-------\n"
+        "np.ndarray\n"
+        "    Radii at this angle.",
+        pybind11::arg("params"),
+        pybind11::arg("theta"), pybind11::arg("phi")
+    );
+
     m.def("Shue97", &fitting::Shue97_numpy_arr,
         "Analytical approximation of the Magnetopause topology as written by Shue in his 1997 paper.\n\n"
         "Parameters\n"
@@ -829,7 +1011,7 @@ PYBIND11_MODULE(mag_cusps, m)
         "params : np.ndarray\n"
         "    Parameters array with shape (2,).\n"
         "theta : np.ndarray\n"
-        "    Angles at which the radius should be calculated.\n\n"
+        "    Angles at which the radii should be calculated.\n\n"
         "Returns\n"
         "-------\n"
         "np.ndarray\n"
@@ -843,9 +1025,9 @@ PYBIND11_MODULE(mag_cusps, m)
         "Parameters\n"
         "----------\n"
         "params : np.ndarray\n"
-        "    Parameters array with shape (2,).\n"
+        "    Parameters array with shape (10,).\n"
         "theta, phi : np.ndarray\n"
-        "    Angles at which the radius should be calculated.\n\n"
+        "    Angles at which the radii should be calculated.\n\n"
         "Returns\n"
         "-------\n"
         "np.ndarray\n"
@@ -859,9 +1041,9 @@ PYBIND11_MODULE(mag_cusps, m)
         "Parameters\n"
         "----------\n"
         "params : np.ndarray\n"
-        "    Parameters array with shape (2,).\n"
+        "    Parameters array with shape (11,).\n"
         "theta, phi : np.ndarray\n"
-        "    Angles at which the radius should be calculated.\n\n"
+        "    Angles at which the radii should be calculated.\n\n"
         "Returns\n"
         "-------\n"
         "np.ndarray\n"
@@ -869,6 +1051,9 @@ PYBIND11_MODULE(mag_cusps, m)
         pybind11::arg("params"),
         pybind11::arg("theta"), pybind11::arg("phi")
     );
+
+    
+
 
     m.def("fit_to_Shue97", &fitting::fit_MP_numpy<Shue97Residual, 2>,
         "Analytical fitting of the Shue97 function to an array of interest points.\n\n"
