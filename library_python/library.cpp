@@ -508,11 +508,13 @@ namespace postprocessing
         std::vector<InterestPoint> _interest_points = casters::ip_vec_from_array(interest_points);
         Matrix _J_norm = casters::matrix_from_array(J_norm);
         Point _earth_pos = casters::point_from_array(earth_pos);
+        std::vector<double> _params(params.size());
+        for (int i=0; i<params.size(); i++) _params[i] = params.data()[i];
 
         double ret = get_grad_J_fit_over_interest_points( 
-            Shue97, params, 
+            Shue97, _params, 
             _interest_points.data(), _interest_points.size(), 
-            _J_norm, _eath_pos, dx, dy, dz );
+            _J_norm, _earth_pos, dx, dy, dz );
 
         _J_norm.del();
 
@@ -529,11 +531,13 @@ namespace postprocessing
         std::vector<InterestPoint> _interest_points = casters::ip_vec_from_array(interest_points);
         Matrix _J_norm = casters::matrix_from_array(J_norm);
         Point _earth_pos = casters::point_from_array(earth_pos);
+        std::vector<double> _params(params.size());
+        for (int i=0; i<params.size(); i++) _params[i] = params.data()[i];
 
         double ret = get_grad_J_fit_over_interest_points( 
-            Liu12, params, 
+            Liu12, _params, 
             _interest_points.data(), _interest_points.size(), 
-            _J_norm, _eath_pos, dx, dy, dz );
+            _J_norm, _earth_pos, dx, dy, dz );
 
         _J_norm.del();
 
@@ -550,11 +554,13 @@ namespace postprocessing
         std::vector<InterestPoint> _interest_points = casters::ip_vec_from_array(interest_points);
         Matrix _J_norm = casters::matrix_from_array(J_norm);
         Point _earth_pos = casters::point_from_array(earth_pos);
+        std::vector<double> _params(params.size());
+        for (int i=0; i<params.size(); i++) _params[i] = params.data()[i];
 
         double ret = get_grad_J_fit_over_interest_points( 
-            EllipsisPoly, params, 
+            EllipsisPoly, _params, 
             _interest_points.data(), _interest_points.size(), 
-            _J_norm, _eath_pos, dx, dy, dz );
+            _J_norm, _earth_pos, dx, dy, dz );
 
         _J_norm.del();
 
@@ -562,7 +568,7 @@ namespace postprocessing
     }
 
     pybind11::tuple interest_point_flatness_checker_numpy( 
-        const ndarray<double>& const interest_points, 
+        const ndarray<double>& interest_points, 
         int nb_theta, int nb_phi, 
         double threshold, double phi_radius )
     {
@@ -889,7 +895,7 @@ PYBIND11_MODULE(mag_cusps, m)
         "-------\n"
         "(np.ndarray, float)\n"
         "    Array of the final parameters after fit and the fitting cost of these parameters.", 
-        pybind11::arg("interest_points"), pybind11::arg("nb_interest_points"),
+        pybind11::arg("interest_points"),
         pybind11::arg("initial_params"),
         pybind11::arg("lowerbound"), pybind11::arg("upperbound"),
         pybind11::arg("radii_of_variation"),
@@ -921,7 +927,7 @@ PYBIND11_MODULE(mag_cusps, m)
         "-------\n"
         "(np.ndarray, float)\n"
         "    Array of the final parameters after fit and the fitting cost of these parameters.", 
-        pybind11::arg("interest_points"), pybind11::arg("nb_interest_points"),
+        pybind11::arg("interest_points"),
         pybind11::arg("initial_params"),
         pybind11::arg("lowerbound"), pybind11::arg("upperbound"),
         pybind11::arg("radii_of_variation"),
@@ -953,7 +959,7 @@ PYBIND11_MODULE(mag_cusps, m)
         "-------\n"
         "(np.ndarray, float)\n"
         "    Array of the final parameters after fit and the fitting cost of these parameters.", 
-        pybind11::arg("interest_points"), pybind11::arg("nb_interest_points"),
+        pybind11::arg("interest_points"),
         pybind11::arg("initial_params"),
         pybind11::arg("lowerbound"), pybind11::arg("upperbound"),
         pybind11::arg("radii_of_variation"),
