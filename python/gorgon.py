@@ -152,7 +152,7 @@ def spherical_to_cartesian( R, theta, phi, earth_pos ):
 
 
 
-def Shue97(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -> np.ndarray | float:
+def Shue97(params: list, theta: np.ndarray | float, phi: np.ndarray | float):
     """
     Expects theta in [-pi;pi) and phi in [0;pi)
     """
@@ -162,7 +162,7 @@ def Shue97(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -> 
     return params[0] * ( 2 / (1+cos_theta) )**( params[1] )
 
 
-def Liu12(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -> np.ndarray | float:
+def Liu12(params: list, theta: np.ndarray | float, phi: np.ndarray | float):
     """
     Expects theta in [0;pi] and phi in [-pi;pi)
     """
@@ -178,7 +178,7 @@ def Liu12(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -> n
     ) * cos_phi*cos_phi
 
 
-def Me25(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -> np.ndarray | float:
+def Me25(params: list, theta: np.ndarray | float, phi: np.ndarray | float):
     """
     Expects theta in [0;pi] and phi in [-pi;pi)
     """
@@ -204,7 +204,7 @@ def sigmoid( x: np.ndarray | float, v: float = 5 ):
 
 
 
-def Me25_cusps(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -> np.ndarray | float:
+def Me25_cusps(params: list, theta: np.ndarray | float, phi: np.ndarray | float):
     """
     Expects theta in [0;pi] and phi in [-pi;pi)
     
@@ -246,7 +246,7 @@ def l_abs(X: np.ndarray | float) -> np.ndarray | float:
     return pos*X - (1-pos)*0.01*X
 
 
-def Me25_leaky(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -> np.ndarray | float:
+def Me25_leaky(params: list, theta: np.ndarray | float, phi: np.ndarray | float):
     """
     Expects theta in [-pi;pi) and phi in [-pi/2;pi/2)
     
@@ -292,7 +292,7 @@ def interpolate(P, Bi):
 
 
 
-def Me25_fix(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -> np.ndarray | float:
+def Me25_fix(params: list, theta: np.ndarray | float, phi: np.ndarray | float):
     """
     Expects theta in [0;pi] and phi in [-pi;pi)
     
@@ -337,7 +337,7 @@ def Me25_fix(params: list, theta: np.ndarray | float, phi: np.ndarray | float) -
 
 
 
-def Me25_poly(params: np.ndarray, theta: np.ndarray | float, phi: np.ndarray | float) -> np.ndarray | float:
+def Me25_poly(params: np.ndarray, theta: np.ndarray | float, phi: np.ndarray | float):
     """
     Expects theta in [0;pi] and phi in [-pi;pi)
     

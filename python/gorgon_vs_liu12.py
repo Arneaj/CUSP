@@ -1,46 +1,110 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
-from gorgon import Me25, import_from, Me25_fix, Me25_cusps
+import mag_cusps as cusps
+from gorgon_tools.magnetosphere import gorgon_import
+import gorgon
+import sys
 
 import sys
 
 if len(sys.argv) < 2:
-    print("No Run path given!")
-    exit(1)
+    print("No Run path given! Defaulting to /rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run1")
+    filepath = "/rds/general/user/avr24/projects/swimmr-sage/live/mheyns/benchmarking/runs/Run1"
+else:
+    filepath = sys.argv[1]
+    
+if len(sys.argv) < 3:
+    print("No Timestep given! Defaulting to 23100")
+    timestep = "23100"
+else: 
+    timestep = sys.argv[2]
+    
+sim = gorgon_import.gorgon_sim(data_dir=filepath)
+index_of_timestep = np.where( sim.times == float(timestep) )[0][0]
+sim.import_timestep(index_of_timestep)
+sim.import_space( filepath + "/MS/x00_Bvec_c-" + timestep + ".pvtr" )
 
-filepath = sys.argv[1]
+Rho: np.ndarray = sim.arr["rho"]
+J: np.ndarray = sim.arr["jvec"]
 
-J_norm = import_from(f"{filepath}/J_norm_processed_real.txt")
-# J_norm = np.linalg.norm( B, axis=3 )
-saturation = 3e-9
+X: np.ndarray = sim.xc; Y: np.ndarray = sim.yc; Z: np.ndarray = sim.zc
+
+extra_precision = 3.0
+
+shape_realx2 = np.array([
+    int( extra_precision * (X[-1]-X[0]) ), 
+    int( extra_precision * (Y[-1]-Y[0]) ), 
+    int( extra_precision * (Z[-1]-Z[0]) ),
+    3
+], dtype=np.int32)
+
+# J_norm = np.linalg.norm( J, axis=3 )
+
+J_processed: np.ndarray = cusps.preprocess( J, X, Y, Z, shape_realx2 )
+Rho_processed: np.ndarray = cusps.preprocess( Rho, X, Y, Z, shape_realx2 )
+
+J_norm_processed: np.ndarray = np.linalg.norm( J_processed, axis=3 )
+
+earth_pos = extra_precision * np.array( [30, 58, 58], dtype=np.float64 )
+
+
+MP = cusps.get_interest_points(
+    J_norm_processed, earth_pos, 
+    Rho_processed,
+    theta_min=0.0, theta_max=np.pi*0.85,  
+    nb_theta=40, nb_phi=90,
+    dx=0.1, dr=0.1,
+    alpha_0_min=0.4, alpha_0_max=0.6, nb_alpha_0=4,
+    r_0_mult_min=1.5, r_0_mult_max=3.0, nb_r_0=20
+)
+
+R25_params, R25_cost = cusps.fit_to_Rolland25( 
+    MP, MP.shape[0],               # r_0                        a_0     a_1     a_2     d_n                     l_n     s_n     d_s                     l_s     s_s     e         
+    initial_params      = np.array([ extra_precision * 10.0,    0.5,    0,      0,      extra_precision * 3,    0.55,   5,      extra_precision * 3,    0.55,   5,      0 ]),
+    lowerbound          = np.array([ extra_precision * 5.0,     0.2,    -1.0,   -1.0,   extra_precision * 0,    0.1,    0.1,    extra_precision * 0,    0.1,    0.1,    -0.8 ]),
+    upperbound          = np.array([ extra_precision * 15.0,    0.8,    1.0,    1.0,    extra_precision * 6,    2,      10,     extra_precision * 6,    2,      10,     0.8 ]),
+    radii_of_variation  = np.array([ extra_precision * 3.0,     0.2,    0.5,    0.5,    extra_precision * 2,    0.1,    3,      extra_precision * 2,    0.1,    3,      0.5 ]),
+)
+
+L12_params, L12_cost = cusps.fit_to_Liu12( 
+    MP, MP.shape[0],               # r_0                        a_0     a_1     a_2     d_n                     l_n     s_n     d_s                     l_s     s_s     e         
+    initial_params      = np.array([ extra_precision * 10.0,    0.5,    0,      0,      extra_precision * 3,    0.55,   5,      extra_precision * 3,    0.55,   5,      0 ]),
+    lowerbound          = np.array([ extra_precision * 5.0,     0.2,    -1.0,   -1.0,   extra_precision * 0,    0.1,    0.1,    extra_precision * 0,    0.1,    0.1,    -0.8 ]),
+    upperbound          = np.array([ extra_precision * 15.0,    0.8,    1.0,    1.0,    extra_precision * 6,    2,      10,     extra_precision * 6,    2,      10,     0.8 ]),
+    radii_of_variation  = np.array([ extra_precision * 3.0,     0.2,    0.5,    0.5,    extra_precision * 2,    0.1,    3,      extra_precision * 2,    0.1,    3,      0.5 ]),
+)
+
+
+
+saturation = 1e-9
+
+
+
+fig, axes = plt.subplots( 1, 2 )
+
+axes[0].set_xlabel(r"$z \in [-58; 58] R_E$", fontsize=12, labelpad=6.0)
+axes[0].set_ylabel(r"$x \in [-30; 128] R_E$", fontsize=12, labelpad=6.0)
+
+axes[1].set_xlabel(r"$z \in [-58; 58] R_E$", fontsize=12, labelpad=6.0)
+axes[1].set_ylabel(r"$x \in [-30; 128] R_E$", fontsize=12, labelpad=6.0)
+
+fig.set_figwidth(9)
+fig.set_figheight(6)
+
+fig.suptitle(r"$||\mathbf{J}|| \in (\mathbf{P}_{\text{Earth}},\hat x, \hat z)$", fontsize=15)
+
+
 
 
 theta = np.linspace(0, np.pi*0.99, 100)
 
-fig, axes = plt.subplots( 1, 2 )
+################################
+# LIU12
+################################
 
 
-earth_pos = [30.75, 58, 58]
-
-############## LIN10
-
-r_0 = 10.4882
-
-alpha_0 = 0.5776
-alpha_1 = 0
-alpha_2 = 0.1404
-e = 0
-
-d = 1.846
-l = 1.1574
-s = 0.3771
-
-with open(f"{filepath}/params.txt", "r") as f:
-    params = np.array( f.readline().split(","), dtype=np.float32 )
-
-r1 = ( Me25( [r_0, alpha_0, alpha_1, alpha_2, d, l, s, d, l, s, e], theta, 0 ) )
-r2 = ( Me25( [r_0, alpha_0, alpha_1, alpha_2, d, l, s, d, l, s, e], theta, np.pi ) )
+r1 = gorgon.Liu12( L12_params, theta, 0 )
+r2 = gorgon.Liu12( L12_params, theta, np.pi )
 
 
 X1 = r1 * np.cos(theta)
@@ -52,22 +116,23 @@ Z2 = r2 * np.sin(theta)
 X = np.concatenate( [X2[::-1], X1] )
 Z = np.concatenate( [-Z2[::-1], Z1] )
 
-X += J_norm.shape[0] - earth_pos[0]
+X += J_norm_processed.shape[0] - earth_pos[0]
 Z += earth_pos[2]
 
 
-axes[0].imshow( J_norm[::-1,58,:], cmap="inferno", vmin=0, vmax=saturation, interpolation="none" )
+axes[0].imshow( J_norm_processed[::-1,int(earth_pos[1]),:], cmap="inferno", vmin=0, vmax=saturation, interpolation="none")
 axes[0].plot( Z, X )
-axes[0].set_title( r"Gorgon data VS Liu12 model" )
-axes[0].set_xlim(0, J_norm.shape[2]-1)
-axes[0].set_ylim(0, J_norm.shape[0]-1)
+axes[0].set_title( f"Liu12 model. Average fitting loss: {L12_cost/MP.shape[0]:.2f}" )
+axes[0].set_xlim(0, J_norm_processed.shape[2]-1)
+axes[0].set_ylim(0, J_norm_processed.shape[0]-1)
+axes[0].set_xticks([])
+axes[0].set_yticks([])
+
 
 ############### ME25
 
-theta = np.linspace(0, np.pi*0.99, 200)
-
-r1 = Me25_fix( params, theta, 0 )
-r2 = Me25_fix( params, theta, np.pi )
+r1 = gorgon.Me25_poly( R25_params, theta, 0 )
+r2 = gorgon.Me25_poly( R25_params, theta, np.pi )
 
 X1 = r1 * np.cos(theta)
 Z1 = r1 * np.sin(theta)
@@ -78,18 +143,22 @@ Z2 = r2 * np.sin(theta)
 X = np.concatenate( [X2[::-1], X1] )
 Z = np.concatenate( [-Z2[::-1], Z1] )
 
-X += J_norm.shape[0] - earth_pos[0]
+X += J_norm_processed.shape[0] - earth_pos[0]
 Z += earth_pos[2]
 
 
-axes[1].imshow( J_norm[::-1,58,:], cmap="inferno", vmin=0, vmax=saturation, interpolation="none" )
+axes[1].imshow( J_norm_processed[::-1,int(earth_pos[1]),:], cmap="inferno", vmin=0, vmax=saturation, interpolation="none")
+# plt.colorbar(J1, ax=axes[1], shrink=1)
 axes[1].plot( Z, X )
-axes[1].set_title( r"Gorgon data VS Me25 model" )
-axes[1].set_xlim(0, J_norm.shape[2]-1)
-axes[1].set_ylim(0, J_norm.shape[0]-1)
+axes[1].set_title( f"New model. Average fitting loss: {R25_cost/MP.shape[0]:.2f}" )
+axes[1].set_xlim(0, J_norm_processed.shape[2]-1)
+axes[1].set_ylim(0, J_norm_processed.shape[0]-1)
+axes[1].set_xticks([])
+axes[1].set_yticks([])
 
 
-fig.suptitle(filepath)
+
+
 
 
 plt.savefig("../images/gorgon_vs_liu12.svg")
