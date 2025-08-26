@@ -608,5 +608,6 @@ __all__ = [
     "fit_to_analytical",
     "get_grad_J_fit_over_ip",
     "interest_point_flatness_checker",
+    "get_delta_r0",
     "analyse"
 ]
