@@ -1,14 +1,13 @@
+from pyclbr import Class
 from random import random
+from typing import Self
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
-from sklearn.linear_model import Ridge, Lasso, LinearRegression
-from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
-from sklearn.decomposition import PCA
+from sklearn.metrics import mean_squared_error, r2_score
 import pandas as pd
-import seaborn as sns
 
 import joblib
 
@@ -40,6 +39,55 @@ def get_batch_rf_uncertainty(model, X):
         uncertainties.append(sample_unc)
     return np.mean(uncertainties)
 
+class MagCUSPS_Model:
+    def define(self, model, scaler):
+        self.model = model
+        self.scaler = scaler
+        
+    def load(self, path: str) -> Self:
+        """
+        Load a pickled MagCUSPS_model object 
+        """
+        self = joblib.load(path)
+        return self
+        
+    def dump(self, path: str):
+        """
+        Pickle an entire MagCUSPS_model object
+        """
+        joblib.dump(self, path)
+        
+    def predict(self, X):
+        """
+        Scale the data with the self.scaler and predict the output with self.model
+        """
+        X_scaled = self.scaler.transform(X)
+        return self.model.predict(X_scaled)
+
+class MagCUSPS_RandomForestModel(MagCUSPS_Model):
+    def define(self, model: RandomForestRegressor, scaler: StandardScaler):
+        self.model = model
+        self.scaler = scaler
+    
+    def get_sample_uncertainty(self, X_sample):
+        """
+        Get uncertainty from Random Forest model
+        """
+        tree_predictions = np.array([tree.predict(X_sample.reshape(1, -1))[0] 
+                                    for tree in model.estimators_])
+        return np.std(tree_predictions) 
+    
+    def get_batch_uncertainty(self, X):
+        """
+        Get uncertainty of entire batch from Random Forest model
+        """
+        uncertainties = []
+        for i in range(len(X)):
+            sample_unc = get_rf_uncertainty(model, X[i])
+            uncertainties.append(sample_unc)
+        return np.mean(uncertainties)
+    
+    
 
 df_inputs = pd.read_csv( "../.result_folder/great_analysis867056.csv", sep="," )
 df_labels = pd.read_csv( "../.result_folder/labels.csv", sep="\t" )
@@ -91,9 +139,9 @@ for i, m in enumerate(models):
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.transform(X_test)
     
-    best_r2 = 0.1
+    best_r2 = 0.7
     best_rmse = None
-    best_uncertainty = 1.0
+    best_uncertainty = 0.5
     
     best_model = None
     best_y_pred = None
@@ -105,11 +153,11 @@ for i, m in enumerate(models):
     
     best_seed = None
     
-    for seed_i in range(10):
-        for n_estim in [50, 65, 85, 100, 125]:
-            for mx_depth in [2, 4, 8, 16]:
-                for min_spl_split in [3, 4, 5]:
-                    for min_spl_leaf in [2, 3, 4]:
+    for seed_i in range(20):
+        for n_estim in [35, 40, 45, 50, 55, 60, 65, 70]:
+            for mx_depth in [2, 4, 6, 8, 10]:
+                for min_spl_split in [2, 3, 4, 5, 6, 7]:
+                    for min_spl_leaf in [1, 2, 3, 4]:
                         seed = int((random() * 100) // 1)
                         
                         model = RandomForestRegressor(
@@ -120,15 +168,17 @@ for i, m in enumerate(models):
                             random_state=seed
                         )
                         
-                        model.fit(X_train, y_train)
-                        y_pred = model.predict(X_test)
+                        model.fit(X_train_scaled, y_train)
+                        y_pred = model.predict(X_test_scaled)
                         
                         this_r2 = r2_score(y_test, y_pred)
                         this_rmse = np.sqrt(mean_squared_error(y_test, y_pred))
                         
-                        this_uncertainty = get_batch_rf_uncertainty(model, X_test)
+                        this_uncertainty = get_batch_rf_uncertainty(model, X_test_scaled)
+                        
+                        if (this_r2 < 0.75): continue
             
-                        if (this_r2/best_r2) * (best_uncertainty/this_uncertainty) > 1.0:
+                        if (this_r2/best_r2) * (best_uncertainty/this_uncertainty)**0.5 > 1.0:
                             best_r2 = this_r2
                             best_rmse = this_rmse
                             best_uncertainty = this_uncertainty
@@ -143,7 +193,14 @@ for i, m in enumerate(models):
                             
                             best_seed = seed
         
-    joblib.dump(best_model, f"evaluation_prediction_model_{m}.pkl")
+    if best_model is not None:
+        mag_cusps_model = MagCUSPS_RandomForestModel()
+        mag_cusps_model.define(best_model, scaler)
+    else:
+        print(f"ERROR: no {m} model was sufficiently good")
+        continue
+        
+    joblib.dump(mag_cusps_model, f"../.result_folder/evaluation_prediction_model_{m}.pkl")
     
     r2[i] = best_r2
     rmse[i] = best_rmse
