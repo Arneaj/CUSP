@@ -5,7 +5,6 @@ import numpy as np
 import joblib
 from numpy.typing import NDArray
 from sklearn.ensemble import RandomForestRegressor
-from typing import Self
 from sklearn.preprocessing import StandardScaler
 
 #########################################
@@ -443,7 +442,7 @@ class MagCUSPS_Model:
         self.model = model
         self.scaler = scaler
         
-    def load(self, path: str) -> Self:
+    def load(self, path: str):
         """
         Load a pickled MagCUSPS_model object 
         """
