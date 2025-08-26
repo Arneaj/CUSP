@@ -9,30 +9,19 @@ from sklearn.decomposition import PCA
 import pandas as pd
 import seaborn as sns
 
+import joblib
 
-db = pd.read_csv( "../result_data.csv" )
-db.replace( "Perfect", 1.0, inplace=True )
-db.replace( "Ok", 0.66, inplace=True )
-db.replace( "Eh", 0.33, inplace=True )
-db.replace( "Bad", 0.0, inplace=True )
 
-db.drop(columns=db.columns[0:4], axis=1, inplace=True)
-db.drop("V_y", axis=1, inplace=True)
-db.drop("V_z", axis=1, inplace=True)
-db.drop("B_x", axis=1, inplace=True)
-db.drop("B_y", axis=1, inplace=True)
 
-data = db.to_numpy( np.float64 )
-names = db.columns
+# input_data = df_inputs.to_numpy( np.float64 )
+# input_names = df_inputs.columns
 
-inputs = data[:,3:]
-outputs = data[:,2]
+# inputs = input_data[:,3:]
+# outputs = input_data[:,2]
 
-input_names = np.array( names[3:] )
-output_names = np.array( names[0] )
+# input_names = np.array( input_names[3:] )
+# output_names = np.array( input_names[0] )
 
-print( "inputs:", input_names )
-print( "outputs:", output_names )
 
 def comprehensive_regression_analysis(X, y, feature_names):
     """
@@ -40,7 +29,7 @@ def comprehensive_regression_analysis(X, y, feature_names):
     """
     # Split data
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.3, random_state=42
+        X, y, test_size=0.5
     )
     
     # Scale features
@@ -53,8 +42,13 @@ def comprehensive_regression_analysis(X, y, feature_names):
         'Linear Regression': LinearRegression(),
         'Ridge Regression': Ridge(alpha=1.0),
         'Lasso Regression': Lasso(alpha=0.1),
-        'Random Forest': RandomForestRegressor(n_estimators=100, random_state=42),
-        'Gradient Boosting': GradientBoostingRegressor(n_estimators=100, random_state=42)
+        'Random Forest': RandomForestRegressor(
+            n_estimators=500,        # Up from 100 - much better uncertainty
+            max_depth=4,             # Prevent individual tree overfitting  
+            # min_samples_split=5,     # At least 5 samples to split
+            # min_samples_leaf=2,      # At least 2 samples per leaf
+        ),
+        'Gradient Boosting': GradientBoostingRegressor(n_estimators=100)
     }
     
     results = {}
@@ -86,7 +80,7 @@ def comprehensive_regression_analysis(X, y, feature_names):
         
         print(f"{name:<20} {r2:.3f}      {rmse:.3f}      {mae:.3f}")
     
-    return results, X_train, X_test, y_train, y_test, X_train_scaled, X_test_scaled, scaler
+    return results, X_train, X_test, y_train, y_test, X_train_scaled, X_test_scaled, scaler, models
 
 def analyze_feature_importance(results, feature_names, X_train, X_train_scaled):
     """
@@ -125,7 +119,7 @@ def analyze_feature_importance(results, feature_names, X_train, X_train_scaled):
     
     return importance_df
 
-def create_visualizations(results, y_test, importance_df, X, y):
+def create_visualizations(results, y_test, importance_df, X, y, m):
     """
     Create comprehensive visualizations
     """
@@ -182,80 +176,121 @@ def create_visualizations(results, y_test, importance_df, X, y):
     axes[1, 2].tick_params(axis='x', rotation=45)
     
     plt.tight_layout()
-    fig.savefig("../images/data_analysis.svg")
+    fig.savefig(f"../images/data_analysis_{m}.svg")
 
-def pca_for_regression(X, y, feature_names):
+# def pca_for_regression(X, y, feature_names):
+#     """
+#     Use PCA to see if we can predict quality with fewer dimensions
+#     """
+#     print(f"\n=== PCA FOR DIMENSIONALITY REDUCTION ===")
+    
+#     scaler = StandardScaler()
+#     X_scaled = scaler.fit_transform(X)
+    
+#     # Try different numbers of components
+#     n_components_list = [2, 3, 5, 8, 10]
+#     pca_results = {}
+    
+#     for n_comp in n_components_list:
+#         pca = PCA(n_components=n_comp)
+#         X_pca = pca.fit_transform(X_scaled)
+        
+#         # Train model on PCA features
+#         X_train_pca, X_test_pca, y_train, y_test = train_test_split(
+#             X_pca, y, test_size=0.3
+#         )
+        
+#         rf = RandomForestRegressor(n_estimators=100)
+#         rf.fit(X_train_pca, y_train)
+#         y_pred = rf.predict(X_test_pca)
+        
+#         r2 = r2_score(y_test, y_pred)
+#         explained_var = np.sum(pca.explained_variance_ratio_)
+        
+#         pca_results[n_comp] = {
+#             'r2': r2,
+#             'explained_variance': explained_var,
+#             'pca': pca
+#         }
+        
+#         print(f"{n_comp} components: R² = {r2:.3f}, "
+#               f"Explains {explained_var:.1%} of feature variance")
+    
+#     return pca_results
+
+def get_rf_uncertainty(model, X_sample):
     """
-    Use PCA to see if we can predict quality with fewer dimensions
+    FASTEST: Get uncertainty from Random Forest 
+    (if you saved your Random Forest model)
     """
-    print(f"\n=== PCA FOR DIMENSIONALITY REDUCTION ===")
+    if not hasattr(model, 'estimators_'):
+        raise ValueError("Model must be RandomForestRegressor")
     
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X)
+    # Get predictions from all trees
+    tree_predictions = np.array([tree.predict(X_sample.reshape(1, -1))[0] 
+                                for tree in model.estimators_])
     
-    # Try different numbers of components
-    n_components_list = [2, 3, 5, 8, 10]
-    pca_results = {}
+    mean_pred = np.mean(tree_predictions)
+    uncertainty = np.std(tree_predictions)  # Standard deviation as uncertainty
     
-    for n_comp in n_components_list:
-        pca = PCA(n_components=n_comp)
-        X_pca = pca.fit_transform(X_scaled)
-        
-        # Train model on PCA features
-        X_train_pca, X_test_pca, y_train, y_test = train_test_split(
-            X_pca, y, test_size=0.3, random_state=42
-        )
-        
-        rf = RandomForestRegressor(n_estimators=100, random_state=42)
-        rf.fit(X_train_pca, y_train)
-        y_pred = rf.predict(X_test_pca)
-        
-        r2 = r2_score(y_test, y_pred)
-        explained_var = np.sum(pca.explained_variance_ratio_)
-        
-        pca_results[n_comp] = {
-            'r2': r2,
-            'explained_variance': explained_var,
-            'pca': pca
-        }
-        
-        print(f"{n_comp} components: R² = {r2:.3f}, "
-              f"Explains {explained_var:.1%} of feature variance")
+    return mean_pred, uncertainty
+
+df_inputs = pd.read_csv( "../.result_folder/great_analysis867056.csv", sep="," )
+df_labels = pd.read_csv( "../.result_folder/labels.csv", sep="\t" )
+
+combined_df = pd.merge( df_inputs, df_labels, 
+                        left_on=['run', 'timestep'], 
+                        right_on=['Run_nb', 'Time'], 
+                        how='inner')
+
+filtered_df = combined_df#[~combined_df['Model_result'].isin(['Eh', 'Ok'])]
+
+value_map = {'Perfect': 1.0, 'Ok': 0.66, 'Eh': 0.33, 'Bad': 0.0}
+filtered_df['Model_result'] = filtered_df['Model_result'].map(value_map)
+
+labels_df = filtered_df.filter(items=['Model_result'])
+labels = labels_df.to_numpy( np.float64 ).ravel()
+
+for m in ["Shue97", "Liu12", "Rolland25"]:
+    selected_columns = [col for col in filtered_df.columns 
+                            if (
+                            col == 'max_theta_in_threshold' 
+                            or col == "is_concave"
+                            or m in col
+                            )
+                            and "_time_taken_s" not in col
+                        ]
+    inputs_df = filtered_df[selected_columns]
     
-    return pca_results
+    inputs = inputs_df.to_numpy( np.float64 )
+    input_names = inputs_df.columns
 
-# Run the complete analysis
-print("🔬 PHYSICS SIMULATION QUALITY PREDICTION ANALYSIS")
-print("=" * 60)
 
-# Main regression analysis
-results, X_train, X_test, y_train, y_test, X_train_scaled, X_test_scaled, scaler = \
-    comprehensive_regression_analysis(inputs, outputs, input_names)
+    # Run the complete analysis
+    print("🔬 PHYSICS SIMULATION QUALITY PREDICTION ANALYSIS")
+    print("=" * 60)
 
-# Feature importance analysis
-importance_df = analyze_feature_importance(results, input_names, X_train, X_train_scaled)
+    # Main regression analysis
+    results, X_train, X_test, y_train, y_test, X_train_scaled, X_test_scaled, scaler, models = \
+        comprehensive_regression_analysis(inputs, labels, input_names)
 
-# Create visualizations
-create_visualizations(results, y_test, importance_df, inputs, outputs)
+    # Feature importance analysis
+    importance_df = analyze_feature_importance(results, input_names, X_train, X_train_scaled)
 
-# PCA analysis for dimensionality reduction
-pca_results = pca_for_regression(inputs, outputs, input_names)
+    # Create visualizations
+    create_visualizations(results, y_test, importance_df, inputs, labels, m)
 
-# Practical recommendations
-print(f"\n=== PRACTICAL RECOMMENDATIONS ===")
-best_model = max(results.keys(), key=lambda k: results[k]['r2'])
-best_r2 = results[best_model]['r2']
+    # Practical recommendations
+    print(f"\n=== PRACTICAL RECOMMENDATIONS ===")
+    best_model = max(results.keys(), key=lambda k: results[k]['r2'])
+    best_r2 = results[best_model]['r2']
 
-print(f"✅ Best model: {best_model} (R² = {best_r2:.3f})")
-print(f"✅ Top 3 most important features:")
-for i, row in importance_df.head(3).iterrows():
-    print(f"   {i+1}. {row['Feature']} (importance: {row['Average']:.3f})")
+    print(f"Best model: {best_model} (R² = {best_r2:.3f})")
+    print(f"Top 3 most important features:")
+    for i, row in importance_df.head(3).iterrows():
+        print(f"   {i+1}. {row['Feature']} (importance: {row['Average']:.3f})")
 
-print(f"✅ You could potentially use just 5 PCA components and still get")
-print(f"   R² = {pca_results[5]['r2']:.3f} while explaining")
-print(f"   {pca_results[5]['explained_variance']:.1%} of the feature variance")
-
-print(f"\n💡 NEXT STEPS:")
-print(f"   • Focus on improving the top {len(importance_df[importance_df['Average'] > 0.1])} most important features")
-print(f"   • Consider feature engineering (interactions between top features)")
-print(f"   • Collect more data if R² < 0.8 for your application needs")
+    joblib.dump(models[best_model], f"evaluation_prediction_model_{m}.pkl")
+    
+    print("\n" * 3)        
+        

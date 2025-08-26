@@ -39,9 +39,18 @@ make
 
 ### Python library
 
+Can be installed on any machine without needing to pull the repo:
+
 ```bash
-pip install mag_cusps
+pip install mag-cusps
 ```
+
+Which can then be imported in python with:
+
+```python
+import mag_cusps as cusps
+```
+
 
 ## How to use
 

@@ -212,7 +212,7 @@ set(SOURCES
 
 # Create the module
 pybind11_add_module(
-    mag_cusps 
+    _mag_cusps 
     library.cpp
     ${SOURCES}
 )
@@ -236,16 +236,16 @@ endif()
 #     list(APPEND LINK_LIBRARIES OpenMP::OpenMP_CXX)
 # endif()
 
-target_link_libraries(mag_cusps PRIVATE ${LINK_LIBRARIES})
+target_link_libraries(_mag_cusps PRIVATE ${LINK_LIBRARIES})
 
 # Get source directories for include paths
 FetchContent_GetProperties(eigen SOURCE_DIR eigen_source_dir)
 # FetchContent_GetProperties(absl SOURCE_DIR absl_source_dir)
 FetchContent_GetProperties(ceres SOURCE_DIR ceres_source_dir BINARY_DIR ceres_binary_dir)
 
-target_compile_definitions(mag_cusps PUBLIC USE_CUSP_HEADERS=1)
+target_compile_definitions(_mag_cusps PUBLIC USE_CUSP_HEADERS=1)
 # Include directories
-target_include_directories(mag_cusps PRIVATE
+target_include_directories(_mag_cusps PRIVATE
     ${CUSP_HEADERS}
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     # ${NUMPY_INCLUDE_DIR}
@@ -256,24 +256,24 @@ target_include_directories(mag_cusps PRIVATE
 )
 
 # Compiler-specific options
-target_compile_definitions(mag_cusps PRIVATE 
+target_compile_definitions(_mag_cusps PRIVATE 
     VERSION_INFO=${EXAMPLE_VERSION_INFO}
 )
 
 # Add warning flags
-target_compile_options(mag_cusps PRIVATE -Wall -Wextra)
+target_compile_options(_mag_cusps PRIVATE -Wall -Wextra)
 
 # Set properties for the module
-set_target_properties(mag_cusps PROPERTIES
+set_target_properties(_mag_cusps PROPERTIES
     CXX_VISIBILITY_PRESET "hidden"
     VISIBILITY_INLINES_HIDDEN YES
 )
 
 if (UNIX)
-    target_link_options(mag_cusps PUBLIC -pthread)
+    target_link_options(_mag_cusps PUBLIC -pthread)
 endif()
 
-install(TARGETS mag_cusps
-    LIBRARY DESTINATION .
-    RUNTIME DESTINATION .
+install(TARGETS _mag_cusps
+    LIBRARY DESTINATION mag_cusps
+    RUNTIME DESTINATION mag_cusps
 )

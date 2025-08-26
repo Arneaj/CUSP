@@ -2,7 +2,7 @@
 requires = [
   "scikit-build-core[pyproject]", 
   "pybind11[global]",
-  "numpy",
+  "numpy"
 ]
 build-backend = "scikit_build_core.build"
 
@@ -20,6 +20,8 @@ classifiers = [
 requires-python = ">=3.6"
 dependencies = [
     "numpy",
+    "joblib",
+    "scikit-learn"
 ]
 
 [project.urls]
@@ -33,7 +35,7 @@ cmake.build-type = "Release"
 cmake.args = [
     "-DCMAKE_BUILD_PARALLEL_LEVEL=2",
 ]
-wheel.packages = ["mag_cusp"]
+wheel.packages = ["mag_cusps"]
 
 [tool.pybind11.cmake]
 parallel = true
