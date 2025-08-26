@@ -3,10 +3,14 @@ from . import _mag_cusps as _mc
 
 import numpy as np
 import joblib
-import numpy as np
 from numpy.typing import NDArray
+from sklearn.ensemble import RandomForestRegressor
+from typing import Self
+from sklearn.preprocessing import StandardScaler
 
-
+#########################################
+# C++ wheels 
+#########################################
 
 def preprocess(
     mat: NDArray[np.float64],
@@ -427,6 +431,60 @@ def interest_point_flatness_checker(
         Returns the angle at which the day-side stops being considered flat, and whether it was concave.
     """
     return _mc.interest_point_flatness_checker(interest_points, nb_theta, nb_phi, threshold, phi_radius)
+
+
+#########################################
+# Python additional features
+#########################################
+
+
+class MagCUSPS_Model:
+    def define(self, model, scaler):
+        self.model = model
+        self.scaler = scaler
+        
+    def load(self, path: str) -> Self:
+        """
+        Load a pickled MagCUSPS_model object 
+        """
+        self = joblib.load(path)
+        return self
+        
+    def dump(self, path: str):
+        """
+        Pickle an entire MagCUSPS_model object
+        """
+        joblib.dump(self, path)
+        
+    def predict(self, X):
+        """
+        Scale the data with the self.scaler and predict the output with self.model
+        """
+        X_scaled = self.scaler.transform(X)
+        return self.model.predict(X_scaled)
+
+class MagCUSPS_RandomForestModel(MagCUSPS_Model):
+    def define(self, model: RandomForestRegressor, scaler: StandardScaler):
+        self.model = model
+        self.scaler = scaler
+    
+    def get_sample_uncertainty(self, X_sample):
+        """
+        Get uncertainty from Random Forest model
+        """
+        tree_predictions = np.array([tree.predict(X_sample.reshape(1, -1))[0] 
+                                    for tree in self.model.estimators_])
+        return np.std(tree_predictions) 
+    
+    def get_batch_uncertainty(self, X):
+        """
+        Get uncertainty of entire batch from Random Forest model
+        """
+        uncertainties = []
+        for i in range(len(X)):
+            sample_unc = self.get_sample_uncertainty(X[i])
+            uncertainties.append(sample_unc)
+        return np.mean(uncertainties)
 
 
 
