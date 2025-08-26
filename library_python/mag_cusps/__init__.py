@@ -436,6 +436,34 @@ def interest_point_flatness_checker(
     return _mc.interest_point_flatness_checker(interest_points, nb_theta, nb_phi, threshold, phi_radius)
 
 
+def get_delta_r0(
+    r0: float,
+    interest_points: NDArray[np.float64],
+    nb_theta: int, nb_phi: int,
+    theta_used: float = 0.2
+) -> float:
+    """
+    Return r_0 from the parameters minus the average distance between the Earth 
+    and the dayside weighed interest points.
+    
+    Parameters
+    ----------
+    r0 : float
+        The standoff distance obtained from the fitting.
+    interest_points : np.ndarray
+        Interest point array of shape (`nb_interest_points`, 4).
+    nb_theta, nb_phi : int
+        Number of phi and theta used for the interest points search.
+    theta_used : Optional[float]
+        The theta used to average the distance between the Earth and the dayside interest points 
+
+    Returns
+    -------
+    np.ndarray
+        r0 - sum( interest_points.radius * interest_points.weights ) / sum(interest_points.weights)
+    """
+    return _mc.get_delta_r0(r0, interest_points, nb_theta, nb_phi, theta_used)
+
 #########################################
 # Python additional features
 #########################################
@@ -517,7 +545,8 @@ def analyse(
     params: NDArray[np.float64], fit_loss: float,
     analytical_function: str = "Rolland25",
     threshold: float = 2.0, phi_radius: float = 0.3,
-    dx: float = 0.5, dy: float = 0.5, dz: float = 0.5
+    dx: float = 0.5, dy: float = 0.5, dz: float = 0.5,
+    theta_used: float = 0.2
 ) -> NDArray[np.float64] | None:
     """
     Provide the exact parameters needed to use the MagCUSPS_Model to predict the quality
@@ -545,6 +574,8 @@ def analyse(
         out any possible outliers in the plane. Default value is 0.3.
     dx, dy, dz : Optional[int]
         Used to calculate the gradient. Default value is 0.5.
+    theta_used : Optional[float]
+        The theta used to average the distance between the Earth and the dayside interest points 
 
     Returns
     -------
@@ -556,7 +587,7 @@ def analyse(
         return None
     
     max_theta_in_threshold, is_concave = interest_point_flatness_checker(interest_points, nb_theta, nb_phi, threshold, phi_radius)
-    delta_r0 = 0
+    delta_r0 = get_delta_r0(params[0], interest_points, nb_theta, nb_phi, theta_used)
     
     return np.append( params, [fit_loss, grad_J_fit_over_ip, delta_r0, max_theta_in_threshold, is_concave] )
     
