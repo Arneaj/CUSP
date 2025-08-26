@@ -274,6 +274,6 @@ if (UNIX)
 endif()
 
 install(TARGETS _mag_cusps
-    LIBRARY DESTINATION .
-    RUNTIME DESTINATION .
+    LIBRARY DESTINATION mag_cusps
+    RUNTIME DESTINATION mag_cusps
 )

@@ -3,7 +3,6 @@ from . import _mag_cusps as _mc
 
 import numpy as np
 import joblib
-from typing import Optional, overload
 import numpy as np
 from numpy.typing import NDArray
 
@@ -116,7 +115,7 @@ def get_interest_points(
     r_0_mult_min: float,
     r_0_mult_max: float,
     nb_r_0: int,
-    avg_std_dev: Optional[float] = None
+    avg_std_dev: float | None = None
 ) -> NDArray[np.float64]:
     """
     Calculate interest points from inputs.
@@ -218,7 +217,7 @@ def process_points(
 def Shue97(
     params: NDArray[np.float64], 
     theta: float | NDArray[np.float64]
-) -> float | NDArray[np.float64]:
+) -> float | NDArray[np.float64] | None:
     """
     Analytical approximation of the Magnetopause topology as written by Shue in his 1997 paper.
 
@@ -234,13 +233,16 @@ def Shue97(
     float or np.ndarray
         Radius at this angle.
     """
+    if params.size != 2:
+        print("ERROR: there should be 2 parameters for the Shue97 function")
+        return None
     return _mc.Shue97(params, theta)
 
 def Liu12(
     params: NDArray[np.float64], 
     theta: float | NDArray[np.float64], 
     phi: float | NDArray[np.float64]
-) -> float | NDArray[np.float64]:
+) -> float | NDArray[np.float64] | None:
     """
     Analytical approximation of the Magnetopause topology as written by Liu in his 2012 paper.
 
@@ -256,13 +258,16 @@ def Liu12(
     float or np.ndarray
         Radius at this angle.
     """
+    if params.size != 10:
+        print("ERROR: there should be 10 parameters for the Liu12 function")
+        return None
     return _mc.Liu12(params, theta, phi) 
     
 def Rolland25(
     params: NDArray[np.float64], 
     theta: float | NDArray[np.float64], 
     phi: float | NDArray[np.float64] 
-) -> float | NDArray[np.float64]:
+) -> float | NDArray[np.float64] | None:
     """
     Analytical approximation of the Magnetopause topology as written by Rolland in his 2025 thesis.
 
@@ -278,32 +283,37 @@ def Rolland25(
     float or np.ndarray
         Radius at this angle.
     """
+    if params.size != 11:
+        print("ERROR: there should be 11 parameters for the Rolland25 function")
+        return None
     return _mc.Rolland25(params, theta, phi)
 
 
-def fit_to_Shue97(
+def fit_to_analytical(
     interest_points: NDArray[np.float64],
     initial_params: NDArray[np.float64],
     lowerbound: NDArray[np.float64],
     upperbound: NDArray[np.float64],
     radii_of_variation: NDArray[np.float64],
+    analytical_function: str = "Rolland25",
     nb_runs: int = 10,
     max_nb_iterations_per_run: int = 50,
-) -> tuple[NDArray[np.float64], float]:
+) -> tuple[NDArray[np.float64], float] | None:
     """
-    Analytical fitting of the Shue97 function to an array of interest points.
+    Analytical fitting of the Shue97, Liu12 or Rolland25 analytical functions 
+    to an array of interest points. N equals respectively 2, 10 and 11.
 
     Parameters
     ----------
     interest_points : np.ndarray
         Interest point array to fit to of shape (`nb_interest_points`, 4).
     initial_parameters : np.ndarray
-        Parameters array with shape (2,).
+        Parameters array with shape (N,).
     lowerbound, upperbound : np.ndarray
-        Parameters array with shape (2,) corresponding to the lower and upper bounds
+        Parameters array with shape (N,) corresponding to the lower and upper bounds
         that the parameters can take during fitting.
     radii_of_variation : np.ndarray
-        Parameters array with shape (2,) corresponding to the maximum distance each 
+        Parameters array with shape (N,) corresponding to the maximum distance each 
         of the parameters will randomly move away for the initial_params at the 
         beginning of a run.
     nb_runs : int
@@ -318,105 +328,44 @@ def fit_to_Shue97(
     (np.ndarray, float)
         Array of the final parameters after fit and the fitting cost of these parameters. 
     """
-    return _mc.fit_to_Shue97(interest_points, initial_params, lowerbound, upperbound, 
-                             radii_of_variation, nb_runs, max_nb_iterations_per_run)
-
-def fit_to_Liu12(
-    interest_points: NDArray[np.float64],
-    initial_params: NDArray[np.float64],
-    lowerbound: NDArray[np.float64],
-    upperbound: NDArray[np.float64],
-    radii_of_variation: NDArray[np.float64],
-    nb_runs: int = 10,
-    max_nb_iterations_per_run: int = 50,
-) -> tuple[NDArray[np.float64], float]:
-    """
-    Analytical fitting of the Liu12 function to an array of interest points.
-
-    Parameters
-    ----------
-    interest_points : np.ndarray
-        Interest point array to fit to of shape (`nb_interest_points`, 4).
-    initial_parameters : np.ndarray
-        Parameters array with shape (10,).
-    lowerbound, upperbound : np.ndarray
-        Parameters array with shape (10,) corresponding to the lower and upper bounds
-        that the parameters can take during fitting.
-    radii_of_variation : np.ndarray
-        Parameters array with shape (10,) corresponding to the maximum distance each 
-        of the parameters will randomly move away for the initial_params at the 
-        beginning of a run.
-    nb_runs : int
-        Number of times the fitting algorithm will start again with other randomly 
-        selected initial parameters.
-    max_nb_iterations_per_run : int
-        Maximum number of iterations the fitting algorithm will do before stopping
-        even if it hasn't converged.
-    
-    Returns
-    -------
-    float
-        Array of the final parameters after fit and the fitting cost of these parameters. 
-    """
-    return _mc.fit_to_Liu12(interest_points, initial_params, lowerbound, upperbound, 
-                             radii_of_variation, nb_runs, max_nb_iterations_per_run)
-
-def fit_to_Rolland25(
-    interest_points: NDArray[np.float64],
-    initial_params: NDArray[np.float64],
-    lowerbound: NDArray[np.float64],
-    upperbound: NDArray[np.float64],
-    radii_of_variation: NDArray[np.float64],
-    nb_runs: int = 10,
-    max_nb_iterations_per_run: int = 50,
-) -> tuple[NDArray[np.float64], float]:
-    """
-    Analytical fitting of the Rolland25 function to an array of interest points.
-
-    Parameters
-    ----------
-    interest_points : np.ndarray
-        Interest point array to fit to of shape (`nb_interest_points`, 4).
-    initial_parameters : np.ndarray
-        Parameters array with shape (11,).
-    lowerbound, upperbound : np.ndarray
-        Parameters array with shape (11,) corresponding to the lower and upper bounds
-        that the parameters can take during fitting.
-    radii_of_variation : np.ndarray
-        Parameters array with shape (11,) corresponding to the maximum distance each 
-        of the parameters will randomly move away for the initial_params at the 
-        beginning of a run.
-    nb_runs : int
-        Number of times the fitting algorithm will start again with other randomly 
-        selected initial parameters.
-    max_nb_iterations_per_run : int
-        Maximum number of iterations the fitting algorithm will do before stopping
-        even if it hasn't converged.
-    
-    Returns
-    -------
-    float
-        Array of the final parameters after fit and the fitting cost of these parameters. 
-    """
-    return _mc.fit_to_Rolland25(interest_points, initial_params, lowerbound, upperbound, 
+    if analytical_function == "Shue97":
+        if initial_params.size != 2:
+            print("ERROR: there should be 2 parameters for the Shue97 function")
+            return None
+        return _mc.fit_to_Shue97(interest_points, initial_params, lowerbound, upperbound, 
+                                 radii_of_variation, nb_runs, max_nb_iterations_per_run)
+    if analytical_function == "Liu12":
+        if initial_params.size != 10:
+            print("ERROR: there should be 10 parameters for the Liu12 function")
+            return None
+        return _mc.fit_to_Liu12(interest_points, initial_params, lowerbound, upperbound, 
                                 radii_of_variation, nb_runs, max_nb_iterations_per_run)
+    if analytical_function == "Rolland25":
+        if initial_params.size != 11:
+            print("ERROR: there should be 11 parameters for the Rolland25 function")
+            return None
+        return _mc.fit_to_Rolland25(interest_points, initial_params, lowerbound, upperbound, 
+                                    radii_of_variation, nb_runs, max_nb_iterations_per_run)
+    print("ERROR: analytical function should be 'Shue97', 'Liu12' or 'Rolland25'")
+    return None
 
 
-
-def get_grad_J_fit_over_ip_Shue97(
+def get_grad_J_fit_over_ip(
     params: NDArray[np.float64],
     interest_points: NDArray[np.float64],
     J_norm: NDArray[np.float64], earth_pos: NDArray[np.float64],
-    dx: float, dy: float, dz: float
-) -> float:
+    analytical_function: str = "Rolland25",
+    dx: float = 0.5, dy: float = 0.5, dz: float = 0.5
+) -> float | None:
     """
-    Ratio of the current density gradient along the magnetopause between the analytical
-    function Shue97 and the interest points.
+    Ratio of the current density gradient along the magnetopause between the 
+    Shue97, Liu12 or Rolland25 analytical functions and the interest points. 
+    N equals respectively 2, 10 and 11.
     
     Parameters
     ----------
     params : np.ndarray
-        Parameters for the Shue97 function of shape (2,).
+        Parameters for the Shue97 function of shape (N,).
     interest_points : np.ndarray
         Interest point array of shape (`nb_interest_points`, 4).
     J_norm : np.ndarray
@@ -431,73 +380,29 @@ def get_grad_J_fit_over_ip_Shue97(
     float
         ||grad(||J_fit||)|| / ||grad(||J_ip||)||.
     """
-    return _mc.get_grad_J_fit_over_ip_Shue97(params, interest_points, J_norm, earth_pos, dx, dy, dz)
-    
-def get_grad_J_fit_over_ip_Liu12(
-    params: NDArray[np.float64],
-    interest_points: NDArray[np.float64],
-    J_norm: NDArray[np.float64], earth_pos: NDArray[np.float64],
-    dx: float, dy: float, dz: float
-) -> float:
-    """
-    Ratio of the current density gradient along the magnetopause between the analytical
-    function Liu12 and the interest points.
-    
-    Parameters
-    ----------
-    params : np.ndarray
-        Parameters for the Liu12 function of shape (10,).
-    interest_points : np.ndarray
-        Interest point array of shape (`nb_interest_points`, 4).
-    J_norm : np.ndarray
-        Normalised current density matrix of shape (X, Y, Z).
-    earth_pos : np.ndarray
-        Position of the Earth of shape (3,).
-    dx, dy, dz : Optional[int]
-        Used to calculate the gradient. Default value is 0.5.
-    
-    Returns
-    -------
-    float
-        ||grad(||J_fit||)|| / ||grad(||J_ip||)||.
-    """
-    return _mc.get_grad_J_fit_over_ip_Liu12(params, interest_points, J_norm, earth_pos, dx, dy, dz)
-    
-def get_grad_J_fit_over_ip_Rolland25(
-    params: NDArray[np.float64],
-    interest_points: NDArray[np.float64],
-    J_norm: NDArray[np.float64], earth_pos: NDArray[np.float64],
-    dx: float, dy: float, dz: float
-) -> float:
-    """
-    Ratio of the current density gradient along the magnetopause between the analytical
-    function Rolland25 and the interest points.
-    
-    Parameters
-    ----------
-    params : np.ndarray
-        Parameters for the Rolland25 function of shape (11,).
-    interest_points : np.ndarray
-        Interest point array of shape (`nb_interest_points`, 4).
-    J_norm : np.ndarray
-        Normalised current density matrix of shape (X, Y, Z).
-    earth_pos : np.ndarray
-        Position of the Earth of shape (3,).
-    dx, dy, dz : Optional[int]
-        Used to calculate the gradient. Default value is 0.5.
-    
-    Returns
-    -------
-    float
-        ||grad(||J_fit||)|| / ||grad(||J_ip||)||.
-    """
-    return _mc.get_grad_J_fit_over_ip_Rolland25(params, interest_points, J_norm, earth_pos, dx, dy, dz)
+    if analytical_function == "Shue97":
+        if params.size != 2:
+            print("ERROR: there should be 2 parameters for the Shue97 function")
+            return None
+        return _mc.get_grad_J_fit_over_ip_Shue97(params, interest_points, J_norm, earth_pos, dx, dy, dz)
+    if analytical_function == "Liu12":
+        if params.size != 10:
+            print("ERROR: there should be 10 parameters for the Liu12 function")
+            return None
+        return _mc.get_grad_J_fit_over_ip_Liu12(params, interest_points, J_norm, earth_pos, dx, dy, dz)
+    if analytical_function == "Rolland25":
+        if params.size != 11:
+            print("ERROR: there should be 11 parameters for the Rolland25 function")
+            return None
+        return _mc.get_grad_J_fit_over_ip_Rolland25(params, interest_points, J_norm, earth_pos, dx, dy, dz)
+    print("ERROR: analytical function should be 'Shue97', 'Liu12' or 'Rolland25'")
+    return None
 
 
 def interest_point_flatness_checker(
     interest_points: NDArray[np.float64],
     nb_theta: int, nb_phi: int,
-    threshold: Optional[float] = None, phi_radius: Optional[float] = None
+    threshold: float | None = None, phi_radius: float | None = None
 ) -> tuple[float, bool]:
     """
     Checks in the (earth_pos,x,z) plane at what angle the interest points recede towards +x
@@ -573,12 +478,8 @@ __all__ = [
     "Shue97",
     "Liu12",
     "Rolland25",
-    "fit_to_Shue97",
-    "fit_to_Liu12",
-    "fit_to_Rolland25",
-    "get_grad_J_fit_over_ip_Shue97",
-    "get_grad_J_fit_over_ip_Liu12",
-    "get_grad_J_fit_over_ip_Rolland25",
+    "fit_to_analytical",
+    "get_grad_J_fit_over_ip",
     "interest_point_flatness_checker",
     "analyse",
     "predict_with_model",
