@@ -33,7 +33,7 @@ cmake.build-type = "Release"
 cmake.args = [
     "-DCMAKE_BUILD_PARALLEL_LEVEL=2",
 ]
-wheel.packages = ["mag_cusp"]
+wheel.packages = ["mag_cusps"]
 
 [tool.pybind11.cmake]
 parallel = true
