@@ -319,6 +319,8 @@ def fit_to_analytical(
         Parameters array with shape (N,) corresponding to the maximum distance each 
         of the parameters will randomly move away for the initial_params at the 
         beginning of a run.
+    analytical_function : str
+        Analytical function used.
     nb_runs : int
         Number of times the fitting algorithm will start again with other randomly 
         selected initial parameters.
@@ -368,13 +370,15 @@ def get_grad_J_fit_over_ip(
     Parameters
     ----------
     params : np.ndarray
-        Parameters for the Shue97 function of shape (N,).
+        Parameters for the analytical function of shape (N,).
     interest_points : np.ndarray
         Interest point array of shape (`nb_interest_points`, 4).
     J_norm : np.ndarray
         Normalised current density matrix of shape (X, Y, Z).
     earth_pos : np.ndarray
         Position of the Earth of shape (3,).
+    analytical_function : str
+        Analytical function corresponding to the parameters.
     dx, dy, dz : Optional[int]
         Used to calculate the gradient. Default value is 0.5.
     
@@ -405,7 +409,7 @@ def get_grad_J_fit_over_ip(
 def interest_point_flatness_checker(
     interest_points: NDArray[np.float64],
     nb_theta: int, nb_phi: int,
-    threshold: float | None = None, phi_radius: float | None = None
+    threshold: float = 2.0, phi_radius: float = 0.3
 ) -> tuple[float, bool]:
     """
     Checks in the (earth_pos,x,z) plane at what angle the interest points recede towards +x
@@ -438,6 +442,11 @@ def interest_point_flatness_checker(
 
 
 class MagCUSPS_Model:
+    """
+    Interface to use an ML model to predict the quality of the analysed numerical simulation
+    from a set of inputs. 
+    """
+    
     def define(self, model, scaler):
         self.model = model
         self.scaler = scaler
@@ -463,6 +472,11 @@ class MagCUSPS_Model:
         return self.model.predict(X_scaled)
 
 class MagCUSPS_RandomForestModel(MagCUSPS_Model):
+    """
+    Implementation of the interface using a RandomForestRegressor and StandardScaler to use the provided
+    pretrained models fit on the Gorgon benchmark data.
+    """
+    
     def define(self, model: RandomForestRegressor, scaler: StandardScaler):
         self.model = model
         self.scaler = scaler
@@ -486,42 +500,67 @@ class MagCUSPS_RandomForestModel(MagCUSPS_Model):
         return np.mean(uncertainties)
 
 
-
-def analyse():
-    pass
-
-def predict_with_model(input_features, model=None):
+def load_pretrained_model(
+    analytical_function: str = "Rolland25"
+) -> MagCUSPS_RandomForestModel:
     """
-    Make predictions using either a provided model or a saved model
+    Load one of the pretrained models to predict the quality of the analysed numerical data
+    for the analytical function used for fitting.
+    """
+    return MagCUSPS_RandomForestModel().load( f"evaluation_prediction_model_{analytical_function}.pkl" )
+
+
+def analyse(
+    J_norm: NDArray[np.float64], earth_pos: NDArray[np.float64],
+    nb_theta: int, nb_phi: int,
+    interest_points: NDArray[np.float64], 
+    params: NDArray[np.float64], fit_loss: float,
+    analytical_function: str = "Rolland25",
+    threshold: float = 2.0, phi_radius: float = 0.3,
+    dx: float = 0.5, dy: float = 0.5, dz: float = 0.5
+) -> NDArray[np.float64] | None:
+    """
+    Provide the exact parameters needed to use the MagCUSPS_Model to predict the quality
+    of the analysed numerical data.
     
     Parameters
     ----------
-        input_features: np.ndarray
-            Input data for prediction. If using the default model, 
-            input should be the output of the provided `analyse` function.
-        model: sklearn model object, optional
-            User-pretrained model used for the prediction in the place of the
-            model pretrained from Gorgon data.
-    
+    J_norm : np.ndarray
+        Normalised current density matrix of shape (X, Y, Z).
+    earth_pos : np.ndarray
+        Earth position vector of shape (3,).
+    nb_theta, nb_phi : int
+        Number of phi and theta used for the interest points search.
+    interest_points : np.ndarray
+        Interest point array of shape (`nb_interest_points`, 4).
+    params : np.ndarray
+        Parameters for the analytical function of shape (N,).
+    analytical_function : str
+        Analytical function corresponding to the parameters.
+    threshold : Optional[float]
+        How many grid cells before the dayside is considered to have receded.
+        Default value is 2.0.
+    phi_radius : Optional[float]
+        The angle phi to consider both sides of the (earth_pos,x,z) plane to average.
+        out any possible outliers in the plane. Default value is 0.3.
+    dx, dy, dz : Optional[int]
+        Used to calculate the gradient. Default value is 0.5.
+
     Returns
     -------
-        predictions: 
-            array with values between 0 and 1 of shape (N,)
+    np.ndarray
+        Array containing in order `[params..., fit_loss, grad_J_fit_over_ip, delta_r0, max_theta_in_threshold, is_concave]`.
     """
+    grad_J_fit_over_ip = get_grad_J_fit_over_ip(params, interest_points, J_norm, earth_pos, analytical_function, dx, dy, dz)
+    if grad_J_fit_over_ip is None:
+        return None
     
-    model_path='default_evaluation_prediction_model.pkl'
+    max_theta_in_threshold, is_concave = interest_point_flatness_checker(interest_points, nb_theta, nb_phi, threshold, phi_radius)
+    delta_r0 = 0
     
-    # Use provided model or load from file
-    if model is None:
-        model = joblib.load(model_path)
+    return np.append( params, [fit_loss, grad_J_fit_over_ip, delta_r0, max_theta_in_threshold, is_concave] )
     
-    # Make predictions
-    predictions = model.predict(input_features)
-    
-    # Ensure predictions are between 0 and 1
-    predictions = np.clip(predictions, 0, 1)
-    
-    return predictions
+
 
 
 
@@ -538,6 +577,5 @@ __all__ = [
     "fit_to_analytical",
     "get_grad_J_fit_over_ip",
     "interest_point_flatness_checker",
-    "analyse",
-    "predict_with_model",
+    "analyse"
 ]
