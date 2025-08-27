@@ -8,6 +8,7 @@ from sklearn.model_selection import KFold
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error, r2_score
 import pandas as pd
+from mag_cusps import MagCUSPS_RandomForestModel
 
 import joblib
 
@@ -39,54 +40,6 @@ def get_batch_rf_uncertainty(model, X):
         uncertainties.append(sample_unc)
     return np.mean(uncertainties)
 
-class MagCUSPS_Model:
-    def define(self, model, scaler):
-        self.model = model
-        self.scaler = scaler
-        
-    def load(self, path: str) -> Self:
-        """
-        Load a pickled MagCUSPS_model object 
-        """
-        self = joblib.load(path)
-        return self
-        
-    def dump(self, path: str):
-        """
-        Pickle an entire MagCUSPS_model object
-        """
-        joblib.dump(self, path)
-        
-    def predict(self, X):
-        """
-        Scale the data with the self.scaler and predict the output with self.model
-        """
-        X_scaled = self.scaler.transform(X)
-        return self.model.predict(X_scaled)
-
-class MagCUSPS_RandomForestModel(MagCUSPS_Model):
-    def define(self, model: RandomForestRegressor, scaler: StandardScaler):
-        self.model = model
-        self.scaler = scaler
-    
-    def get_sample_uncertainty(self, X_sample):
-        """
-        Get uncertainty from Random Forest model
-        """
-        tree_predictions = np.array([tree.predict(X_sample.reshape(1, -1))[0] 
-                                    for tree in self.model.estimators_])
-        return np.std(tree_predictions) 
-    
-    def get_batch_uncertainty(self, X):
-        """
-        Get uncertainty of entire batch from Random Forest model
-        """
-        uncertainties = []
-        for i in range(len(X)):
-            sample_unc = get_rf_uncertainty(self.model, X[i])
-            uncertainties.append(sample_unc)
-        return np.mean(uncertainties)
-    
     
 
 # Initialisation
@@ -119,7 +72,7 @@ precision = np.empty((3))
 f1 = np.empty((3))
 
 
-models = ["Shue97", "Liu12", "Rolland25"]
+models = ["Shue97"]#["Shue97", "Liu12", "Rolland25"]
 
 
 for i, m in enumerate(models):
@@ -154,12 +107,12 @@ for i, m in enumerate(models):
     best_min_spl_leaf = -1
     best_seed = -1
     
-    for seed_i in range(20):
-        for n_estim in [35, 40, 45, 50, 55, 60, 65, 70]:
-            for mx_depth in [2, 4, 6, 8, 10]:
-                for min_spl_split in [2, 3, 4, 5, 6, 7]:
-                    for min_spl_leaf in [1, 2, 3, 4]:
-                        seed = int((random() * 100) // 1)
+    for seed_i in range(1):#range(20):
+        for n_estim in [35]:#[35, 40, 45, 50, 55, 60, 65, 70]:
+            for mx_depth in [2]:#[2, 4, 6, 8, 10]:
+                for min_spl_split in [5]:#[2, 3, 4, 5, 6, 7]:
+                    for min_spl_leaf in [1]:#[1, 2, 3, 4]:
+                        seed = 78#int((random() * 100) // 1)
                         
                         fold_uncertainties = []
                         fold_r2s = []
@@ -271,7 +224,7 @@ for i, m in enumerate(models):
     mag_cusps_model = MagCUSPS_RandomForestModel()
     mag_cusps_model.define(final_model, scaler)
         
-    joblib.dump(mag_cusps_model, f"../.result_folder/evaluation_prediction_model_{m}.pkl")
+    mag_cusps_model.dump(f"../.result_folder/evaluation_prediction_model_{m}.pkl")
     
     
 axes[1, 0].bar( models, r2, color=(0.3, 0.3, 0.3), width=0.5 )
