@@ -705,7 +705,7 @@ namespace postprocessing
     {
         std::vector<InterestPoint> ip = casters::ip_vec_from_array(interest_points);
 
-        return get_delta_r_0(r_0, ip, nb_theta, nb_phi, theta_used);
+        return get_delta_r_0(r_0, ip.data(), nb_theta, nb_phi, theta_used);
     }
 }
 

@@ -3,21 +3,21 @@ from . import _mag_cusps as _mc
 
 import numpy as np
 import joblib
-from numpy.typing import NDArray
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import StandardScaler
+from pathlib import Path
 
 #########################################
 # C++ wheels 
 #########################################
 
 def preprocess(
-    mat: NDArray[np.float64],
-    X: NDArray[np.float64],
-    Y: NDArray[np.float64],
-    Z: NDArray[np.float64],
-    new_shape: NDArray[np.int32],
-) -> NDArray[np.float64]:
+    mat: np.ndarray,
+    X: np.ndarray,
+    Y: np.ndarray,
+    Z: np.ndarray,
+    new_shape: np.ndarray,
+) -> np.ndarray:
     """
     Transform a matrix from a non uniform grid to a uniform grid, of shape `new_shape`,
     using X, Y and Z containing the actual position of the center of each grid of each matrix indices. 
@@ -43,8 +43,8 @@ def preprocess(
 def get_bowshock_radius(
     theta: float,
     phi: float,
-    Rho: NDArray[np.float64],
-    earth_pos: NDArray[np.float64],
+    Rho: np.ndarray,
+    earth_pos: np.ndarray,
     dr: float
 ) -> float:
     """
@@ -71,12 +71,12 @@ def get_bowshock_radius(
     return _mc.get_bowshock_radius(theta, phi, Rho, earth_pos, dr)
 
 def get_bowshock(
-    Rho: NDArray[np.float64],
-    earth_pos: NDArray[np.float64],
+    Rho: np.ndarray,
+    earth_pos: np.ndarray,
     dr: float,
     nb_phi: int,
     max_nb_theta: int
-) -> NDArray[np.float64]:
+) -> np.ndarray:
     """
     Find the bow shock by finding the radius at which dRho_dr * r**3 is minimum,
     casting rays from the earth_pos at angles (theta, phi)
@@ -103,9 +103,9 @@ def get_bowshock(
 
 
 def get_interest_points(
-    J_norm: NDArray[np.float64],
-    earth_pos: NDArray[np.float64],
-    Rho: NDArray[np.float64],
+    J_norm: np.ndarray,
+    earth_pos: np.ndarray,
+    Rho: np.ndarray,
     theta_min: float,
     theta_max: float,
     nb_theta: int,
@@ -119,7 +119,7 @@ def get_interest_points(
     r_0_mult_max: float,
     nb_r_0: int,
     avg_std_dev: float | None = None
-) -> NDArray[np.float64]:
+) -> np.ndarray:
     """
     Calculate interest points from inputs.
 
@@ -153,6 +153,12 @@ def get_interest_points(
     np.ndarray
         Interest points array with shape (nb_theta*nb_phi, 4).
     """
+    if avg_std_dev is None:
+        return _mc.get_interest_points( J_norm, earth_pos, Rho, 
+                                        theta_min, theta_max, nb_theta, nb_phi,
+                                        dx, dr,
+                                        alpha_0_min, alpha_0_max, nb_alpha_0,
+                                        r_0_mult_min, r_0_mult_max, nb_r_0)
     return _mc.get_interest_points(J_norm, earth_pos, Rho, 
                                    theta_min, theta_max, nb_theta, nb_phi,
                                    dx, dr,
@@ -161,14 +167,14 @@ def get_interest_points(
                                    avg_std_dev)
 
 def process_interest_points(
-    interest_points: NDArray[np.float64],
+    interest_points: np.ndarray,
     nb_theta: int,
     nb_phi: int,
-    shape_sim: NDArray[np.int32],
-    shape_real: NDArray[np.int32],
-    earth_pos_sim: NDArray[np.float64],
-    earth_pos_real: NDArray[np.float64],
-) -> NDArray[np.float64]:
+    shape_sim: np.ndarray,
+    shape_real: np.ndarray,
+    earth_pos_sim: np.ndarray,
+    earth_pos_real: np.ndarray,
+) -> np.ndarray:
     """
     Transform interest points from simulation coordinates to real coordinates.
 
@@ -191,12 +197,12 @@ def process_interest_points(
     return _mc.process_interest_points(interest_points, nb_theta, nb_phi, shape_sim, shape_real, earth_pos_sim, earth_pos_real)
 
 def process_points(
-    points: NDArray[np.float64],
-    shape_sim: NDArray[np.int32],
-    shape_real: NDArray[np.int32],
-    earth_pos_sim: NDArray[np.float64],
-    earth_pos_real: NDArray[np.float64],
-) -> NDArray[np.float64]:
+    points: np.ndarray,
+    shape_sim: np.ndarray,
+    shape_real: np.ndarray,
+    earth_pos_sim: np.ndarray,
+    earth_pos_real: np.ndarray,
+) -> np.ndarray:
     """
     Transform points from simulation coordinates to real coordinates.
 
@@ -218,9 +224,9 @@ def process_points(
 
 
 def Shue97(
-    params: NDArray[np.float64], 
-    theta: float | NDArray[np.float64]
-) -> float | NDArray[np.float64] | None:
+    params: np.ndarray, 
+    theta: float | np.ndarray
+) -> float | np.ndarray | None:
     """
     Analytical approximation of the Magnetopause topology as written by Shue in his 1997 paper.
 
@@ -236,16 +242,16 @@ def Shue97(
     float or np.ndarray
         Radius at this angle.
     """
-    if params.size != 2:
+    if np.size(params) != 2:
         print("ERROR: there should be 2 parameters for the Shue97 function")
         return None
     return _mc.Shue97(params, theta)
 
 def Liu12(
-    params: NDArray[np.float64], 
-    theta: float | NDArray[np.float64], 
-    phi: float | NDArray[np.float64]
-) -> float | NDArray[np.float64] | None:
+    params: np.ndarray, 
+    theta: float | np.ndarray, 
+    phi: float | np.ndarray
+) -> float | np.ndarray | None:
     """
     Analytical approximation of the Magnetopause topology as written by Liu in his 2012 paper.
 
@@ -261,16 +267,16 @@ def Liu12(
     float or np.ndarray
         Radius at this angle.
     """
-    if params.size != 10:
+    if np.size(params) != 10:
         print("ERROR: there should be 10 parameters for the Liu12 function")
         return None
     return _mc.Liu12(params, theta, phi) 
     
 def Rolland25(
-    params: NDArray[np.float64], 
-    theta: float | NDArray[np.float64], 
-    phi: float | NDArray[np.float64] 
-) -> float | NDArray[np.float64] | None:
+    params: np.ndarray, 
+    theta: float | np.ndarray, 
+    phi: float | np.ndarray 
+) -> float | np.ndarray | None:
     """
     Analytical approximation of the Magnetopause topology as written by Rolland in his 2025 thesis.
 
@@ -286,22 +292,22 @@ def Rolland25(
     float or np.ndarray
         Radius at this angle.
     """
-    if params.size != 11:
+    if np.size(params) != 11:
         print("ERROR: there should be 11 parameters for the Rolland25 function")
         return None
     return _mc.Rolland25(params, theta, phi)
 
 
 def fit_to_analytical(
-    interest_points: NDArray[np.float64],
-    initial_params: NDArray[np.float64],
-    lowerbound: NDArray[np.float64],
-    upperbound: NDArray[np.float64],
-    radii_of_variation: NDArray[np.float64],
+    interest_points: np.ndarray,
+    initial_params: np.ndarray,
+    lowerbound: np.ndarray,
+    upperbound: np.ndarray,
+    radii_of_variation: np.ndarray,
     analytical_function: str = "Rolland25",
     nb_runs: int = 10,
     max_nb_iterations_per_run: int = 50,
-) -> tuple[NDArray[np.float64], float] | None:
+) -> tuple[np.ndarray, float] | None:
     """
     Analytical fitting of the Shue97, Liu12 or Rolland25 analytical functions 
     to an array of interest points. N equals respectively 2, 10 and 11.
@@ -334,19 +340,19 @@ def fit_to_analytical(
         Array of the final parameters after fit and the fitting cost of these parameters. 
     """
     if analytical_function == "Shue97":
-        if initial_params.size != 2:
+        if np.size(initial_params) != 2:
             print("ERROR: there should be 2 parameters for the Shue97 function")
             return None
         return _mc.fit_to_Shue97(interest_points, initial_params, lowerbound, upperbound, 
                                  radii_of_variation, nb_runs, max_nb_iterations_per_run)
     if analytical_function == "Liu12":
-        if initial_params.size != 10:
+        if np.size(initial_params) != 10:
             print("ERROR: there should be 10 parameters for the Liu12 function")
             return None
         return _mc.fit_to_Liu12(interest_points, initial_params, lowerbound, upperbound, 
                                 radii_of_variation, nb_runs, max_nb_iterations_per_run)
     if analytical_function == "Rolland25":
-        if initial_params.size != 11:
+        if np.size(initial_params) != 11:
             print("ERROR: there should be 11 parameters for the Rolland25 function")
             return None
         return _mc.fit_to_Rolland25(interest_points, initial_params, lowerbound, upperbound, 
@@ -356,9 +362,9 @@ def fit_to_analytical(
 
 
 def get_grad_J_fit_over_ip(
-    params: NDArray[np.float64],
-    interest_points: NDArray[np.float64],
-    J_norm: NDArray[np.float64], earth_pos: NDArray[np.float64],
+    params: np.ndarray,
+    interest_points: np.ndarray,
+    J_norm: np.ndarray, earth_pos: np.ndarray,
     analytical_function: str = "Rolland25",
     dx: float = 0.5, dy: float = 0.5, dz: float = 0.5
 ) -> float | None:
@@ -388,17 +394,17 @@ def get_grad_J_fit_over_ip(
         ||grad(||J_fit||)|| / ||grad(||J_ip||)||.
     """
     if analytical_function == "Shue97":
-        if params.size != 2:
+        if np.size(params) != 2:
             print("ERROR: there should be 2 parameters for the Shue97 function")
             return None
         return _mc.get_grad_J_fit_over_ip_Shue97(params, interest_points, J_norm, earth_pos, dx, dy, dz)
     if analytical_function == "Liu12":
-        if params.size != 10:
+        if np.size(params) != 10:
             print("ERROR: there should be 10 parameters for the Liu12 function")
             return None
         return _mc.get_grad_J_fit_over_ip_Liu12(params, interest_points, J_norm, earth_pos, dx, dy, dz)
     if analytical_function == "Rolland25":
-        if params.size != 11:
+        if np.size(params) != 11:
             print("ERROR: there should be 11 parameters for the Rolland25 function")
             return None
         return _mc.get_grad_J_fit_over_ip_Rolland25(params, interest_points, J_norm, earth_pos, dx, dy, dz)
@@ -407,7 +413,7 @@ def get_grad_J_fit_over_ip(
 
 
 def interest_point_flatness_checker(
-    interest_points: NDArray[np.float64],
+    interest_points: np.ndarray,
     nb_theta: int, nb_phi: int,
     threshold: float = 2.0, phi_radius: float = 0.3
 ) -> tuple[float, bool]:
@@ -438,7 +444,7 @@ def interest_point_flatness_checker(
 
 def get_delta_r0(
     r0: float,
-    interest_points: NDArray[np.float64],
+    interest_points: np.ndarray,
     nb_theta: int, nb_phi: int,
     theta_used: float = 0.2
 ) -> float:
@@ -483,21 +489,27 @@ class MagCUSPS_Model:
         """
         Load a pickled MagCUSPS_model object 
         """
-        self = joblib.load(path)
+        model_data = joblib.load(path)
+        self.model = model_data['model']
+        self.scaler = model_data['scaler']
         return self
         
     def dump(self, path: str):
         """
         Pickle an entire MagCUSPS_model object
         """
-        joblib.dump(self, path)
+        model_data = {
+            'model': self.model,
+            'scaler': self.scaler
+        }
+        joblib.dump(model_data, path)
         
     def predict(self, X):
         """
         Scale the data with the self.scaler and predict the output with self.model
         """
-        X_scaled = self.scaler.transform(X)
-        return self.model.predict(X_scaled)
+        X_scaled = self.scaler.transform(X.reshape(1,-1))
+        return self.model.predict(X_scaled)[0]
 
 class MagCUSPS_RandomForestModel(MagCUSPS_Model):
     """
@@ -513,7 +525,8 @@ class MagCUSPS_RandomForestModel(MagCUSPS_Model):
         """
         Get uncertainty from Random Forest model
         """
-        tree_predictions = np.array([tree.predict(X_sample.reshape(1, -1))[0] 
+        X_scaled = self.scaler.transform(X_sample.reshape(1,-1))
+        tree_predictions = np.array([tree.predict(X_scaled)[0] 
                                     for tree in self.model.estimators_])
         return np.std(tree_predictions) 
     
@@ -535,19 +548,19 @@ def load_pretrained_model(
     Load one of the pretrained models to predict the quality of the analysed numerical data
     for the analytical function used for fitting.
     """
-    return MagCUSPS_RandomForestModel().load( f"evaluation_prediction_model_{analytical_function}.pkl" )
+    return MagCUSPS_RandomForestModel().load( f"{Path(__file__).parent}/models/evaluation_prediction_model_{analytical_function}.pkl" )
 
 
 def analyse(
-    J_norm: NDArray[np.float64], earth_pos: NDArray[np.float64],
+    J_norm: np.ndarray, earth_pos: np.ndarray,
     nb_theta: int, nb_phi: int,
-    interest_points: NDArray[np.float64], 
-    params: NDArray[np.float64], fit_loss: float,
+    interest_points: np.ndarray, 
+    params: np.ndarray, fit_loss: float,
     analytical_function: str = "Rolland25",
     threshold: float = 2.0, phi_radius: float = 0.3,
     dx: float = 0.5, dy: float = 0.5, dz: float = 0.5,
-    theta_used: float = 0.2
-) -> NDArray[np.float64] | None:
+    # theta_used: float = 0.2
+) -> np.ndarray | None:
     """
     Provide the exact parameters needed to use the MagCUSPS_Model to predict the quality
     of the analysed numerical data.
@@ -587,9 +600,9 @@ def analyse(
         return None
     
     max_theta_in_threshold, is_concave = interest_point_flatness_checker(interest_points, nb_theta, nb_phi, threshold, phi_radius)
-    delta_r0 = get_delta_r0(params[0], interest_points, nb_theta, nb_phi, theta_used)
+    # delta_r0 = get_delta_r0(params[0], interest_points, nb_theta, nb_phi, theta_used)
     
-    return np.append( params, [fit_loss, grad_J_fit_over_ip, delta_r0, max_theta_in_threshold, is_concave] )
+    return np.append( params, [fit_loss, grad_J_fit_over_ip, max_theta_in_threshold, is_concave] )
     
 
 
@@ -609,5 +622,8 @@ __all__ = [
     "get_grad_J_fit_over_ip",
     "interest_point_flatness_checker",
     "get_delta_r0",
+    "MagCUSPS_Model",
+    "MagCUSPS_RandomForestModel",
+    "load_pretrained_model",
     "analyse"
 ]
