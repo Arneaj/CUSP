@@ -13,24 +13,24 @@ MagCUSPS
     Shue97
     Liu12
     Rolland25
-    fit_to_Shue97
-    fit_to_Liu12
-    fit_to_Rolland25
+    fit_to_analytical
 """
 
 # __init__.pyi for topology_analysis
 
-from typing import Optional, overload
+from typing import overload
 import numpy as np
-from numpy.typing import NDArray
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.preprocessing import StandardScaler
+
 
 def preprocess(
-    mat: NDArray[np.float64],
-    X: NDArray[np.float64],
-    Y: NDArray[np.float64],
-    Z: NDArray[np.float64],
-    new_shape: NDArray[np.int32],
-) -> NDArray[np.float64]:
+    mat: np.ndarray,
+    X: np.ndarray,
+    Y: np.ndarray,
+    Z: np.ndarray,
+    new_shape: np.ndarray,
+) -> np.ndarray:
     """
     Transform a matrix from a non uniform grid to a uniform grid, of shape `new_shape`,
     using X, Y and Z containing the actual position of the center of each grid of each matrix indices. 
@@ -55,8 +55,8 @@ def preprocess(
 def get_bowshock_radius(
     theta: float,
     phi: float,
-    Rho: NDArray[np.float64],
-    earth_pos: NDArray[np.float64],
+    Rho: np.ndarray,
+    earth_pos: np.ndarray,
     dr: float
 ) -> float:
     """
@@ -82,12 +82,12 @@ def get_bowshock_radius(
     """
 
 def get_bowshock(
-    Rho: NDArray[np.float64],
-    earth_pos: NDArray[np.float64],
+    Rho: np.ndarray,
+    earth_pos: np.ndarray,
     dr: float,
     nb_phi: int,
     max_nb_theta: int
-) -> NDArray[np.float64]:
+) -> np.ndarray:
     """
     Find the bow shock by finding the radius at which dRho_dr * r**3 is minimum,
     casting rays from the earth_pos at angles (theta, phi)
@@ -113,9 +113,9 @@ def get_bowshock(
 
 
 def get_interest_points(
-    J_norm: NDArray[np.float64],
-    earth_pos: NDArray[np.float64],
-    Rho: NDArray[np.float64],
+    J_norm: np.ndarray,
+    earth_pos: np.ndarray,
+    Rho: np.ndarray,
     theta_min: float,
     theta_max: float,
     nb_theta: int,
@@ -128,8 +128,8 @@ def get_interest_points(
     r_0_mult_min: float,
     r_0_mult_max: float,
     nb_r_0: int,
-    avg_std_dev: Optional[float] = ...
-) -> NDArray[np.float64]:
+    avg_std_dev: float | None = None
+) -> np.ndarray:
     """
     Calculate interest points from inputs.
 
@@ -165,14 +165,14 @@ def get_interest_points(
     """
 
 def process_interest_points(
-    interest_points: NDArray[np.float64],
+    interest_points: np.ndarray,
     nb_theta: int,
     nb_phi: int,
-    shape_sim: NDArray[np.int32],
-    shape_real: NDArray[np.int32],
-    earth_pos_sim: NDArray[np.float64],
-    earth_pos_real: NDArray[np.float64],
-) -> NDArray[np.float64]:
+    shape_sim: np.ndarray,
+    shape_real: np.ndarray,
+    earth_pos_sim: np.ndarray,
+    earth_pos_real: np.ndarray,
+) -> np.ndarray:
     """
     Transform interest points from simulation coordinates to real coordinates.
 
@@ -194,12 +194,12 @@ def process_interest_points(
     """
 
 def process_points(
-    points: NDArray[np.float64],
-    shape_sim: NDArray[np.int32],
-    shape_real: NDArray[np.int32],
-    earth_pos_sim: NDArray[np.float64],
-    earth_pos_real: NDArray[np.float64],
-) -> NDArray[np.float64]:
+    points: np.ndarray,
+    shape_sim: np.ndarray,
+    shape_real: np.ndarray,
+    earth_pos_sim: np.ndarray,
+    earth_pos_real: np.ndarray,
+) -> np.ndarray:
     """
     Transform points from simulation coordinates to real coordinates.
 
@@ -221,7 +221,7 @@ def process_points(
 
 @overload
 def Shue97(
-    params: NDArray[np.float64],
+    params: np.ndarray,
     theta: float
 ) -> float:
     """
@@ -242,9 +242,9 @@ def Shue97(
   
 @overload
 def Shue97(
-    params: NDArray[np.float64],
-    theta: NDArray[np.float64]
-) -> NDArray[np.float64]:
+    params: np.ndarray,
+    theta: np.ndarray
+) -> np.ndarray:
     """
     Analytical approximation of the Magnetopause topology as written by Shue in his 1997 paper.
 
@@ -264,7 +264,7 @@ def Shue97(
 
 @overload
 def Liu12(
-    params: NDArray[np.float64],
+    params: np.ndarray,
     theta: float, phi: float
 ) -> float:
     """
@@ -285,9 +285,9 @@ def Liu12(
 
 @overload
 def Liu12(
-    params: NDArray[np.float64],
-    theta: NDArray[np.float64], phi: NDArray[np.float64]
-) -> NDArray[np.float64]:
+    params: np.ndarray,
+    theta: np.ndarray, phi: np.ndarray
+) -> np.ndarray:
     """
     Analytical approximation of the Magnetopause topology as written by Liu in his 2012 paper.
 
@@ -306,9 +306,9 @@ def Liu12(
 
 @overload
 def Liu12(
-    params: NDArray[np.float64],
-    theta: NDArray[np.float64], phi: float
-) -> NDArray[np.float64]:
+    params: np.ndarray,
+    theta: np.ndarray, phi: float
+) -> np.ndarray:
     """
     Analytical approximation of the Magnetopause topology as written by Liu in his 2012 paper.
 
@@ -329,9 +329,9 @@ def Liu12(
     
 @overload
 def Liu12(
-    params: NDArray[np.float64],
-    theta: float, phi: NDArray[np.float64]
-) -> NDArray[np.float64]:
+    params: np.ndarray,
+    theta: float, phi: np.ndarray
+) -> np.ndarray:
     """
     Analytical approximation of the Magnetopause topology as written by Liu in his 2012 paper.
 
@@ -353,7 +353,7 @@ def Liu12(
     
 @overload
 def Rolland25(
-    params: NDArray[np.float64],
+    params: np.ndarray,
     theta: float, phi: float
 ) -> float:
     """
@@ -374,9 +374,9 @@ def Rolland25(
     
 @overload
 def Rolland25(
-    params: NDArray[np.float64],
-    theta: NDArray[np.float64], phi: NDArray[np.float64]
-) -> NDArray[np.float64]:
+    params: np.ndarray,
+    theta: np.ndarray, phi: np.ndarray
+) -> np.ndarray:
     """
     Analytical approximation of the Magnetopause topology as written by Rolland in his 2025 thesis.
 
@@ -395,9 +395,9 @@ def Rolland25(
  
 @overload
 def Rolland25(
-    params: NDArray[np.float64],
-    theta: NDArray[np.float64], phi: float
-) -> NDArray[np.float64]:
+    params: np.ndarray,
+    theta: np.ndarray, phi: float
+) -> np.ndarray:
     """
     Analytical approximation of the Magnetopause topology as written by Rolland in his 2025 thesis.
 
@@ -418,9 +418,9 @@ def Rolland25(
 
 @overload
 def Rolland25(
-    params: NDArray[np.float64],
-    theta: float, phi: NDArray[np.float64]
-) -> NDArray[np.float64]:
+    params: np.ndarray,
+    theta: float, phi: np.ndarray
+) -> np.ndarray:
     """
     Analytical approximation of the Magnetopause topology as written by Rolland in his 2025 thesis.
 
@@ -440,31 +440,35 @@ def Rolland25(
     """
 
 
-def fit_to_Shue97(
-    interest_points: NDArray[np.float64],
-    initial_params: NDArray[np.float64],
-    lowerbound: NDArray[np.float64],
-    upperbound: NDArray[np.float64],
-    radii_of_variation: NDArray[np.float64],
+def fit_to_analytical(
+    interest_points: np.ndarray,
+    initial_params: np.ndarray,
+    lowerbound: np.ndarray,
+    upperbound: np.ndarray,
+    radii_of_variation: np.ndarray,
+    analytical_function: str = "Rolland25",
     nb_runs: int = 10,
     max_nb_iterations_per_run: int = 50,
-) -> tuple[NDArray[np.float64], float]:
+) -> tuple[np.ndarray, float] | None:
     """
-    Analytical fitting of the Shue97 function to an array of interest points.
+    Analytical fitting of the Shue97, Liu12 or Rolland25 analytical functions 
+    to an array of interest points. N equals respectively 2, 10 and 11.
 
     Parameters
     ----------
     interest_points : np.ndarray
         Interest point array to fit to of shape (`nb_interest_points`, 4).
     initial_parameters : np.ndarray
-        Parameters array with shape (2,).
+        Parameters array with shape (N,).
     lowerbound, upperbound : np.ndarray
-        Parameters array with shape (2,) corresponding to the lower and upper bounds
+        Parameters array with shape (N,) corresponding to the lower and upper bounds
         that the parameters can take during fitting.
     radii_of_variation : np.ndarray
-        Parameters array with shape (2,) corresponding to the maximum distance each 
+        Parameters array with shape (N,) corresponding to the maximum distance each 
         of the parameters will randomly move away for the initial_params at the 
         beginning of a run.
+    analytical_function : str
+        Analytical function used.
     nb_runs : int
         Number of times the fitting algorithm will start again with other randomly 
         selected initial parameters.
@@ -478,104 +482,31 @@ def fit_to_Shue97(
         Array of the final parameters after fit and the fitting cost of these parameters. 
     """
 
-def fit_to_Liu12(
-    interest_points: NDArray[np.float64],
-    initial_params: NDArray[np.float64],
-    lowerbound: NDArray[np.float64],
-    upperbound: NDArray[np.float64],
-    radii_of_variation: NDArray[np.float64],
-    nb_runs: int = 10,
-    max_nb_iterations_per_run: int = 50,
-) -> tuple[NDArray[np.float64], float]:
+
+def get_grad_J_fit_over_ip(
+    params: np.ndarray,
+    interest_points: np.ndarray,
+    J_norm: np.ndarray, earth_pos: np.ndarray,
+    analytical_function: str = "Rolland25",
+    dx: float = 0.5, dy: float = 0.5, dz: float = 0.5
+) -> float | None:
     """
-    Analytical fitting of the Liu12 function to an array of interest points.
-
-    Parameters
-    ----------
-    interest_points : np.ndarray
-        Interest point array to fit to of shape (`nb_interest_points`, 4).
-    initial_parameters : np.ndarray
-        Parameters array with shape (10,).
-    lowerbound, upperbound : np.ndarray
-        Parameters array with shape (10,) corresponding to the lower and upper bounds
-        that the parameters can take during fitting.
-    radii_of_variation : np.ndarray
-        Parameters array with shape (10,) corresponding to the maximum distance each 
-        of the parameters will randomly move away for the initial_params at the 
-        beginning of a run.
-    nb_runs : int
-        Number of times the fitting algorithm will start again with other randomly 
-        selected initial parameters.
-    max_nb_iterations_per_run : int
-        Maximum number of iterations the fitting algorithm will do before stopping
-        even if it hasn't converged.
-    
-    Returns
-    -------
-    float
-        Array of the final parameters after fit and the fitting cost of these parameters. 
-    """
-
-def fit_to_Rolland25(
-    interest_points: NDArray[np.float64],
-    initial_params: NDArray[np.float64],
-    lowerbound: NDArray[np.float64],
-    upperbound: NDArray[np.float64],
-    radii_of_variation: NDArray[np.float64],
-    nb_runs: int = 10,
-    max_nb_iterations_per_run: int = 50,
-) -> tuple[NDArray[np.float64], float]:
-    """
-    Analytical fitting of the Rolland25 function to an array of interest points.
-
-    Parameters
-    ----------
-    interest_points : np.ndarray
-        Interest point array to fit to of shape (`nb_interest_points`, 4).
-    initial_parameters : np.ndarray
-        Parameters array with shape (11,).
-    lowerbound, upperbound : np.ndarray
-        Parameters array with shape (11,) corresponding to the lower and upper bounds
-        that the parameters can take during fitting.
-    radii_of_variation : np.ndarray
-        Parameters array with shape (11,) corresponding to the maximum distance each 
-        of the parameters will randomly move away for the initial_params at the 
-        beginning of a run.
-    nb_runs : int
-        Number of times the fitting algorithm will start again with other randomly 
-        selected initial parameters.
-    max_nb_iterations_per_run : int
-        Maximum number of iterations the fitting algorithm will do before stopping
-        even if it hasn't converged.
-    
-    Returns
-    -------
-    float
-        Array of the final parameters after fit and the fitting cost of these parameters. 
-    """
-
-
-
-def get_grad_J_fit_over_ip_Shue97(
-    params: NDArray[np.float64],
-    interest_points: NDArray[np.float64],
-    J_norm: NDArray[np.float64], earth_pos: NDArray[np.float64],
-    dx: float, dy: float, dz: float
-) -> float:
-    """
-    Ratio of the current density gradient along the magnetopause between the analytical
-    function Shue97 and the interest points.
+    Ratio of the current density gradient along the magnetopause between the 
+    Shue97, Liu12 or Rolland25 analytical functions and the interest points. 
+    N equals respectively 2, 10 and 11.
     
     Parameters
     ----------
     params : np.ndarray
-        Parameters for the Shue97 function of shape (2,).
+        Parameters for the analytical function of shape (N,).
     interest_points : np.ndarray
         Interest point array of shape (`nb_interest_points`, 4).
     J_norm : np.ndarray
         Normalised current density matrix of shape (X, Y, Z).
     earth_pos : np.ndarray
         Position of the Earth of shape (3,).
+    analytical_function : str
+        Analytical function corresponding to the parameters.
     dx, dy, dz : Optional[int]
         Used to calculate the gradient. Default value is 0.5.
     
@@ -585,67 +516,9 @@ def get_grad_J_fit_over_ip_Shue97(
         ||grad(||J_fit||)|| / ||grad(||J_ip||)||.
     """
     
-def get_grad_J_fit_over_ip_Liu12(
-    params: NDArray[np.float64],
-    interest_points: NDArray[np.float64],
-    J_norm: NDArray[np.float64], earth_pos: NDArray[np.float64],
-    dx: float, dy: float, dz: float
-) -> float:
-    """
-    Ratio of the current density gradient along the magnetopause between the analytical
-    function Liu12 and the interest points.
-    
-    Parameters
-    ----------
-    params : np.ndarray
-        Parameters for the Liu12 function of shape (10,).
-    interest_points : np.ndarray
-        Interest point array of shape (`nb_interest_points`, 4).
-    J_norm : np.ndarray
-        Normalised current density matrix of shape (X, Y, Z).
-    earth_pos : np.ndarray
-        Position of the Earth of shape (3,).
-    dx, dy, dz : Optional[int]
-        Used to calculate the gradient. Default value is 0.5.
-    
-    Returns
-    -------
-    float
-        ||grad(||J_fit||)|| / ||grad(||J_ip||)||.
-    """
-    
-def get_grad_J_fit_over_ip_Rolland25(
-    params: NDArray[np.float64],
-    interest_points: NDArray[np.float64],
-    J_norm: NDArray[np.float64], earth_pos: NDArray[np.float64],
-    dx: float, dy: float, dz: float
-) -> float:
-    """
-    Ratio of the current density gradient along the magnetopause between the analytical
-    function Rolland25 and the interest points.
-    
-    Parameters
-    ----------
-    params : np.ndarray
-        Parameters for the Rolland25 function of shape (11,).
-    interest_points : np.ndarray
-        Interest point array of shape (`nb_interest_points`, 4).
-    J_norm : np.ndarray
-        Normalised current density matrix of shape (X, Y, Z).
-    earth_pos : np.ndarray
-        Position of the Earth of shape (3,).
-    dx, dy, dz : Optional[int]
-        Used to calculate the gradient. Default value is 0.5.
-    
-    Returns
-    -------
-    float
-        ||grad(||J_fit||)|| / ||grad(||J_ip||)||.
-    """
-
 
 def interest_point_flatness_checker(
-    interest_points: NDArray[np.float64],
+    interest_points: np.ndarray,
     nb_theta: int, nb_phi: int,
     threshold: float, phi_radius: float
 ) -> tuple[float, bool]:
@@ -673,6 +546,125 @@ def interest_point_flatness_checker(
     """
 
 
+def get_delta_r0(
+    r0: float,
+    interest_points: np.ndarray,
+    nb_theta: int, nb_phi: int,
+    theta_used: float = 0.2
+) -> float:
+    """
+    Return r_0 from the parameters minus the average distance between the Earth 
+    and the dayside weighed interest points.
+    
+    Parameters
+    ----------
+    r0 : float
+        The standoff distance obtained from the fitting.
+    interest_points : np.ndarray
+        Interest point array of shape (`nb_interest_points`, 4).
+    nb_theta, nb_phi : int
+        Number of phi and theta used for the interest points search.
+    theta_used : Optional[float]
+        The theta used to average the distance between the Earth and the dayside interest points 
+
+    Returns
+    -------
+    np.ndarray
+        r0 - sum( interest_points.radius * interest_points.weights ) / sum(interest_points.weights)
+    """
+
+
+class MagCUSPS_Model:
+    """
+    Interface to use an ML model to predict the quality of the analysed numerical simulation
+    from a set of inputs. 
+    """
+    def define(self, model, scaler):
+        """"""
+    def load(self, path: str):
+        """
+        Load a pickled MagCUSPS_model object 
+        """
+    def dump(self, path: str):
+        """
+        Pickle an entire MagCUSPS_model object
+        """
+    def predict(self, X):
+        """
+        Scale the data with the self.scaler and predict the output with self.model
+        """
+    
+class MagCUSPS_RandomForestModel(MagCUSPS_Model):
+    """
+    Implementation of the interface using a RandomForestRegressor and StandardScaler to use the provided
+    pretrained models fit on the Gorgon benchmark data.
+    """
+    def define(self, model: RandomForestRegressor, scaler: StandardScaler):
+        """"""
+    def get_sample_uncertainty(self, X_sample):
+        """
+        Get uncertainty from Random Forest model
+        """
+    def get_batch_uncertainty(self, X):
+        """
+        Get uncertainty of entire batch from Random Forest model
+        """
+    
+    
+def load_pretrained_model(
+    analytical_function: str = "Rolland25"
+) -> MagCUSPS_RandomForestModel:
+    """
+    Load one of the pretrained models to predict the quality of the analysed numerical data
+    for the analytical function used for fitting.
+    """
+    
+def analyse(
+    J_norm: np.ndarray, earth_pos: np.ndarray,
+    nb_theta: int, nb_phi: int,
+    interest_points: np.ndarray, 
+    params: np.ndarray, fit_loss: float,
+    analytical_function: str = "Rolland25",
+    threshold: float = 2.0, phi_radius: float = 0.3,
+    dx: float = 0.5, dy: float = 0.5, dz: float = 0.5,
+    theta_used: float = 0.2
+) -> np.ndarray | None:
+    """
+    Provide the exact parameters needed to use the MagCUSPS_Model to predict the quality
+    of the analysed numerical data.
+    
+    Parameters
+    ----------
+    J_norm : np.ndarray
+        Normalised current density matrix of shape (X, Y, Z).
+    earth_pos : np.ndarray
+        Earth position vector of shape (3,).
+    nb_theta, nb_phi : int
+        Number of phi and theta used for the interest points search.
+    interest_points : np.ndarray
+        Interest point array of shape (`nb_interest_points`, 4).
+    params : np.ndarray
+        Parameters for the analytical function of shape (N,).
+    analytical_function : str
+        Analytical function corresponding to the parameters.
+    threshold : Optional[float]
+        How many grid cells before the dayside is considered to have receded.
+        Default value is 2.0.
+    phi_radius : Optional[float]
+        The angle phi to consider both sides of the (earth_pos,x,z) plane to average.
+        out any possible outliers in the plane. Default value is 0.3.
+    dx, dy, dz : Optional[int]
+        Used to calculate the gradient. Default value is 0.5.
+    theta_used : Optional[float]
+        The theta used to average the distance between the Earth and the dayside interest points 
+
+    Returns
+    -------
+    np.ndarray
+        Array containing in order `[params..., fit_loss, grad_J_fit_over_ip, delta_r0, max_theta_in_threshold, is_concave]`.
+    """
+
+
 __all__ = [
     "preprocess",
     "get_bowshock_radius",
@@ -683,11 +675,12 @@ __all__ = [
     "Shue97",
     "Liu12",
     "Rolland25",
-    "fit_to_Shue97",
-    "fit_to_Liu12",
-    "fit_to_Rolland25",
-    "get_grad_J_fit_over_ip_Shue97",
-    "get_grad_J_fit_over_ip_Liu12",
-    "get_grad_J_fit_over_ip_Rolland25",
+    "fit_to_analytical",
+    "get_grad_J_fit_over_ip",
     "interest_point_flatness_checker",
+    "get_delta_r0",
+    "MagCUSPS_Model",
+    "MagCUSPS_RandomForestModel",
+    "load_pretrained_model",
+    "analyse"
 ]
